@@ -1,0 +1,58 @@
+{
+    "ContentCreatorName": "IDC",
+    "ClinicalTrialSeriesID": "0",
+    "ClinicalTrialTimePointID": "1",
+    "SeriesDescription": "Segmentation",
+    "SeriesNumber": "42",
+    "InstanceNumber": "1",
+    "BodyPartExamined": "Abdomen",
+    "segmentAttributes": [
+      [
+        {
+          "labelID": 1,
+          "SegmentDescription": "Liver",
+          "SegmentAlgorithmType": "AUTOMATIC",
+          "SegmentAlgorithmName": "nnU-Net",
+          "SegmentedPropertyCategoryCodeSequence": {
+            "CodeValue": "123037004",
+            "CodingSchemeDesignator": "SCT",
+            "CodeMeaning": "Anatomical Structure"
+          },
+          "SegmentedPropertyTypeCodeSequence": {
+            "CodeValue": "10200004",
+            "CodingSchemeDesignator": "SCT",
+            "CodeMeaning": "Liver"
+          },
+          "recommendedDisplayRGBValue": [
+            221,
+            130,
+            101
+          ]
+        },
+        {
+          "labelID": 2,
+          "SegmentDescription": "Liver cancer",
+          "SegmentAlgorithmType": "AUTOMATIC",
+          "SegmentAlgorithmName": "nnU-Net",
+          "SegmentedPropertyCategoryCodeSequence": {
+            "CodeValue": "49755003",
+            "CodingSchemeDesignator": "SCT",
+            "CodeMeaning": "Morphologically Altered Structure"
+          },
+          "SegmentedPropertyTypeCodeSequence": {
+            "CodeValue": "86049000",
+            "CodingSchemeDesignator": "SCT",
+            "CodeMeaning": "Neoplasm, Primary"
+          },
+          "recommendedDisplayRGBValue": [
+            241,
+            59,
+            59
+          ]
+        }
+      ]
+    ],
+    "ContentLabel": "SEGMENTATION",
+    "ContentDescription": "Image segmentation",
+    "ClinicalTrialCoordinatingCenterName": "dcmqi"
+  }

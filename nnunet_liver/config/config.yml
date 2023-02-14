@@ -1,0 +1,14 @@
+general:
+  data_base_dir: /app/data
+modules:
+  UnsortedInstanceImporter:
+    input_dir: input_data
+  DataSorter:
+    base_dir: /app/data/sorted
+    structure: '%SeriesInstanceUID/dicom/%SOPInstanceUID.dcm'
+  NNUnetRunner:
+    task: 'Task003_Liver'
+    model: '3d_lowres'
+  DsegConverter:
+    dicomseg_json_path: /app/mhub/nnunet_liver/config/meta.json
+    skip_empty_slices: True
