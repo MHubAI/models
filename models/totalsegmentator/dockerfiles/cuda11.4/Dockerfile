@@ -1,5 +1,5 @@
 # Specify the base image for the environment
-FROM mhubai/base:cuda11.4
+FROM mhubai2/base:cuda11.4
 
 # FIXME: set this environment variable as a shortcut to avoid nnunet crashing the build
 # by pulling sklearn instead of scikit-learn
