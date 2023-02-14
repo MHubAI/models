@@ -1,0 +1,14 @@
+general:
+  data_base_dir: /app/data
+modules:
+  UnsortedInstanceImporter:
+    input_dir: input_data
+  DataSorter:
+    base_dir: /app/data/sorted
+    structure: '%SeriesInstanceUID/dicom/%SOPInstanceUID.dcm'
+  DsegConverter:
+#   dicomseg_json_path: /app/mhub/platipy/old/config/dicomseg_metadata_whole.json
+    dicomseg_yml_path: /app/mhub/platipy/config/dseg.yml
+    skip_empty_slices: True
+  PlatipyRunner:
+    path_to_config_file: "" # "/app/mhub/platipy/config/default_config.json"

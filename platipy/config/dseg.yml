@@ -1,0 +1,39 @@
+dicomseg:
+  BodyPartExamined: WHOLEBODY
+  ClinicalTrialCoordinatingCenterName: dcmqi
+  ClinicalTrialSeriesID: '0'
+  ClinicalTrialTimePointID: '1'
+  ContentCreatorName: IDC
+  ContentDescription: Image segmentation
+  ContentLabel: SEGMENTATION
+  InstanceNumber: '1'
+  SegmentAlgorithmName: Platipy
+  SegmentAlgorithmType: AUTOMATIC
+  SeriesDescription: Segmentation
+  SeriesNumber: '42'
+segments:
+  AORTA: A_Aorta.nii.gz
+  LEFT_VENTRICLE: Ventricle_L.nii.gz
+  RIGHT_VENTRICLE: Ventricle_R.nii.gz
+  LEFT_ATRIUM: Atrium_L.nii.gz
+  RIGHT_ATRIUM: Atrium_R.nii.gz
+
+# __ available segmentations ___________________________
+# [ ] Whole Heart                       Heart
+# [x] Left Ventricle                    Ventricle_L
+# [x] Right Ventricle                   Ventricle_R
+# [x] Left Atrium                       Atrium_L
+# [x] Right Atrium                      Atrium_R
+# [x] Aorta Artery                      A_Aorta                 -> only within the heart!
+# [ ] Pulmonary Artery                  A_Pulmonary
+# [ ] Left Anterior Descending Artery   A_LAD
+# [ ] Circonflex Artery                 A_Cflx
+# [ ] Left Coronary Artery              A_Coronary_L
+# [ ] Right Coronary Artery             A_Coronary_R
+# [ ] Superior Vena Cava                V_Venacava_S
+# [ ] Mitral Valve                      Valve_Mitral
+# [ ] Tricuspid Valve                   Valve_Tricuspid
+# [ ] Aortic Valve                      Valve_Aortic
+# [ ] Pulmonic Valve                    Valve_Pulmonic
+# [ ] Sinoatrial Conduction Node        CN_Sinoatrial
+# [ ] Atrioventricular Conduction Node  CN_Atrioventricular

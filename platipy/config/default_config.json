@@ -1,0 +1,232 @@
+{
+    "fetch_open_atlas": true,
+    "nnunet_settings": {
+        "task": "Task400_OPEN_HEART_1FOLD",
+        "trainer_class_name": "nnUNetTrainerV2",
+        "cascade_trainer_class_name": "nnUNetTrainerV2CascadeFullRes",
+        "folds": "all",
+        "model": "3d_lowres",
+        "lowres_segmentations": null,
+        "num_threads_preprocessing": 6,
+        "num_threads_nifti_save": 2,
+        "disable_tta": false,
+        "all_in_gpu": null,
+        "disable_mixed_precision": false,
+        "chk": "model_final_checkpoint"
+    },
+    "cardiac_settings": {
+        "atlas_settings": {
+            "atlas_id_list": [
+                "LCTSC-Test-S2-201",
+                "LCTSC-Test-S2-203",
+                "LCTSC-Test-S3-201",
+                "LUNG1-002",
+                "LUNG1-009",
+                "LUNG1-021",
+                "LUNG1-067",
+                "LUNG1-226"
+            ],
+            "atlas_structure_list": [
+                "Atrium_L",
+                "Ventricle_L",
+                "Atrium_R",
+                "Ventricle_R",
+                "A_Aorta",
+                "A_Pulmonary",
+                "V_Venacava_S",
+                "A_LAD",
+                "A_Coronary_L",
+                "A_Cflx",
+                "A_Coronary_R",
+                "Heart"
+            ],
+            "atlas_path": "/root/.platipy/cardiac/test_atlas",
+            "atlas_image_format": "{0}/IMAGES/CT.nii.gz",
+            "atlas_label_format": "{0}/STRUCTURES/{1}.nii.gz",
+            "crop_atlas_to_structures": true,
+            "crop_atlas_expansion_mm": [
+                50,
+                50,
+                50
+            ],
+            "guide_structure_name": "Heart",
+            "superior_extension": 30
+        },
+        "auto_crop_target_image_settings": {
+            "expansion_mm": [
+                20,
+                20,
+                40
+            ]
+        },
+        "linear_registration_settings": {
+            "reg_method": "affine",
+            "shrink_factors": [
+                16,
+                8,
+                4
+            ],
+            "smooth_sigmas": [
+                0,
+                0,
+                0
+            ],
+            "sampling_rate": 0.75,
+            "default_value": -1000,
+            "number_of_iterations": 50,
+            "metric": "mean_squares",
+            "optimiser": "gradient_descent_line_search",
+            "verbose": false
+        },
+        "structure_guided_registration_settings": {
+            "isotropic_resample": true,
+            "resolution_staging": [
+                16,
+                8,
+                2
+            ],
+            "iteration_staging": [
+                50,
+                50,
+                50
+            ],
+            "smoothing_sigmas": [
+                0,
+                0,
+                0
+            ],
+            "ncores": 8,
+            "default_value": 0,
+            "verbose": false
+        },
+        "deformable_registration_settings": {
+            "isotropic_resample": true,
+            "resolution_staging": [
+                6,
+                3,
+                1.5
+            ],
+            "iteration_staging": [
+                200,
+                150,
+                100
+            ],
+            "smoothing_sigmas": [
+                0,
+                0,
+                0
+            ],
+            "ncores": 8,
+            "default_value": 0,
+            "verbose": false
+        },
+        "iar_settings": {
+            "reference_structure": false,
+            "smooth_distance_maps": true,
+            "smooth_sigma": 1,
+            "z_score_statistic": "mad",
+            "outlier_method": "iqr",
+            "outlier_factor": 1.5,
+            "min_best_atlases": 5,
+            "project_on_sphere": false
+        },
+        "label_fusion_settings": {
+            "vote_type": "unweighted",
+            "vote_params": null,
+            "optimal_threshold": {
+                "Atrium_L": 0.5,
+                "Ventricle_L": 0.5,
+                "Atrium_R": 0.5,
+                "Ventricle_R": 0.5,
+                "A_Aorta": 0.5,
+                "A_Pulmonary": 0.5,
+                "V_Venacava_S": 0.5,
+                "Heart": 0.5
+            }
+        },
+        "vessel_spline_settings": {
+            "vessel_name_list": [
+                "A_LAD",
+                "A_Cflx",
+                "A_Coronary_L",
+                "A_Coronary_R"
+            ],
+            "vessel_radius_mm_dict": {
+                "A_LAD": 2,
+                "A_Cflx": 2,
+                "A_Coronary_L": 2,
+                "A_Coronary_R": 2
+            },
+            "scan_direction_dict": {
+                "A_LAD": "z",
+                "A_Cflx": "z",
+                "A_Coronary_L": "x",
+                "A_Coronary_R": "z"
+            },
+            "stop_condition_type_dict": {
+                "A_LAD": "count",
+                "A_Cflx": "count",
+                "A_Coronary_L": "count",
+                "A_Coronary_R": "count"
+            },
+            "stop_condition_value_dict": {
+                "A_LAD": 2,
+                "A_Cflx": 2,
+                "A_Coronary_L": 2,
+                "A_Coronary_R": 2
+            }
+        },
+        "geometric_segmentation_settings": {
+            "run_geometric_algorithms": true,
+            "geometric_name_suffix": "_GEOMETRIC",
+            "atlas_structure_names": {
+                "atlas_left_ventricle": "Ventricle_L",
+                "atlas_right_ventricle": "Ventricle_R",
+                "atlas_left_atrium": "Atrium_L",
+                "atlas_right_atrium": "Atrium_R",
+                "atlas_ascending_aorta": "A_Aorta",
+                "atlas_pulmonary_artery": "A_Pulmonary",
+                "atlas_superior_vena_cava": "V_Venacava_S",
+                "atlas_whole_heart": "Heart"
+            },
+            "valve_definitions": {
+                "mitral_valve_thickness_mm": 10,
+                "mitral_valve_radius_mm": 15,
+                "tricuspid_valve_thickness_mm": 10,
+                "tricuspid_valve_radius_mm": 15,
+                "pulmonic_valve_thickness_mm": 10,
+                "aortic_valve_thickness_mm": 10
+            },
+            "conduction_system_definitions": {
+                "sinoatrial_node_radius_mm": 10,
+                "atrioventricular_node_radius_mm": 10
+            }
+        },
+        "postprocessing_settings": {
+            "run_postprocessing": true,
+            "binaryfillhole_mm": 3,
+            "structures_for_binaryfillhole": [
+                "Atrium_L",
+                "Ventricle_L",
+                "Atrium_R",
+                "Ventricle_R",
+                "A_Aorta",
+                "A_Pulmonary",
+                "V_Venacava_S",
+                "Heart"
+            ],
+            "structures_for_overlap_correction": [
+                "Atrium_L",
+                "Ventricle_L",
+                "Atrium_R",
+                "Ventricle_R",
+                "A_Aorta",
+                "A_Pulmonary",
+                "V_Venacava_S"
+            ]
+        },
+        "return_atlas_guide_structure": false,
+        "return_as_cropped": false,
+        "return_proba_as_contours": true
+    }
+}
