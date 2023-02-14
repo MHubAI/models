@@ -17,6 +17,7 @@ RUN apt update && apt install -y --no-install-recommends \
   unzip \
   sudo \
   git \
+  subversion \
   python3 \
   python3-pip \
   plastimatch \
