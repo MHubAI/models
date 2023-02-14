@@ -17,7 +17,7 @@ from mhubio.Config import Config, DataType, FileType, CT, SEG
 from mhubio.modules.importer.NrrdImporter import NrrdImporter
 from mhubio.modules.convert.NiftiConverter import NiftiConverter
 from mhubio.modules.organizer.DataOrganizer import DataOrganizer
-from totalsegmentator.utils.TotalSegmentatorRunner import TotalSegmentatorRunner
+from models.totalsegmentator.utils.TotalSegmentatorRunner import TotalSegmentatorRunner
 
 # config
 config = Config('/app/mhub/totalsegmentator/config/slicer_config.yml')

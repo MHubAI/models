@@ -18,7 +18,7 @@ from mhubio.modules.importer.DataSorter import DataSorter
 from mhubio.modules.convert.NiftiConverter import NiftiConverter
 from mhubio.modules.convert.DsegConverter import DsegConverter
 from mhubio.modules.organizer.DataOrganizer import DataOrganizer
-from totalsegmentator.utils.TotalSegmentatorRunner import TotalSegmentatorRunner
+from models.totalsegmentator.utils.TotalSegmentatorRunner import TotalSegmentatorRunner
 
 # could be set via environment variables
 # format: '/data/batch/series1/input/', '/data/batch/series1/output/'

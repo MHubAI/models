@@ -18,7 +18,7 @@ from mhubio.modules.importer.DataSorter import DataSorter
 from mhubio.modules.convert.NiftiConverter import NiftiConverter
 from mhubio.modules.convert.DsegConverter import DsegConverter
 from mhubio.modules.organizer.DataOrganizer import DataOrganizer
-from mhub.platipy.utils.PlatipyRunner import PlatipyRunner
+from models.platipy.utils.PlatipyRunner import PlatipyRunner
 
 # clean-up
 import shutil

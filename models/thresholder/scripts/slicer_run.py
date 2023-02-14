@@ -13,10 +13,10 @@ Email:  leonard.nuernberg@maastrichtuniversity.nl
 import sys, os
 sys.path.append('.')
 
-from mhub.mhubio.Config import Config, DataType, FileType, CT, SEG
-from mhub.mhubio.modules.importer.NrrdImporter import NrrdImporter
-from mhub.mhubio.modules.organizer.DataOrganizer import DataOrganizer
-from mhub.thresholder.utils.ThresholdingRunner import ThresholdingRunner
+from mhubio.Config import Config, DataType, FileType, CT, SEG
+from mhubio.modules.importer.NrrdImporter import NrrdImporter
+from mhubio.modules.organizer.DataOrganizer import DataOrganizer
+from models.thresholder.utils.ThresholdingRunner import ThresholdingRunner
 
 # clean-up
 #import shutil
