@@ -9,8 +9,8 @@ Email:  leonard.nuernberg@maastrichtuniversity.nl
 -------------------------------------------------
 """
 
-from mhub.mhubio.Config import Instance, InstanceData, DataType, FileType, SEG
-from mhub.mhubio.modules.runner.ModelRunner import ModelRunner
+from mhubio.Config import Instance, InstanceData, DataType, FileType, SEG
+from mhubio.modules.runner.ModelRunner import ModelRunner
 
 import os, numpy as np
 import SimpleITK as sitk

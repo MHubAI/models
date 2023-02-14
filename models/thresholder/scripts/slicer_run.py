@@ -26,7 +26,7 @@ from models.thresholder.utils.ThresholdingRunner import ThresholdingRunner
 #shutil.rmtree("/app/data/output_data", ignore_errors=True) # <-- we use in = out so not a good idea :D
 
 # config
-config = Config('/app/mhub/thresholder/config/config.yml')
+config = Config('/app/models/thresholder/config/config.yml')
 config.verbose = True  # TODO: define levels of verbosity and integrate consistently. 
 config.debug = True
 
