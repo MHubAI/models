@@ -1,0 +1,14 @@
+general:
+  data_base_dir: /app/data
+modules:
+  UnsortedInstanceImporter:
+    input_dir: input_data
+  DataSorter:
+    base_dir: /app/data/sorted
+    structure: '%SeriesInstanceUID/dicom/%SOPInstanceUID.dcm'
+  DsegConverter:
+    #dicomseg_json_path: /app/mhub/totalsegmentator/config/dicomseg_metadata_whole.json
+    dicomseg_yml_path: /app/mhub/totalsegmentator/config/dseg.yml
+    skip_empty_slices: True
+  TotalSegmentatorRunner:
+    use_fast_mode: true

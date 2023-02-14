@@ -1,0 +1,211 @@
+{
+  "ContentCreatorName": "IDC",
+  "ClinicalTrialSeriesID": "0",
+  "ClinicalTrialTimePointID": "1",
+  "SeriesDescription": "Segmentation",
+  "SeriesNumber": "42",
+  "InstanceNumber": "1",
+  "BodyPartExamined": "WHOLEBODY",
+  "segmentAttributes": [
+    [
+      {
+        "labelID": 1,
+        "SegmentDescription": "Left and right lungs",
+        "SegmentAlgorithmType": "AUTOMATIC",
+        "SegmentAlgorithmName": "TotalSegmentator",
+        "SegmentedPropertyCategoryCodeSequence": {
+          "CodeValue": "123037004",
+          "CodingSchemeDesignator": "SCT",
+          "CodeMeaning": "Anatomical Structure"
+        },
+        "SegmentedPropertyTypeCodeSequence": {
+          "CodeValue": "39607008",
+          "CodingSchemeDesignator": "SCT",
+          "CodeMeaning": "Lung"
+        },
+        "SegmentedPropertyTypeModifierCodeSequence": {
+          "CodeValue": "51440002",
+          "CodingSchemeDesignator": "SCT",
+          "CodeMeaning": "Right and left"
+        },
+        "recommendedDisplayRGBValue": [
+          81,
+          166,
+          79
+        ]
+      }
+    ],
+    
+    [
+      {
+        "labelID": 1,
+        "SegmentDescription": "Left lower lung lobe",
+        "SegmentAlgorithmType": "AUTOMATIC",
+        "SegmentAlgorithmName": "TotalSegmentator",
+        "SegmentedPropertyCategoryCodeSequence": {
+          "CodeValue": "123037004",
+          "CodingSchemeDesignator": "SCT",
+          "CodeMeaning": "Anatomical Structure"
+        },
+        "SegmentedPropertyTypeCodeSequence": {
+          "CodeValue": "90572001",
+          "CodingSchemeDesignator": "SCT",
+          "CodeMeaning": "Lower lobe of lung"
+        },
+        "SegmentedPropertyTypeModifierCodeSequence": {
+          "CodeValue": "7771000",
+          "CodingSchemeDesignator": "SCT",
+          "CodeMeaning": "Left"
+        },
+        "recommendedDisplayRGBValue": [
+          226,
+          143,
+          73
+        ]
+      }
+    ],
+    
+    [
+      {
+        "labelID": 1,
+        "SegmentDescription": "Right lower lung lobe",
+        "SegmentAlgorithmType": "AUTOMATIC",
+        "SegmentAlgorithmName": "TotalSegmentator",
+        "SegmentedPropertyCategoryCodeSequence": {
+          "CodeValue": "123037004",
+          "CodingSchemeDesignator": "SCT",
+          "CodeMeaning": "Anatomical Structure"
+        },
+        "SegmentedPropertyTypeCodeSequence": {
+          "CodeValue": "90572001",
+          "CodingSchemeDesignator": "SCT",
+          "CodeMeaning": "Lower lobe of lung"
+        },
+        "SegmentedPropertyTypeModifierCodeSequence": {
+          "CodeValue": "24028007",
+          "CodingSchemeDesignator": "SCT",
+          "CodeMeaning": "Right"
+        },
+        "recommendedDisplayRGBValue": [
+          140,
+          216,
+          94
+        ]
+      }
+    ],
+    
+    [
+      {
+        "labelID": 1,
+        "SegmentDescription": "Right middle lung lobe",
+        "SegmentAlgorithmType": "AUTOMATIC",
+        "SegmentAlgorithmName": "TotalSegmentator",
+        "SegmentedPropertyCategoryCodeSequence": {
+          "CodeValue": "123037004",
+          "CodingSchemeDesignator": "SCT",
+          "CodeMeaning": "Anatomical Structure"
+        },
+        "SegmentedPropertyTypeCodeSequence": {
+          "CodeValue": "72481006",
+          "CodingSchemeDesignator": "SCT",
+          "CodeMeaning": "Middle lobe of right lung"
+        },
+        "recommendedDisplayRGBValue": [
+          202,
+          164,
+          140
+        ]
+      }
+    ],
+    
+    [
+      {
+        "labelID": 1,
+        "SegmentDescription": "Left upper lung lobe",
+        "SegmentAlgorithmType": "AUTOMATIC",
+        "SegmentAlgorithmName": "TotalSegmentator",
+        "SegmentedPropertyCategoryCodeSequence": {
+          "CodeValue": "123037004",
+          "CodingSchemeDesignator": "SCT",
+          "CodeMeaning": "Anatomical Structure"
+        },
+        "SegmentedPropertyTypeCodeSequence": {
+          "CodeValue": "45653009",
+          "CodingSchemeDesignator": "SCT",
+          "CodeMeaning": "Upper lobe of lung"
+        },
+        "SegmentedPropertyTypeModifierCodeSequence": {
+          "CodeValue": "7771000",
+          "CodingSchemeDesignator": "SCT",
+          "CodeMeaning": "Left"
+        },
+        "recommendedDisplayRGBValue": [
+          42,
+          183,
+          144
+        ]
+      }
+    ],
+    
+    [
+      {
+        "labelID": 1,
+        "SegmentDescription": "Right upper lung lobe",
+        "SegmentAlgorithmType": "AUTOMATIC",
+        "SegmentAlgorithmName": "TotalSegmentator",
+        "SegmentedPropertyCategoryCodeSequence": {
+          "CodeValue": "123037004",
+          "CodingSchemeDesignator": "SCT",
+          "CodeMeaning": "Anatomical Structure"
+        },
+        "SegmentedPropertyTypeCodeSequence": {
+          "CodeValue": "45653009",
+          "CodingSchemeDesignator": "SCT",
+          "CodeMeaning": "Upper lobe of lung"
+        },
+        "SegmentedPropertyTypeModifierCodeSequence": {
+          "CodeValue": "24028007",
+          "CodingSchemeDesignator": "SCT",
+          "CodeMeaning": "Right"
+        },
+        "recommendedDisplayRGBValue": [
+          73,
+          155,
+          228
+        ]
+      }
+    ],
+    
+    [
+      {
+        "labelID": 1,
+        "SegmentDescription": "Lung vessels",
+        "SegmentAlgorithmType": "AUTOMATIC",
+        "SegmentAlgorithmName": "TotalSegmentator",
+        "SegmentedPropertyCategoryCodeSequence": {
+          "CodeValue": "123037004",
+          "CodingSchemeDesignator": "SCT",
+          "CodeMeaning": "Anatomical Structure"
+        },
+        "SegmentedPropertyTypeCodeSequence": {
+          "CodeValue": "59820001",
+          "CodingSchemeDesignator": "SCT",
+          "CodeMeaning": "Blood Vessel"
+        },
+        "SegmentedPropertyTypeModifierCodeSequence": {
+          "CodeValue": "51440002",
+          "CodingSchemeDesignator": "SCT",
+          "CodeMeaning": "Right and left"
+        },
+        "recommendedDisplayRGBValue": [
+          218,
+          66,
+          66
+        ]
+      }
+    ]
+  ],
+  "ContentLabel": "SEGMENTATION",
+  "ContentDescription": "Image segmentation",
+  "ClinicalTrialCoordinatingCenterName": "dcmqi"
+}
