@@ -69,7 +69,7 @@ RUN wget -O $DCMQI_DOWNLOAD_PATH $DCMQI_RELEASE_URL --no-check-certificate \
  && rm -r $DCMQI_PATH
 
 # Create directories that will be used as mounting points
-RUN mkdir /app/data /app/data/input /app/data/output
+RUN mkdir /app/data /app/data/input_data /app/data/output_data
 
 # Set PYTHONPATH to the /app folder
 ENV PYTHONPATH="/app"

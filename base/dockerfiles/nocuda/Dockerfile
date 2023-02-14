@@ -1,5 +1,5 @@
 # Specify the base image for the environment
-FROM nvidia/cuda:11.4.0-runtime-ubuntu20.04
+FROM ubuntu:20.04
 
 # Specify the authors of the image
 LABEL authors="lnuernberg@bwh.harvard.edu,dbontempi@bwh.harvard.edu"
@@ -16,6 +16,7 @@ RUN apt update && apt install -y --no-install-recommends \
   wget \
   unzip \
   sudo \
+  subversion \
   git \
   python3 \
   python3-pip \
@@ -46,7 +47,7 @@ RUN pip3 install --upgrade pip && pip3 install --no-cache-dir \
   scipy \
   SimpleITK
 
-# Clone git repositories
+# Clone dicomsort from git
 RUN git config --global http.sslVerify false 
 RUN git clone https://github.com/pieper/dicomsort.git /app/dicomsort
 
@@ -69,7 +70,7 @@ RUN wget -O $DCMQI_DOWNLOAD_PATH $DCMQI_RELEASE_URL --no-check-certificate \
  && rm -r $DCMQI_PATH
 
 # Create directories that will be used as mounting points
-RUN mkdir /app/data /app/data/input /app/data/output
+RUN mkdir /app/data /app/data/input_data /app/data/output_data
 
 # Set PYTHONPATH to the /app folder
 ENV PYTHONPATH="/app"
