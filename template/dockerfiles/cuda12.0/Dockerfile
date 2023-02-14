@@ -48,12 +48,14 @@ RUN pip3 install --upgrade pip && pip3 install --no-cache-dir \
 
 # Clone git repositories
 RUN git config --global http.sslVerify false 
-RUN git clone https://github.com/AIM-Harvard/mhub.git -b docker-dev /app/
 RUN git clone https://github.com/pieper/dicomsort.git /app/dicomsort
 
 # Make dicomsort callable
 RUN printf '#!/bin/bash\npython3 /app/dicomsort/dicomsort.py "$@"\n' > /usr/bin/dicomsort
 RUN sudo chmod +x /usr/bin/dicomsort
+
+# Install mhubio framework from git
+RUN pip3 install git+https://github.com/MHubAI/mhubio.git
 
 # Install DCMQI
 ENV DCMQI_RELEASE_URL="https://github.com/QIICR/dcmqi/releases/download/v1.2.4/dcmqi-1.2.4-linux.tar.gz"
@@ -67,7 +69,7 @@ RUN wget -O $DCMQI_DOWNLOAD_PATH $DCMQI_RELEASE_URL --no-check-certificate \
  && rm -r $DCMQI_PATH
 
 # Create directories that will be used as mounting points
-RUN mkdir /app/data /app/data/input_data /app/data/output_data 
+RUN mkdir /app/data /app/data/input /app/data/output
 
 # Set PYTHONPATH to the /app folder
 ENV PYTHONPATH="/app"
