@@ -1,5 +1,5 @@
 # Specify the base image for the environment
-FROM mhubai2/base:cuda11.4
+FROM mhubai/base:cuda11.4
 
 # FIXME: set this environment variable as a shortcut to avoid nnunet crashing the build
 # by pulling sklearn instead of scikit-learn
@@ -12,7 +12,7 @@ ENV SKLEARN_ALLOW_DEPRECATED_SKLEARN_PACKAGE_INSTALL=True
 RUN pip3 install --no-cache-dir TotalSegmentator 
 
 # Clone MHub model
-RUN svn checkout https://github.com/MHubAI/models/trunk/totalsegmentator /app/mhub/totalsegmentator
+RUN svn checkout https://github.com/MHubAI/models/trunk/models/totalsegmentator /app/models/totalsegmentator
 
 # pull weights for TotalSegmentator so that the user doesn't need to every time a container is run
 # N.B. - this pulls only the weights for the fast version of Task 256
@@ -25,4 +25,4 @@ RUN unzip ${WEIGHTS_DIR}${WEIGHTS_FN} -d ${WEIGHTS_DIR}
 RUN rm ${WEIGHTS_DIR}${WEIGHTS_FN}
 
 # Default run script
-CMD ["python3", "/app/mhub/totalsegmentator/scripts/run.py"]
+CMD ["python3", "/app/models/totalsegmentator/scripts/run.py"]

@@ -26,7 +26,7 @@ input_dir = '/app/kaapana_volume/some/folder/input_data/'
 output_dir = '/app/kaapana_volume/another/folder/output_data/'
 
 # config
-config = Config('/app/mhub/totalsegmentator/config/config.yml')
+config = Config('/app/models/totalsegmentator/config/config.yml')
 config.verbose = True  # TODO: define levels of verbosity and integrate consistently. 
 config.debug = True
 

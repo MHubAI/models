@@ -28,7 +28,7 @@ shutil.rmtree("/app/tmp", ignore_errors=True)
 shutil.rmtree("/app/data/output_data", ignore_errors=True)
 
 # config
-config = Config('/app/mhub/totalsegmentator/config/config.yml')
+config = Config('/app/models/totalsegmentator/config/config.yml')
 config.verbose = True  # TODO: define levels of verbosity and integrate consistently. 
 
 # import 

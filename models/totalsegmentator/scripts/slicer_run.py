@@ -20,7 +20,7 @@ from mhubio.modules.organizer.DataOrganizer import DataOrganizer
 from models.totalsegmentator.utils.TotalSegmentatorRunner import TotalSegmentatorRunner
 
 # config
-config = Config('/app/mhub/totalsegmentator/config/slicer_config.yml')
+config = Config('/app/models/totalsegmentator/config/slicer_config.yml')
 config.verbose = True  # TODO: define levels of verbosity and integrate consistently. 
 
 # load NRRD file (ct:nrrd)
