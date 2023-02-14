@@ -13,7 +13,7 @@ RUN pip3 install --no-cache-dir \
   nnunet 
 
 # Clone MHub model
-RUN svn checkout https://github.com/MHubAI/models/trunk/nnunet_liver /app/mhub/nnunet_liver
+RUN svn checkout https://github.com/MHubAI/models/trunk/models/nnunet_liver /app/models/nnunet_liver
 
 # pull weights for platipy's nnU-Net so that the user doesn't need to every time a container is run
 ENV WEIGHTS_DIR="/root/.nnunet/nnUNet_models/nnUNet/"
@@ -28,4 +28,4 @@ RUN rm ${WEIGHTS_DIR}${WEIGHTS_FN}
 ENV WEIGHTS_FOLDER=$WEIGHTS_DIR
 
 # Default run script
-CMD ["python3", "/app/mhub/nnunet_liver/scripts/run.py"]
+CMD ["python3", "/app/models/nnunet_liver/scripts/run.py"]

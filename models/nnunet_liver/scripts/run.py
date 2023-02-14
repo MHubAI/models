@@ -28,7 +28,7 @@ shutil.rmtree("/app/tmp", ignore_errors=True)
 shutil.rmtree("/app/data/output_data", ignore_errors=True)
 
 # config
-config = Config('/app/mhub/nnunet_liver/config/config.yml')
+config = Config('/app/models/nnunet_liver/config/config.yml')
 config.verbose = True  # TODO: define levels of verbosity and integrate consistently. 
 config.debug = False
 
