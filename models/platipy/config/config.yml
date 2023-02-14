@@ -7,8 +7,8 @@ modules:
     base_dir: /app/data/sorted
     structure: '%SeriesInstanceUID/dicom/%SOPInstanceUID.dcm'
   DsegConverter:
-#   dicomseg_json_path: /app/mhub/platipy/old/config/dicomseg_metadata_whole.json
-    dicomseg_yml_path: /app/mhub/platipy/config/dseg.yml
+#   dicomseg_json_path: /app/models/platipy/old/config/dicomseg_metadata_whole.json
+    dicomseg_yml_path: /app/models/platipy/config/dseg.yml
     skip_empty_slices: True
   PlatipyRunner:
-    path_to_config_file: "" # "/app/mhub/platipy/config/default_config.json"
+    path_to_config_file: "" # "/app/models/platipy/config/default_config.json"

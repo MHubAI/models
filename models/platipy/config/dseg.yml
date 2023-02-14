@@ -3,7 +3,7 @@ dicomseg:
   ClinicalTrialCoordinatingCenterName: dcmqi
   ClinicalTrialSeriesID: '0'
   ClinicalTrialTimePointID: '1'
-  ContentCreatorName: IDC
+  ContentCreatorName: MHub
   ContentDescription: Image segmentation
   ContentLabel: SEGMENTATION
   InstanceNumber: '1'

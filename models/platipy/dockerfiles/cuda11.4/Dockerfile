@@ -14,7 +14,7 @@ RUN pip3 install --no-cache-dir \
   platipy[cardiac]
 
 # Clone MHub model
-RUN svn checkout https://github.com/MHubAI/models/trunk/platipy /app/mhub/platipy
+RUN svn checkout https://github.com/MHubAI/models/trunk/models/platipy /app/models/platipy
 
 # pull weights for platipy's nnU-Net so that the user doesn't need to every time a container is run
 ENV WEIGHTS_DIR="/root/.platipy/nnUNet_models/nnUNet/"
@@ -35,4 +35,4 @@ RUN unzip ${WEIGHTS_DIR}${WEIGHTS_FN} -d ${WEIGHTS_DIR}
 RUN rm ${WEIGHTS_DIR}${WEIGHTS_FN}
 
 # Default run script
-CMD ["python3", "/app/mhub/platipy/scripts/run.py"]
+CMD ["python3", "/app/models/platipy/scripts/run.py"]

@@ -20,7 +20,7 @@ from mhubio.modules.organizer.DataOrganizer import DataOrganizer
 from models.platipy.utils.PlatipyRunner import PlatipyRunner
 
 # config
-config = Config('/app/mhub/platipy/config/slicer_config.yml')
+config = Config('/app/models/platipy/config/slicer_config.yml')
 config.verbose = True  # TODO: define levels of verbosity and integrate consistently. 
 
 # load NRRD file (ct:nrrd)
