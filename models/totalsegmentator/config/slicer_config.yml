@@ -7,3 +7,4 @@ modules:
   TotalSegmentatorRunner:
     path_to_config_file: ""
     use_fast_mode: true
+    use_multi_label_output: true

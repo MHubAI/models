@@ -16,6 +16,10 @@ import os, subprocess
 
 class TotalSegmentatorRunner(ModelRunner):
     def runModel(self, instance: Instance) -> None:
+
+        # configuration
+        use_fast_mode = "use_fast_mode" in self.c and self.c["use_fast_mode"]
+        use_multi_label_output = "use_multi_label_output" in self.c and self.c["use_multi_label_output"]
         
         # data
         inp_data = instance.getData(DataType(FileType.NIFTI))
@@ -26,18 +30,25 @@ class TotalSegmentatorRunner(ModelRunner):
         # build command
         bash_command  = ["TotalSegmentator"]
         bash_command += ["-i", inp_data.abspath]
-        bash_command += ["-o", out_dir]
+    
+        # multi-label output (one nifti file containing all labels instead of one nifti file per label)
+        if use_multi_label_output:
+            self.v("Generating multi-label output ('--ml')")
+            bash_command += ["-o", os.path.join(out_dir, 'segmentations.nii.gz')]
+            bash_command += ["--ml"]
+        else:
+            self.v("Generating single-label output (default)")
+            bash_command += ["-o", out_dir]
 
-        #platipy segmentation cardiac -o /app/tmp/a707f22b-79b0-4c89-95ae-aafb6b6adda1 -i /app/data/sorted/1.3.6.1.4.1.14519.5.2.1.7009.9004.131908895673988322984492867976/image.nii.gz
-
-        if self.c["use_fast_mode"]:
-            self.v("Running TotalSegmentator in fast mode ('--fast', 3mm): ")
+        # fast mode
+        if use_multi_label_output:
+            self.v("Running TotalSegmentator in fast mode ('--fast', 3mm)")
             bash_command += ["--fast"]
         else:
             self.v("Running TotalSegmentator in default mode (1.5mm)")
 
         # TODO: remove 
-        self.v(">> run ts: ", " ".join(bash_command))
+        self.v(">> run: ", " ".join(bash_command))
 
         # run the model
         bash_return = subprocess.run(bash_command, check=True, text=True)
