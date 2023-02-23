@@ -41,7 +41,7 @@ class TotalSegmentatorRunner(ModelRunner):
             bash_command += ["-o", out_dir]
 
         # fast mode
-        if use_multi_label_output:
+        if use_fast_mode:
             self.v("Running TotalSegmentator in fast mode ('--fast', 3mm)")
             bash_command += ["--fast"]
         else:
