@@ -24,9 +24,9 @@ class TotalSegmentatorRunner(ModelRunner):
         # data
         inp_data = instance.getData(DataType(FileType.NIFTI))
 
-        # define model output folder
-        out_dir = self.config.data.requestTempDir(label="ts-model-out")
-        
+        # define model output (instance data bundle)
+        output = instance.getDataBundle("ts-model-out")
+
         # build command
         bash_command  = ["TotalSegmentator"]
         bash_command += ["-i", inp_data.abspath]
@@ -34,11 +34,11 @@ class TotalSegmentatorRunner(ModelRunner):
         # multi-label output (one nifti file containing all labels instead of one nifti file per label)
         if use_multi_label_output:
             self.v("Generating multi-label output ('--ml')")
-            bash_command += ["-o", os.path.join(out_dir, 'segmentations.nii.gz')]
+            bash_command += ["-o", os.path.join(output.abspath, 'segmentations.nii.gz')]
             bash_command += ["--ml"]
         else:
             self.v("Generating single-label output (default)")
-            bash_command += ["-o", out_dir]
+            bash_command += ["-o", output.abspath]
 
         # fast mode
         if use_fast_mode:
@@ -54,7 +54,7 @@ class TotalSegmentatorRunner(ModelRunner):
         bash_return = subprocess.run(bash_command, check=True, text=True)
 
         # add output data
-        for out_file in os.listdir(out_dir):
+        for out_file in os.listdir(output.abspath):
 
             # ignore non nifti files
             if out_file[-7:] != ".nii.gz":
@@ -69,7 +69,5 @@ class TotalSegmentatorRunner(ModelRunner):
 
             # create output data
             seg_data_type = DataType(FileType.NIFTI, SEG + meta)           
-            seg_path = os.path.join(out_dir, out_file)
-            seg_data = InstanceData(seg_path, type=seg_data_type)
-            seg_data.base = "" # required since path is external (will be fixed soon)
-            instance.addData(seg_data)  
+            seg_data = InstanceData(out_file, type=seg_data_type)
+            output.addData(seg_data)
