@@ -58,5 +58,5 @@ class PlatipyRunner(ModelRunner):
             seg_data_type = DataType(FileType.NIFTI, SEG + meta)           
             seg_path = os.path.join(out_dir, out_file)
             seg_data = InstanceData(seg_path, type=seg_data_type)
-            seg_data.base = "" # required since path is external (will be fixed soon)
+            seg_data.dc.makeEntrypoint()
             instance.addData(seg_data)
