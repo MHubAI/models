@@ -9,10 +9,10 @@ Email:  leonard.nuernberg@maastrichtuniversity.nl
 -------------------------------------------------
 """
 
-import sys, os
+import sys
 sys.path.append('.')
 
-from mhubio.Config import Config, DataType, FileType, CT, SEG
+from mhubio.core import Config, DataType, FileType, CT, SEG
 from mhubio.modules.importer.UnsortedDicomImporter import UnsortedInstanceImporter
 from mhubio.modules.importer.DataSorter import DataSorter
 from mhubio.modules.convert.NiftiConverter import NiftiConverter

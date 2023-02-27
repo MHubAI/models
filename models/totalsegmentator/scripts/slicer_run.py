@@ -13,7 +13,7 @@ Email:  dbontempi@bwh.harvard.edu
 import sys, os
 sys.path.append('.')
 
-from mhubio.Config import Config, DataType, FileType, CT, SEG
+from mhubio.core import Config, DataType, FileType, CT, SEG
 from mhubio.modules.importer.NrrdImporter import NrrdImporter
 from mhubio.modules.convert.NiftiConverter import NiftiConverter
 from mhubio.modules.organizer.DataOrganizer import DataOrganizer
