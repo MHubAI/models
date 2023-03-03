@@ -14,6 +14,8 @@ RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 # Install basic system utilities and useful packages 
 RUN apt update && apt install -y --no-install-recommends \  
   wget \
+  curl \
+  jq \
   unzip \
   sudo \
   git \
@@ -45,29 +47,24 @@ RUN pip3 install --upgrade pip && pip3 install --no-cache-dir \
   scikit-image \
   scikit-learn \
   scipy \
-  SimpleITK
-
-# Clone git repositories
-RUN git config --global http.sslVerify false 
-RUN git clone https://github.com/pieper/dicomsort.git /app/dicomsort
-
-# Make dicomsort callable
-RUN printf '#!/bin/bash\npython3 /app/dicomsort/dicomsort.py "$@"\n' > /usr/bin/dicomsort
-RUN sudo chmod +x /usr/bin/dicomsort
+  SimpleITK \
+  thedicomsort
 
 # Install mhubio framework from git
 RUN pip3 install git+https://github.com/MHubAI/mhubio.git
 
-# Install DCMQI
-ENV DCMQI_RELEASE_URL="https://github.com/QIICR/dcmqi/releases/download/v1.2.4/dcmqi-1.2.4-linux.tar.gz"
-ENV DCMQI_DOWNLOAD_PATH="/app/dcmqi-1.2.4-linux.tar.gz"
-ENV DCMQI_PATH="/app/dcmqi-1.2.4-linux"
-
-RUN wget -O $DCMQI_DOWNLOAD_PATH $DCMQI_RELEASE_URL --no-check-certificate \
- && tar -xvf $DCMQI_DOWNLOAD_PATH \
- && sudo mv ${DCMQI_PATH}/bin/* /bin \
- && rm $DCMQI_DOWNLOAD_PATH  \
- && rm -r $DCMQI_PATH
+# Install DCMQI by pulling the latest release from GitHub (via GitHub API)
+# Run everything in a single RUN command to avoid creating intermediate layers (and allowing environment variables to be used)
+RUN export DCMQI_RELEASE_URL=$(curl -s "https://api.github.com/repos/QIICR/dcmqi/releases/latest" | jq -r '.assets[] | select(.browser_download_url | contains("linux")) | .browser_download_url') \
+  && export DCMQI_TAR_FN=$(echo $DCMQI_RELEASE_URL | rev | cut -d "/" -f 1 | rev) \
+  && export DCMQI_FN=$(basename $DCMQI_TAR_FN .tar.gz) \
+  && export DCMQI_DOWNLOAD_PATH="/app/${DCMQI_TAR_FN}" \
+  && export DCMQI_PATH="/app/${DCMQI_FN}" \
+  && wget -O $DCMQI_DOWNLOAD_PATH $DCMQI_RELEASE_URL --no-check-certificate \
+  && tar -xvf $DCMQI_DOWNLOAD_PATH \
+  && sudo mv ${DCMQI_PATH}/bin/* /bin \
+  && rm $DCMQI_DOWNLOAD_PATH  \
+  && rm -r $DCMQI_PATH
 
 # Create directories that will be used as mounting points
 RUN mkdir /app/data /app/data/input_data /app/data/output_data
