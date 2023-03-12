@@ -25,6 +25,7 @@ RUN apt update && apt install -y --no-install-recommends \
   python3 \
   python3-pip \
   plastimatch \
+  dcm2niix \
   && rm -rf /var/lib/apt/lists/* \
   && apt update && apt install -y ffmpeg libsm6 libxext6 xvfb
 
