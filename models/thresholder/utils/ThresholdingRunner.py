@@ -9,7 +9,7 @@ Email:  leonard.nuernberg@maastrichtuniversity.nl
 -------------------------------------------------
 """
 
-from mhubio.core import Instance, InstanceData, DataType, FileType, SEG
+from mhubio.core import Instance, InstanceData, DataType, FileType, CT, SEG
 from mhubio.modules.runner.ModelRunner import ModelRunner
 
 import os, numpy as np
@@ -19,7 +19,7 @@ class ThresholdingRunner(ModelRunner):
     def runModel(self, instance: Instance) -> None:
 
         # data
-        inp_data = instance.getData(DataType(FileType.NRRD))
+        inp_data = instance.getData(DataType(FileType.NRRD, CT))
 
         # read image
         self.v(f"Reading image from {inp_data.abspath}")

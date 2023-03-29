@@ -10,7 +10,7 @@ Email:  leonard.nuernberg@maastrichtuniversity.nl
 """
 
 from mhubio.modules.runner.ModelRunner import ModelRunner
-from mhubio.core import Instance, InstanceData, DataType, FileType, SEG
+from mhubio.core import Instance, InstanceData, DataType, FileType, CT, SEG
 
 import os, subprocess
 
@@ -22,7 +22,7 @@ class TotalSegmentatorRunner(ModelRunner):
         use_multi_label_output = "use_multi_label_output" in self.c and self.c["use_multi_label_output"]
         
         # data
-        inp_data = instance.getData(DataType(FileType.NIFTI))
+        inp_data = instance.getData(DataType(FileType.NIFTI, CT))
 
         # define model output (instance data bundle)
         output = instance.getDataBundle("ts-model-out")
