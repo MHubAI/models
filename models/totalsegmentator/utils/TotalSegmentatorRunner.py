@@ -22,7 +22,7 @@ class TotalSegmentatorRunner(ModelRunner):
         use_multi_label_output = "use_multi_label_output" in self.c and self.c["use_multi_label_output"]
         
         # data
-        inp_data = instance.getData(DataType(FileType.NIFTI, CT))
+        inp_data = instance.data.filter(DataType(FileType.NIFTI, CT)).first()
 
         # define model output (instance data bundle)
         output = instance.getDataBundle("ts-model-out")
@@ -69,5 +69,5 @@ class TotalSegmentatorRunner(ModelRunner):
 
             # create output data
             seg_data_type = DataType(FileType.NIFTI, SEG + meta)           
-            seg_data = InstanceData(out_file, type=seg_data_type)
-            output.addData(seg_data)
+            seg_data = InstanceData(out_file, type=seg_data_type, bundle=output)
+            seg_data.confirm()

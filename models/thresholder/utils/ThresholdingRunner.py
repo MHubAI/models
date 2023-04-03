@@ -19,7 +19,7 @@ class ThresholdingRunner(ModelRunner):
     def runModel(self, instance: Instance) -> None:
 
         # data
-        inp_data = instance.getData(DataType(FileType.NRRD, CT))
+        inp_data = instance.data.filter(DataType(FileType.NRRD, CT)).first()
 
         # read image
         self.v(f"Reading image from {inp_data.abspath}")

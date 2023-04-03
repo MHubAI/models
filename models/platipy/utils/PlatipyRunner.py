@@ -18,7 +18,7 @@ class PlatipyRunner(ModelRunner):
     def runModel(self, instance: Instance) -> None:
 
         # data
-        inp_data = instance.getData(DataType(FileType.NIFTI, CT))
+        inp_data = instance.data.filter(DataType(FileType.NIFTI, CT)).first()
 
         # define model output folder
         out_dir = self.config.data.requestTempDir(label="pp-model-out")
