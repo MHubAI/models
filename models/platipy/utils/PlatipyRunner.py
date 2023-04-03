@@ -9,7 +9,7 @@ Email:  leonard.nuernberg@maastrichtuniversity.nl
 -------------------------------------------------
 """
 
-from mhubio.core import Instance, InstanceData, DataType, FileType, SEG
+from mhubio.core import Instance, InstanceData, DataType, FileType, CT, SEG
 from mhubio.modules.runner.ModelRunner import ModelRunner
 
 import os, subprocess
@@ -18,7 +18,7 @@ class PlatipyRunner(ModelRunner):
     def runModel(self, instance: Instance) -> None:
 
         # data
-        inp_data = instance.getData(DataType(FileType.NIFTI))
+        inp_data = instance.data.filter(DataType(FileType.NIFTI, CT)).first()
 
         # define model output folder
         out_dir = self.config.data.requestTempDir(label="pp-model-out")
