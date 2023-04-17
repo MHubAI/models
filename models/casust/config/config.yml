@@ -1,0 +1,17 @@
+general:
+  data_base_dir: /app/data
+modules:
+  UnsortedInstanceImporter:
+    input_dir: input_data
+  DataSorter:
+    base_dir: /app/data/sorted
+    structure: '%SeriesInstanceUID/dicom/%SOPInstanceUID.dcm'
+  NNUnetRunner:
+    folds: all
+    task: Task400_OPEN_HEART_1FOLD
+    model: 3d_lowres
+  CasustRunner:
+    test_time_augmentation: 0
+  DsegConverter:
+    dicomseg_json_path: /app/models/casust/config/dseg.json
+    skip_empty_slices: True
