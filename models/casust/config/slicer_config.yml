@@ -1,0 +1,12 @@
+general:
+  data_base_dir: /app/data
+modules:
+  NrrdImporter:
+    input_dir: 'input_data'
+    input_file_name: 'image.nrrd'
+  NNUnetRunner:
+    folds: all
+    task: Task400_OPEN_HEART_1FOLD
+    model: 3d_lowres
+  CasustRunner:
+    test_time_augmentation: 0
