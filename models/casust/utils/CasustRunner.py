@@ -20,7 +20,7 @@ class CasustRunner(ModelRunner):
     test_time_augmentation: int
 
     @IO.Instance()
-    @IO.Input('image', 'dicom:mod=ct',  the='input ct scan')
+    @IO.Input('image', 'nifti:mod=ct',  the='input ct scan')
     @IO.Input('heart', 'nifti:mod=seg', the='input heart segmentation')
     @IO.Output('al', 'Atrium_L.nrrd', 'nrrd:mod=seg:roi=Atrium_L', the='predicted segmentation of the left atrium')
     @IO.Output('ar', 'Atrium_R.nrrd', 'nrrd:mod=seg:roi=Atrium_R', the='predicted segmentation of the right atrium')
@@ -36,7 +36,7 @@ class CasustRunner(ModelRunner):
 
         # 1 prepare
         command = [ 'python3', 'models/casust/src/cli/prepare.py']
-        command += ['--input_dir', image.abspath]
+        command += ['--input_file', image.abspath]
         command += ['--hmask', heart.abspath]
         command += ['--output_dir', out_dir]
         command += ['--tta', str(self.test_time_augmentation)]
@@ -56,7 +56,7 @@ class CasustRunner(ModelRunner):
 
         # 3 finalize
         command =  [ 'python3', 'models/casust/src/cli/finalize.py']
-        command += ['--input_dir', image.abspath]
+        command += ['--input_file', image.abspath]
         command += ['--output_dir', out_dir]
         command += ['--config', 'models/casust/src/config.json']
         #command += ['--roi', '']
