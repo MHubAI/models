@@ -1,0 +1,15 @@
+general:
+  data_base_dir: /app/data
+modules:
+  UnsortedInstanceImporter:
+    input_dir: input_data
+  DataSorter:
+    base_dir: /app/data/sorted
+    structure: '%SeriesInstanceUID/dicom/%SOPInstanceUID.dcm'
+  NiftiConverter:
+    engine: plastimatch
+  LungMaskRunner:
+    batchsize: 64
+  DsegConverter:
+    dicomseg_json_path: /app/models/lungmask/config/dseg.json
+    skip_empty_slices: True
