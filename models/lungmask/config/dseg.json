@@ -1,0 +1,195 @@
+{
+  "ContentCreatorName": "IDC",
+  "ClinicalTrialSeriesID": "0",
+  "ClinicalTrialTimePointID": "1",
+  "SeriesDescription": "Segmentation",
+  "SeriesNumber": "42",
+  "InstanceNumber": "1",
+  "BodyPartExamined": "Chest",
+  "segmentAttributes": [
+    [
+      {
+        "labelID": 1,
+        "SegmentDescription": "Right lung",
+        "SegmentAlgorithmType": "AUTOMATIC",
+        "SegmentAlgorithmName": "LungMask",
+        "SegmentedPropertyCategoryCodeSequence": {
+          "CodeValue": "123037004",
+          "CodingSchemeDesignator": "SCT",
+          "CodeMeaning": "Anatomical Structure"
+        },
+        "SegmentedPropertyTypeCodeSequence": {
+          "CodeValue": "39607008",
+          "CodingSchemeDesignator": "SCT",
+          "CodeMeaning": "Lung"
+        },
+        "SegmentedPropertyTypeModifierCodeSequence": {
+          "CodeValue": "24028007",
+          "CodingSchemeDesignator": "SCT",
+          "CodeMeaning": "Right"
+        },
+        "recommendedDisplayRGBValue": [
+          81,
+          166,
+          79
+        ]
+      },
+      {
+        "labelID": 2,
+        "SegmentDescription": "Left lung",
+        "SegmentAlgorithmType": "AUTOMATIC",
+        "SegmentAlgorithmName": "LungMask",
+        "SegmentedPropertyCategoryCodeSequence": {
+          "CodeValue": "123037004",
+          "CodingSchemeDesignator": "SCT",
+          "CodeMeaning": "Anatomical Structure"
+        },
+        "SegmentedPropertyTypeCodeSequence": {
+          "CodeValue": "39607008",
+          "CodingSchemeDesignator": "SCT",
+          "CodeMeaning": "Lung"
+        },
+        "SegmentedPropertyTypeModifierCodeSequence": {
+          "CodeValue": "7771000",
+          "CodingSchemeDesignator": "SCT",
+          "CodeMeaning": "Left"
+        },
+        "recommendedDisplayRGBValue": [
+          195,
+          156,
+          89
+        ]
+      }
+    ],
+    [
+      {
+        "labelID": 1,
+        "SegmentDescription": "Left upper lobe",
+        "SegmentAlgorithmType": "AUTOMATIC",
+        "SegmentAlgorithmName": "LungMask",
+        "SegmentedPropertyCategoryCodeSequence": {
+          "CodeValue": "123037004",
+          "CodingSchemeDesignator": "SCT",
+          "CodeMeaning": "Anatomical Structure"
+        },
+        "SegmentedPropertyTypeCodeSequence": {
+          "CodeValue": "45653009",
+          "CodingSchemeDesignator": "SCT",
+          "CodeMeaning": "Upper lobe of lung"
+        },
+        "SegmentedPropertyTypeModifierCodeSequence": {
+          "CodeValue": "7771000",
+          "CodingSchemeDesignator": "SCT",
+          "CodeMeaning": "Left"
+        },
+        "recommendedDisplayRGBValue": [
+          42,
+          183,
+          144
+        ]
+      },
+      {
+        "labelID": 2,
+        "SegmentDescription": "Left lower lobe",
+        "SegmentAlgorithmType": "AUTOMATIC",
+        "SegmentAlgorithmName": "LungMask",
+        "SegmentedPropertyCategoryCodeSequence": {
+          "CodeValue": "123037004",
+          "CodingSchemeDesignator": "SCT",
+          "CodeMeaning": "Anatomical Structure"
+        },
+        "SegmentedPropertyTypeCodeSequence": {
+          "CodeValue": "90572001",
+          "CodingSchemeDesignator": "SCT",
+          "CodeMeaning": "Lower lobe of lung"
+        },
+        "SegmentedPropertyTypeModifierCodeSequence": {
+          "CodeValue": "7771000",
+          "CodingSchemeDesignator": "SCT",
+          "CodeMeaning": "Left"
+        },
+        "recommendedDisplayRGBValue": [
+          226,
+          143,
+          73
+        ]
+      },
+      {
+        "labelID": 3,
+        "SegmentDescription": "Right upper lobe",
+        "SegmentAlgorithmType": "AUTOMATIC",
+        "SegmentAlgorithmName": "LungMask",
+        "SegmentedPropertyCategoryCodeSequence": {
+          "CodeValue": "123037004",
+          "CodingSchemeDesignator": "SCT",
+          "CodeMeaning": "Anatomical Structure"
+        },
+        "SegmentedPropertyTypeCodeSequence": {
+          "CodeValue": "45653009",
+          "CodingSchemeDesignator": "SCT",
+          "CodeMeaning": "Upper lobe of lung"
+        },
+        "SegmentedPropertyTypeModifierCodeSequence": {
+          "CodeValue": "24028007",
+          "CodingSchemeDesignator": "SCT",
+          "CodeMeaning": "Right"
+        },
+        "recommendedDisplayRGBValue": [
+          73,
+          155,
+          228
+        ]
+      },
+      {
+        "labelID": 4,
+        "SegmentDescription": "Right middle lobe",
+        "SegmentAlgorithmType": "AUTOMATIC",
+        "SegmentAlgorithmName": "LungMask",
+        "SegmentedPropertyCategoryCodeSequence": {
+          "CodeValue": "123037004",
+          "CodingSchemeDesignator": "SCT",
+          "CodeMeaning": "Anatomical Structure"
+        },
+        "SegmentedPropertyTypeCodeSequence": {
+          "CodeValue": "72481006",
+          "CodingSchemeDesignator": "SCT",
+          "CodeMeaning": "Middle lobe of right lung"
+        },
+        "recommendedDisplayRGBValue": [
+          229,
+          109,
+          210
+        ]
+      },
+      {
+        "labelID": 5,
+        "SegmentDescription": "Right lower lobe",
+        "SegmentAlgorithmType": "AUTOMATIC",
+        "SegmentAlgorithmName": "LungMask",
+        "SegmentedPropertyCategoryCodeSequence": {
+          "CodeValue": "123037004",
+          "CodingSchemeDesignator": "SCT",
+          "CodeMeaning": "Anatomical Structure"
+        },
+        "SegmentedPropertyTypeCodeSequence": {
+          "CodeValue": "90572001",
+          "CodingSchemeDesignator": "SCT",
+          "CodeMeaning": "Lower lobe of lung"
+        },
+        "SegmentedPropertyTypeModifierCodeSequence": {
+          "CodeValue": "24028007",
+          "CodingSchemeDesignator": "SCT",
+          "CodeMeaning": "Right"
+        },
+        "recommendedDisplayRGBValue": [
+          140,
+          216,
+          94
+        ]
+      }
+    ]
+  ],
+  "ContentLabel": "SEGMENTATION",
+  "ContentDescription": "Image segmentation",
+  "ClinicalTrialCoordinatingCenterName": "dcmqi"
+}
