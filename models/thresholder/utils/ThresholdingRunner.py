@@ -49,3 +49,4 @@ class ThresholdingRunner(ModelRunner):
         seg_data_type = DataType(FileType.NRRD, SEG + meta)           
         seg_data = InstanceData(out_file, type=seg_data_type)
         instance.addData(seg_data)
+        seg_data.confirm()
