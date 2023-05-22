@@ -59,4 +59,5 @@ class PlatipyRunner(ModelRunner):
             seg_path = os.path.join(out_dir, out_file)
             seg_data = InstanceData(seg_path, type=seg_data_type)
             seg_data.dc.makeEntrypoint()
+            seg_data.confirm()
             instance.addData(seg_data)
