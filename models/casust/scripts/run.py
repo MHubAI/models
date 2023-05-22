@@ -13,8 +13,7 @@ Date:   13.04.2023
 
 import sys
 from mhubio.core import Config, DataType, FileType, CT, SEG
-from mhubio.modules.importer.UnsortedDicomImporter import UnsortedInstanceImporter
-from mhubio.modules.importer.DataSorter import DataSorter
+from mhubio.modules.importer.DicomImporter import DicomImporter
 from mhubio.modules.convert.NiftiConverter import NiftiConverter
 from mhubio.modules.convert.DsegConverter import DsegConverter
 from mhubio.modules.organizer.DataOrganizer import DataOrganizer
@@ -23,8 +22,7 @@ from models.casust.utils.CasustRunner import CasustRunner
 
 # clean-up
 import shutil
-shutil.rmtree("/app/data/sorted", ignore_errors=True)
-shutil.rmtree("/app/data/nifti", ignore_errors=True)
+shutil.rmtree("/app/data/sorted_data", ignore_errors=True)
 shutil.rmtree("/app/tmp", ignore_errors=True)
 shutil.rmtree("/app/data/output_data", ignore_errors=True)
 shutil.rmtree("/app/models/casust/output", ignore_errors=True)
@@ -34,11 +32,8 @@ config = Config('/app/models/casust/config/config.yml')
 config.verbose = True  # TODO: define levels of verbosity and integrate consistently. 
 config.debug = True
 
-# import
-UnsortedInstanceImporter(config).execute()
-
-# sort
-DataSorter(config).execute()
+# import (ct:dicom)
+DicomImporter(config).execute()
 
 # convert (ct:dicom -> ct:nifti)
 NiftiConverter(config).execute()
@@ -59,5 +54,5 @@ organizer.set_file_permissions = sys.platform.startswith('linux')
 #organizer.setTarget(DataType(FileType.NIFTI, CT), "/app/data/output_data/[i:SeriesID]/image.nii.gz")
 #organizer.setTarget(DataType(FileType.NIFTI, SEG), "/app/data/output_data/[i:SeriesID]/heart.nii.gz")
 #organizer.setTarget(DataType(FileType.NRRD, SEG), "/app/data/output_data/[i:SeriesID]/[d:roi].nrrd")
-organizer.setTarget(DataType(FileType.DICOMSEG, SEG), "/app/data/output_data/[i:SeriesID]/segmentation.dcm")
+organizer.setTarget(DataType(FileType.DICOMSEG, SEG), "/app/data/output_data/[i:sid]/segmentation.dcm")
 organizer.execute()
