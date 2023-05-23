@@ -45,5 +45,5 @@ DsegConverter(config).execute()
 # organize data into output folder
 organizer = DataOrganizer(config, set_file_permissions=sys.platform.startswith('linux'))
 #organizer.setTarget(DataType(FileType.NRRD, SEG), "/app/data/output_data/[i:sid]/lunglobes_rtsunet.nrrd")
-organizer.setTarget(DataType(FileType.DICOMSEG, SEG), "/app/data/output_data/[i:sid]/lunglobes_rtsunet.seg.dcm")
+organizer.setTarget(DataType(FileType.DICOMSEG, SEG), "/app/data/output_data/[i:sid]/rtsunet_lunglobes.seg.dcm")
 organizer.execute()
