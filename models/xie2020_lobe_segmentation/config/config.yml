@@ -1,12 +1,17 @@
 general:
   data_base_dir: /app/data
+  
 modules:
-  UnsortedInstanceImporter:
-    input_dir: input_data
-  DataSorter:
-    base_dir: /app/data/sorted
-    structure: '%SeriesInstanceUID/dicom/%SOPInstanceUID.dcm'
+
+  DicomImporter:
+    source_dir: input_data
+    import_dir: sorted_data
+    sort_data: True
+    meta: 
+      mod: ct
+   
+  LobeSegmentationRunner:
+
   DsegConverter:
     dicomseg_json_path: /app/models/xie2020_lobe_segmentation/config/dseg.json
     skip_empty_slices: True
-  LobeSegmentationRunner:
