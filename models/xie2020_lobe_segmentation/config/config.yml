@@ -1,0 +1,9 @@
+general:
+  data_base_dir: /app/data
+modules:
+  UnsortedInstanceImporter:
+    input_dir: input_data
+  DataSorter:
+    base_dir: /app/data/sorted
+    structure: '%SeriesInstanceUID/dicom/%SOPInstanceUID.dcm'
+  LobeSegmentationRunner:

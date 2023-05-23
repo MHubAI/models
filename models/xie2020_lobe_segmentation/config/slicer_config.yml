@@ -1,0 +1,8 @@
+general:
+  data_base_dir: /app/data
+modules:
+  NrrdImporter:
+    input_dir: 'input_data'
+    input_file_name: 'image.nrrd'
+  PlatipyRunner:
+    path_to_config_file: ""
