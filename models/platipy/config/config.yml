@@ -1,14 +1,18 @@
 general:
   data_base_dir: /app/data
 modules:
-  UnsortedInstanceImporter:
-    input_dir: input_data
-  DataSorter:
-    base_dir: /app/data/sorted
-    structure: '%SeriesInstanceUID/dicom/%SOPInstanceUID.dcm'
+
+  DicomImporter:
+    source_dir: input_data
+    import_dir: sorted_data
+    sort_data: true
+    meta: 
+      mod: ct
+
+  PlatipyRunner:
+    path_to_config_file: "" # "/app/models/platipy/config/default_config.json"
+
   DsegConverter:
 #   dicomseg_json_path: /app/models/platipy/old/config/dicomseg_metadata_whole.json
     dicomseg_yml_path: /app/models/platipy/config/dseg.yml
     skip_empty_slices: True
-  PlatipyRunner:
-    path_to_config_file: "" # "/app/models/platipy/config/default_config.json"

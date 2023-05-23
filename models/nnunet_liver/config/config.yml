@@ -1,14 +1,18 @@
 general:
   data_base_dir: /app/data
 modules:
-  UnsortedInstanceImporter:
-    input_dir: input_data
-  DataSorter:
-    base_dir: /app/data/sorted
-    structure: '%SeriesInstanceUID/dicom/%SOPInstanceUID.dcm'
+
+  DicomImporter:
+    source_dir: input_data
+    import_dir: sorted_data
+    sort_data: true
+    meta: 
+      mod: ct
+
   NNUnetRunner:
     task: 'Task003_Liver'
     model: '3d_lowres'
+    
   DsegConverter:
     dicomseg_json_path: /app/models/nnunet_liver/config/meta.json
     skip_empty_slices: True
