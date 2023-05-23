@@ -1,13 +1,13 @@
 # Specify the base image for the environment
-FROM mhubai/base:nocuda
+FROM mhubai/base:cuda11.4
 
 # Specify/override authors label
 LABEL authors="s.vandeleemput@radboudumc.nl"
 
-# install required dependencies for lobe segmentation (CPU-only)
+# install required dependencies for lobe segmentation (CUDA-enabled)
 RUN pip3 install --no-cache-dir \
-    dgl===1.0.2 -f https://data.dgl.ai/wheels/repo.html \
-    torch===1.9.0+cpu torchvision==0.10.0+cpu -f https://download.pytorch.org/whl/torch_stable.html
+    dgl-cu113 -f https://data.dgl.ai/wheels/repo.html \
+    torch==1.10.0+cu113 torchvision==0.11.1+cu113 -f https://download.pytorch.org/whl/cu113/torch_stable.html
 
 # SimpleITK downgrade required for legacy Resample::Execute operation
 RUN pip3 install --no-cache-dir --force-reinstall SimpleITK==1.2.4
