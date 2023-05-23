@@ -19,7 +19,6 @@ from models.xie2020_lobe_segmentation.utils.LobeSegmentationRunner import LobeSe
 
 # config
 config = Config('/app/models/xie2020_lobe_segmentation/config/slicer_config.yml')
-config.verbose = True
 
 # load NRRD file (ct:nrrd)
 NrrdImporter(config).execute()

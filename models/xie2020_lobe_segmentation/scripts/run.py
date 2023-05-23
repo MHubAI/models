@@ -28,7 +28,6 @@ shutil.rmtree("/app/data/output_data", ignore_errors=True)
 
 # config
 config = Config('/app/models/xie2020_lobe_segmentation/config/config.yml')
-config.verbose = True  # TODO: define levels of verbosity and integrate consistently. 
 
 # import (ct:dicom)
 DicomImporter(config).execute()
