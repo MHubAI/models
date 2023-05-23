@@ -63,6 +63,9 @@ class LobeSegmentationRunner(ModelRunner):
         else:
             inp_data = instance.data.filter(DataType(FileType.NRRD, CT)).first()
 
+        # define model output folder
+        out_dir = self.config.data.requestTempDir(label="xie-model-out")
+
         # read image
         self.v(f"Reading image from {inp_data.abspath}")
         img_itk = sitk.ReadImage(inp_data.abspath)
@@ -72,29 +75,32 @@ class LobeSegmentationRunner(ModelRunner):
         origin = img_itk.GetOrigin()[::-1]
         spacing = img_itk.GetSpacing()[::-1]
         direction = np.asarray(img_itk.GetDirection()).reshape(3, 3)[::-1].flatten().tolist()
-        meta_dict =  {"uid": os.path.basename(inp_data.abspath),
-                     "size": img_np.shape,
-                     "spacing": spacing,
-                     "origin": origin,
-                     "original_spacing": spacing,
-                     "original_size": img_np.shape,
-                     "direction": direction}
+        meta_dict =  {
+            "uid": os.path.basename(inp_data.abspath),
+            "size": img_np.shape,
+            "spacing": spacing,
+            "origin": origin,
+            "original_spacing": spacing,
+            "original_size": img_np.shape,
+            "direction": direction
+            }
+
         handle = segment_lobe_init()
         seg_result_np = segment_lobe(handle, img_np, meta_dict)
 
         # store image
-        out_file = os.path.join(instance.abspath, f'xie2020lobeseg.nrrd')
+        out_file = os.path.join(out_dir, f'xie2020lobeseg.nrrd')
         self.v(f"Writing image to {out_file}")
         seg_itk = sitk.GetImageFromArray(seg_result_np)
         seg_itk.CopyInformation(img_itk)
         sitk.WriteImage(seg_itk, out_file)
 
         # meta
-        meta = {
-            "model": "Xie2020LobeSegmentation",
-        }
+        meta = {"model": "Xie2020LobeSegmentation"}
 
         # create output data
-        seg_data_type = DataType(FileType.NRRD, SEG + meta)           
+        seg_data_type = DataType(FileType.NRRD, SEG + meta)
         seg_data = InstanceData(out_file, type=seg_data_type)
+        seg_data.dc.makeEntrypoint()
+        seg_data.confirm()
         instance.addData(seg_data)

@@ -6,4 +6,7 @@ modules:
   DataSorter:
     base_dir: /app/data/sorted
     structure: '%SeriesInstanceUID/dicom/%SOPInstanceUID.dcm'
+  DsegConverter:
+    dicomseg_json_path: /app/models/xie2020_lobe_segmentation/config/dseg.json
+    skip_empty_slices: True
   LobeSegmentationRunner:

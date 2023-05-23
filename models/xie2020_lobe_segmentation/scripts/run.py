@@ -16,6 +16,7 @@ from mhubio.core import Config, DataType, FileType, SEG
 from mhubio.modules.importer.UnsortedDicomImporter import UnsortedInstanceImporter
 from mhubio.modules.importer.DataSorter import DataSorter
 from mhubio.modules.convert.NrrdConverter import NrrdConverter
+from mhubio.modules.convert.DsegConverter import DsegConverter
 from mhubio.modules.organizer.DataOrganizer import DataOrganizer
 from models.xie2020_lobe_segmentation.utils.LobeSegmentationRunner import LobeSegmentationRunner
 
@@ -43,7 +44,12 @@ NrrdConverter(config).execute()
 # execute model (nnunet)
 LobeSegmentationRunner(config).execute()
 
+# convert (seg:nifti -> seg:dicomseg)
+DsegConverter(config).execute()
+
 # organize data into output folder
 organizer = DataOrganizer(config, set_file_permissions=sys.platform.startswith('linux'))
-organizer.setTarget(DataType(FileType.NRRD, SEG), "/app/data/output_data/xie2020lobeseg.nrrd")
+#organizer.setTarget(DataType(FileType.NRRD, SEG), "/app/data/output_data/[i:SeriesID]/lunglobes_rtsunet.nrrd")
+organizer.setTarget(DataType(FileType.DICOMSEG, SEG), "/app/data/output_data/[i:SeriesID]/lunglobes_rtsunet.seg.dcm")
+
 organizer.execute()
