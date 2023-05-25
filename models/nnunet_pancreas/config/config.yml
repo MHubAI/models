@@ -1,0 +1,26 @@
+general:
+  data_base_dir: /app/data
+execute:
+  - DicomImporter
+  - NiftiConverter
+  - NNUnetRunner
+  - DsegConverter2
+modules:
+
+  DicomImporter:
+    source_dir: input_data
+    import_dir: sorted_data
+    sort_data: true
+    meta: 
+      mod: ct
+
+  NNUnetRunner:
+    input_data_type: 'nifti:mod=ct'
+    nnunet_task: 'Task007_Pancreas'
+    nnunet_model: '3d_lowres'
+    
+  DsegConverter:
+    source_segs: ['nifti:mod=seg']
+    json_config_path: /app/models/nnunet_pancreas/config/dseg.json
+    model_name: 'NNUnet Pancreas'
+    skip_empty_slices: True
