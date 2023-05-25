@@ -11,12 +11,14 @@ modules:
 
   NNUnetRunner:
     folds: all
-    task: Task400_OPEN_HEART_1FOLD
-    model: 3d_lowres
+    nnunet_task: Task400_OPEN_HEART_1FOLD
+    nnunet_model: 3d_lowres
 
   CasustRunner:
     test_time_augmentation: 0
-    
+
   DsegConverter:
-    dicomseg_json_path: /app/models/casust/config/dseg.json
+    model_name: CaSuSt
+    source_segs: [nrrd:mod=seg, nifti:mod=seg]
+    json_config_path: /app/models/casust/config/dseg.json
     skip_empty_slices: True
