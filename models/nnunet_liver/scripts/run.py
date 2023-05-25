@@ -37,9 +37,7 @@ DicomImporter(config).execute()
 NiftiConverter(config).execute()
 
 # execute model (nnunet)
-runner = NNUnetRunner(config)
-runner.input_type = DataType(FileType.NIFTI, CT)
-runner.execute()
+NNUnetRunner(config).execute()
 
 # convert (seg:nifti -> seg:dcm)
 DsegConverter(config).execute()
