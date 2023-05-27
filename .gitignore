@@ -1,1 +1,14 @@
+.vscode
 *.pyc
+*.pkl
+models/*/dev
+models/nnunet_prostate/sample_data
+**/notes.md
+models/**/src
+models/casust/src_github
+models/casust/output
+models/casust/output_nnunet
+models/casust/output_original
+models/casust/debug
+models/casust/input
+models/monaibundle/monaizoo/

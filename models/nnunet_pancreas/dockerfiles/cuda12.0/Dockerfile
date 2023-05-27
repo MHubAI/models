@@ -1,0 +1,34 @@
+# Specify the base image for the environment
+FROM mhubai/base:cuda12.0
+
+# FIXME: set this environment variable as a shortcut to avoid nnunet crashing the build
+# by pulling sklearn instead of scikit-learn
+# N.B. this is a known issue:
+# https://github.com/MIC-DKFZ/nnUNet/issues/1281 
+# https://github.com/MIC-DKFZ/nnUNet/pull/1209
+ENV SKLEARN_ALLOW_DEPRECATED_SKLEARN_PACKAGE_INSTALL=True
+
+# Install nnunet
+RUN pip3 install --no-cache-dir \
+  nnunet 
+
+# Clone MHub model (m-nnunet-pancreas branch, fixed to commit 3ddc38dac4d3e9b6e68c4845a4a8479005f63b22)
+RUN git init \
+ && git sparse-checkout set "models/nnunet_pancreas" \
+ && git fetch https://github.com/MHubAI/models.git m-nnunet-pancreas \
+ && git merge 3ddc38dac4d3e9b6e68c4845a4a8479005f63b22
+
+# pull weights for platipy's nnU-Net so that the user doesn't need to every time a container is run
+ENV WEIGHTS_DIR="/root/.nnunet/nnUNet_models/nnUNet/"
+ENV WEIGHTS_URL="https://zenodo.org/record/4485926/files/Task007_Pancreas.zip"
+ENV WEIGHTS_FN="Task007_Pancreas.zip"
+
+RUN wget --directory-prefix ${WEIGHTS_DIR} ${WEIGHTS_URL}
+RUN unzip ${WEIGHTS_DIR}${WEIGHTS_FN} -d ${WEIGHTS_DIR}
+RUN rm ${WEIGHTS_DIR}${WEIGHTS_FN}
+
+# specify nnunet specific environment variables
+ENV WEIGHTS_FOLDER=$WEIGHTS_DIR
+
+# Default run script
+CMD ["python3", "/app/models/nnunet_liver/scripts/run.py"]

@@ -1,0 +1,27 @@
+general:
+  version: 1.0
+  data_base_dir: /app/data
+  description: 3D Slicer configuration for nnuner pancreas model
+
+execute:
+  - NrrdImporter
+  - NiftiConverter
+  - NNUnetRunner
+  - DataOrganizer
+
+modules:
+
+  NrrdImporter:
+    input_dir: input_data
+    input_file_name: image.nrrd
+
+  NNUnetRunner:
+    input_data_type: nifti:mod=ct
+    nnunet_task: Task007_Pancreas
+    nnunet_model: 3d_lowres
+    export_prob_maps: False
+    roi: pancreas
+    
+  DataOrganizer:
+    targets:
+    - nifti:mod=seg-->/app/data/output_data/[d:roi].nii.gz
