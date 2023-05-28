@@ -1,5 +1,16 @@
 general:
   data_base_dir: /app/data
+  version: 1.0
+  description: "default configuration for CaSuSt dicom to dicom"
+
+execute:
+- DicomImporter
+- NiftiConverter
+- NNUnetRunner
+- CasustRunner
+- DsegConverter
+- DataOrganizer
+
 modules:
 
   DicomImporter:
@@ -13,6 +24,7 @@ modules:
     folds: all
     nnunet_task: Task400_OPEN_HEART_1FOLD
     nnunet_model: 3d_lowres
+    roi: HEART
 
   CasustRunner:
     test_time_augmentation: 0
@@ -20,5 +32,8 @@ modules:
   DsegConverter:
     model_name: CaSuSt
     source_segs: [nrrd:mod=seg, nifti:mod=seg]
-    json_config_path: /app/models/casust/config/dseg.json
     skip_empty_slices: True
+  
+  DataOrganizer:
+    targets:
+    - dicomseg:mod=seg-->/app/data/output_data/[i:sid]/casust.dcm
