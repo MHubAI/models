@@ -26,4 +26,4 @@ modules:
 
   DataOrganizer:
     targets:
-    - nrrd:mod=seg-->/app/data/output_data/[d:roi].nii.gz
+    - nrrd:mod=seg-->/app/data/output_data/[d:roi].nrrd
