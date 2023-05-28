@@ -1,0 +1,35 @@
+general:
+  data_base_dir: /app/data
+  version: 1.0
+  description: "default configuration for Heart segmentation dicom to dicom"
+
+execute:
+- DicomImporter
+- NiftiConverter
+- NNUnetRunner
+- DsegConverter
+- DataOrganizer
+
+modules:
+
+  DicomImporter:
+    source_dir: input_data
+    import_dir: sorted_data
+    sort_data: true
+    meta: 
+      mod: ct
+
+  NNUnetRunner:
+    folds: all
+    nnunet_task: Task400_OPEN_HEART_1FOLD
+    nnunet_model: 3d_lowres
+    roi: HEART
+
+  DsegConverter:
+    model_name: Platipy Heart
+    source_segs: [nifti:mod=seg]
+    skip_empty_slices: True
+
+  DataOrganizer:
+    targets:
+    - dicomseg:mod=seg-->/app/data/output_data/[i:sid]/heart.dcm
