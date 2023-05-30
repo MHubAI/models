@@ -2,7 +2,7 @@
 FROM mhubai/base:nocuda
 
 # Specify/override authors label
-LABEL authors="s.vandeleemput@radboudumc.nl"
+LABEL authors="sil.vandeleemput@radboudumc.nl"
 
 # install required dependencies for lobe segmentation (CPU-only)
 RUN pip3 install --no-cache-dir \

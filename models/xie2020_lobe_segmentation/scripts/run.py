@@ -5,7 +5,7 @@ MHub / DIAG - Run Xie2020 Lobe Segmentation locally
 
 ---------------------------------------------------
 Author: Sil van de Leemput
-Email:  s.vandeleemput@radboudumc.nl
+Email:  sil.vandeleemput@radboudumc.nl
 ---------------------------------------------------
 """
 
