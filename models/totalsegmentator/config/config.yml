@@ -1,5 +1,6 @@
 general:
   data_base_dir: /app/data
+
 modules:
 
   DicomImporter:
@@ -13,7 +14,7 @@ modules:
     use_fast_mode: true
 
   DsegConverter:
-    #dicomseg_json_path: /app/models/totalsegmentator/config/dicomseg_metadata_whole.json
-    dicomseg_yml_path: /app/models/totalsegmentator/config/dseg.yml
+    model_name: TotalSegmentator
+    json_config_path: /app/models/totalsegmentator/config/dicomseg_metadata_whole.json
     skip_empty_slices: True
   
