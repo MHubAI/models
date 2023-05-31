@@ -1,13 +1,12 @@
 general:
   data_base_dir: /app/data
   version: 1.0
-  description: "default configuration for CaSuSt dicom to dicom"
+  description: "default configuration for Heart segmentation dicom to dicom"
 
 execute:
 - DicomImporter
 - NiftiConverter
 - NNUnetRunner
-- CasustRunner
 - DsegConverter
 - DataOrganizer
 
@@ -26,14 +25,11 @@ modules:
     nnunet_model: 3d_lowres
     roi: HEART
 
-  CasustRunner:
-    test_time_augmentation: 0
-
   DsegConverter:
-    model_name: CaSuSt
-    source_segs: [nrrd:mod=seg, nifti:mod=seg]
+    model_name: Platipy Heart
+    source_segs: [nifti:mod=seg]
     skip_empty_slices: True
-  
+
   DataOrganizer:
     targets:
-    - dicomseg:mod=seg-->/app/data/output_data/[i:sid]/casust.dcm
+    - dicomseg:mod=seg-->/app/data/output_data/[i:sid]/heart.dcm

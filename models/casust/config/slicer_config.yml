@@ -1,12 +1,29 @@
 general:
   data_base_dir: /app/data
+  version: 1.0.0
+  description: "3D Slicer configuration for CaSuSt nrrd to nrrd"
+
+execute:
+- NrrdImporter
+- NiftiConverter
+- NNUnetRunner
+- CasustRunner
+- DataOrganizer
+
 modules:
+
   NrrdImporter:
     input_dir: 'input_data'
     input_file_name: 'image.nrrd'
+
   NNUnetRunner:
     folds: all
-    task: Task400_OPEN_HEART_1FOLD
-    model: 3d_lowres
+    nnunet_task: Task400_OPEN_HEART_1FOLD
+    nnunet_model: 3d_lowres
+
   CasustRunner:
     test_time_augmentation: 0
+
+  DataOrganizer:
+    targets:
+    - nrrd:mod=seg-->/app/data/output_data/[d:roi].nrrd
