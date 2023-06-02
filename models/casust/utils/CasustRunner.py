@@ -22,13 +22,13 @@ class CasustRunner(ModelRunner):
     @IO.Instance()
     @IO.Input('image', 'nifti:mod=ct',  the='input ct scan')
     @IO.Input('heart', 'nifti:mod=seg', the='input heart segmentation')
-    @IO.Output('al', 'Atrium_L.nrrd', 'nrrd:mod=seg:roi=LEFT_ATRIUM', the='predicted segmentation of the left atrium')
-    @IO.Output('ar', 'Atrium_R.nrrd', 'nrrd:mod=seg:roi=RIGHT_ATRIUM', the='predicted segmentation of the right atrium')
-    @IO.Output('vl', 'Ventricle_L.nrrd', 'nrrd:mod=seg:roi=LEFT_VENTRICLE', the='predicted segmentation of the left ventricle')
-    @IO.Output('vr', 'Ventricle_R.nrrd', 'nrrd:mod=seg:roi=RIGHT_VENTRICLE', the='predicted segmentation of the right ventricle')
-    @IO.Output('lad', 'Coronary_LAD.nrrd', 'nrrd:mod=seg:roi=CORONARY_ARTERY_LAD', the='predicted segmentation of the left anterior descending coronary artery')
-    @IO.Output('rca', 'Coronary_Atery_R.nrrd', 'nrrd:mod=seg:roi=CORONARY_ARTERY_RIGHT', the='predicted segmentation of the right coronary artery')
-    @IO.Output('cflx', 'Coronary_Atery_CFLX.nrrd', 'nrrd:mod=seg:roi=CORONARY_ARTERY_CFLX', the='predicted segmentation of the circumflex branch of the coronary artery')
+    @IO.Output('al', 'Atrium_L.nrrd', 'nrrd:mod=seg:model=CaSuSt:roi=LEFT_ATRIUM', the='predicted segmentation of the left atrium')
+    @IO.Output('ar', 'Atrium_R.nrrd', 'nrrd:mod=seg:model=CaSuSt:roi=RIGHT_ATRIUM', the='predicted segmentation of the right atrium')
+    @IO.Output('vl', 'Ventricle_L.nrrd', 'nrrd:mod=seg:model=CaSuSt:roi=LEFT_VENTRICLE', the='predicted segmentation of the left ventricle')
+    @IO.Output('vr', 'Ventricle_R.nrrd', 'nrrd:mod=seg:model=CaSuSt:roi=RIGHT_VENTRICLE', the='predicted segmentation of the right ventricle')
+    @IO.Output('lad', 'Coronary_LAD.nrrd', 'nrrd:mod=seg:model=CaSuSt:roi=CORONARY_ARTERY_LAD', the='predicted segmentation of the left anterior descending coronary artery')
+    @IO.Output('rca', 'Coronary_Atery_R.nrrd', 'nrrd:mod=seg:model=CaSuSt:roi=CORONARY_ARTERY_RIGHT', the='predicted segmentation of the right coronary artery')
+    @IO.Output('cflx', 'Coronary_Atery_CFLX.nrrd', 'nrrd:mod=seg:model=CaSuSt:roi=CORONARY_ARTERY_CFLX', the='predicted segmentation of the circumflex branch of the coronary artery')
     def task(self, instance: Instance, image: InstanceData, heart: InstanceData, al: InstanceData, ar: InstanceData, vl: InstanceData, vr: InstanceData, lad: InstanceData, rca: InstanceData, cflx: InstanceData) -> None:
 
         # request temp out dir
