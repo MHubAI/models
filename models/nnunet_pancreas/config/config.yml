@@ -24,11 +24,13 @@ modules:
     nnunet_task: Task007_Pancreas
     nnunet_model: 3d_lowres
     export_prob_maps: True
+    roi: PANCREAS,PANCREAS+NEOPLASM_MALIGNANT_PRIMARY
     prob_map_segments: [Background, Pancreas, Pancreatic_cancer]
     
   DsegConverter:
-    source_segs: [nifti:mod=seg]
-    json_config_path: /app/models/nnunet_pancreas/config/dseg.json
+    #source_segs: [nifti:mod=seg]
+    #json_config_path: /app/models/nnunet_pancreas/config/dseg.json
+    source_segs: [nifti:mod=seg:roi=*]
     model_name: NNUnet Pancreas
     skip_empty_slices: True
 
