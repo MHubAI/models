@@ -2,7 +2,7 @@
 FROM mhubai/base:cuda11.4
 
 # Specify/override authors label
-LABEL authors="s.vandeleemput@radboudumc.nl"
+LABEL authors="sil.vandeleemput@radboudumc.nl"
 
 # install required dependencies for lobe segmentation (CUDA-enabled)
 RUN pip3 install --no-cache-dir \

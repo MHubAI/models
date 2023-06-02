@@ -5,7 +5,7 @@ MHub / DIAG - Slicer run for Xie2020 Lobe Segmentation
 
 ------------------------------------------------------
 Author: Sil van de Leemput
-Email:  s.vandeleemput@radboudumc.nl
+Email:  sil.vandeleemput@radboudumc.nl
 ------------------------------------------------------
 """
 
