@@ -12,11 +12,11 @@ ENV SKLEARN_ALLOW_DEPRECATED_SKLEARN_PACKAGE_INSTALL=True
 RUN pip3 install --no-cache-dir \
   nnunet 
 
-# Clone MHub model (m-nnunet-pancreas branch, fixed to commit 3ddc38dac4d3e9b6e68c4845a4a8479005f63b22)
+# Clone MHub model (m-nnunet-pancreas branch, fixed to commit 407f1f884f09898bef9a9173e6434d681a50d399)
 RUN git init \
  && git sparse-checkout set "models/nnunet_pancreas" \
  && git fetch https://github.com/MHubAI/models.git m-nnunet-pancreas \
- && git merge 2da7fd33b2d23f3156ae2add8c5bfe29ba59f93d
+ && git merge 407f1f884f09898bef9a9173e6434d681a50d399
 
 # pull weights for platipy's nnU-Net so that the user doesn't need to every time a container is run
 ENV WEIGHTS_DIR="/root/.nnunet/nnUNet_models/nnUNet/"
