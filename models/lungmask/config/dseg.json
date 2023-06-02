@@ -5,7 +5,7 @@
   "SeriesDescription": "Segmentation",
   "SeriesNumber": "42",
   "InstanceNumber": "1",
-  "BodyPartExamined": "Chest",
+  "BodyPartExamined": "CHEST",
   "segmentAttributes": [
     [
       {
