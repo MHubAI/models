@@ -55,6 +55,7 @@ RUN pip3 install --upgrade pip && pip3 install --no-cache-dir \
 
 # Install mhubio framework from git, pulls the utils scripts from GitHub
 RUN pip3 install git+https://github.com/MHubAI/mhubio.git \
+  && pip3 install git+https://github.com/MHubAI/segdb.git \
   && svn checkout https://github.com/MHubAI/models/trunk/base/utils /app/utils
 
 # Install DCMQI by pulling the latest release from GitHub (via GitHub API)
