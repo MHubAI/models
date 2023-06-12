@@ -1,18 +1,30 @@
 general:
   data_base_dir: /app/data
-modules:
+  version: 1.0.0
+  description: default configuration for Platipy (dicom to dicom)
 
+execute:
+- DicomImporter
+- NiftiConverter
+- PlatipyRunner
+- DsegConverter
+- DataOrganizer
+
+modules:
   DicomImporter:
     source_dir: input_data
     import_dir: sorted_data
     sort_data: true
     meta: 
-      mod: ct
-
-  PlatipyRunner:
-    path_to_config_file: "" # "/app/models/platipy/config/default_config.json"
+      mod: '%Modality'
 
   DsegConverter:
-#   dicomseg_json_path: /app/models/platipy/old/config/dicomseg_metadata_whole.json
-    dicomseg_yml_path: /app/models/platipy/config/dseg.yml
+    model_name: Platipy
+    body_part_examined: CHEST
+    source_segs: [nifti:mod=seg]
     skip_empty_slices: True
+
+  DataOrganizer:
+   targets:
+   - nifti:mod=ct-->/app/data/output_data/[i:sid]/image.nii.gz
+   - dicomseg:mod=seg-->/app/data/output_data/[i:sid]/Platipy.seg.dcm
