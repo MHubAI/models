@@ -12,13 +12,12 @@ execute:
 - DataOrganizer
 
 modules:
-
   DicomImporter:
     source_dir: input_data
     import_dir: sorted_data
     sort_data: true
     meta: 
-      mod: ct
+      mod: '%Modality'
 
   NNUnetRunner:
     folds: all
@@ -36,4 +35,4 @@ modules:
   
   DataOrganizer:
     targets:
-    - dicomseg:mod=seg-->/app/data/output_data/[i:sid]/casust.dcm
+    - dicomseg:mod=seg-->[i:sid]/casust.dcm
