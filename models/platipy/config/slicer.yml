@@ -16,9 +16,10 @@ modules:
     input_file_name: 'image.nrrd'
 
   JsonSegExporter:
-    file_name_pattern: '[basename]'
+    targets:
+    - nifti:mod=seg-->[d:roi].nii.gz
     
   DataOrganizer:
     targets:
-    - nifti:mod=seg-->[basename]
+    - nifti:mod=seg-->[d:roi].nii.gz
     - json-->segdef.json
