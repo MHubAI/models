@@ -9,6 +9,12 @@ RUN pip3 install --no-cache-dir \
     dgl===1.0.2 -f https://data.dgl.ai/wheels/repo.html \
     torch===1.9.0+cpu torchvision==0.10.0+cpu -f https://download.pytorch.org/whl/torch_stable.html
 
+# Install panimg to test conversion integration TODO should later be installed with MHub/mhubio
+RUN apt-get update && apt-get install -y --no-install-recommends \
+  python3-openslide \
+  && rm -rf /var/lib/apt/lists/*
+RUN pip3 install panimg
+
 # SimpleITK downgrade required for legacy Resample::Execute operation
 RUN pip3 install --no-cache-dir --force-reinstall SimpleITK==1.2.4
 

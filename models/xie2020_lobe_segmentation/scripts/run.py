@@ -19,6 +19,7 @@ from mhubio.modules.convert.NiftiConverter import NiftiConverter
 from mhubio.modules.convert.DsegConverter import DsegConverter
 from mhubio.modules.organizer.DataOrganizer import DataOrganizer
 from models.xie2020_lobe_segmentation.utils.LobeSegmentationRunner import LobeSegmentationRunner
+from models.xie2020_lobe_segmentation.utils.PanImgConverters import MhaPanImgConverter
 
 # clean-up
 import shutil
@@ -32,13 +33,13 @@ config = Config('/app/models/xie2020_lobe_segmentation/config/config.yml')
 # import (ct:dicom)
 DicomImporter(config).execute()
 
-# convert (ct:dicom -> ct:nrrd)
-NrrdConverter(config).execute()
+# convert (ct:dicom -> ct:mha)
+MhaPanImgConverter(config).execute()
 
 # execute model (nnunet)
 LobeSegmentationRunner(config).execute()
 
-# convert (seg:nifti -> seg:dicomseg)
+# convert (seg:mha -> seg:dicomseg)
 DsegConverter(config).execute()
 
 # organize data into output folder
