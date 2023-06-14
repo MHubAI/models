@@ -16,6 +16,7 @@ from mhubio.core import Config, DataType, FileType, SEG
 from mhubio.modules.importer.NrrdImporter import NrrdImporter
 from mhubio.modules.organizer.DataOrganizer import DataOrganizer
 from models.xie2020_lobe_segmentation.utils.LobeSegmentationRunner import LobeSegmentationRunner
+from models.xie2020_lobe_segmentation.utils.PanImgConverters import MhaPanImgConverter
 
 # config
 config = Config('/app/models/xie2020_lobe_segmentation/config/slicer_config.yml')
@@ -23,10 +24,15 @@ config = Config('/app/models/xie2020_lobe_segmentation/config/slicer_config.yml'
 # load NRRD file (ct:nrrd)
 NrrdImporter(config).execute()
 
-# execute model (ct:nrrd -> seg:nrrd)
+# convert (ct:nrrd -> ct:mha)
+MhaPanImgConverter(config).execute()
+
+# execute model (ct:mha -> seg:mha)
 LobeSegmentationRunner(config).execute()
+
+# TODO should probably be converted back to NRRD here...
 
 # organize data into output folder
 organizer = DataOrganizer(config, set_file_permissions=sys.platform.startswith('linux'))
-organizer.setTarget(DataType(FileType.NRRD, SEG), "/app/data/output_data/xie2020lobeseg.nrrd")
+organizer.setTarget(DataType(FileType.MHA, SEG), "/app/data/output_data/xie2020lobeseg.mha")
 organizer.execute()

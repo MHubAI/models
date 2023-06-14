@@ -20,10 +20,9 @@ from test import segment_lobe, segment_lobe_init
 class LobeSegmentationRunner(Module):
 
     @IO.Instance()
-    @IO.Input('in_data', 'nrrd:mod=ct', the='input ct scan')
-    @IO.Output('out_data', 'xie2020lobeseg.nrrd', 'nrrd:mod=seg:model=Xie2020LobeSegmentation', 'in_data', the='predicted segmentation of the lung lobes')
+    @IO.Input('in_data', 'mha:mod=ct', the='input ct scan')
+    @IO.Output('out_data', 'xie2020lobeseg.mha', 'mha:mod=seg:model=Xie2020LobeSegmentation', 'in_data', the='predicted segmentation of the lung lobes')
     def task(self, instance: Instance, in_data: InstanceData, out_data: InstanceData) -> None:
-        # NOTE input data originally was specified for MHA/MHD and could be extended for DICOM
 
         # read image
         self.v(f"Reading image from {in_data.abspath}")

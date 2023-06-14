@@ -2,7 +2,6 @@ general:
   data_base_dir: /app/data
   
 modules:
-
   DicomImporter:
     source_dir: input_data
     import_dir: sorted_data
@@ -15,3 +14,5 @@ modules:
   DsegConverter:
     dicomseg_json_path: /app/models/xie2020_lobe_segmentation/config/dseg.json
     skip_empty_slices: True
+    body_part_examined: LUNG
+    source_segs: ['mha:mod=seg:roi=*']
