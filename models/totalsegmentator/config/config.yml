@@ -1,20 +1,32 @@
 general:
   data_base_dir: /app/data
+  version: 1.0.0
+  description: TotalSegmentator default config (dicom to dicom)
+
+execute:
+- DicomImporter
+- NiftiConverter
+- TotalSegmentatorMLRunner
+- DsegConverter
+- DataOrganizer
 
 modules:
-
   DicomImporter:
     source_dir: input_data
     import_dir: sorted_data
     sort_data: true
     meta: 
-      mod: ct
+      mod: '%Modality'
 
-  TotalSegmentatorRunner:
+  TotalSegmentatorMLRunner:
     use_fast_mode: true
 
   DsegConverter:
     model_name: TotalSegmentator
-    json_config_path: /app/models/totalsegmentator/config/dicomseg_metadata_whole.json
+    body_part_examined: WHOLEBODY
+    source_segs: [nifti:mod=seg]
     skip_empty_slices: True
   
+  DataOrganizer:
+   targets:
+   - dicomseg:mod=seg-->[i:sid]/TotalSegmentator.seg.dcm
