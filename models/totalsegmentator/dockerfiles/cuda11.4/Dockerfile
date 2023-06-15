@@ -26,4 +26,4 @@ RUN utils/download_weights.sh \
   https://zenodo.org/record/6802452/files/Task255_TotalSegmentator_part5_ribs_1139subj.zip
 
 # Default run script
-CMD ["python3", "/app/models/totalsegmentator/scripts/run.py"]
+CMD ["python3", "-m", "mhubio.run", "--config", "/app/models/totalsegmentator/config/config.yml"]
