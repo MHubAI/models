@@ -1,9 +1,0 @@
-general:
-  data_base_dir: /app/data
-modules:
-  NrrdImporter:
-    input_dir: 'input_data'
-    input_file_name: 'image.nrrd'
-  NNUnetRunner:
-    task: 'Task003_Liver'
-    model: '3d_lowres'
