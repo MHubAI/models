@@ -1,0 +1,14 @@
+general:
+  data_base_dir: /app/data
+  
+modules:
+  DicomImporter:
+    source_dir: input_data
+    import_dir: sorted_data
+    sort_data: True
+    meta: 
+      mod: ct
+   
+  LungCancerClassifierRunner:
+    tmp_path: /app/tmp
+    n_preprocessing_workers: 8
