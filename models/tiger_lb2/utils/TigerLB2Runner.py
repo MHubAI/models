@@ -27,7 +27,7 @@ class TigerLB2Runner(Module):
         wsi_filepath = Path(in_data.abspath)
         wsi_mri = rw.open_multiresolutionimage_image(wsi_filepath)
 
-        print(f"Input WSI: {wsi_filepath}")
+        self.v(f"Input WSI: {wsi_filepath}")
 
         tils_score_writer = rw.TilsScoreWriter(Path(out_data.abspath))
         tils_score = tils_pipeline.run_tils_pipeline(wsi_mri)

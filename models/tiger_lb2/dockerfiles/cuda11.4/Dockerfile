@@ -1,5 +1,5 @@
 # Specify the base image for the environment
-FROM mhubai/base:nocuda
+FROM mhubai/base:cuda11.4
 
 # Specify/override authors label
 LABEL authors="sil.vandeleemput@radboudumc.nl"
@@ -10,8 +10,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
   && rm -rf /var/lib/apt/lists/*
 RUN pip3 install --no-cache-dir panimg
 
-# install required dependencies for algorithm (CPU-only)
-RUN pip3 install --no-cache-dir torch==1.10.0+cpu -f https://download.pytorch.org/whl/torch_stable.html
+# install required dependencies for algorithm
+RUN pip3 install --no-cache-dir torch==1.10.0+cu113 -f https://download.pytorch.org/whl/torch_stable.html
 
 # Install ASAP
 RUN : \
@@ -31,10 +31,6 @@ RUN : \
 #   - Subsequently we remove the .git directory to procuce a compacter docker layer
 RUN git clone --depth 1 https://github.com/vuno/tiger_challenge.git /vuno \
     && rm -rf /vuno/.git
-
-# Modify model loading code to load model weights to the cpu instead of the gpu
-RUN sed -i 's/cuda:0/cpu/g' /vuno/detection/detection_inference.py \
-    && sed -i 's/torch.load(str(ckpt_fname))/torch.load(str(ckpt_fname), map_location="cpu")/g' /vuno/segmentation/inference.py
 
 # Install tiger LB2 dependencies
 RUN pip3 install --no-cache-dir -r /vuno/requirements.txt
