@@ -51,4 +51,4 @@ RUN rm ${WEIGHTS_DIR}${WEIGHTS_FN}
 ENV WEIGHTS_FOLDER=$WEIGHTS_DIR
 
 # Default run script
-CMD ["python3", "-m", "mhub.run", "--config", "/app/models/casust/config/config.yml"]
+CMD ["python3", "-m", "mhubio.run", "--config", "/app/models/casust/config/config.yml"]
