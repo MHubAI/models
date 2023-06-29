@@ -11,11 +11,10 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 RUN pip3 install --no-cache-dir panimg
 
 # install required dependencies for algorithm (CPU-only)
-RUN pip3 install --no-cache-dir torch==1.10.0+cpu -f https://download.pytorch.org/whl/torch_stable.html
+RUN pip3 install --no-cache-dir torch==1.10.0+cpu torchvision==0.11.0+cpu -f https://download.pytorch.org/whl/torch_stable.html
 
 # Install ASAP
-RUN : \
-    && apt-get update \
+RUN apt-get update \
     && apt-get -y install curl libpython3.8-dev \
     && curl --remote-name --location "https://github.com/computationalpathologygroup/ASAP/releases/download/ASAP-2.1/ASAP-2.1-py38-Ubuntu2004.deb" \
     && dpkg --install ASAP-2.1-py38-Ubuntu2004.deb || true \
@@ -23,8 +22,7 @@ RUN : \
     && ldconfig -v \
     && apt-get clean \
     && echo "/opt/ASAP/bin" > /usr/local/lib/python3.8/dist-packages/asap.pth \
-    && rm ASAP-2.1-py38-Ubuntu2004.deb \
-    && :
+    && rm ASAP-2.1-py38-Ubuntu2004.deb
 
 # Install tiger LB2 algorithm
 #   - We use a shallow git clone for reduced bandwidth usage
