@@ -25,9 +25,9 @@ RUN git clone --depth 1 --branch v2.0.0 https://github.com/DIAGNijmegen/bodyct-d
     rm -rf /grt123_lung_cancer/images && \
     rm /grt123_lung_cancer/README.md && \
     rm /grt123_lung_cancer/solution-grt123-team.pdf && \
-    echo "$(git log --format="%H" -n 1)" > /grt123_lung_cancer/HEAD && \
+    mv /grt123_lung_cancer/.git/HEAD /grt123_lung_cancer && \
     rm -rf /grt123_lung_cancer/.git/* && \
-    mv /grt123_lung_cancer/HEAD /grt123_lung_cancer/.git \
+    mv /grt123_lung_cancer/HEAD /grt123_lung_cancer/.git
 
 # Clone MHub model (m-grt123-lung-cancer branch, fixed to commit TODO)
 #RUN git init \
