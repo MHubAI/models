@@ -1,5 +1,3 @@
-# syntax=docker/dockerfile:experimental
-
 # Specify the base image for the environment
 FROM mhubai/base:nocuda
 
@@ -16,22 +14,11 @@ RUN pip3 install panimg
 RUN pip3 install --no-cache-dir \
     torch===2.0.1+cpu -f https://download.pytorch.org/whl/torch_stable.html
 
-
-# TODO remove later ==== Temporariy SSH fix as long as repo is private =======
-RUN apt-get update && apt-get install -y --no-install-recommends \
-  openssh-client \
-  && rm -rf /var/lib/apt/lists/*
-# Add github public key to known_hosts for SSH
-RUN mkdir -p -m 0600 ~/.ssh && ssh-keyscan github.com >> ~/.ssh/known_hosts
-# TODO remove later ===============================
-
-
-# TODO make public and remove ssh extras...
 # Install grt123 algorithm and model weights
 #   - We use a shallow git clone for reduced bandwidth usage
 #   - We remove unnecessary files for a compacter docker layer
 #   - Subsequently we remove the .git directory to procuce a compacter docker layer, but keep the latest commit hash in the HEAD file
-RUN --mount=type=ssh git clone --branch 44-port-to-python3 --depth 1 git@github.com:DIAGNijmegen/bodyct-dsb2017-grt123.git /grt123_lung_cancer && \
+RUN git clone --depth 1 --branch v2.0.0 https://github.com/DIAGNijmegen/bodyct-dsb2017-grt123.git /grt123_lung_cancer && \
     rm -rf /grt123_lung_cancer/tests && \
     rm -rf /grt123_lung_cancer/training && \
     rm -rf /grt123_lung_cancer/processor && \
