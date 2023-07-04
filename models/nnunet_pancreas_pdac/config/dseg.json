@@ -1,0 +1,53 @@
+{
+    "ContentCreatorName": "IDC",
+    "ClinicalTrialSeriesID": "0",
+    "ClinicalTrialTimePointID": "1",
+    "SeriesDescription": "Segmentation",
+    "SeriesNumber": "42",
+    "InstanceNumber": "1",
+    "BodyPartExamined": "ABDOMEN",
+    "segmentAttributes": [
+      [
+        {
+          "labelID": 1,
+          "SegmentDescription": "Pancreas",
+          "SegmentAlgorithmType": "AUTOMATIC",
+          "SegmentAlgorithmName": "nnU-Net",
+          "SegmentedPropertyCategoryCodeSequence": {
+            "CodeValue": "123037004",
+            "CodingSchemeDesignator": "SCT",
+            "CodeMeaning": "Anatomical Structure"
+          },
+          "SegmentedPropertyTypeCodeSequence": {
+            "CodeValue": "15776009",
+            "CodingSchemeDesignator": "SCT",
+            "CodeMeaning": "Pancreas"
+          },
+          "recommendedDisplayRGBValue": [
+            249,
+            180,
+            111
+          ]
+        },
+        {
+          "labelID": 2,
+          "SegmentDescription": "Pancreatic Cancer",
+          "SegmentAlgorithmType": "AUTOMATIC",
+          "SegmentAlgorithmName": "nnU-Net",
+          "SegmentedPropertyCategoryCodeSequence": {
+            "CodeValue": "49755003",
+            "CodingSchemeDesignator": "SCT",
+            "CodeMeaning": "Morphologically Altered Structure"
+          },
+          "SegmentedPropertyTypeCodeSequence": {
+            "CodeValue": "86049000",
+            "CodingSchemeDesignator": "SCT",
+            "CodeMeaning": "Neoplasm, Primary"
+          }
+        }
+      ]
+    ],
+    "ContentLabel": "SEGMENTATION",
+    "ContentDescription": "Image segmentation",
+    "ClinicalTrialCoordinatingCenterName": "dcmqi"
+  }
