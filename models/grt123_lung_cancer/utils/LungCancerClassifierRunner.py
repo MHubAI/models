@@ -11,6 +11,8 @@ Email:  sil.vandeleemput@radboudumc.nl
 import torch.cuda
 from mhubio.core import Instance, InstanceData, IO, Module
 
+from typing import Dict
+import json
 from pathlib import Path
 import numpy as np
 import SimpleITK as sitk
@@ -18,6 +20,24 @@ import SimpleITK as sitk
 import torch
 
 import main
+
+
+def cleanup_json_report(data: Dict):
+    for key in ["trainingset1", "trainingset2"]:
+        del data["lungcad"][key]
+    for key in ["patientuid", "studyuid"]:
+        del data["imageinfo"][key]
+    data["findings"] = [
+        dict(
+            id=f["id"],
+            x=f["x"],
+            y=f["y"],
+            z=f["z"],
+            probability=f["probability"],
+            cancerprobability=f["cancerprobability"]
+        )
+        for f in data["findings"]
+    ]
 
 
 @IO.Config('n_preprocessing_workers', int, 6, the="number of preprocessing workers to use for the grt123 lung mask preprocessor")
@@ -56,4 +76,8 @@ class LungCancerClassifierRunner(Module):
         # store classification results
         self.v(f"Writing classification results to {out_data.abspath}")
         assert len(results) > 0, "LungCancerClassifierRunner - Always expects at least one output report"
-        results[0].to_file(out_data.abspath)
+        results_json = results[0].to_json()
+        cleanup_json_report(results_json)
+        with open(out_data.abspath, "w") as f:
+            json.dump(results_json, f, indent=4)
+
