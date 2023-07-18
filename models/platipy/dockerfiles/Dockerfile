@@ -19,7 +19,8 @@ RUN pip3 install --no-cache-dir \
 # Clone the main branch of MHubAI/models
 RUN git stash \
  && git sparse-checkout set "models/platipy" \
- && git fetch https://github.com/MHubAI/models.git main
+ && git fetch https://github.com/MHubAI/models.git main \
+ && git merge FETCH_HEAD
 
 # pull weights for platipy's nnU-Net so that the user doesn't need to every time a container is run
 ENV WEIGHTS_DIR="/root/.platipy/nnUNet_models/nnUNet/"
@@ -40,4 +41,4 @@ RUN unzip ${WEIGHTS_DIR}${WEIGHTS_FN} -d ${WEIGHTS_DIR}
 RUN rm ${WEIGHTS_DIR}${WEIGHTS_FN}
 
 # Default run script
-CMD ["python3", "-m", "mhubio.run", "--config", "/app/models/platipy/config/default.yaml"]
+CMD ["python3", "-m", "mhubio.run", "--config", "/app/models/platipy/config/default.yml"]
