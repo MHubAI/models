@@ -31,4 +31,4 @@ modules:
 
   DataOrganizer:
     targets:
-    - dicomseg:mod=seg-->[i:sid]/heart.dcm
+    - dicomseg:mod=seg-->[i:sid]/HEART.seg.dcm
