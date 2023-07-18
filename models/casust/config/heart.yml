@@ -1,7 +1,7 @@
 general:
   data_base_dir: /app/data
   version: 1.0
-  description: "default configuration for Heart segmentation dicom to dicom"
+  description: default configuration for Heart segmentation (dicom to dicom)
 
 execute:
 - DicomImporter
@@ -11,13 +11,12 @@ execute:
 - DataOrganizer
 
 modules:
-
   DicomImporter:
     source_dir: input_data
     import_dir: sorted_data
     sort_data: true
     meta: 
-      mod: ct
+      mod: '%Modality'
 
   NNUnetRunner:
     folds: all
@@ -32,4 +31,4 @@ modules:
 
   DataOrganizer:
     targets:
-    - dicomseg:mod=seg-->/app/data/output_data/[i:sid]/heart.dcm
+    - dicomseg:mod=seg-->[i:sid]/HEART.seg.dcm
