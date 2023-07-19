@@ -4,14 +4,14 @@ FROM mhubai/base:latest
 # Specify/override authors label
 LABEL authors="s.vandeleemput@radboudumc.nl"
 
-# Install system dependencies for platipy
+# install system dependencies for OpenCV
 RUN apt-get update && apt-get install ffmpeg libsm6 libxext6  -y
 
 # install required dependencies for lobe segmentation (CUDA-enabled)
 RUN pip3 install --no-cache-dir \
     opencv-python \
-    dgl-cu113 -f https://data.dgl.ai/wheels/repo.html \
-    torch==1.10.0+cu113 torchvision==0.11.1+cu113 -f https://download.pytorch.org/whl/cu113/torch_stable.html 
+    torch torchvision \
+    dgl -f https://data.dgl.ai/wheels/cu118/repo.html
 
 # SimpleITK downgrade required for legacy Resample::Execute operation
 RUN pip3 install --no-cache-dir --force-reinstall SimpleITK==1.2.4 
