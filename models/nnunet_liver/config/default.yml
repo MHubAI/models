@@ -30,4 +30,4 @@ modules:
 
   DataOrganizer:
     targets:
-    - dicomseg-->[i:sid]/liver.seg.dcm
+    - dicomseg-->[i:sid]/nnunet_liver.seg.dcm
