@@ -1,0 +1,40 @@
+# Specify the base image for the environment
+FROM mhubai/base:latest
+
+# Specify/override authors label
+LABEL authors="s.vandeleemput@radboudumc.nl"
+
+# Install system dependencies for platipy
+RUN apt-get update && apt-get install ffmpeg libsm6 libxext6  -y
+
+# install required dependencies for lobe segmentation (CUDA-enabled)
+RUN pip3 install --no-cache-dir \
+    opencv-python \
+    dgl-cu113 -f https://data.dgl.ai/wheels/repo.html \
+    torch==1.10.0+cu113 torchvision==0.11.1+cu113 -f https://download.pytorch.org/whl/cu113/torch_stable.html 
+
+# SimpleITK downgrade required for legacy Resample::Execute operation
+RUN pip3 install --no-cache-dir --force-reinstall SimpleITK==1.2.4 
+
+# Install Xie's pulmonary lobe segmentation algorithm and model weights
+#   - We use a shallow git clone for reduced bandwidth usage
+#   - Subsequently we remove the .git directory to procuce a compacter docker layer
+#   - Finally we rename models.py and references to models_xie.py to avoid naming conflicts with MHub models package
+RUN git clone --depth 1 https://github.com/DIAGNijmegen/bodyct-pulmonary-lobe-segmentation.git /xie2020_lobe_segmentation && \
+    rm -rf /xie2020_lobe_segmentation/.git && \
+    mv /xie2020_lobe_segmentation/models.py /xie2020_lobe_segmentation/models_xie.py && \
+    sed -i 's/from models import CTSUNet/from models_xie import CTSUNet/g' /xie2020_lobe_segmentation/test.py
+
+# Clone the main branch of MHubAI/models
+# FIXME: replace with master branch <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+#RUN git stash \
+# && git sparse-checkout set "models/xie2020_lobe_segmentation" \
+# && git fetch https://github.com/MHubAI/models.git m-lobesegmentation-xie \
+# && git merge FETCH_HEAD
+
+# Add lobe segmentation code base to python path
+ENV PYTHONPATH="/xie2020_lobe_segmentation:/app"
+
+# Default run script
+ENTRYPOINT ["python3", "-m", "mhubio.run"]
+CMD ["--config", "/app/models/xie2020_lobe_segmentation/configs/run.py"]
