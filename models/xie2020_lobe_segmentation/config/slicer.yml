@@ -1,0 +1,30 @@
+general:
+  data_base_dir: /app/data
+  version: 1.0.0
+  description: LobeSegmentation workflow for 3D Slicer (nrrd to nifti)
+  
+execute:
+- NrrdImporter
+- MhaConverter
+- LobeSegmentationRunner
+- NiftiConverter
+- JsonSegExporter
+- DataOrganizer
+
+modules:
+  NrrdImporter:
+    input_dir: 'input_data'
+    input_file_name: 'image.nrrd'
+
+  NiftiConverter:
+    targets: 
+    - 'mha:mod=seg'
+
+  JsonSegExporter:
+    targets:
+    - nifti:mod=seg-->[basename]
+
+  DataOrganizer:
+    targets:
+    - nifti:mod=seg-->[basename]
+    - json-->segdef.json

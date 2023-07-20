@@ -4,24 +4,27 @@ Mhub / DIAG - Run Module for Xie2020 Lobe Segmentation
 ------------------------------------------------------
 
 ------------------------------------------------------
-Author: Sil van de Leemput
+Author: Sil van de Leemput, Leonard Nürnberg
 Email:  s.vandeleemput@radboudumc.nl
+        leonard.nuernberg@maastrichtuniversity.nl
 ------------------------------------------------------
 """
 
-from mhubio.core import Instance, InstanceData, IO, Module
+from typing import List
+from mhubio.core import Instance, DataTypeQuery, InstanceData, IO, Module
 
 import os
 import numpy as np
 import SimpleITK as sitk
 
-from test import segment_lobe, segment_lobe_init
+from test import segment_lobe, segment_lobe_init # type: ignore
 
+@IO.ConfigInput('in_data', 'nifti|nrrd|mha:mod=ct', the='supported datatypes for the lobes segmentation model')
 class LobeSegmentationRunner(Module):
 
     @IO.Instance()
-    @IO.Input('in_data', 'nrrd:mod=ct', the='input ct scan')
-    @IO.Output('out_data', 'xie2020lobeseg.nrrd', 'nrrd:mod=seg:model=Xie2020LobeSegmentation', 'in_data', the='predicted segmentation of the lung lobes')
+    @IO.Input('in_data', the='input ct scan')
+    @IO.Output('out_data', 'xie2020lobeseg.mha', 'mha:mod=seg:model=Xie2020LobeSegmentation:roi=LEFT_UPPER_LUNG_LOBE,LEFT_LOWER_LUNG_LOBE,RIGHT_UPPER_LUNG_LOBE,RIGHT_LOWER_LUNG_LOBE,RIGHT_MIDDLE_LUNG_LOBE', bundle='model', the='predicted segmentation of the lung lobes')
     def task(self, instance: Instance, in_data: InstanceData, out_data: InstanceData) -> None:
         # NOTE input data originally was specified for MHA/MHD and could be extended for DICOM
 
