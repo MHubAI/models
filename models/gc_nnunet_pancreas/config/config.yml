@@ -1,0 +1,33 @@
+general:
+  version: 1.0
+  data_base_dir: /app/data
+  description: base configuration for nnunet pancreas PDAC model
+
+modules:
+
+  DicomImporter:
+    source_dir: input_data
+    import_dir: sorted_data
+    sort_data: true
+    meta: 
+      mod: ct
+
+  MhaImporter:
+    source_dir: input_data
+    import_dir: sorted_data
+
+  GCNNUnetPancreasRunner:
+
+# TODO configure DsegConverter
+#  DsegConverter:
+#    #source_segs: [nifti:mod=seg]
+#    #json_config_path: /app/models/nnunet_pancreas/config/dseg.json
+#    source_segs: [mha:mod=seg:roi=*]
+#    model_name: GC NNUnet Pancreas
+#    skip_empty_slices: True
+
+  DataOrganizer:
+    targets:
+    - mha:mod=heatmap-->/app/data/output_data/[i:sid]/heatmap.mha
+    - mha:mod=seg-->/app/data/output_data/[i:sid]/pancreas.seg.mha
+#    - dicomseg:mod=seg-->/app/data/output_data/[i:sid]/pancreas.seg.dcm
