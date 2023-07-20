@@ -17,7 +17,7 @@ import os
 import numpy as np
 import SimpleITK as sitk
 
-from test import segment_lobe, segment_lobe_init # type: ignore
+from src.test import segment_lobe, segment_lobe_init
 
 @IO.ConfigInput('in_data', 'nifti|nrrd|mha:mod=ct', the='supported datatypes for the lobes segmentation model')
 class LobeSegmentationRunner(Module):
