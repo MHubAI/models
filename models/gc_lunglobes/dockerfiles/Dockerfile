@@ -2,7 +2,7 @@
 FROM mhubai/base:latest
 
 # Specify/override authors label
-LABEL authors="s.vandeleemput@radboudumc.nl"
+LABEL authors="s.vandeleemput@radboudumc.nl,dbontempi@bwh.harvard.edu,lnuernberg@bwh.harvard.edu"
 
 # install system dependencies for OpenCV
 RUN apt-get update && apt-get install ffmpeg libsm6 libxext6  -y
@@ -27,14 +27,14 @@ RUN git clone --depth 1 https://github.com/DIAGNijmegen/bodyct-pulmonary-lobe-se
 
 # Clone the main branch of MHubAI/models
 # FIXME: replace with master branch <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-#RUN git stash \
-# && git sparse-checkout set "models/xie2020_lobe_segmentation" \
-# && git fetch https://github.com/MHubAI/models.git m-lobesegmentation-xie \
-# && git merge FETCH_HEAD
+RUN git stash \
+ && git sparse-checkout set "models/gc_lunglobes" \
+ && git fetch https://github.com/MHubAI/models.git main \
+ && git merge FETCH_HEAD
 
 # Add lobe segmentation code base to python path
 ENV PYTHONPATH="/xie2020_lobe_segmentation:/app"
 
 # Default run script
 ENTRYPOINT ["python3", "-m", "mhubio.run"]
-CMD ["--config", "/app/models/xie2020_lobe_segmentation/configs/run.py"]
+CMD ["--config", "/app/models/gc_lunglobes/config/default.yml"]
