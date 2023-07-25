@@ -17,6 +17,8 @@ import SimpleITK as sitk
 import pipeline.tils_pipeline as tils_pipeline
 import algorithm.rw as rw
 
+import torch
+
 
 class TigerLB2Runner(Module):
 
@@ -24,6 +26,8 @@ class TigerLB2Runner(Module):
     @IO.Input('in_data', 'tiff:mod=sm', the='input whole slide image Tiff')
     @IO.Output('out_data', 'gc_tiger_lb2_tils_score.json', 'json:model=TigerLB2TilsScore', 'in_data', the='TIGER LB2 Tils score')
     def task(self, instance: Instance, in_data: InstanceData, out_data: InstanceData) -> None:
+        assert torch.cuda.is_available(), "Error: TigerLB2Runner requires CUDA to be available!"
+
         wsi_filepath = Path(in_data.abspath)
         wsi_mri = rw.open_multiresolutionimage_image(wsi_filepath)
 
