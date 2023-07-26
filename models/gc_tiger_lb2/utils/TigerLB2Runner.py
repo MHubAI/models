@@ -13,14 +13,15 @@ from mhubio.core import Instance, InstanceData, IO, Module
 from pathlib import Path
 import numpy as np
 import SimpleITK as sitk
-
-import pipeline.tils_pipeline as tils_pipeline
-import algorithm.rw as rw
-
 import torch
+
+import subprocess as sp
+import sys
 
 
 class TigerLB2Runner(Module):
+
+    CLI_SCRIPT_PATH = Path(__file__).parent.parent / "scripts" / "tiger_lb2_cli.py"
 
     @IO.Instance()
     @IO.Input('in_data', 'tiff:mod=sm', the='input whole slide image Tiff')
@@ -28,15 +29,13 @@ class TigerLB2Runner(Module):
     def task(self, instance: Instance, in_data: InstanceData, out_data: InstanceData) -> None:
         assert torch.cuda.is_available(), "Error: TigerLB2Runner requires CUDA to be available!"
 
-        wsi_filepath = Path(in_data.abspath)
-        wsi_mri = rw.open_multiresolutionimage_image(wsi_filepath)
+        proc = sp.run(
+            [
+                sys.executable,
+                str(self.CLI_SCRIPT_PATH),
+                in_data.abspath,
+                out_data.abspath,
+            ]
+        )
 
-        self.v(f"Input WSI: {wsi_filepath}")
-
-        tils_score_writer = rw.TilsScoreWriter(Path(out_data.abspath))
-        tils_score = tils_pipeline.run_tils_pipeline(wsi_mri)
-
-        # write tils score
-        self.v(f"Writing tils score to {out_data.abspath}")
-        tils_score_writer.set_tils_score(tils_score=tils_score)
-        tils_score_writer.save()
+        assert proc.returncode == 0, f"Something went wrong when calling {self.CLI_SCRIPT_PATH}, got return code: {proc.returncode}"

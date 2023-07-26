@@ -31,7 +31,6 @@ RUN pip3 install --no-cache-dir -r /vuno/requirements.txt
 RUN pip install --no-cache-dir --force-reinstall numpy==1.22
 
 # Download and install model weights file from zenodo
-# RUN apt update && apt install bsdtar && rm -rf /var/lib/apt/lists/*
 RUN rm -rf /vuno/pretrained_weights && \
     wget https://zenodo.org/record/8112176/files/pretrained_weights.zip -O /vuno/pretrained_weights.zip && \
     unzip /vuno/pretrained_weights.zip -d /vuno && \
@@ -43,10 +42,8 @@ RUN rm -rf /vuno/pretrained_weights && \
 # && git fetch https://github.com/MHubAI/models.git m-gc-tiger-lb2 \
 # && git merge TODO
 
-# Add algorithm code base and model code bases to python path
-# FIXME yolov5 and /app both have a models directory in their folders which causes import conflicts
-# to solve this we add /app/models instead of /app to the python path
-ENV PYTHONPATH="/vuno:/app/models:/usr/local/lib/python3.8/dist-packages/yolov5/"
+# Add model and algorithm code bases to python path
+ENV PYTHONPATH="/vuno:/app"
 
-# Default run script (cannot use configuration yml file due to import conflicts...)
+# Default run script (cannot use configuration yml file due to panimg converter not ...)
 CMD ["python3", "/app/models/gc_tiger_lb2/scripts/run.py"]

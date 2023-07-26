@@ -16,8 +16,8 @@ sys.path.append('.')
 from mhubio.core import Config, DataType, FileType
 from mhubio.modules.organizer.DataOrganizer import DataOrganizer
 from mhubio.modules.importer.DicomImporter import DicomImporter
-from gc_tiger_lb2.utils.TigerLB2Runner import TigerLB2Runner
-from gc_tiger_lb2.utils.PanImgConverters import TiffPanImgConverter
+from models.gc_tiger_lb2.utils.TigerLB2Runner import TigerLB2Runner
+from models.gc_tiger_lb2.utils.PanImgConverters import TiffPanImgConverter
 
 # clean-up
 import shutil
