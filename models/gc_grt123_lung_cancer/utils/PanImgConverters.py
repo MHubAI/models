@@ -68,10 +68,10 @@ class MhaPanImgConverter(DataConverter):
                     sitk_image = result.image  # SimpleITK image
                     SimpleITK.WriteImage(sitk_image, str(out_mha_file))
             except UnconsumedFilesException as e:
-                # e.errors is keyed with a Path to a file that could not be consumed,
+                # e.file_errors is keyed with a Path to a file that could not be consumed,
                 # with a list of all the errors found with loading it,
                 # the user can then choose what to do with that information
-                print("CONVERT ERROR: UnconsumedFilesException during PanImg conversion: ", e.errors)
+                print("CONVERT ERROR: UnconsumedFilesException during PanImg conversion: ", e.file_errors)
                 return None
 
             return mha_data
@@ -113,10 +113,10 @@ class TiffPanImgConverter(DataConverter):
                     tiff_image = result.file  # Path to the tiff file
                     shutil.move(str(tiff_image), str(out_tiff_file))
             except UnconsumedFilesException as e:
-                # e.errors is keyed with a Path to a file that could not be consumed,
+                # e.file_errors is keyed with a Path to a file that could not be consumed,
                 # with a list of all the errors found with loading it,
                 # the user can then choose what to do with that information
-                print("CONVERT ERROR: UnconsumedFilesException during PanImg conversion: ", e.errors)
+                print("CONVERT ERROR: UnconsumedFilesException during PanImg conversion: ", e.file_errors)
                 return None
 
             return tiff_data

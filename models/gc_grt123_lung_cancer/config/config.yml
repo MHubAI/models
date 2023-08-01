@@ -1,0 +1,26 @@
+general:
+  data_base_dir: /app/data
+
+execute:
+  - DicomImporter
+  - MhaConverter
+  - LungCancerClassifierRunner
+  - DataOrganizer
+
+modules:
+  DicomImporter:
+    source_dir: input_data
+    import_dir: sorted_data
+    sort_data: True
+    meta: 
+      mod: ct
+
+  LungCancerClassifierRunner:
+    tmp_path: /app/tmp
+    n_preprocessing_workers: 8
+
+  DataOrganizer:
+    target_dir: output_data
+    require_data_confirmation: true
+    targets:
+      - json-->[i:sid]/gc_grt123_lung_cancer_findings.json

@@ -58,7 +58,12 @@ class LungCancerClassifierRunner(Module):
         tmp_output_bbox_dir.mkdir(exist_ok=True, parents=True)
         tmp_output_prep_dir.mkdir(exist_ok=True, parents=True)
 
-        n_gpu = 1 if torch.cuda.is_available() else 0
+        if torch.cuda.is_available():
+            self.v("Running with a GPU")
+            n_gpu = 1
+        else:
+            self.v("Running on the CPU, might be slow...")
+            n_gpu = 0
 
         # apply grt123 algorithm
         results = main.main(
