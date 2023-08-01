@@ -16,12 +16,10 @@ sys.path.append('.')
 from mhubio.core import Config, DataType, FileType, CT, SEG, Meta
 from mhubio.modules.importer.FileStructureImporter import FileStructureImporter
 from mhubio.modules.importer.DicomImporter import DicomImporter
-from mhubio.modules.importer.NrrdImporter import NrrdImporter
-from mhubio.modules.convert.NiftiConverter import NiftiConverter
-from mhubio.modules.runner.NNUnetRunner import NNUnetRunner
 from mhubio.modules.convert.DsegConverter import DsegConverter
 from mhubio.modules.organizer.DataOrganizer import DataOrganizer
-from models.gc_nnunet_pancreas import MhaImporter, GCNNUnetPancreasRunner, HEATMAP
+from models.gc_nnunet_pancreas import GCNNUnetPancreasRunner, HEATMAP
+from models.gc_nnunet_pancreas.utils import MhaPanImgConverter
 
 # clean-up
 import shutil
@@ -31,14 +29,12 @@ shutil.rmtree("/app/data/output_data", ignore_errors=True)
 
 # config
 config = Config('/app/models/gc_nnunet_pancreas/config/config.yml')
-config.verbose = True  # TODO: define levels of verbosity and integrate consistently. 
 
 # import (ct:dicom)
-#DicomImporter(config).execute()
+DicomImporter(config).execute()
 
-# import (ct:mha)
-MhaImporter(config).execute()
-#FileStructureImporter(config).execute()
+# convert (ct:dicom -> ct:mha)
+MhaPanImgConverter(config).execute()
 
 # execute model (nnunet ct:mha -> (hm:mha, seg:mha))
 GCNNUnetPancreasRunner(config).execute()

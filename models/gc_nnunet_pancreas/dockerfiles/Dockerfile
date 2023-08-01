@@ -1,6 +1,5 @@
 # Specify the base image for the environment
 FROM mhubai/base:latest
-# TODO add CUDA support since algorithm takes eons otherwise...
 
 # Specify/override authors label
 LABEL authors="sil.vandeleemput@radboudumc.nl"
@@ -33,7 +32,7 @@ RUN git clone --depth 1 https://github.com/DIAGNijmegen/CE-CT_PDAC_AutomaticDete
 # https://github.com/MIC-DKFZ/nnUNet/pull/1209
 ENV SKLEARN_ALLOW_DEPRECATED_SKLEARN_PACKAGE_INSTALL=True
 
-# Install nnUNet and other requirements
+# Install nnUNet and other requirements (should install PyTorch as well...)
 RUN pip3 install --no-cache-dir -r /opt/algorithm/requirements.txt
 
 # Extend the nnUNet installation with custom trainers
