@@ -20,7 +20,7 @@ from mhubio.modules.runner.NNUnetRunner import NNUnetRunner
 from models.casust.utils.CasustRunner import CasustRunner
 
 # config
-config = Config('/app/models/casust/config/slicer_config.yml')
+config = Config('/app/models/casust/config/slicer.yml')
 config.verbose = True  # TODO: define levels of verbosity and integrate consistently. 
 config.debug = False
 

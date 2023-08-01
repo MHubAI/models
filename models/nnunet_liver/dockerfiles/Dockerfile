@@ -1,5 +1,4 @@
-# Specify the base image for the environment
-FROM mhubai/base:cuda11.4
+FROM mhubai/base:latest
 
 # FIXME: set this environment variable as a shortcut to avoid nnunet crashing the build
 # by pulling sklearn instead of scikit-learn
@@ -12,8 +11,11 @@ ENV SKLEARN_ALLOW_DEPRECATED_SKLEARN_PACKAGE_INSTALL=True
 RUN pip3 install --no-cache-dir \
   nnunet 
 
-# Clone MHub model
-RUN svn checkout https://github.com/MHubAI/models/trunk/models/nnunet_liver /app/models/nnunet_liver
+# Clone the main branch of MHubAI/models
+RUN git stash \
+ && git sparse-checkout set "models/nnunet_liver" \
+ && git fetch https://github.com/MHubAI/models.git main \
+ && git merge FETCH_HEAD
 
 # pull weights for platipy's nnU-Net so that the user doesn't need to every time a container is run
 ENV WEIGHTS_DIR="/root/.nnunet/nnUNet_models/nnUNet/"
@@ -28,4 +30,5 @@ RUN rm ${WEIGHTS_DIR}${WEIGHTS_FN}
 ENV WEIGHTS_FOLDER=$WEIGHTS_DIR
 
 # Default run script
-CMD ["python3", "/app/mmodelshub/nnunet_liver/scripts/run.py"]
+ENTRYPOINT ["python3", "-m", "mhubio.run"]
+CMD ["--config", "/app/models/nnunet_liver/config/default.yml"]

@@ -7,6 +7,7 @@ execute:
   - NrrdImporter
   - NiftiConverter
   - NNUnetRunner
+  - JsonSegExporter
   - DataOrganizer
 
 modules:
@@ -20,8 +21,14 @@ modules:
     nnunet_task: Task007_Pancreas
     nnunet_model: 3d_lowres
     export_prob_maps: False
-    roi: pancreas
+    roi: PANCREAS,PANCREAS+NEOPLASM_MALIGNANT_PRIMARY
     
+  JsonSegExporter:
+    segment_id_meta_key: roi
+    targets:
+    - nifti:mod=seg-->[basename]
+
   DataOrganizer:
     targets:
-    - nifti:mod=seg-->/app/data/output_data/[d:roi].nii.gz
+    - nifti:mod=seg-->[basename]
+    - json:mod=seg-->segdef.json

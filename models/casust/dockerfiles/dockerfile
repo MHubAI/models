@@ -1,5 +1,4 @@
-# Specify the base image for the environment
-FROM mhubai/base:cuda12.0
+FROM mhubai/base:latest
 
 # FIXME: set this environment variable as a shortcut to avoid nnunet crashing the build
 # by pulling sklearn instead of scikit-learn
@@ -15,16 +14,11 @@ RUN pip3 install --no-cache-dir \
   torchvision \
   torchio
 
-# Install the latest mhubio and segdb version (not required if base images are up tp date)
-#RUN pip3 uninstall -y mhubio segdb \
-# && pip3 install git+https://github.com/MHubAI/mhubio.git \
-# && pip3 install git+https://github.com/MHubAI/segdb.git
-
-# Clone MHub model (m-casust branch, fixed to commit be83ca516729ce2ca9b578d53e11cf5745f58164)
-RUN git init \
+# Clone the main branch of MHubAI/models
+RUN git stash \
  && git sparse-checkout set "models/casust" \
- && git fetch https://github.com/MHubAI/models.git m-casust \
- && git merge be83ca516729ce2ca9b578d53e11cf5745f58164
+ && git fetch https://github.com/MHubAI/models.git main \
+ && git merge FETCH_HEAD
 
 # Clone the casust model
 RUN git clone https://github.com/LennyN95/CaSuSt /app/models/casust/src
@@ -51,4 +45,5 @@ RUN rm ${WEIGHTS_DIR}${WEIGHTS_FN}
 ENV WEIGHTS_FOLDER=$WEIGHTS_DIR
 
 # Default run script
-CMD ["python3", "-m", "mhubio.run", "--config", "/app/models/casust/config/config.yml"]
+ENTRYPOINT ["python3", "-m", "mhubio.run"]
+CMD ["--config", "/app/models/casust/config/default.yml"]

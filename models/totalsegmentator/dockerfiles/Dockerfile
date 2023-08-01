@@ -1,5 +1,4 @@
-# Specify the base image for the environment
-FROM mhubai/base:cuda11.4
+FROM mhubai/base:latest
 
 # FIXME: set this environment variable as a shortcut to avoid nnunet crashing the build
 # by pulling sklearn instead of scikit-learn
@@ -11,8 +10,11 @@ ENV SKLEARN_ALLOW_DEPRECATED_SKLEARN_PACKAGE_INSTALL=True
 # Install TotalSegmentator
 RUN pip3 install --no-cache-dir TotalSegmentator 
 
-# Clone MHub model
-RUN svn checkout https://github.com/MHubAI/models/trunk/models/totalsegmentator /app/models/totalsegmentator
+# Clone the main branch of MHubAI/models
+RUN git stash \
+ && git sparse-checkout set "models/totalsegmentator" \
+ && git fetch https://github.com/MHubAI/models.git main \
+ && git merge FETCH_HEAD
 
 # Download weights using the script in utils
 # Usage: utils/download_weights.sh <weights_dir> <url1> <url2> ...
@@ -26,4 +28,5 @@ RUN utils/download_weights.sh \
   https://zenodo.org/record/6802452/files/Task255_TotalSegmentator_part5_ribs_1139subj.zip
 
 # Default run script
-CMD ["python3", "-m", "mhubio.run", "--config", "/app/models/totalsegmentator/config/config.yml"]
+ENTRYPOINT ["python3", "-m", "mhubio.run"]
+CMD ["--config", "/app/models/totalsegmentator/config/default.yml"]

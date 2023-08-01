@@ -1,0 +1,29 @@
+general:
+  data_base_dir: /app/data
+  version: 1.0
+  description: LungMask segmentation default (dicom to dicom)
+
+execute:
+- NrrdImporter
+- NiftiConverter
+- LungMaskRunner
+- JsonSegExporter
+- DataOrganizer
+
+modules:
+  NrrdImporter:
+    input_dir: input_data
+    input_file_name: image.nrrd
+
+  LungMaskRunner:
+    batchsize: 32
+
+  JsonSegExporter:
+    segment_id_meta_key: roi
+    targets:
+    - nifti:mod=seg-->[basename]
+
+  DataOrganizer:
+    targets:
+    - nifti:mod=seg-->[basename]
+    - json:mod=seg-->segdef.json
