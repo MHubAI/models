@@ -13,12 +13,11 @@ Email:  sil.vandeleemput@radboudumc.nl
 import sys
 sys.path.append('.')
 
-from mhubio.core import Config, DataType, FileType, CT, SEG, Meta
-from mhubio.modules.importer.FileStructureImporter import FileStructureImporter
+from mhubio.core import Config
 from mhubio.modules.importer.DicomImporter import DicomImporter
 from mhubio.modules.convert.DsegConverter import DsegConverter
 from mhubio.modules.organizer.DataOrganizer import DataOrganizer
-from models.gc_nnunet_pancreas import GCNNUnetPancreasRunner, HEATMAP
+from models.gc_nnunet_pancreas import GCNNUnetPancreasRunner
 from models.gc_nnunet_pancreas.utils import MhaPanImgConverter
 
 # clean-up
@@ -39,12 +38,8 @@ MhaPanImgConverter(config).execute()
 # execute model (nnunet ct:mha -> (hm:mha, seg:mha))
 GCNNUnetPancreasRunner(config).execute()
 
-# convert (seg:nifti -> seg:dcm)
-# DsegConverter(config).execute()
+# convert (seg:mha -> seg:dcm)
+DsegConverter(config).execute()
 
 # organize data into output folder
-organizer = DataOrganizer(config, set_file_permissions=sys.platform.startswith('linux'))
-organizer.setTarget(DataType(FileType.MHA, HEATMAP), "/app/data/output_data/[i:sid]/heatmap.mha")
-organizer.setTarget(DataType(FileType.MHA, SEG), "/app/data/output_data/[i:sid]/pancreas.seg.mha")
-#organizer.setTarget(DataType(FileType.DICOMSEG, SEG), "/app/data/output_data/[i:sid]/pancreas.seg.dcm")
-organizer.execute()
+DataOrganizer(config, set_file_permissions=sys.platform.startswith('linux')).execute()

@@ -1,11 +1,11 @@
 {
-  "ContentCreatorName": "Reader1",
-  "ClinicalTrialSeriesID": "Session1",
+  "ContentCreatorName": "IDC",
+  "ClinicalTrialSeriesID": "0",
   "ClinicalTrialTimePointID": "1",
   "SeriesDescription": "Segmentation",
-  "SeriesNumber": "300",
+  "SeriesNumber": "42",
   "InstanceNumber": "1",
-  "BodyPartExamined": "Pancreas",
+  "BodyPartExamined": "ABDOMEN",
   "segmentAttributes": [
     [
       {

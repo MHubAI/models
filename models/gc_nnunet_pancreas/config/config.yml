@@ -1,10 +1,16 @@
 general:
   version: 1.0
   data_base_dir: /app/data
-  description: base configuration for nnunet pancreas PDAC model
+  description: base configuration for GC NNUnet Pancreas model (dicom to dicom)
+
+execute:
+- DicomImporter
+- MHAConverter
+- GCNNUnetPancreasRunner
+- DsegConverter
+- DataOrganizer
 
 modules:
-
   DicomImporter:
     source_dir: input_data
     import_dir: sorted_data
@@ -12,22 +18,20 @@ modules:
     meta: 
       mod: ct
 
-  MhaImporter:
-    source_dir: input_data
-    import_dir: sorted_data
+  MHAConverter:
+  # TODO add panimg backend here...
 
   GCNNUnetPancreasRunner:
 
-# TODO configure DsegConverter
-#  DsegConverter:
-#    #source_segs: [nifti:mod=seg]
-#    #json_config_path: /app/models/nnunet_pancreas/config/dseg.json
-#    source_segs: [mha:mod=seg:roi=*]
-#    model_name: GC NNUnet Pancreas
-#    skip_empty_slices: True
+  DsegConverter:
+    model_name: 'GC NNUnet Pancreas'
+    source_segs: ['mha:mod=seg']
+    target_dicom: dicom:mod=ct
+    skip_empty_slices: True
+    json_config_path: /app/models/gc_nnunet_pancreas/config/dseg.json
 
   DataOrganizer:
     targets:
-    - mha:mod=heatmap-->/app/data/output_data/[i:sid]/heatmap.mha
-    - mha:mod=seg-->/app/data/output_data/[i:sid]/pancreas.seg.mha
-#    - dicomseg:mod=seg-->/app/data/output_data/[i:sid]/pancreas.seg.dcm
+    - mha:mod=heatmap-->[i:sid]/nnunet_pancreas_heatmap.mha
+    - mha:mod=seg-->[i:sid]/nnunet_pancreas.seg.mha
+    - dicomseg:mod=seg-->[i:sid]/nnunet_pancreas.seg.dcm
