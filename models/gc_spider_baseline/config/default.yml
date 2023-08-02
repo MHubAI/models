@@ -1,0 +1,30 @@
+general:
+  data_base_dir: /app/data
+  version: 1.0
+  description: SPIDER baseline segment vertebrae in Sagittal Spine MRI (dicom to dicomseg)
+  
+execute:
+- DicomImporter
+- MhaConverter
+- SpiderBaselineRunner
+- DSegConverter
+- DataOrganizer
+
+modules:
+  DicomImporter:
+    source_dir: input_data
+    import_dir: sorted_data
+    sort_data: True
+    meta: 
+      mod: mri
+
+  MhaConverter:
+    # TODO add panimg backend
+
+  DSegConverter:
+    # TODO prepare dseg.json and configure here...
+
+  DataOrganizer:
+    targets:
+      - mha:seg-->[i:sid]/spider_baseline_vertebrae_segmentation.mha
+      - dicomseg-->[i:sid]/spider_baseline_vertebrae_segmentation.seg.dicom
