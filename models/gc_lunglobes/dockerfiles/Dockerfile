@@ -1,7 +1,7 @@
 FROM mhubai/base:latest
 
 # Update authors label
-LABEL authors="s.vandeleemput@radboudumc.nl,dbontempi@bwh.harvard.edu,lnuernberg@bwh.harvard.edu"
+LABEL authors="sil.vandeleemput@radboudumc.nl,dbontempi@bwh.harvard.edu,lnuernberg@bwh.harvard.edu"
 
 # Install system dependencies for OpenCV
 RUN apt-get update && apt-get install ffmpeg libsm6 libxext6 -y
