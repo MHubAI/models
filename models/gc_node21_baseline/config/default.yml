@@ -1,0 +1,25 @@
+general:
+  data_base_dir: /app/data
+  version: 1.0
+  description: GC Node21 Baseline nodule prediction from chest X-Rays (dicom to json)
+  
+execute:
+- DicomImporter
+- MhaConverter
+- Node21BaselineRunner
+- DataOrganizer
+
+modules:
+  DicomImporter:
+    source_dir: input_data
+    import_dir: sorted_data
+    sort_data: True
+    meta: 
+      mod: cr
+
+  MhaConverter:
+    # TODO should be set to panimg backend
+
+  DataOrganizer:
+    targets:
+      - json-->[i:sid]/nodules.json
