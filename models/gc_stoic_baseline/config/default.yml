@@ -1,7 +1,7 @@
 general:
   data_base_dir: /app/data
   version: 1.0
-  description: STOIC basline predict COIVD 19 probability scores from CT Lung (dicom to json)
+  description: STOIC baseline predict COVID 19 probability scores from CT Lung (dicom to json)
   
 execute:
 - DicomImporter
