@@ -8,7 +8,7 @@ RUN pip3 install --no-cache-dir torch==2.0.1+cu118 -f https://download.pytorch.o
 
 # Install stoic2021 baseline algorithm
 #  - Git shallow clone to tmp directory
-#  - Extract relevant files to /opt/algorithm
+#  - Extract relevant files to src
 #  - Remove tmp directory
 RUN git clone --depth 1 https://github.com/luukboulogne/stoic2021-baseline.git /tmp/algorithm && \
     mkdir src && \
