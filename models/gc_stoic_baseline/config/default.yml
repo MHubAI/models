@@ -1,0 +1,25 @@
+general:
+  data_base_dir: /app/data
+  version: 1.0
+  description: STOIC basline predict COIVD 19 probability scores from CT Lung (dicom to json)
+  
+execute:
+- DicomImporter
+- MhaConverter
+- StoicBaselineRunner
+- DataOrganizer
+
+modules:
+  DicomImporter:
+    source_dir: input_data
+    import_dir: sorted_data
+    sort_data: True
+    meta: 
+      mod: ct
+
+  MhaConverter:
+    # TODO add panimg backend
+
+  DataOrganizer:
+    targets:
+      - json-->[i:sid]/gc_stoic_baseline_covid_scores.json
