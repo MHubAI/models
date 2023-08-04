@@ -23,7 +23,7 @@ class Node21BaselineRunner(Module):
 
     @IO.Instance()
     @IO.Input('in_data', 'mha|nrrd|nifti:mod=cr', the='input chest X-Ray')
-    @IO.Output('out_data', 'nodules.json', 'json:model=Node21Baseline', 'in_data', the='Stoic baseline bounding box nodule predictions')
+    @IO.Output('out_data', 'nodules.json', 'json:model=Node21Baseline', 'in_data', the='Node21 baseline nodule prediction')
     def task(self, instance: Instance, in_data: InstanceData, out_data: InstanceData) -> None:
         input_image = SimpleITK.ReadImage(in_data.abspath)
         tmp_path = Path("/app/tmp")
