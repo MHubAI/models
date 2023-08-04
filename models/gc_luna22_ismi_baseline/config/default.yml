@@ -1,0 +1,22 @@
+general:
+  data_base_dir: /app/data
+  version: 1.0
+  description: LUNA22 ISMI Baseline lung CT nodule malignancy and nodule type classification (dicom to json)
+  
+execute:
+- DicomImporter
+- MhaConverter
+- Luna22IsmiBaselineRunner
+- DataOrganizer
+
+modules:
+  DicomImporter:
+    source_dir: input_data
+    import_dir: sorted_data
+    sort_data: True
+    meta: 
+      mod: ct
+
+  DataOrganizer:
+    targets:
+      - json-->[i:sid]/nodule_predictions.json
