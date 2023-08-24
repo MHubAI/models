@@ -1,0 +1,33 @@
+general:
+  data_base_dir: /app/data
+  version: 1.0
+  description: default configuration for Bamf NNUnet Kidney segmentation (dicom to dicom)
+
+execute:
+- DicomImporter
+- NiftiConverter
+- NNUnetRunner
+- DsegConverter
+- DataOrganizer
+
+modules:
+  DicomImporter:
+    source_dir: input_data
+    import_dir: sorted_data
+    sort_data: true
+    meta: 
+      mod: '%Modality'
+
+  NNUnetRunner:
+    nnunet_task: 'Task779_Kidneys_KIRC'
+    nnunet_model: '3d_fullres'
+    
+  DsegConverter:
+    source_segs: ['nifti:mod=seg']
+    model_name: 'NNUnet Kidney'
+    skip_empty_slices: True
+    json_config_path: '/app/models/nnunet_kidney/config/meta.json'
+
+  DataOrganizer:
+    targets:
+    - dicomseg-->[i:sid]/nnunet_kidney.seg.dcm
