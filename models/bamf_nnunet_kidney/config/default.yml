@@ -23,11 +23,11 @@ modules:
     nnunet_model: '3d_fullres'
     
   DsegConverter:
-    source_segs: ['nifti:mod=seg']
-    model_name: 'NNUnet Kidney'
+    source_segs: 'nifti:mod=seg'
+    model_name: 'Bamf NNUnet CT Kidney'
     skip_empty_slices: True
     json_config_path: '/app/models/nnunet_kidney/config/meta.json'
 
   DataOrganizer:
     targets:
-    - dicomseg-->[i:sid]/nnunet_kidney.seg.dcm
+    - dicomseg-->[i:sid]/bamf_nnunet_ct_kidney.seg.dcm
