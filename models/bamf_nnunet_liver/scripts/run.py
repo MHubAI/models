@@ -19,6 +19,8 @@ from mhubio.modules.convert.NiftiConverter import NiftiConverter
 from mhubio.modules.runner.NNUnetRunner import NNUnetRunner
 from mhubio.modules.convert.DsegConverter import DsegConverter
 from mhubio.modules.organizer.DataOrganizer import DataOrganizer
+from BamfProcessor import BamfProcessorRunner
+
 
 # clean-up
 import shutil
@@ -38,6 +40,10 @@ NiftiConverter(config).execute()
 
 # execute model (nnunet)
 NNUnetRunner(config).execute()
+
+# convert (ct:nifti -> ct:nifti)
+# Postprocessing: Remove small blobs from segment
+BamfProcessorRunner(config).execute()
 
 # convert (seg:nifti -> seg:dcm)
 DsegConverter(config).execute()

@@ -18,14 +18,13 @@ RUN git stash \
  && git merge FETCH_HEAD
 
 # Pull weights into the container
-ENV WEIGHTS_DIR="/root/.nnunet/nnUNet_models/nnUNet"
+ENV WEIGHTS_DIR=/root/.nnunet/nnUNet_models/nnUNet/
 RUN mkdir -p $WEIGHTS_DIR
-ENV MODEL_VERSION="bamf_nnunet_liver/v1"
-ENV WEIGHTS_FILE="Task773_Liver.zip"
-ENV WEIGHTS_URL=https://storage.googleapis.com/dev-mhub-resource/$MODEL_VERSION/$WEIGHTS_FILE
-RUN curl -o $WEIGHTS_DIR/$WEIGHTS_FILE $WEIGHTS_URL
-RUN unzip $WEIGHTS_DIR/$WEIGHTS_FILE -d $WEIGHTS_DIR
-RUN rm $WEIGHTS_DIR/$WEIGHTS_FILE
+ENV WEIGHTS_FN=Task773_Liver.zip
+ENV WEIGHTS_URL=https://zenodo.org/record/8274976/files/$WEIGHTS_FN
+RUN wget --directory-prefix ${WEIGHTS_DIR} ${WEIGHTS_URL}
+RUN unzip ${WEIGHTS_DIR}${WEIGHTS_FN} -d ${WEIGHTS_DIR}
+RUN rm ${WEIGHTS_DIR}${WEIGHTS_FN}
 
 # specify nnunet specific environment variables
 ENV WEIGHTS_FOLDER=$WEIGHTS_DIR
@@ -33,8 +32,12 @@ ENV WEIGHTS_FOLDER=$WEIGHTS_DIR
 #####################################################################################
 # Copy changes to config if you have any
 #####################################################################################
+RUN mkdir -p /app/models/nnunet_liver/config/
 COPY config/* /app/models/nnunet_liver/config/
+
+RUN mkdir -p /app/models/nnunet_liver/scripts/
+COPY scripts/* /app/models/nnunet_liver/scripts/
 
 # Default run script
 ENTRYPOINT ["python3", "-m", "mhubio.run"]
-CMD ["--config", "/app/models/nnunet_liver/config/default.yml"]
+CMD ["--script", "/app/models/nnunet_liver/scripts/run.py"]

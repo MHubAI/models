@@ -21,12 +21,13 @@ modules:
   NNUnetRunner:
     nnunet_task: 'Task773_Liver'
     nnunet_model: '3d_fullres'
-    roi: LIVER,LIVER+NEOPLASM_MALIGNANT_PRIMARY
+    roi: LIVER
     
   DsegConverter:
     source_segs: ['nifti:mod=seg']
     model_name: 'NNUnet Liver'
     skip_empty_slices: True
+    json_config_path: '/app/models/nnunet_liver/config/meta.json'
 
   DataOrganizer:
     targets:
