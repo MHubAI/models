@@ -24,11 +24,11 @@ modules:
     roi: LIVER
     
   DsegConverter:
-    source_segs: ['nifti:mod=seg']
-    model_name: 'NNUnet Liver'
+    source_segs: 'nifti:mod=seg'
+    model_name: 'Bamf NNUnet CT Liver'
     skip_empty_slices: True
     json_config_path: '/app/models/nnunet_liver/config/meta.json'
 
   DataOrganizer:
     targets:
-    - dicomseg-->[i:sid]/nnunet_liver.seg.dcm
+    - dicomseg-->[i:sid]/bamf_nnunet_ct_liver.seg.dcm
