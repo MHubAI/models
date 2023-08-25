@@ -39,5 +39,5 @@ RUN mkdir -p /app/models/nnunet_liver/scripts/
 COPY scripts/* /app/models/nnunet_liver/scripts/
 
 # Default run script
-ENTRYPOINT ["python3", "-m", "mhubio.run"]
+ENTRYPOINT ["python3", "-m", "mhubio.run", "--config", "/app/models/nnunet_liver/config/default.yml"]
 CMD ["--script", "/app/models/nnunet_liver/scripts/run.py"]
