@@ -26,7 +26,7 @@ modules:
     source_segs: 'nifti:mod=seg'
     model_name: 'Bamf NNUnet CT Kidney'
     skip_empty_slices: True
-    json_config_path: '/app/models/nnunet_kidney/config/meta.json'
+    json_config_path: '/app/models/bamf_nnunet_ct_kidney/config/meta.json'
 
   DataOrganizer:
     targets:

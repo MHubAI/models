@@ -1,7 +1,7 @@
 general:
   data_base_dir: /app/data
   version: 1.0
-  description: configuration for Bamf NNUnet Kidney segmentation  in 3D Slicer (nrrd to nifti)
+  description: configuration for Bamf NNUnet Kidney segmentation in 3D Slicer (nrrd to nifti)
 
 execute:
 - NrrdImporter
@@ -21,7 +21,7 @@ modules:
     - nifti:mod=seg-->[basename]
 
   NNUnetRunner:
-    nnunet_task: 'Task779_Kidney'
+    nnunet_task: 'Task779_Kidneys_KIRC'
     nnunet_model: '3d_fullres'
     roi: KIDNEY
 

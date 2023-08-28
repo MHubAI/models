@@ -29,7 +29,7 @@ shutil.rmtree("/app/tmp", ignore_errors=True)
 shutil.rmtree("/app/data/output_data", ignore_errors=True)
 
 # config
-config = Config('/app/models/nnunet_kidney/config/config.yml')
+config = Config('/app/models/bamf_nnunet_ct_kidney/config/default.yml')
 config.verbose = True  # TODO: define levels of verbosity and integrate consistently. 
 
 # import (ct:dicom)
