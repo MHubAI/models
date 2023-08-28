@@ -1,7 +1,7 @@
 general:
   data_base_dir: /app/data
   version: 1.0
-  description: default configuration for Bamf NNUnet Liver segmentation (dicom to dicom)
+  description: default configuration for Bamf NNUnet CT Liver segmentation (dicom to dicom)
 
 execute:
 - DicomImporter
@@ -27,7 +27,7 @@ modules:
     source_segs: 'nifti:mod=seg'
     model_name: 'Bamf NNUnet CT Liver'
     skip_empty_slices: True
-    json_config_path: '/app/models/nnunet_liver/config/meta.json'
+    json_config_path: '/app/models/bamf_nnunet_ct_liver/config/meta.json'
 
   DataOrganizer:
     targets:

@@ -13,7 +13,7 @@ RUN pip3 install --no-cache-dir \
 
 # Clone the main branch of MHubAI/models
 RUN git stash \
- && git sparse-checkout set "models/bamf_nnunet_liver" \
+ && git sparse-checkout set "models/bamf_nnunet_ct_liver" \
  && git fetch https://github.com/MHubAI/models.git main \
  && git merge FETCH_HEAD
 
@@ -32,12 +32,12 @@ ENV WEIGHTS_FOLDER=$WEIGHTS_DIR
 #####################################################################################
 # Copy changes to config if you have any
 #####################################################################################
-RUN mkdir -p /app/models/nnunet_liver/config/
-COPY config/* /app/models/nnunet_liver/config/
+RUN mkdir -p /app/models/bamf_nnunet_ct_liver/config/
+COPY config/* /app/models/bamf_nnunet_ct_liver/config/
 
-RUN mkdir -p /app/models/nnunet_liver/scripts/
-COPY scripts/* /app/models/nnunet_liver/scripts/
+RUN mkdir -p /app/models/bamf_nnunet_ct_liver/scripts/
+COPY scripts/* /app/models/bamf_nnunet_ct_liver/scripts/
 
 # Default run script
-ENTRYPOINT ["python3", "-m", "mhubio.run", "--config", "/app/models/nnunet_liver/config/default.yml"]
-CMD ["--script", "/app/models/nnunet_liver/scripts/run.py"]
+ENTRYPOINT ["python3", "-m", "mhubio.run", "--config", "/app/models/bamf_nnunet_ct_liver/config/default.yml"]
+CMD ["--script", "/app/models/bamf_nnunet_ct_liver/scripts/run.py"]

@@ -19,7 +19,7 @@ from mhubio.modules.runner.NNUnetRunner import NNUnetRunner
 from mhubio.modules.organizer.DataOrganizer import DataOrganizer
 
 # config
-config = Config('/app/models/nnunet_liver/config/slicer.yml')
+config = Config('/app/models/bamf_nnunet_ct_liver/config/slicer.yml')
 config.verbose = True  
 
 # import nrrd data provided by slicer
