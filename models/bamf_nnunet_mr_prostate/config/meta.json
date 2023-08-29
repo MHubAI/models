@@ -1,0 +1,33 @@
+{
+  "ContentCreatorName": "BAMFHealth^AI",
+  "ClinicalTrialSeriesID": "Session1",
+  "ClinicalTrialTimePointID": "1",
+  "SeriesDescription": "AIMI Prostate Segmentation",
+  "SeriesNumber": "300",
+  "InstanceNumber": "1",
+  "BodyPartExamined": "PROSTATE",
+  "segmentAttributes": [
+    [
+      {
+        "labelID": 1,
+        "SegmentDescription": "Prostate",
+        "SegmentAlgorithmType": "AUTOMATIC",
+        "SegmentAlgorithmName": "BAMF-Prostate-MR",
+        "SegmentedPropertyCategoryCodeSequence": {
+          "CodeValue": "123037004",
+          "CodingSchemeDesignator": "SCT",
+          "CodeMeaning": "Anatomical Structure"
+        },
+        "SegmentedPropertyTypeCodeSequence": {
+          "CodeValue": "41216001",
+          "CodingSchemeDesignator": "SCT",
+          "CodeMeaning": "Prostate"
+        },
+        "recommendedDisplayRGBValue": [230, 158, 140]
+      }
+    ]
+  ],
+  "ContentLabel": "SEGMENTATION",
+  "ContentDescription": "Image segmentation",
+  "ClinicalTrialCoordinatingCenterName": "dcmqi"
+}
