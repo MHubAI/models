@@ -7,6 +7,7 @@ execute:
 - DicomImporter
 - MhaConverter
 - Luna22IsmiBaselineRunner
+- ReportExporter
 - DataOrganizer
 
 modules:
@@ -17,6 +18,19 @@ modules:
     meta: 
       mod: ct
 
+  MhaConverter:
+    engine: panimg
+
+  ReportExporter:
+    format: compact
+    includes:
+      - data: malignancy_risk
+        label: malignancy_risk
+        value: value
+      - data: texture
+        label: texture
+        value: value
+
   DataOrganizer:
     targets:
-      - json-->[i:sid]/nodule_predictions.json
+      - json:mod=report-->[i:sid]/nodule_predictions.json
