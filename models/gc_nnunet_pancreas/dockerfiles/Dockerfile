@@ -42,5 +42,6 @@ RUN SITE_PKG=`pip3 show nnunet | grep "Location:" | awk '{print $2}'` && \
 # Add algorithm files to python path
 ENV PYTHONPATH=/opt/algorithm:/app
 
-# Default run script
-CMD ["python3", "/app/models/gc_nnunet_pancreas/scripts/run.py"]
+# Configure main entrypoint
+ENTRYPOINT ["python3", "-m", "mhubio.run"]
+CMD ["--config", "/app/models/gc_nnunet_pancreas/config/default.yml"]

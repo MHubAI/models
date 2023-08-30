@@ -5,7 +5,7 @@ general:
 
 execute:
 - DicomImporter
-- MHAConverter
+- MhaConverter
 - GCNNUnetPancreasRunner
 - DsegConverter
 - DataOrganizer
@@ -18,10 +18,8 @@ modules:
     meta: 
       mod: ct
 
-  MHAConverter:
-  # TODO add panimg backend here...
-
-  GCNNUnetPancreasRunner:
+  MhaConverter:
+    engine: panimg
 
   DsegConverter:
     model_name: 'GC NNUnet Pancreas'

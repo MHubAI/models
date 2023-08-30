@@ -1,2 +1,1 @@
-from .GCnnUnetPancreasRunner import *
-from .PanImgConverters import *
+from .GCNNUnetPancreasRunner import *
