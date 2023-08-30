@@ -52,9 +52,7 @@ class OdeColonGlandsSegmentationRunner(Module):
 
         self.v("Applying ODE Colon Glands segmentation")
         seg_result_np, _ = inference_image(net, img_pil, shouldpad=False)
-        self.v(seg_result_np.shape)
         seg_result_np = postprocess(seg_result_np, img_pil)
-        self.v(seg_result_np.shape)
 
         self.v(f"Writing image to {out_data.abspath}")
         seg_itk = sitk.GetImageFromArray(seg_result_np)
