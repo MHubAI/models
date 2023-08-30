@@ -36,7 +36,7 @@ class OdeColonGlandsSegmentationRunner(Module):
         self.v(f"Reading image from {in_data.abspath}")
         img_itk = sitk.ReadImage(in_data.abspath)
         img_np = sitk.GetArrayFromImage(img_itk)
-        assert img_np.shape[2] == 3 and len(img_np.shape) == 3, "Input image should have three dimensions with last dimension the number of colors (3)"
+        assert img_np.shape[2] == 3 and len(img_np.shape) == 3, f"Input image should have three dimensions with last dimension the number of colors (3), found: {img_np.shape}"
         img_pil = Image.fromarray(img_np)
 
         if self.CACHED_MODEL is None:
@@ -58,5 +58,8 @@ class OdeColonGlandsSegmentationRunner(Module):
 
         self.v(f"Writing image to {out_data.abspath}")
         seg_itk = sitk.GetImageFromArray(seg_result_np)
-        seg_itk.CopyInformation(img_itk)
+        if len(img_itk.GetSize()) == 3:
+            seg_itk.CopyInformation(img_itk[0, :, :])
+        else:
+            seg_itk.CopyInformation(img_itk)
         sitk.WriteImage(seg_itk, out_data.abspath)
