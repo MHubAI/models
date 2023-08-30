@@ -1,0 +1,31 @@
+general:
+  data_base_dir: /app/data
+  version: 1.0
+  description: Ordinary Differential Equations algorithm for segmentation of individual colon glands (dicom to dicom)
+  
+execute:
+- DicomImporter
+- MhaConverter
+- OdeColonGlandsSegmentationRunner
+- DSegConverter
+- DataOrganizer
+
+modules:
+  DicomImporter:
+    source_dir: input_data
+    import_dir: sorted_data
+    sort_data: True
+    meta: 
+      mod: wsi
+
+  MhaConverter:
+    engine: panimg
+
+# TODO How to configure the DSegConverter / dseg file???
+  DsegConverter:
+    dicomseg_json_path: /app/models/gc_ode_colon_glands/config/dseg.json
+    skip_empty_slices: True
+
+  DataOrganizer:
+    targets:
+      - dicomseg:mod=seg-->[i:sid]/gc_ode_colon_glands.seg.dcm

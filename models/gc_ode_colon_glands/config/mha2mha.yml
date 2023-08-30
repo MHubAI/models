@@ -1,0 +1,19 @@
+general:
+  data_base_dir: /app/data
+  version: 1.0
+  description: Ordinary Differential Equations algorithm for segmentation of individual colon glands (mha to mha)
+
+execute:
+- FileStructureImporter
+- OdeColonGlandsSegmentationRunner
+- DataOrganizer
+
+modules:
+  FileStructureImporter:
+    input_dir: 'input_data'
+    structures:
+      - '$sid/test.mha@instance@mha:mod=wsi'
+
+  DataOrganizer:
+    targets:
+      - mha:mod=seg-->[i:sid]/gc_ode_colon_glands.mha
