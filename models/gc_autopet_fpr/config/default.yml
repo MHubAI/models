@@ -1,0 +1,19 @@
+general:
+  data_base_dir: /app/data
+  version: 1.0
+  description: AutoPET False Positive Reduction nnUNet algorithm (mha to mha)
+
+execute:
+- FileStructureImporter
+- OdeColonGlandsSegmentationRunner
+- DataOrganizer
+
+modules:
+  FileStructureImporter:
+    input_dir: 'input_data'
+    structures:
+      - '$sid/test.mha@instance@mha:mod=wsi'
+
+  DataOrganizer:
+    targets:
+      - mha:mod=seg-->[i:sid]/gc_ode_colon_glands.mha
