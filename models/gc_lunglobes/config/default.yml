@@ -19,9 +19,11 @@ modules:
     meta: 
       mod: ct
 
+  MhaConverter:
+    engine: plastimatch
+
   NiftiConverter:
-    targets: 
-    - mha:mod=seg
+    in_datas: mha:mod=seg
 
   DsegConverter:
     model_name: GCLungLobes
