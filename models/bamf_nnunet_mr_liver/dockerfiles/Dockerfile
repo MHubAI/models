@@ -11,17 +11,17 @@ ENV SKLEARN_ALLOW_DEPRECATED_SKLEARN_PACKAGE_INSTALL=True
 RUN pip3 install --no-cache-dir \
   nnunet 
 
-# Clone the main branch of MHubAI/models
-RUN git stash \
- && git sparse-checkout set "models/bamf_nnunet_mr_liver" \
- && git fetch https://github.com/MHubAI/models.git main \
- && git merge FETCH_HEAD
+# # Clone the main branch of MHubAI/models
+# RUN git stash \
+#  && git sparse-checkout set "models/bamf_nnunet_mr_liver" \
+#  && git fetch https://github.com/MHubAI/models.git main \
+#  && git merge FETCH_HEAD
 
 # Pull weights into the container
 ENV WEIGHTS_DIR=/root/.nnunet/nnUNet_models/nnUNet/
 RUN mkdir -p $WEIGHTS_DIR
 ENV WEIGHTS_FN=Task882_MR_Liver.zip
-ENV WEIGHTS_URL=https://zenodo.org/record/8289292/files/$WEIGHTS_FN
+ENV WEIGHTS_URL=https://zenodo.org/record/8290124/files/$WEIGHTS_FN
 RUN wget --directory-prefix ${WEIGHTS_DIR} ${WEIGHTS_URL}
 RUN unzip ${WEIGHTS_DIR}${WEIGHTS_FN} -d ${WEIGHTS_DIR}
 RUN rm ${WEIGHTS_DIR}${WEIGHTS_FN}

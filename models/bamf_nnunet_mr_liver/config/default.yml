@@ -19,14 +19,17 @@ modules:
       mod: 'mr'
 
   NNUnetRunner:
-    nnunet_task: 'Task882_MR_Liver'
+    in_data: 'nifty:mod=mr'
+    nnunet_task: 'Task882_Liver_AMD'
     nnunet_model: '3d_fullres'
+    folds: '5'
     roi: LIVER
     meta: 
       mod: 'mr'
 
   DsegConverter:
     source_segs: 'nifti:mod=seg'
+    target_dicom: 'dicom:mod=mr'
     model_name: 'Bamf NNUnet MR Liver'
     skip_empty_slices: True
     json_config_path: '/app/models/bamf_nnunet_mr_liver/config/meta.json'
