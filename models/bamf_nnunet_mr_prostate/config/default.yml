@@ -19,11 +19,14 @@ modules:
       mod: 'mr'
 
   NNUnetRunner:
+    in_data: 'nifty:mod=mr'
     nnunet_task: 'Task788_ProstateX'
     nnunet_model: '3d_fullres'
+    folds: '5'
 
   DsegConverter:
     source_segs: 'nifti:mod=seg'
+    target_dicom: 'dicom:mod=mr'
     model_name: 'Bamf NNUnet MR Prostate'
     skip_empty_slices: True
     json_config_path: '/app/models/bamf_nnunet_mr_prostate/config/meta.json'
