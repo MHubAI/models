@@ -19,10 +19,9 @@ modules:
       mod: 'mr'
 
   NNUnetRunner:
-    in_data: 'nifty:mod=mr'
+    in_data: 'nifti:mod=mr'
     nnunet_task: 'Task788_ProstateX'
     nnunet_model: '3d_fullres'
-    folds: '5'
 
   DsegConverter:
     source_segs: 'nifti:mod=seg'
