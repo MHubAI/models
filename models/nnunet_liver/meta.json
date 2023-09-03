@@ -1,0 +1,138 @@
+{
+    "id": "e819b898-11bf-4fbb-b572-6421cd99650a",
+    "name": "nnunet_liver",
+    "title": "nnU-Net (Liver)",
+    "summary": {
+        "description": "nnU-Net's liver segmentation model is an AI-based pipeline for the automated segmentation of the liver and liver cancer in portal venous phase CT scans.",
+        "inputs": [ {
+            "label": "Input Image",
+            "description": "The abdominal CE-CT scan of a patient.",
+            "format": "DICOM",
+            "modality": "CT",
+            "bodypartexamined": "Abdomen",
+            "slicethickness": "2.5 mm",
+            "non-contrast": false,
+            "contrast": true
+            } ],
+        "outputs": [ {
+            "type": "Segmentation",
+            "classes": [
+                "LIVER",
+                "LIVER+NEOPLASM_MALIGNANT_PRIMARY"
+            ]
+            } ],
+        "model": {
+            "architecture":  "U-net",
+            "training": "Supervised",
+            "cmpapproach": "2D, 3D, ensemble"
+        },
+        "data": {
+            "training": {
+                "vol_samples": 131
+            },
+            "evaluation": {
+                "vol_samples": 70
+            },
+            "public": "Yes",
+            "external": false
+        }
+    },
+    "details": {
+        "name": "nnU-Net Liver Segmentation Model",
+        "version": "1.0.0",
+        "devteam": "MIC-DKFZ (Helmholtz Imaging Applied Computer Vision Lab)",
+        "type": "nnU-Net (U-Net structure, optimized by data-driven heuristics)",
+        "date": {
+            "weights": "01/02/22",
+            "code": "n/a",
+            "pub": "2020"
+        },
+        "cite": "Isensee, F., Jaeger, P. F., Kohl, S. A., Petersen, J., & Maier-Hein, K. H. (2020). nnU-Net: a self-configuring method for deep learning-based biomedical image segmentation. Nature Methods, 1-9.",        
+        "license": {
+            "code": "Apache 2.0",
+            "weights": "CC BY-NC 4.0"
+        },
+        "publications": [
+            {
+                "title": "nnU-Net: a self-configuring method for deep learning-based biomedical image segmentation",
+                "uri": "https://www.nature.com/articles/s41592-020-01008-z"
+            }
+        ],
+        "github": "https://github.com/MIC-DKFZ/nnUNet/tree/nnunetv1",
+        "zenodo": "https://zenodo.org/record/4485926"
+    },
+    "info": {
+        "use": {
+            "title": "Intended Use",
+            "text": "This model is intended to perform liver and liver cancer segmentation in abdominal portal venous phase CT scans. The model has been trained and tested on cancer patients, so it might not be suited for a healthy population. The generalization capabilities of the model on a range of ages, genders, and ethnicities are unknown. The slice thickness should not exceed 1.5mm for best results."
+        },
+        "analyses": {
+            "title": "Quantitative Analyses",
+            "text": "The model's performance was assessed using the Dice Coefficient, in the context of the Medical Segmentation Decathlon challenge. The complete breakdown of the metrics can be consulted on GrandChallenge [1] and is reported in the supplementary material to the publication [2].",
+            "references": [
+                {
+                    "label": "Medical Segmentation Decathlon on GrandChallenge",
+                    "uri": "https://decathlon-10.grand-challenge.org/evaluation/challenge/leaderboard"
+                },
+                {
+                    "label": "nnU-Net: a self-configuring method for deep learning-based biomedical image segmentation",
+                    "uri": "https://www.nature.com/articles/s41592-020-01008-z"
+                }
+            ]
+        },
+        "evaluation": {
+            "title": "Evaluation Data",
+            "text": "The evaluation dataset consists of 70 portal venous phase CT scans from the Medical Segmentation Decathlon and the Liver Tumor Segmentation Benchmark (LiTS) dataset [1][2][3]. This dataset comprised liver cancer patients from several cancer centers located in different countries and continents. A radiologist with over three years of expertise in oncologic imaging annotated the scans, categorizing each voxel as tumor, healthy liver, or background - with the tumor label covering all neoplastic growths, regardless of origin. These annotations were later reviewed by three other readers blinded to the initial segmentation, with the most senior reader serving as tie-breaker in cases of labelling conflicts. Scans with ambiguous lesion-like structures were excluded from the annotation process. The authors report the following characteristics for the portal venous phase CT scans of the evaluation dataset:",
+            "tables": [
+                {
+                    "label": "LiTS dataset (evaluation)",
+                    "entries": {
+                        "Slice Thickness": "1.5 mm (IQR: 0.8-4.0 mm)",
+                        "In-Plane Resolution": "0.74 mm (IQR: 0.69-0.8mm)"
+                    }
+                }
+            ],
+            "references": [
+                {
+                    "label": "The Liver Tumor Segmentation Benchmark (LiTS)",
+                    "uri": "https://www.sciencedirect.com/science/article/pii/S1361841522003085?via%3Dihub"
+                },
+                {
+                    "label": "Medical Segmentation Decathlon",
+                    "uri": "https://www.nature.com/articles/s41467-022-30695-9"
+                },
+                {
+                    "label": "Medical Decathlon Liver dataset (direct download)",
+                    "uri": "https://drive.google.com/file/d/1jyVGUGyxKBXV6_9ivuZapQS8eUJXCIpu"
+                }
+            ]
+        },
+        "training": {
+            "title": "Training Data",
+            "text": "The training dataset consists of 131 portal venous phase CT scans from the Medical Segmentation Decathlon and the The Liver Tumor Segmentation Benchmark (LiTS) dataset [1][2][3]. For details regarding the labels the model was trained with, see the section above. The training set shows a lower number of tumor occurrences compared to the evaluation set. The authors report the following characteristics for the portal venous phase CT scans of the training dataset:",
+            "tables": [
+                {
+                    "label": "LiTS dataset (training)",
+                    "entries": {
+                        "Slice Thickness": "1.0 mm (IQR: 0.8-1.5 mm)",
+                        "In-Plane Resolution": "0.76 mm (IQR: 0.7-0.85 mm)"
+                    }
+                }
+            ],
+            "references": [
+                {
+                    "label": "The Liver Tumor Segmentation Benchmark (LiTS)",
+                    "uri": "https://www.sciencedirect.com/science/article/pii/S1361841522003085?via%3Dihub"
+                },
+                {
+                    "label": "Medical Segmentation Decathlon",
+                    "uri": "https://www.nature.com/articles/s41467-022-30695-9"
+                },
+                {
+                    "label": "Medical Decathlon Liver dataset (direct download)",
+                    "uri": "https://drive.google.com/file/d/1jyVGUGyxKBXV6_9ivuZapQS8eUJXCIpu"
+                }
+            ]
+        }
+    }
+}

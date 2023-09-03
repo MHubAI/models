@@ -1,3 +1,3 @@
-# Lung Lobes Segmentation Using LungMask
+# LungMask @ MHub.ai
 
-Original GitHub repository [here](https://github.com/JoHof/lungmask) 
+For details on the model or how to run the end-to-end pipeline on your data in a single command, visit [mhub.ai/models/lungmask](https://mhub.ai/models/lungmask)
