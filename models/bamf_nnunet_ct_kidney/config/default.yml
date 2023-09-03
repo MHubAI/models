@@ -19,6 +19,7 @@ modules:
       mod: '%Modality'
 
   NNUnetRunner:
+    in_data: 'nifti:mod=ct'
     nnunet_task: 'Task779_Kidneys_KIRC'
     nnunet_model: '3d_fullres'
     
