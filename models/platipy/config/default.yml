@@ -26,5 +26,4 @@ modules:
 
   DataOrganizer:
    targets:
-   - nifti:mod=ct-->[i:sid]/image.nii.gz
    - dicomseg:mod=seg-->[i:sid]/Platipy.seg.dcm

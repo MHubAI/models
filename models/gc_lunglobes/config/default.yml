@@ -18,8 +18,12 @@ modules:
     meta: 
       mod: ct
 
+  MhaConverter:
+    engine: panimg
+
   DsegConverter:
-    dicomseg_json_path: /app/models/xie2020_lobe_segmentation/config/dseg.json
+    model_name: GCLungLobes
+    source_segs: nifti:mod=seg
     skip_empty_slices: True
 
   DataOrganizer:

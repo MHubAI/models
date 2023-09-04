@@ -41,4 +41,5 @@ RUN unzip ${WEIGHTS_DIR}${WEIGHTS_FN} -d ${WEIGHTS_DIR}
 RUN rm ${WEIGHTS_DIR}${WEIGHTS_FN}
 
 # Default run script
-CMD ["python3", "-m", "mhubio.run", "--config", "/app/models/platipy/config/default.yml"]
+ENTRYPOINT ["python3", "-m", "mhubio.run"]
+CMD ["--config", "/app/models/platipy/config/default.yml"]
