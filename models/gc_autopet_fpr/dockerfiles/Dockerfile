@@ -22,9 +22,12 @@ RUN git clone --depth 1 https://github.com/YigePeng/AutoPET_False_Positive_Reduc
     unzip /tmp/algorithm/weights.zip -d /opt/algorithm/checkpoints/nnUNet/ && \
     rm -rf /tmp/algorithm
 
-# nnUNet specific setup TODO check if required else remove...
-# RUN mkdir -p /opt/algorithm/nnUNet_raw_data_base/nnUNet_raw_data/Task504_Total_PET_Lesion_Only/imagesTs
-#RUN mkdir -p /opt/algorithm/nnUNet_raw_data_base/nnUNet_raw_data/Task504_Total_PET_Lesion_Only/result
+# Install nnunet as a dependency
+RUN pip3 install --no-cache-dir nnunet==1.7.1
+
+# nnUNet specific setup
+RUN mkdir -p /opt/algorithm/nnUNet_raw_data_base/nnUNet_raw_data/Task504_Total_PET_Lesion_Only/imagesTs && \
+    mkdir -p /opt/algorithm/nnUNet_raw_data_base/nnUNet_raw_data/Task504_Total_PET_Lesion_Only/result
 
 # Configure nnUNet paths
 ENV nnUNet_raw_data_base="/opt/algorithm/nnUNet_raw_data_base"

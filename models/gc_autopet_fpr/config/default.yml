@@ -5,15 +5,17 @@ general:
 
 execute:
 - FileStructureImporter
-- OdeColonGlandsSegmentationRunner
+- AutoPETRunner
 - DataOrganizer
 
 modules:
   FileStructureImporter:
     input_dir: 'input_data'
     structures:
-      - '$sid/test.mha@instance@mha:mod=wsi'
+      - '$sid@instance/images/ct/ct.mha@mha:mod=ct'
+      - '$sid/images/pet/pet.mha@mha:mod=pt'
+    import_id: sid
 
   DataOrganizer:
     targets:
-      - mha:mod=seg-->[i:sid]/gc_ode_colon_glands.mha
+      - mha:mod=seg-->[i:sid]/gc_autopet_fpr.seg.mha
