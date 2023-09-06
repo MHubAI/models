@@ -7,6 +7,7 @@ execute:
 - DicomImporter
 - MhaConverter
 - StoicBaselineRunner
+- ReportExporter
 - DataOrganizer
 
 modules:
@@ -18,7 +19,17 @@ modules:
       mod: ct
 
   MhaConverter:
-    # TODO add panimg backend
+    engine: panimg
+
+  ReportExporter:
+    format: compact
+    includes:
+      - data: probability-covid-19
+        label: probability-covid-19
+        value: value
+      - data: probability-severe-covid-19
+        label: probability-severe-covid-19
+        value: value
 
   DataOrganizer:
     targets:
