@@ -8,7 +8,7 @@ Author: Sil van de Leemput
 Email:  sil.vandeleemput@radboudumc.nl
 ------------------------------------------------------------
 """
-from mhubio.core import Instance, InstanceData, IO, Module, ValueOutput
+from mhubio.core import Instance, InstanceData, IO, Module, ValueOutput, Meta
 
 import SimpleITK
 import json
