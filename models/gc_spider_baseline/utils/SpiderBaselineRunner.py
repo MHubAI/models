@@ -15,7 +15,8 @@ import shutil
 import json
 import os
 
-from TestSpine import Module as TestModule
+# The GC Spider baseline algorithm is imported as a self-contained algorithm class with an execute method
+from TestSpine import Module as SpiderAlgorithm
 
 
 class SpiderBaselineRunner(Module):
@@ -35,11 +36,20 @@ class SpiderBaselineRunner(Module):
         shutil.copy(str(in_data_path), str(internal_img_path))
 
         self.v("Run the SPIDER-Baseline algorithm")
-        TestModule(
+        # The algorithm configuration is configured to run on an internal data folder structure and is defined
+        # further configured by the JSON files in the Dockerfile
+        # The algorithm parameters specify the following:
+        # * The first argument specifies the folder to look for the model files
+        # * The epoch specifies the model weights file to use, which should be something like: `999999.pt`
+        # * The dataset is set to the internal SPIDER data structure
+        # * The surface erosion threshold is set to the default for the MR modality (as it is always assumed to have MR modality)
+        # * The original image dimensions are used to generate the output segmentation
+        SpiderAlgorithm(
             [
                 "SPIDER-Baseline",
                 "--epoch", "999999",
                 "--dataset", "spider_input",
+                "--surface_erosion_threshold", "-2000",
                 "--export_original"
             ]
         ).execute()
