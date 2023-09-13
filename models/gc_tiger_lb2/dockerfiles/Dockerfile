@@ -19,10 +19,11 @@ RUN apt-get update \
     && rm ASAP-2.1-py38-Ubuntu2004.deb
 
 # Install tiger LB2 algorithm
-#   - We use a shallow git clone for reduced bandwidth usage
+#   - Clone tiger LB2 codebase (master branch, fixed to commit 720f8dfca4624792c8e57915c4222efec5a0c2d4)
 #   - Subsequently we remove the .git directory to procuce a compacter docker layer
-RUN git clone --depth 1 https://github.com/vuno/tiger_challenge.git /vuno \
-    && rm -rf /vuno/.git
+RUN git clone https://github.com/vuno/tiger_challenge.git /vuno && \
+    cd /vuno && git reset --hard 720f8dfca4624792c8e57915c4222efec5a0c2d4 && \
+    rm -rf /vuno/.git
 
 # Install tiger LB2 dependencies
 RUN pip3 install --no-cache-dir -r /vuno/requirements.txt
@@ -36,14 +37,15 @@ RUN rm -rf /vuno/pretrained_weights && \
     unzip /vuno/pretrained_weights.zip -d /vuno && \
     rm /vuno/pretrained_weights.zip
 
-# Clone MHub model (m-gc-tiger-lb2 branch, fixed to commit TODO)
-#RUN git init \
+# Clone the main branch of MHubAI/models TODO
+#RUN git stash \
 # && git sparse-checkout set "models/gc_tiger_lb2" \
-# && git fetch https://github.com/MHubAI/models.git m-gc-tiger-lb2 \
-# && git merge TODO
+# && git fetch https://github.com/MHubAI/models.git main \
+# && git merge FETCH_HEAD
 
 # Add model and algorithm code bases to python path
 ENV PYTHONPATH="/vuno:/app"
 
-# Default run script (cannot use configuration yml file due to panimg converter not ...)
-CMD ["python3", "/app/models/gc_tiger_lb2/scripts/run.py"]
+# Set default entrypoint
+ENTRYPOINT ["python3", "-m", "mhubio.run"]
+CMD ["--config", "/app/models/gc_tiger_lb2/config/default.yml"]

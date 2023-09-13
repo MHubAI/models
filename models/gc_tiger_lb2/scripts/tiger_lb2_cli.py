@@ -1,21 +1,23 @@
 """
-------------------------------------------------
-Mhub / DIAG - CLI Run script for the TIGER LB2
-------------------------------------------------
+--------------------------------------------------------
+Mhub / DIAG - CLI Run script for the TIGER LB2 Algorithm
+--------------------------------------------------------
 
-------------------------------------------------
+--------------------------------------------------------
 Author: Sil van de Leemput
 Email:  sil.vandeleemput@radboudumc.nl
-------------------------------------------------
+--------------------------------------------------------
 """
 
 import argparse
 from pathlib import Path
 
+import torch
+
+# The required pipeline methods are imported from the tiger_challenge repository
+# The algorithm.rw module is imported for IO operations
 import pipeline.tils_pipeline as tils_pipeline
 import algorithm.rw as rw
-
-import torch
 
 
 def tiger_lb2_cli() -> None:
