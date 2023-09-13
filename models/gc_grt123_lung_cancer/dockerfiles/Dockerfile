@@ -9,10 +9,11 @@ RUN pip3 install --no-cache-dir \
     torch===2.0.1+cu118 -f https://download.pytorch.org/whl/torch_stable.html
 
 # Install grt123 algorithm and model weights
-#   - We use a shallow git clone for reduced bandwidth usage
+#   - Git clone the algorithm repository for v2.0.0 (fixed to v2.0.0 tag commit on 2023/09/13)
 #   - We remove unnecessary files for a compacter docker layer
 #   - Subsequently we remove the .git directory to procuce a compacter docker layer, but keep the latest commit hash in the HEAD file
-RUN git clone --depth 1 --branch v2.0.0 https://github.com/DIAGNijmegen/bodyct-dsb2017-grt123.git /gc_grt123_lung_cancer && \
+RUN git clone --branch v2.0.0 https://github.com/DIAGNijmegen/bodyct-dsb2017-grt123.git /gc_grt123_lung_cancer && \
+    cd /gc_grt123_lung_cancer && git reset --hard 9a4ca0415c7fc1d3023a16650bf1cdce86f8bb59 && \
     rm -rf /gc_grt123_lung_cancer/tests && \
     rm -rf /gc_grt123_lung_cancer/training && \
     rm -rf /gc_grt123_lung_cancer/processor && \
@@ -32,5 +33,6 @@ RUN git clone --depth 1 --branch v2.0.0 https://github.com/DIAGNijmegen/bodyct-d
 # Add lobe segmentation code base to python path
 ENV PYTHONPATH="/gc_grt123_lung_cancer:/app"
 
-# Default run script # TODO should be direct call to config.yml waiting for MhaConverter with panimg backend
-CMD ["python3", "/app/models/gc_grt123_lung_cancer/scripts/run.py"]
+# Default entrypoint
+ENTRYPOINT ["python3", "-m", "mhubio.run"]
+CMD ["--config", "/app/models/gc_grt123_lung_cancer/config/default.yml"]

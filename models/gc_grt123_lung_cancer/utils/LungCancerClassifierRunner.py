@@ -19,9 +19,10 @@ import SimpleITK as sitk
 
 import torch
 
+# Import the main module for the grt123 algorithm, which must be used for running the classification
 import main
 
-
+# This method cleans the raw results from the grt123 algorithm output and only keeps the relevant details
 def cleanup_json_report(data: Dict):
     for key in ["trainingset1", "trainingset2"]:
         del data["lungcad"][key]
@@ -41,7 +42,6 @@ def cleanup_json_report(data: Dict):
 
 
 @IO.Config('n_preprocessing_workers', int, 6, the="number of preprocessing workers to use for the grt123 lung mask preprocessor")
-@IO.Config('tmp_path', str, "/app/tmp", the="the path to write intermediate grt123 files to")
 class LungCancerClassifierRunner(Module):
 
     n_preprocessing_workers: int
@@ -51,13 +51,14 @@ class LungCancerClassifierRunner(Module):
     @IO.Input('in_data', 'mha:mod=ct', the='input ct scan')
     @IO.Output('out_data', 'grt123_lung_cancer_findings.json', 'json:model=grt123LungCancerClassification', 'in_data', the='predicted nodules and lung cancer findings of the lung lobe')
     def task(self, instance: Instance, in_data: InstanceData, out_data: InstanceData) -> None:
-
-        tmp_path = Path(self.tmp_path)
+        # create temporary directories for the preprocessed data and the cropped bounding boxes
+        tmp_path = Path(self.config.data.requestTempDir('grt123'))
         tmp_output_bbox_dir = tmp_path / "bbox"
         tmp_output_prep_dir = tmp_path / "prep"
         tmp_output_bbox_dir.mkdir(exist_ok=True, parents=True)
         tmp_output_prep_dir.mkdir(exist_ok=True, parents=True)
 
+        # determine the number of GPUs we can use
         if torch.cuda.is_available():
             self.v("Running with a GPU")
             n_gpu = 1
@@ -85,4 +86,3 @@ class LungCancerClassifierRunner(Module):
         cleanup_json_report(results_json)
         with open(out_data.abspath, "w") as f:
             json.dump(results_json, f, indent=4)
-
