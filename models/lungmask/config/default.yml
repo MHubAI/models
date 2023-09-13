@@ -1,13 +1,12 @@
 general:
   data_base_dir: /app/data
   version: 1.0
-  description: Lung-Lobe segmentation default (dicom to dicom)
-  
+  description: "Default configuration for LungMask (dicom in, dicom out)"
+
 execute:
 - DicomImporter
-- MhaConverter
-- LobeSegmentationRunner
 - NiftiConverter
+- LungMaskRunner
 - DsegConverter
 - DataOrganizer
 
@@ -19,17 +18,15 @@ modules:
     meta: 
       mod: ct
 
-  MhaConverter:
-    engine: plastimatch
-
-  NiftiConverter:
-    in_datas: mha:mod=seg
+  LungMaskRunner:
+    batchsize: 64
 
   DsegConverter:
-    model_name: GCLungLobes
-    source_segs: nifti:mod=seg
+    model_name: LungMask
+    body_part_examined: CHEST
+    source_segs: [nifti:mod=seg:roi=*]
     skip_empty_slices: True
-
+  
   DataOrganizer:
     targets:
-      - dicomseg:mod=seg-->[i:sid]/gc_lunglobes.seg.dcm
+    - dicomseg:mod=seg-->[i:sid]/lungmask.seg.dcm

@@ -1,0 +1,132 @@
+{
+    "id": "9261b0a6-4036-460d-8f78-c5f19816d193",
+    "name": "gc_lunglobes",
+    "title": "Pulmonary Lobes RTSU-Net",
+    "summary": {
+        "description": "RTSU-Net is an AI-based pipeline for the automated pulmonary lobes segmentation in CT (robust to the presence of severe pathologies).",
+        "inputs": [ {
+            "label": "Input Image",
+            "description": "The chest CT scan of a patient.",
+            "format": "DICOM",
+            "modality": "CT",
+            "bodypartexamined": "Chest",
+            "slicethickness": "2.5mm",
+            "non-contrast": true,
+            "contrast": false
+            } ],
+        "outputs": [ {
+            "type": "Segmentation",
+            "classes": [
+                "LEFT_UPPER_LUNG_LOBE",
+                "LEFT_LOWER_LUNG_LOBE",
+                "RIGHT_UPPER_LUNG_LOBE",
+                "RIGHT_MIDDLE_LUNG_LOBE",
+                "RIGHT_LOWER_LUNG_LOBE"
+            ]
+            } ],
+        "model": {
+            "architecture":  "Relational two-stage U-net",
+            "training": "Supervised",
+            "cmpapproach": "3D"
+        },
+        "data": {
+            "training": {
+                "vol_samples": 4370
+            },
+            "evaluation": {
+                "vol_samples": 1155
+            },
+            "public": "Partially",
+            "external": true
+        }
+    },
+    "details": {
+        "name": "RTSU-Net Lung Lobes Segmentation Model",
+        "version": "1.0.0",
+        "devteam": "DIAGNijmegen (Diagnostic Image Analysis Group, Radboud UMC, The Netherlands)",
+        "type": "Relational two-stage U-Net (Cascade of two relational U-Net, trained end-to-end)",
+        "date": {
+            "weights": "14/02/22",
+            "code": "n/a",
+            "pub": "n/a"
+        },
+        "cite": "W. Xie, C. Jacobs, J. -P. Charbonnier and B. van Ginneken, 'Relational Modeling for Robust and Efficient Pulmonary Lobe Segmentation in CT Scans,' in IEEE Transactions on Medical Imaging, vol. 39, no. 8, pp. 2664-2675, Aug. 2020, doi: 10.1109/TMI.2020.2995108.",        
+        "license": {
+            "code": "Apache 2.0",
+            "weights": "Apache 2.0"
+        },
+        "publications": [
+            {
+                "title": "Relational Modeling for Robust and Efficient Pulmonary Lobe Segmentation in CT Scans",
+                "uri": "https://ieeexplore.ieee.org/document/9094216"
+            }
+        ],
+        "github": "https://github.com/DIAGNijmegen/bodyct-pulmonary-lobe-segmentation"
+    },
+    "info": {
+        "use": {
+            "title": "Intended Use",
+            "text": "This model is intended to segment the five lobes (left upper and lower lobe, right upper, middle, and lower lobe) in chest CT, and it was trained to be robust to the presence of severe pathologies. The model has been trained and internally validated on data with high variability in lung appearance (in the presence of COPD and COVID-19 suspects) and was externally validated on a dataset containing patients with gross pathologies (LOLA11)."
+        },
+        "analyses": {
+            "title": "Quantitative Analyses",
+            "text": "The model's performance was assessed against test data and compared to human readers using the Intersection over Union. The complete reporting of the results is available as part of the original publication [1], while the breakdown of the metrics for the external validation (LOLA11) can be consulted on GrandChallenge [2].",
+            "references": [
+                {
+                    "label": "Relational Modeling for Robust and Efficient Pulmonary Lobe Segmentation in CT Scans",
+                    "uri": "https://ieeexplore.ieee.org/document/9094216"
+                },
+                {
+                    "label": "LOLA11 on GrandChallenge",
+                    "uri": "https://lola11.grand-challenge.org/"
+                }
+            ]
+        },
+        "evaluation": {
+            "title": "Evaluation Data",
+            "text": "The RTSU-Net model was evaluated on a dataset that combined a held-out portion of the COPDGene dataset [1] (1000 CT Scans) and a held-out portion of an internal COVID-19 dataset (100 CT Scans from Radboud UMC), both used for training, and one external dataset - namely, LOLA11 (55 CT Scans).",
+            "references": [
+                {
+                    "label": "COPD Gene dataset",
+                    "uri": "https://www.copdgene.org/"
+                },
+                {
+                    "label": "LOLA11 on GrandChallenge",
+                    "uri": "https://lola11.grand-challenge.org/"
+                }
+            ]
+        },
+        "training": {
+        "title": "Training Data",
+        "text": "The training dataset combined a portion of the COPDGene dataset [1] (4000 CT Scans), and a portion of an internal COVID-19 dataset (370 CT Scans from Radboud UMC). The authors reported the following reconstruction and acquisition parameters for the CT scans in the training datasets:",
+        "tables": [
+            {
+                "label": "COPDGene dataset",
+                "entries": {
+                    "Slice Thickness": "0.625mm-0.9mm",
+                    "Pixel Spacing": "0.478mm-1.0mm",
+                    "Tube Current": "200 mAs",
+                    "Tube Voltage": "120kVp",
+                    "Reconstruction Kernels": "B31f, B35f"
+                }
+            },
+            {
+                "label": "Radboud UMC COVID-19 dataset",
+                "entries": {
+                    "Slice Thickness": "0.5mm",
+                    "Pixel Spacing": "0.5mm-0.9mm",
+                    "tube current modulation range": "10mA-493mA",
+                    "Tube Voltage": "100kVp, 120kVp",
+                    "Reconstruction Kernels": "FC83, FC86"
+                }
+            }
+        ],
+        "references": [
+            {
+                "label": "COPD Gene dataset",
+                "uri": "https://www.copdgene.org/"
+            }
+        ]
+        }
+    }
+}
