@@ -9,8 +9,8 @@ Email:  leonard.nuernberg@maastrichtuniversity.nl
 -------------------------------------------------
 """
 
-from mhubio.core import Module, Instance, InstanceData, DataType, FileType, CT, SEG, IO
-import os, subprocess, shutil
+from mhubio.core import Module, Instance, InstanceData, IO
+import subprocess
 
 @IO.Config('path_to_config_file', str, None, the="path to the config file (if empty, platipy's default config is used)")
 class PlatipyRunner(Module):
@@ -59,7 +59,6 @@ class PlatipyRunner(Module):
 
         # define model output bundle
         bundle = instance.getDataBundle("platipy")
-        bundle.dc.makedirs(exist_ok=False)
         
         # build command
         bash_command  = ["platipy", "segmentation", "cardiac"]

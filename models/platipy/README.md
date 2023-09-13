@@ -1,3 +1,3 @@
-# Cardiac Substructures Segmentation using PlatiPy
+# Platipy @ MHub.ai
 
-Original GitHub repository [here](https://github.com/pyplati/platipy).
+For details on the model or how to run the end-to-end pipeline on your data in a single command, visit [mhub.ai/models/platipy](https://mhub.ai/models/platipy)

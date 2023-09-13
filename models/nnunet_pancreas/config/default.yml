@@ -1,0 +1,36 @@
+general:
+  version: 1.0
+  data_base_dir: /app/data
+  description: base configuration for nnuner pancreas model (dicom to dicom)
+
+execute:
+  - DicomImporter
+  - NiftiConverter
+  - NNUnetRunner
+  - DsegConverter
+  - DataOrganizer
+
+modules:
+  DicomImporter:
+    source_dir: input_data
+    import_dir: sorted_data
+    sort_data: true
+    meta: 
+      mod: ct
+
+  NNUnetRunner:
+    input_data_type: nifti:mod=ct
+    nnunet_task: Task007_Pancreas
+    nnunet_model: 3d_lowres
+    export_prob_maps: False
+    roi: PANCREAS,PANCREAS+NEOPLASM_MALIGNANT_PRIMARY
+    prob_map_segments: [Background, Pancreas, Pancreatic_cancer]
+    
+  DsegConverter:
+    source_segs: [nifti:mod=seg:roi=*]
+    model_name: NNUnet Pancreas
+    skip_empty_slices: True
+
+  DataOrganizer:
+    targets:
+    - dicomseg:mod=seg-->[i:sid]/nnunet_pancreas.seg.dcm

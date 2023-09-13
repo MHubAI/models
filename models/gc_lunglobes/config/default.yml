@@ -1,0 +1,35 @@
+general:
+  data_base_dir: /app/data
+  version: 1.0
+  description: Lung-Lobe segmentation default (dicom to dicom)
+  
+execute:
+- DicomImporter
+- MhaConverter
+- LobeSegmentationRunner
+- NiftiConverter
+- DsegConverter
+- DataOrganizer
+
+modules:
+  DicomImporter:
+    source_dir: input_data
+    import_dir: sorted_data
+    sort_data: True
+    meta: 
+      mod: ct
+
+  MhaConverter:
+    engine: plastimatch
+
+  NiftiConverter:
+    in_datas: mha:mod=seg
+
+  DsegConverter:
+    model_name: GCLungLobes
+    source_segs: nifti:mod=seg
+    skip_empty_slices: True
+
+  DataOrganizer:
+    targets:
+      - dicomseg:mod=seg-->[i:sid]/gc_lunglobes.seg.dcm
