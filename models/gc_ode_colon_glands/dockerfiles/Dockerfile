@@ -10,10 +10,11 @@ RUN pip3 install --no-cache-dir torch==2.0.1+cu118 torchvision==0.15.2+cu118 -f 
 RUN apt update && apt install -y --no-install-recommends git-lfs && rm -rf /var/lib/apt/lists/*
 
 # Install ode segmentation algorithm
-#  - Git shallow clone to tmp directory
+#  - Git clone to tmp directory (last master branch commit taken at 2023/09/13)
 #  - Extract relevant files to /opt/algorithm/
 #  - Remove tmp directory
-RUN git clone --depth 1 https://github.com/DIAGNijmegen/neural-odes-segmentation.git /tmp/algorithm && \
+RUN git clone https://github.com/DIAGNijmegen/neural-odes-segmentation.git /tmp/algorithm && \
+    cd /tmp/algorithm && git reset --hard 6dd0505c1f456e733b63a80a62bcd578d7769340 && \
     mkdir -p /opt/algorithm && \
     mv /tmp/algorithm/*.py /opt/algorithm/ && \
     mv /tmp/algorithm/best_border_unode_paper.pt /opt/algorithm/ && \

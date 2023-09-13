@@ -19,9 +19,11 @@ import SimpleITK as sitk
 import torch
 from PIL import Image
 
+# These are the required imports from the neural-odes-segmentation repository for model inference
+# The ConvODEUNet is the PyTorch model class
+# inference_image and postprocess are two helper methods for performing inference and refining the output segmentation
 from ode_models import ConvODEUNet
 from inference_utils import inference_image, postprocess
-
 
 
 class OdeColonGlandsSegmentationRunner(Module):
@@ -40,10 +42,17 @@ class OdeColonGlandsSegmentationRunner(Module):
         img_pil = Image.fromarray(img_np)
 
         if self.CACHED_MODEL is None:
+            # Create the model class and load the trained model weights
             device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
             self.v(f"Loading model from {self.MODEL_WEIGHTS} on device: {device}")
-            net = ConvODEUNet(num_filters=16, output_dim=2, time_dependent=True,
-                              non_linearity='lrelu', adjoint=True, tol=1e-3)
+            net = ConvODEUNet(
+                num_filters=16,
+                output_dim=2,
+                time_dependent=True,
+                non_linearity='lrelu',
+                adjoint=True,
+                tol=1e-3
+            )
             net.to(device)
             net.load_state_dict(torch.load(self.MODEL_WEIGHTS, map_location=device))
             self.CACHED_MODEL = (net, device)
