@@ -1,7 +1,7 @@
 FROM mhubai/base:latest
 
 # Update authors label
-LABEL authors="s.vandeleemput@radboudumc.nl"
+LABEL authors="sil.vandeleemput@radboudumc.nl"
 
 # Install git-lfs (required for unpacking model weights)
 RUN apt update && apt install -y --no-install-recommends git-lfs && rm -rf /var/lib/apt/lists/*
@@ -30,8 +30,9 @@ ENV LD_LIBRARY_PATH /usr/local/lib/python3.8/dist-packages/tensorrt:$NVIDIA_DIR/
 #    && git sparse-checkout set "models/gc_luna22_ismi_baseline" \
 #    && git fetch https://github.com/MHubAI/models.git main
 
-# Install luna22 ismi baseline algorithm and model weights
-RUN git clone --depth 1 https://github.com/DIAGNijmegen/bodyct-luna22-ismi-algorithm-baseline.git /opt/algorithm
+# Install luna22 ismi baseline algorithm and model weights (main branch, commit 68c5e93be62dae54d15a8a3d8821ca2138e0fe2e)
+RUN git clone https://github.com/DIAGNijmegen/bodyct-luna22-ismi-algorithm-baseline.git /opt/algorithm && \
+    cd /opt/algorithm && git reset --hard 68c5e93be62dae54d15a8a3d8821ca2138e0fe2e
 
 # Install algorithm requirements
 RUN pip3 install --no-cache-dir evalutils==0.3.1

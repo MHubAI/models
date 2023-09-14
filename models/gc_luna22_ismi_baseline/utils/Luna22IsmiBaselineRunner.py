@@ -17,9 +17,10 @@ from mhubio.core import Instance, InstanceData, IO, Module, ValueOutput, ClassOu
 
 import SimpleITK
 
-from process import Nodule_classifier as NoduleClassifier
-
 import tensorflow as tf
+
+# Import the Luna22 baseline algorithm class from the luna22-ismi-algorithm repository
+from process import Nodule_classifier as NoduleClassifier
 
 
 @ValueOutput.Name('malignancy_risk')
@@ -55,11 +56,18 @@ class Luna22IsmiBaselineRunner(Module):
             "The Conv2D op currently only supports the NHWC tensor format on" \
             " the CPU. The op was given the format: NCHW [Op:Conv2D]"
 
+        # Read input image
         input_image = SimpleITK.ReadImage(in_data.abspath)
+
+        # Create classifier and load model weights if not already loaded
         if self._cached_classifier is None:
             self.v("Luna22IsmiBaselineRunner - Loading and caching model weights")
             self._cached_classifier = NoduleClassifier()
         classifier = self._cached_classifier
+
+        # Run the classifier on the input image
         predictions = classifier.predict(input_image=input_image)
+
+        # Output the predicted values
         malignancy_risk.value = predictions["malignancy_risk"]
         texture.value = predictions["texture"]
