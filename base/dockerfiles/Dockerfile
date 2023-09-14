@@ -34,6 +34,7 @@ RUN apt update && apt install -y --no-install-recommends \
   libvips-dev \
   plastimatch \
   dcm2niix \
+  ffmpeg libsm6 libxext6 \
   && rm -rf /var/lib/apt/lists/* 
 
 # Install general python utilities (specify version if necessary)
@@ -45,10 +46,13 @@ RUN pip3 install --upgrade pip && pip3 install --no-cache-dir \
   pandas \ 
   panimg \
   pydicom \
+  pydicom-seg \
+  rt_utils \
   PyYAML \
   pyplastimatch \
   SimpleITK \
-  thedicomsort 
+  thedicomsort \
+  colorspacious
 
 # Install mhubio framework from git, pulls the utils scripts from GitHub
 RUN pip3 install git+https://github.com/MHubAI/mhubio.git \
