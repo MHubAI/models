@@ -1,0 +1,28 @@
+general:
+  data_base_dir: /app/data
+  version: 1.0
+  description: Slicer Dev 
+
+execute:
+- NrrdImporter
+- ThresholdingRunner
+- JsonSegExporter
+- DataOrganizer
+
+modules:
+  NrrdImporter:
+    input_dir: input_data
+    input_file_name: image.nrrd
+
+  ThresholdingRunner:
+    TH: 300 
+    roi_label: HEART
+  
+  JsonSegExporter:
+    file_name_pattern: [basename]
+  
+  DataOrganizer:
+    base: output_data
+    targets:
+    - nrrd:mod=seg-->[basename]
+    - json:mod=seg-->segdef.json
