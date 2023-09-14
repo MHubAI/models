@@ -9,6 +9,7 @@ RUN pip3 install --no-cache-dir \
 RUN git stash \
   && git fetch https://github.com/MHubAI/models.git main \
   && git merge FETCH_HEAD \
+  && git sparse-checkout set "models/lungmask" \
   && git fetch https://github.com/MHubAI/models.git main \
   && git merge FETCH_HEAD
 
