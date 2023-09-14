@@ -23,7 +23,7 @@ import json
 @ValueOutput.Name('til_score')
 @ValueOutput.Meta(Meta(key="value"))
 @ValueOutput.Label('TIL score')
-@ValueOutput.Type(float)
+@ValueOutput.Type(int)
 @ValueOutput.Description('percentage of stromal area covered by tumour infiltrating lymphocytes. Values between 0 (percent) to 100 (percent).')
 class TilScoreOutput(ValueOutput):
     pass
@@ -51,9 +51,8 @@ class TigerLB2Runner(Module):
         )
 
         assert proc.returncode == 0, f"Something went wrong when calling {self.CLI_SCRIPT_PATH}, got return code: {proc.returncode}"
-        out_data.confirm()
 
         # export output til score as data as well
         with open(out_data.abspath, "r") as f:
             til_score.value = json.load(f)
-        assert isinstanceof(til_score.value, float)
+        assert isinstance(til_score.value, int)

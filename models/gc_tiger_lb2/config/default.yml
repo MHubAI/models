@@ -7,6 +7,7 @@ execute:
 - DicomImporter
 - TiffConverter
 - TigerLB2Runner
+- ReportExporter
 - DataOrganizer
 
 modules:
