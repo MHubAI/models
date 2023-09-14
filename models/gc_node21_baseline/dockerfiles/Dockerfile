@@ -10,10 +10,11 @@ RUN pip3 install --no-cache-dir torch==2.0.1+cu118 torchvision==0.15.2+cu118 -f 
 RUN apt update && apt install -y --no-install-recommends git-lfs && rm -rf /var/lib/apt/lists/*
 
 # Install node21 baseline algorithm
-#  - Git shallow clone to tmp directory
+#  - Git clone to tmp directory (main branch, commit 6e57f5c564eb1d527e0f030de9755179b213731a)
 #  - Extract relevant files to /opt/algorithm/
 #  - Remove tmp directory
-RUN git clone --depth 1 https://github.com/node21challenge/node21_detection_baseline /tmp/algorithm && \
+RUN git clone https://github.com/node21challenge/node21_detection_baseline.git /tmp/algorithm && \
+    cd /tmp/algorithm && git reset --hard 6e57f5c564eb1d527e0f030de9755179b213731a && cd /app && \
     mkdir -p /opt/algorithm && \
     mv /tmp/algorithm/process.py /opt/algorithm/process.py && \
     mv /tmp/algorithm/postprocessing.py /opt/algorithm/postprocessing.py && \
@@ -26,7 +27,7 @@ RUN git clone --depth 1 https://github.com/node21challenge/node21_detection_base
 # Install Node21 additional dependencies
 RUN pip3 install --no-cache-dir evalutils==0.2.4
 
-# TODO Clone the main branch of MHubAI/models
+# TODO: FIXME: temporary fix waiting for the latest base image update
 #RUN git stash \
 #    && git fetch https://github.com/MHubAI/models.git main \
 #    && git merge FETCH_HEAD \
@@ -40,8 +41,6 @@ ENV TORCH_HOME /opt/algorithm
 # Add /opt/algorithm to the PYTHON_PATH to be able to import the processor code
 ENV PYTHON_PATH "/app:/opt/algorithm"
 
-#ENTRYPOINT ["python3", "-m", "mhubio.run"]
-#CMD ["--config", "/app/models/gc_node21_baseline/config/default.yml"]
-
-# Default run script
-CMD ["python3", "/app/models/gc_node21_baseline/scripts/run.py"]
+# Specify default entrypoint
+ENTRYPOINT ["python3", "-m", "mhubio.run"]
+CMD ["--config", "/app/models/gc_node21_baseline/config/default.yml"]
