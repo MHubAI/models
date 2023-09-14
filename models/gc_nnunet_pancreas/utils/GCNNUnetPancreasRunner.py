@@ -13,10 +13,12 @@ from mhubio.core import Module, Instance, InstanceData, DataType, Meta, IO
 
 from pathlib import Path
 
+# Import the algorithm pipeline class from the CE-CT_PDAC_AutomaticDetection_nnUnet repository
 from process import PDACDetectionContainer
 
 # TODO should move to MHubio/core/templates.py
-HEATMAP     = Meta(mod="heatmap")
+HEATMAP = Meta(mod="heatmap")
+
 
 class GCNNUnetPancreasRunner(Module):
     @IO.Instance()
@@ -27,8 +29,9 @@ class GCNNUnetPancreasRunner(Module):
                the="segmentation of the pancreas, with the following classes: "
                    "1-veins, 2-arteries, 3-pancreas, 4-pancreatic duct, 5-bile duct, 6-cysts, 7-renal vein")
     def task(self, instance: Instance, in_data: InstanceData, heatmap: InstanceData, segmentation: InstanceData, **kwargs) -> None:
+        # Configure the algorithm pipeline class and run it
         algorithm = PDACDetectionContainer()
-        algorithm.ct_image          = in_data.abspath  # set as str not Path
-        algorithm.heatmap           = Path(heatmap.abspath)
-        algorithm.segmentation      = Path(segmentation.abspath)
+        algorithm.ct_image = in_data.abspath  # set as str not Path
+        algorithm.heatmap = Path(heatmap.abspath)
+        algorithm.segmentation = Path(segmentation.abspath)
         algorithm.process()
