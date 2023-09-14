@@ -10,10 +10,11 @@ RUN pip3 install --no-cache-dir torch==2.0.1+cu118 torchvision==0.15.2+cu118 -f 
 RUN apt update && apt install -y --no-install-recommends git-lfs && rm -rf /var/lib/apt/lists/*
 
 # Install autoPET algorithm
-#  - Git shallow clone to tmp directory
+#  - Git clone to tmp directory (main branch, commit 828bbf683da730f6c36be9d53b5a506a0eff3ae4)
 #  - Extract relevant files and model weights to /opt/algorithm/
 #  - Remove tmp directory
-RUN git clone --depth 1 https://github.com/YigePeng/AutoPET_False_Positive_Reduction.git /tmp/algorithm && \
+RUN git clone https://github.com/YigePeng/AutoPET_False_Positive_Reduction.git /tmp/algorithm && \
+    cd /tmp/algorithm && git reset --hard 828bbf683da730f6c36be9d53b5a506a0eff3ae4 && cd /app && \
     mkdir -p /opt/algorithm && \
     mkdir -p /opt/algorithm/checkpoints && \
     mv /tmp/algorithm/process.py /opt/algorithm/ && \
