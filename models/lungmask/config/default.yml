@@ -30,4 +30,3 @@ modules:
   DataOrganizer:
     targets:
     - dicomseg:mod=seg-->[i:sid]/lungmask.seg.dcm
-    - nifti:mod=seg-->[i:sid]/[filename]

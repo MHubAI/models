@@ -1,0 +1,120 @@
+{
+    "id": "bcb57c10-1d96-442e-925e-ccde889fc0e2",
+    "name": "lungmask",
+    "title": "LungMask",
+    "summary": {
+        "description": "LungMask is an AI-based pipeline for the automated lungs and pulmonary lobes segmentation in CT (robust to the presence of severe pathologies).",
+        "inputs": [ {
+            "label": "Input Image",
+            "description": "The chest CT scan of a patient.",
+            "format": "DICOM",
+            "modality": "CT",
+            "bodypartexamined": "Chest",
+            "slicethickness": "n/a",
+            "non-contrast": true,
+            "contrast": false
+            } ],
+        "outputs": [ {
+            "type": "Segmentation",
+            "classes": [
+                "RIGHT_LUNG",
+                "LEFT_LUNG",
+                "LEFT_UPPER_LUNG_LOBE",
+                "LEFT_LOWER_LUNG_LOBE",
+                "RIGHT_UPPER_LUNG_LOBE",
+                "RIGHT_MIDDLE_LUNG_LOBE",
+                "RIGHT_LOWER_LUNG_LOBE"
+            ]
+            } ],
+        "model": {
+            "architecture":  "U-net",
+            "training": "Supervised",
+            "cmpapproach": "2D"
+        },
+        "data": {
+            "training": {
+                "vol_samples": 231
+            },
+            "evaluation": {
+                "vol_samples": 191
+            },
+            "public": "Partially",
+            "external": true
+        }
+    },
+    "details": {
+        "name": "LungMask",
+        "version": "1.0.0",
+        "devteam": "Johannes Hofmanninger (Medical University of Vienna; ContextFlow)",
+        "type": "U-Net",
+        "date": {
+            "weights": "17/02/20",
+            "code": "07/2023",
+            "pub": "2020"
+        },
+        "cite": "Hofmanninger, J., Prayer, F., Pan, J. et al. Automatic lung segmentation in routine imaging is primarily a data diversity problem, not a methodology problem. Eur Radiol Exp 4, 50 (2020). https://doi.org/10.1186/s41747-020-00173-2",        
+        "license": {
+            "code": "Apache 2.0",
+            "weights": "Apache 2.0"
+        },
+        "publications": [
+            {
+                "title": "Automatic lung segmentation in routine imaging is primarily a data diversity problem, not a methodology problem",
+                "uri": "https://eurradiolexp.springeropen.com/articles/10.1186/s41747-020-00173-2"
+            }
+        ],
+        "github": "https://github.com/JoHof/lungmask"
+    },
+    "info": {
+        "use": {
+            "title": "Intended Use",
+            "text": "This model is intended to perform right and left lung segmentation and the segmentation of the five lobes (left upper and lower lobe, right upper, middle, and lower lobe) in chest CT, and it was trained to be robust to the presence of severe pathologies. The model has been trained on data with high variability in lung appearance and was validated on external datasets containing a broad spectrum of pathologies."
+        },
+        "analyses": {
+            "title": "Quantitative Analyses",
+            "text": "The model's performance was assessed using the Dice Coefficient, the 95-percentile Hausdorff Distance, and the Mean Surface Distance. The complete reporting on these metrics can be found in the publication [1].",
+            "references": [
+                {
+                    "label": "Automatic lung segmentation in routine imaging is primarily a data diversity problem, not a methodology problem",
+                    "uri": "https://eurradiolexp.springeropen.com/articles/10.1186/s41747-020-00173-2"
+                }
+            ]
+        },
+        "evaluation": {
+            "title": "Evaluation Data",
+            "text": "The LungMask model was evaluated on a dataset that combined an internal clinical routine database and three external datasets - the LTRC [1], the LCTSC [2][3], and the VESSEL12 [4][5] datasets, for a total of 191 CT scans.",
+            "references": [
+                {
+                    "label": "Lung Tissue Research Consortium (LTRC) dataset",
+                    "uri": "https://biolincc.nhlbi.nih.gov/studies/ltrc/"
+                },
+                {
+                    "label": "Lung CT Segmentation Challenge (LCTSC) on TCIA",
+                    "uri": "https://wiki.cancerimagingarchive.net/pages/"
+                },
+                {
+                    "label": "Lung CT Segmentation Challenge (LCTSC) on IDC",
+                    "uri": "https://portal.imaging.datacommons.cancer.gov/explore/filters/?collection_id=lctsc"
+                },
+                {
+                    "label": "VEssel SEgmentation in the Lung 2012 (VESSEL12) on GrandChallenge.org",
+                    "uri": "https://vessel12.grand-challenge.org"
+                },
+                {
+                    "label": "VEssel SEgmentation in the Lung 2012 (VESSEL12) on Kaggle.com",
+                    "uri": "https://www.kaggle.com/datasets/andrewmvd/lung-vessel-segmentation"
+                }
+            ]
+        },
+        "training": {
+        "title": "Training Data",
+        "text": "The training dataset (R-231) contains 231 CT scans acquired with 22 different combinations of scanner manufacturer, convolution kernel, and slice thickness. The complete reporting on the training dataset can be found in the publication [1].",
+        "references": [
+            {
+                "label": "Automatic lung segmentation in routine imaging is primarily a data diversity problem, not a methodology problem",
+                "uri": "https://eurradiolexp.springeropen.com/articles/10.1186/s41747-020-00173-2"
+            }
+        ]
+        }
+    }
+}
