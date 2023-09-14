@@ -13,6 +13,7 @@ from mhubio.core import Instance, InstanceData, IO, Module, ValueOutput, Meta
 import SimpleITK
 import json
 
+# Import the StoicAlgorithm which was installed from the stoic2021-baseline repo
 from process import StoicAlgorithm
 
 
@@ -41,9 +42,13 @@ class StoicBaselineRunner(Module):
     @IO.OutputData('probability_covid_19', Covid19ProbabilityOutput, data='in_data', the='Stoic baseline Covid19 probability')
     @IO.OutputData('probability_severe_covid_19', SevereCovid19ProbabilityOutput, data='in_data', the='Stoic baseline severe Covid19 probability')
     def task(self, instance: Instance, in_data: InstanceData, probability_covid_19: Covid19ProbabilityOutput, probability_severe_covid_19: SevereCovid19ProbabilityOutput) -> None:
+        # Read input image
         input_image = SimpleITK.ReadImage(in_data.abspath)
+
+        # Run the STOIC baseline algorithm on the input_image and retrieve the predictions
         predictions = StoicAlgorithm().predict(input_image=input_image)
         predictions = {k.name:v for k,v in predictions.items()}
-        # configure output data
+
+        # Configure the output data using the predictions
         probability_covid_19.value = predictions["probability-covid-19"]
         probability_severe_covid_19.value = predictions["probability-severe-covid-19"]

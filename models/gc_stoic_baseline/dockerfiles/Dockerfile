@@ -7,10 +7,11 @@ LABEL authors="sil.vandeleemput@radboudumc.nl"
 RUN pip3 install --no-cache-dir torch==2.0.1+cu118 -f https://download.pytorch.org/whl/torch_stable.html
 
 # Install stoic2021 baseline algorithm
-#  - Git shallow clone to tmp directory
+#  - Git clone to tmp directory (main branch, commit 88611ed1d49145db547f3db40b6fa917a403c239)
 #  - Extract relevant files to src
 #  - Remove tmp directory
-RUN git clone --depth 1 https://github.com/luukboulogne/stoic2021-baseline.git /tmp/algorithm && \
+RUN git clone https://github.com/luukboulogne/stoic2021-baseline.git /tmp/algorithm && \
+    cd /tmp/algorithm && git reset --hard 88611ed1d49145db547f3db40b6fa917a403c239 && cd /app && \
     mkdir src && \
     mv /tmp/algorithm/process.py src/process.py && \
     mv /tmp/algorithm/utils.py src/utils.py && \
@@ -21,12 +22,13 @@ RUN git clone --depth 1 https://github.com/luukboulogne/stoic2021-baseline.git /
 # Install stoic2021 dependencies
 RUN pip3 install --no-cache-dir -r src/requirements.txt
 
-# TODO Clone the main branch of MHubAI/models
-#RUN git stash \
-#    && git fetch https://github.com/MHubAI/models.git main \
-#    && git merge FETCH_HEAD \
-#    && git sparse-checkout set "models/gc_stoic_baseline" \
-#    && git fetch https://github.com/MHubAI/models.git main
+# FIXME: temporary fix waiting for the latest base image update
+# Clone the main branch of MHubAI/models
+RUN git stash \
+    && git fetch https://github.com/MHubAI/models.git main \
+    && git merge FETCH_HEAD \
+    && git sparse-checkout set "models/gc_stoic_baseline" \
+    && git fetch https://github.com/MHubAI/models.git main
 
 # Set workdir to /app/src to allow algorithm to pick up model weights correctly
 WORKDIR "/app/src"
