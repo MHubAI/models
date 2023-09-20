@@ -12,8 +12,8 @@ execute:
 
 modules:
   NrrdImporter:
-    input_dir: 'input_data'
-    input_file_name: 'image.nrrd'
+    input_dir: input_data
+    input_file_name: image.nrrd
 
   JsonSegExporter:
     segment_id_meta_key: roi
@@ -21,8 +21,8 @@ modules:
     - nifti:mod=seg-->[basename]
 
   NNUnetRunner:
-    nnunet_task: 'Task003_Liver'
-    nnunet_model: '3d_lowres'
+    nnunet_task: Task003_Liver
+    nnunet_model: 3d_lowres
     roi: LIVER,LIVER+NEOPLASM_MALIGNANT_PRIMARY
 
   DataOrganizer:

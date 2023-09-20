@@ -19,7 +19,8 @@ modules:
     roi_label: HEART
   
   JsonSegExporter:
-    file_name_pattern: [basename]
+    targets:
+    - nrrd:mod=seg-->[basename]
   
   DataOrganizer:
     base: output_data
