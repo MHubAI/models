@@ -11,11 +11,11 @@ ENV SKLEARN_ALLOW_DEPRECATED_SKLEARN_PACKAGE_INSTALL=True
 RUN pip3 install --no-cache-dir \
   nnunet 
 
-# Clone the main branch of MHubAI/models
-RUN git stash \
- && git sparse-checkout set "models/bamf_nnunet_mr_prostate" \
- && git fetch https://github.com/MHubAI/models.git main \
- && git merge FETCH_HEAD
+# # Clone the main branch of MHubAI/models
+# RUN git stash \
+#  && git sparse-checkout set "models/bamf_nnunet_mr_prostate" \
+#  && git fetch https://github.com/MHubAI/models.git main \
+#  && git merge FETCH_HEAD
 
 # Pull weights into the container
 ENV WEIGHTS_DIR=/root/.nnunet/nnUNet_models/nnUNet/
@@ -29,15 +29,6 @@ RUN rm ${WEIGHTS_DIR}${WEIGHTS_FN}
 # specify nnunet specific environment variables
 ENV WEIGHTS_FOLDER=$WEIGHTS_DIR
 
-#####################################################################################
-# Copy changes to config if you have any
-#####################################################################################
-RUN mkdir -p /app/models/bamf_nnunet_mr_prostate/config/
-COPY config/* /app/models/bamf_nnunet_mr_prostate/config/
-
-RUN mkdir -p /app/models/bamf_nnunet_mr_prostate/scripts/
-COPY scripts/* /app/models/bamf_nnunet_mr_prostate/scripts/
-
 # Default run script
-ENTRYPOINT ["python3", "-m", "mhubio.run", "--config", "/app/models/bamf_nnunet_mr_prostate/config/default.yml"]
-CMD ["--script", "/app/models/bamf_nnunet_mr_prostate/scripts/run.py"]
+ENTRYPOINT ["python3", "-m", "mhubio.run"]
+CMD ["--config", "/app/models/bamf_nnunet_mr_prostate/config/default.yml"]

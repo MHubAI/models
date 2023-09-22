@@ -1,0 +1,100 @@
+{
+    "id": "",
+    "name": "bamf_nnunet_mr_prostate",
+    "title": "Bamf NNunet MR Prostate Model",
+    "summary": {
+        "description": "bamf_nnunet_mr_prostate model is a semantic segmentation model where an NNUnet model is finetuned for MR images",
+        "inputs": [
+            {
+                "label": "Input Image",
+                "description": "The MR scan of a patient",
+                "format": "DICOM",
+                "modality": "MR",
+                "bodypartexamined": "PROSTATE",
+                "non-contrast": true,
+                "contrast": true
+            }
+        ],
+        "outputs": [
+            {
+                "type": "Segmentation",
+                "classes": [
+                    "Prostate"
+                ]
+            }
+        ],
+        "model": {
+            "architecture": "U-net",
+            "training": "Supervised",
+            "cmpapproach": "2D, 3D, ensemble"
+        }
+    },
+    "details": {
+        "name": "bamf_nnunet_mr_prostate",
+        "version": "1.0.0",
+        "devteam": "BAMF Health Pvt Ltd",
+        "type": "nnU-Net (U-Net structure, optimized by data-driven heuristics)",
+        "date": {
+            "weights": "09\/07\/23",
+            "code": "n\/a",
+            "pub": 2023
+        },
+        "license": {
+            "code": "Apache 2.0",
+            "weights": "CC BY-NC 4.0"
+        },
+        "publications": [
+            {
+                "title": "",
+                "uri": ""
+            }
+        ],
+        "github": "https:\/\/github.com\/bamf-health\/aimi-prostate-mr",
+        "zenodo": "https:\/\/zenodo.org\/record\/8290093",
+        "slicer": true
+    },
+    "info": {
+        "use": {
+            "title": "Intended Use",
+            "text": "This model is intended to perform segmentations of prostate region that are relevant for use cases such as organ volumetry, disease characterization, and surgical or radiation therapy planning."
+        },
+        "analyses": {
+            "title": "Quantitative Analyses",
+            "text": "The model's performance was assessed using the Dice Coefficient on a held-out portion of the in-house dataset (public). For more information, please refer to the model's publication [1].",
+            "references": [
+                {
+                    "label": "nnUNet: Robust Segmentation of Prostate in MR Images",
+                    "uri": "https:\/\/pubs.rsna.org\/doi\/10.1148\/ryai.230024"
+                }
+            ]
+        },
+        "evaluation": {
+            "title": "Evaluation Data",
+            "text": "The evaluation dataset consists of 65 MR scans of patients with different ages, presenting various pathologies, and acquired with various imaging protocols. The Nora Imaging Platform was used for manual segmentation or further refinement of generated segmentations, starting from data uniformely resampled to 1.5mm isotropic. Segmentation was supervised by two physicians with three and six years of experience in body imaging. If an existing model for a given structure was publicly available, that model was used to create a first segmentation, which was then validated and refined manually. Furthermore, the authors used an iterative learning approach to speed up the segmentation process [1][2]. The evaluation process was conducted on images resampled to 1.5mm isotropic.",
+            "references": [
+                {
+                    "label": "TotalSegmentator: Robust Segmentation of 104 Anatomic Structures in CT Images",
+                    "uri": "https:\/\/pubs.rsna.org\/doi\/10.1148\/ryai.230024"
+                },
+                {
+                    "label": "TotalSegmentator dataset",
+                    "uri": "https:\/\/doi.org\/10.5281\/zenodo.6802613"
+                }
+            ]
+        },
+        "training": {
+            "title": "Training Data",
+            "text": "The training dataset consists of 1082 CT scans of patients with different ages, presenting various pathologies, and acquired with various imaging protocols [1][2]. All of the CT images were resampled to a common resolution of 1.5mm isotropic before training. For details regarding the labels the model was trained with, see the section above.",
+            "references": [
+                {
+                    "label": "TotalSegmentator: Robust Segmentation of 104 Anatomic Structures in CT Images",
+                    "uri": "https:\/\/pubs.rsna.org\/doi\/10.1148\/ryai.230024"
+                },
+                {
+                    "label": "TotalSegmentator dataset",
+                    "uri": "https:\/\/doi.org\/10.5281\/zenodo.6802613"
+                }
+            ]
+        }
+    }
+}

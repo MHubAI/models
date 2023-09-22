@@ -18,17 +18,20 @@ modules:
     meta: 
       mod: 'mr'
 
+  NiftiConverter:
+    in_datas: dicom:mod=mr
+    engine: dcm2niix
+
   NNUnetRunner:
-    in_data: 'nifti:mod=mr'
+    in_data: nifti:mod=mr
     nnunet_task: 'Task788_ProstateX'
     nnunet_model: '3d_fullres'
 
   DsegConverter:
-    source_segs: 'nifti:mod=seg'
-    target_dicom: 'dicom:mod=mr'
+    source_segs: nifti:mod=seg
+    target_dicom: dicom:mod=mr
     model_name: 'Bamf NNUnet MR Prostate'
     skip_empty_slices: True
-    json_config_path: '/app/models/bamf_nnunet_mr_prostate/config/meta.json'
 
   DataOrganizer:
     targets:
