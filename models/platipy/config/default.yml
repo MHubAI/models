@@ -21,7 +21,7 @@ modules:
   DsegConverter:
     model_name: Platipy
     body_part_examined: CHEST
-    source_segs: [nifti:mod=seg]
+    source_segs: nifti:mod=seg
     skip_empty_slices: True
 
   DataOrganizer:

@@ -12,8 +12,8 @@ execute:
 
 modules:
   NrrdImporter:
-    input_dir: 'input_data'
-    input_file_name: 'image.nrrd'
+    input_dir: input_data
+    input_file_name: image.nrrd
 
   TotalSegmentatorMLRunner:
     use_fast_mode: true

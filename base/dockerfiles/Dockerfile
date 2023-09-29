@@ -50,7 +50,7 @@ RUN pip3 install --upgrade pip && pip3 install --no-cache-dir \
   rt_utils \
   PyYAML \
   pyplastimatch \
-  SimpleITK \
+  SimpleITK==2.2.1 \
   thedicomsort \
   colorspacious
 

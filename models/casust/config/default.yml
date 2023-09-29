@@ -30,7 +30,7 @@ modules:
 
   DsegConverter:
     model_name: CaSuSt
-    source_segs: [nrrd:mod=seg, nifti:mod=seg]
+    source_segs: nrrd|nifti:mod=seg
     skip_empty_slices: True
   
   DataOrganizer:

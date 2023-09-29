@@ -19,13 +19,13 @@ modules:
       mod: '%Modality'
 
   NNUnetRunner:
-    nnunet_task: 'Task003_Liver'
-    nnunet_model: '3d_lowres'
+    nnunet_task: Task003_Liver
+    nnunet_model: 3d_lowres
     roi: LIVER,LIVER+NEOPLASM_MALIGNANT_PRIMARY
     
   DsegConverter:
-    source_segs: ['nifti:mod=seg']
-    model_name: 'NNUnet Liver'
+    source_segs: nifti:mod=seg
+    model_name: NNUnet Liver
     skip_empty_slices: True
 
   DataOrganizer:
