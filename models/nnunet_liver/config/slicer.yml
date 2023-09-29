@@ -4,16 +4,16 @@ general:
   description: configuration for NNUnet Liver segmentation  in 3D Slicer (nrrd to nifti)
 
 execute:
-- NrrdImporter
+- FileStructureImporter
 - NiftiConverter
 - NNUnetRunner
 - JsonSegExporter
 - DataOrganizer
 
 modules:
-  NrrdImporter:
-    input_dir: input_data
-    input_file_name: image.nrrd
+  FileStructureImporter:
+    structures: 
+    - image.nrrd@instance@nrrd:mod=ct
 
   JsonSegExporter:
     segment_id_meta_key: roi

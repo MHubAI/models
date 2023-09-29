@@ -4,16 +4,16 @@ general:
   description: run platipy pipeline in MRunner (3D Slicer extension)
 
 execute:
-- NrrdImporter
+- FileStructureImporter
 - NiftiConverter
 - PlatipyRunner
 - JsonSegExporter
 - DataOrganizer
 
 modules:
-  NrrdImporter:
-    input_dir: input_data
-    input_file_name: image.nrrd
+  FileStructureImporter:
+    structures: 
+    - image.nrrd@instance@nrrd:mod=ct
 
   JsonSegExporter:
     targets:
