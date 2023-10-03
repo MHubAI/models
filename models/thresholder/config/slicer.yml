@@ -4,22 +4,23 @@ general:
   description: Slicer Dev 
 
 execute:
-- NrrdImporter
+- FileStructureImporter
 - ThresholdingRunner
 - JsonSegExporter
 - DataOrganizer
 
 modules:
-  NrrdImporter:
-    input_dir: input_data
-    input_file_name: image.nrrd
+  FileStructureImporter:
+    structures: 
+    - image.nrrd@instance@nrrd:mod=ct
 
   ThresholdingRunner:
     TH: 300 
     roi_label: HEART
   
   JsonSegExporter:
-    file_name_pattern: [basename]
+    targets:
+    - nrrd:mod=seg-->[basename]
   
   DataOrganizer:
     base: output_data
