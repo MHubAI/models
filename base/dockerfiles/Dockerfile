@@ -62,8 +62,8 @@ RUN pip3 install git+https://github.com/MHubAI/mhubio.git \
   && git fetch https://github.com/MHubAI/models.git main \
   && git merge FETCH_HEAD \
   && mv base/utils . \
-  && cp base/bin/mhub.run /usr/bin/mhub.run \
-  && chmod +x /usr/bin/mhub.run \
+  && chmod +x base/bin/* \
+  && cp base/bin/* /usr/bin/ \
   && rm -r base
 
 # Install DCMQI by pulling the latest release from GitHub (via GitHub API)

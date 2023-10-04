@@ -1,0 +1,14 @@
+#!/bin/bash
+
+# mhubio version
+MHUBIO=$(pip freeze | grep mhubio | cut -d"@" -f3)
+
+# segdb version
+SEGDB=$(pip freeze | grep segdb | cut -d"@" -f3)
+
+# model repo commit
+MODEL=$(git -C /app/models/ show -s | grep commit | cut -d" " -f 2)
+
+echo -e "mhubio==${MHUBIO}"
+echo -e "segdb==${SEGDB}"
+echo -e "model==${MODEL}"
