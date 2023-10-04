@@ -12,3 +12,9 @@ MODEL=$(git -C /app/models/ show -s | grep commit | cut -d" " -f 2)
 echo -e "mhubio==${MHUBIO}"
 echo -e "segdb==${SEGDB}"
 echo -e "model==${MODEL}"
+
+# model version (from meta.json coresponding to MODEL commit)
+for mdir in /app/models/* ; do
+    MVERSION=$(jq -r '.details.version' ${mdir}/meta.json)
+    echo -e "mhub.$(basename ${mdir})==${MVERSION}"
+done
