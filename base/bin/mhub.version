@@ -25,3 +25,8 @@ if [ -d "$MODEL_FOLDER" ]; then
         echo -e "mhub.$(basename ${mdir})==${MVERSION}"
     done
 fi
+
+# pip freeze without segdb and mhubio (already on top of the lists,
+# since for now they are commits). Ideally, this should return only pip versions
+# (although some package might be installed from git by contributors)
+pip freeze | grep -v "segdb" | grep -v "mhubio"
