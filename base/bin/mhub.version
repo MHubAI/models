@@ -19,7 +19,7 @@ if [ -d "$MODEL_FOLDER" ]; then
 
     echo -e "model==${MODEL}"
     echo -e "+++"
-
+d
     # model version (from meta.json coresponding to MODEL commit)
     for mdir in /app/models/* ; do
         MVERSION=$(jq -r '.details.version' ${mdir}/meta.json)
