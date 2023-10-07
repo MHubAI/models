@@ -8,14 +8,13 @@ Author: Sil van de Leemput
 Email:  sil.vandeleemput@radboudumc.nl
 ------------------------------------------------
 """
-from mhubio.core import Instance, InstanceData, IO, Module, ValueOutput, Meta
+from mhubio.core import Instance, InstanceData, IO, Module, ValueOutput, Meta, DataType, FileType
 
 from pathlib import Path
 import numpy as np
 import SimpleITK as sitk
 import torch
 
-import subprocess as sp
 import sys
 import json
 
@@ -38,10 +37,11 @@ class TigerLB2Runner(Module):
     @IO.Output('out_data', 'gc_tiger_lb2_til_score.json', 'json:model=TigerLB2TILScore', 'in_data', the='TIGER LB2 TIL score')
     @IO.OutputData('til_score', TilScoreOutput, data='in_data', the='TIGER LB2 TIL score - percentage of stromal area covered by tumour infiltrating lymphocytes. Values between 0-100 (percent).')
     def task(self, instance: Instance, in_data: InstanceData, out_data: InstanceData, til_score: TilScoreOutput) -> None:
-        assert torch.cuda.is_available(), "Error: TigerLB2Runner requires CUDA to be available!"
+        if not torch.cuda.is_available():
+            raise NotImplementedError("TigerLB2Runner requires CUDA to be available!")
 
         # Execute the Tiger LB2 Algorithm through a Python subprocess
-        proc = sp.run(
+        self.subprocess(
             [
                 sys.executable,
                 str(self.CLI_SCRIPT_PATH),
@@ -50,7 +50,8 @@ class TigerLB2Runner(Module):
             ]
         )
 
-        assert proc.returncode == 0, f"Something went wrong when calling {self.CLI_SCRIPT_PATH}, got return code: {proc.returncode}"
+        if not Path(out_data.abspath).is_file():
+            raise OSError(f"Something went wrong when calling {self.CLI_SCRIPT_PATH} as a subprocess, couldn't find output file: {out_data.abspath}")
 
         # export output til score as data as well
         with open(out_data.abspath, "r") as f:
