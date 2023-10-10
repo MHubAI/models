@@ -9,7 +9,7 @@ ENV SKLEARN_ALLOW_DEPRECATED_SKLEARN_PACKAGE_INSTALL=True
 
 # Install nnunet
 RUN pip3 install --no-cache-dir \
-  nnunet 
+  nnunet==1.7.1 
 
 # Clone the main branch of MHubAI/models
 RUN git stash \

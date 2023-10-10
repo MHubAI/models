@@ -8,7 +8,7 @@ FROM mhubai/base:latest
 ENV SKLEARN_ALLOW_DEPRECATED_SKLEARN_PACKAGE_INSTALL=True
 
 # Install TotalSegmentator
-RUN pip3 install --no-cache-dir TotalSegmentator 
+RUN pip3 install --no-cache-dir totalsegmentator==1.5.6 
 
 # Clone the main branch of MHubAI/models
 RUN git stash \
