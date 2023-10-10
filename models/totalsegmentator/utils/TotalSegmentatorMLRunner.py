@@ -153,4 +153,4 @@ class TotalSegmentatorMLRunner(Module):
         self.v(">> run: ", " ".join(bash_command))
 
         # run the model
-        _ = subprocess.run(bash_command, check=True, text=True)
+        self.subprocess(bash_command, text=True)
