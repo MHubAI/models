@@ -34,12 +34,11 @@ RUN pip3 install --no-cache-dir evalutils==0.2.4
 #    && git sparse-checkout set "models/gc_node21_baseline" \
 #    && git fetch https://github.com/MHubAI/models.git main
 
-# Configure app /opt/algorithm to be the main workdir and torch hub directory to pick up the model weights correctly
-WORKDIR "/opt/algorithm"
+# Configure app /opt/algorithm to be the torch hub directory to pick up the model weights correctly
 ENV TORCH_HOME /opt/algorithm
 
-# Add /opt/algorithm to the PYTHON_PATH to be able to import the processor code
-ENV PYTHON_PATH "/app:/opt/algorithm"
+# Add Node21 source path to the PYTHONPATH to be able to import the processor code
+ENV PYTHONPATH "/app:/opt/algorithm"
 
 # Specify default entrypoint
 ENTRYPOINT ["python3", "-m", "mhubio.run"]

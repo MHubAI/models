@@ -8,11 +8,11 @@ Author: Sil van de Leemput
 Email:  sil.vandeleemput@radboudumc.nl
 -------------------------------------------------------------
 """
-from mhubio.core import Instance, InstanceData, IO, Module, Meta
-
 import SimpleITK
 import json
 from pathlib import Path
+
+from mhubio.core import Instance, InstanceData, IO, Module, Meta
 
 # Import Node21 baseline nodule detection algorithm from the node21_detection_baseline repo
 from process import Noduledetection
