@@ -9,7 +9,7 @@ Email:  leonard.nuernberg@maastrichtuniversity.nl
 -------------------------------------------------
 """
 
-from mhubio.core import Module, Instance, InstanceData, DataType, FileType, CT, SEG, IO
+from mhubio.core import Module, Instance, InstanceData, DataType, FileType, CT, SEG, IO, DataTypeQuery
 import os, subprocess
 
 mapping = {
@@ -133,12 +133,9 @@ class TotalSegmentatorMLRunner(Module):
     @IO.Output('out_data', 'segmentations.nii.gz', 'nifti:mod=seg:model=TotalSegmentator:roi=SPLEEN,RIGHT_KIDNEY,LEFT_KIDNEY,GALLBLADDER,LIVER,STOMACH,AORTA,INFERIOR_VENA_CAVA,PORTAL_AND_SPLENIC_VEIN,PANCREAS,RIGHT_ADRENAL_GLAND,LEFT_ADRENAL_GLAND,LEFT_UPPER_LUNG_LOBE,LEFT_LOWER_LUNG_LOBE,RIGHT_UPPER_LUNG_LOBE,RIGHT_MIDDLE_LUNG_LOBE,RIGHT_LOWER_LUNG_LOBE,VERTEBRAE_L5,VERTEBRAE_L4,VERTEBRAE_L3,VERTEBRAE_L2,VERTEBRAE_L1,VERTEBRAE_T12,VERTEBRAE_T11,VERTEBRAE_T10,VERTEBRAE_T9,VERTEBRAE_T8,VERTEBRAE_T7,VERTEBRAE_T6,VERTEBRAE_T5,VERTEBRAE_T4,VERTEBRAE_T3,VERTEBRAE_T2,VERTEBRAE_T1,VERTEBRAE_C7,VERTEBRAE_C6,VERTEBRAE_C5,VERTEBRAE_C4,VERTEBRAE_C3,VERTEBRAE_C2,VERTEBRAE_C1,ESOPHAGUS,TRACHEA,MYOCARDIUM,LEFT_ATRIUM,LEFT_VENTRICLE,RIGHT_ATRIUM,RIGHT_VENTRICLE,PULMONARY_ARTERY,BRAIN,LEFT_ILIAC_ARTERY,RIGHT_ILIAC_ARTERY,LEFT_ILIAC_VEIN,RIGHT_ILIAC_VEIN,SMALL_INTESTINE,DUODENUM,COLON,LEFT_RIB_1,LEFT_RIB_2,LEFT_RIB_3,LEFT_RIB_4,LEFT_RIB_5,LEFT_RIB_6,LEFT_RIB_7,LEFT_RIB_8,LEFT_RIB_9,LEFT_RIB_10,LEFT_RIB_11,LEFT_RIB_12,RIGHT_RIB_1,RIGHT_RIB_2,RIGHT_RIB_3,RIGHT_RIB_4,RIGHT_RIB_5,RIGHT_RIB_6,RIGHT_RIB_7,RIGHT_RIB_8,RIGHT_RIB_9,RIGHT_RIB_10,RIGHT_RIB_11,RIGHT_RIB_12,LEFT_HUMERUS,RIGHT_HUMERUS,LEFT_SCAPULA,RIGHT_SCAPULA,LEFT_CLAVICLE,RIGHT_CLAVICLE,LEFT_FEMUR,RIGHT_FEMUR,LEFT_HIP,RIGHT_HIP,SACRUM,FACE,LEFT_GLUTEUS_MAXIMUS,RIGHT_GLUTEUS_MAXIMUS,LEFT_GLUTEUS_MEDIUS,RIGHT_GLUTEUS_MEDIUS,LEFT_GLUTEUS_MINIMUS,RIGHT_GLUTEUS_MINIMUS,LEFT_AUTOCHTHONOUS_BACK_MUSCLE,RIGHT_AUTOCHTHONOUS_BACK_MUSCLE,LEFT_ILIOPSOAS,RIGHT_ILIOPSOAS,URINARY_BLADDER', data='in_data', the="output segmentation mask containing all labels")
     def task(self, instance: Instance, in_data: InstanceData, out_data: InstanceData) -> None:
         
-        # data
-        inp_data = instance.data.filter(DataType(FileType.NIFTI, CT)).first()
-
         # build command
         bash_command  = ["TotalSegmentator"]
-        bash_command += ["-i", inp_data.abspath]
+        bash_command += ["-i", in_data.abspath]
     
         # multi-label output (one nifti file containing all labels instead of one nifti file per label)
         self.v("Generating multi-label output ('--ml')")
@@ -156,4 +153,4 @@ class TotalSegmentatorMLRunner(Module):
         self.v(">> run: ", " ".join(bash_command))
 
         # run the model
-        _ = subprocess.run(bash_command, check=True, text=True)
+        self.subprocess(bash_command, text=True)

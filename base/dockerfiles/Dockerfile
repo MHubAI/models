@@ -34,6 +34,7 @@ RUN apt update && apt install -y --no-install-recommends \
   libvips-dev \
   plastimatch \
   dcm2niix \
+  ffmpeg libsm6 libxext6 \
   && rm -rf /var/lib/apt/lists/* 
 
 # Install general python utilities (specify version if necessary)
@@ -45,19 +46,25 @@ RUN pip3 install --upgrade pip && pip3 install --no-cache-dir \
   pandas \ 
   panimg \
   pydicom \
+  pydicom-seg \
+  rt_utils \
   PyYAML \
   pyplastimatch \
-  SimpleITK \
-  thedicomsort 
+  SimpleITK==2.2.1 \
+  thedicomsort \
+  colorspacious
 
 # Install mhubio framework from git, pulls the utils scripts from GitHub
 RUN pip3 install git+https://github.com/MHubAI/mhubio.git \
   && pip3 install git+https://github.com/MHubAI/segdb.git \
   && git init \
-  && git sparse-checkout set "base/utils" \
+  && git sparse-checkout set "base/utils" "base/bin" \
   && git fetch https://github.com/MHubAI/models.git main \
   && git merge FETCH_HEAD \
-  && mv base/utils . && rm -r base
+  && mv base/utils . \
+  && chmod +x base/bin/* \
+  && cp base/bin/* /usr/bin/ \
+  && rm -r base
 
 # Install DCMQI by pulling the latest release from GitHub (via GitHub API)
 # Run everything in a single RUN command to avoid creating intermediate layers (and allowing environment variables to be used)

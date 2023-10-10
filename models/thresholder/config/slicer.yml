@@ -1,12 +1,11 @@
 general:
   data_base_dir: /app/data
-  version: 1.0.0
-  description: run platipy pipeline in MRunner (3D Slicer extension)
+  version: 1.0
+  description: Slicer Dev 
 
 execute:
 - FileStructureImporter
-- NiftiConverter
-- PlatipyRunner
+- ThresholdingRunner
 - JsonSegExporter
 - DataOrganizer
 
@@ -15,11 +14,16 @@ modules:
     structures: 
     - image.nrrd@instance@nrrd:mod=ct
 
+  ThresholdingRunner:
+    TH: 300 
+    roi_label: HEART
+  
   JsonSegExporter:
     targets:
-    - nifti:mod=seg-->[d:roi].nii.gz
-    
+    - nrrd:mod=seg-->[basename]
+  
   DataOrganizer:
+    base: output_data
     targets:
-    - nifti:mod=seg-->[d:roi].nii.gz
-    - json-->segdef.json
+    - nrrd:mod=seg-->[basename]
+    - json:mod=seg-->segdef.json

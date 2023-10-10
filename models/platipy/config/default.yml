@@ -21,10 +21,9 @@ modules:
   DsegConverter:
     model_name: Platipy
     body_part_examined: CHEST
-    source_segs: [nifti:mod=seg]
+    source_segs: nifti:mod=seg
     skip_empty_slices: True
 
   DataOrganizer:
    targets:
-   - nifti:mod=ct-->[i:sid]/image.nii.gz
    - dicomseg:mod=seg-->[i:sid]/Platipy.seg.dcm
