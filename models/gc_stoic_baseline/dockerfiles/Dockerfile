@@ -24,14 +24,15 @@ RUN pip3 install --no-cache-dir -r src/requirements.txt
 
 # FIXME: temporary fix waiting for the latest base image update
 # Clone the main branch of MHubAI/models
-RUN git stash \
-    && git fetch https://github.com/MHubAI/models.git main \
-    && git merge FETCH_HEAD \
-    && git sparse-checkout set "models/gc_stoic_baseline" \
-    && git fetch https://github.com/MHubAI/models.git main
+#RUN git stash \
+#    && git fetch https://github.com/MHubAI/models.git main \
+#    && git merge FETCH_HEAD \
+#    && git sparse-checkout set "models/gc_stoic_baseline" \
+#    && git fetch https://github.com/MHubAI/models.git main
 
-# Set workdir to /app/src to allow algorithm to pick up model weights correctly
-WORKDIR "/app/src"
+# Configure STOIC src path and add it to the python path
+ENV STOIC_SRC_PATH=/app/src
+ENV PYTHONPATH=/app:${STOIC_SRC_PATH}
 
 # Default run script
 ENTRYPOINT ["python3", "-m", "mhubio.run"]

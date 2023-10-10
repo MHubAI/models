@@ -8,13 +8,20 @@ Author: Sil van de Leemput
 Email:  sil.vandeleemput@radboudumc.nl
 ------------------------------------------------------------
 """
-from mhubio.core import Instance, InstanceData, IO, Module, ValueOutput, Meta
+import os
+from contextlib import contextmanager
+from pathlib import Path
 
 import SimpleITK
-import json
+
+from mhubio.core import Instance, InstanceData, IO, Module, ValueOutput, Meta
 
 # Import the StoicAlgorithm which was installed from the stoic2021-baseline repo
 from process import StoicAlgorithm
+
+
+# Retrieve STOIC source path from the environment variable
+STOIC_SRC_PATH = Path(os.environ["STOIC_SRC_PATH"])
 
 
 @ValueOutput.Name('probability-covid-19')
@@ -35,6 +42,16 @@ class SevereCovid19ProbabilityOutput(ValueOutput):
     pass
 
 
+@contextmanager
+def set_directory(path: Path):
+    origin = Path().absolute()
+    try:
+        os.chdir(path)
+        yield
+    finally:
+        os.chdir(origin)
+
+
 class StoicBaselineRunner(Module):
 
     @IO.Instance()
@@ -46,8 +63,10 @@ class StoicBaselineRunner(Module):
         input_image = SimpleITK.ReadImage(in_data.abspath)
 
         # Run the STOIC baseline algorithm on the input_image and retrieve the predictions
-        predictions = StoicAlgorithm().predict(input_image=input_image)
-        predictions = {k.name:v for k,v in predictions.items()}
+        # Set workdir to STOIC_SRC_PATH to allow algorithm to pick up model weights correctly
+        with set_directory(STOIC_SRC_PATH):
+            predictions = StoicAlgorithm().predict(input_image=input_image)
+            predictions = {k.name:v for k,v in predictions.items()}
 
         # Configure the output data using the predictions
         probability_covid_19.value = predictions["probability-covid-19"]
