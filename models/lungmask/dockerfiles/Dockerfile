@@ -2,7 +2,7 @@ FROM mhubai/base:latest
 
 # Install LungMask
 RUN pip3 install --no-cache-dir \
-    git+https://github.com/JoHof/lungmask
+    lungmask==0.2.16
   
 # FIXME: temporary fix waiting for the latest base image update
 # Clone the main branch of MHubAI/models

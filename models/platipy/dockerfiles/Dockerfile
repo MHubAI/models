@@ -14,7 +14,7 @@ RUN apt-get update && apt-get install ffmpeg libsm6 libxext6  -y
 # Install nnunet and platipy
 RUN pip3 install --no-cache-dir \
   nnunet \
-  platipy[cardiac]
+  platipy[cardiac]==0.7.0
 
 # Clone the main branch of MHubAI/models
 RUN git stash \

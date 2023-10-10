@@ -4,7 +4,7 @@ general:
   description: LobeSegmentation workflow for 3D Slicer (nrrd to nifti)
   
 execute:
-- NrrdImporter
+- FileStructureImporter
 - MhaConverter
 - LobeSegmentationRunner
 - NiftiConverter
@@ -12,13 +12,12 @@ execute:
 - DataOrganizer
 
 modules:
-  NrrdImporter:
-    input_dir: 'input_data'
-    input_file_name: 'image.nrrd'
+  FileStructureImporter:
+    structures: 
+    - image.nrrd@instance@nrrd:mod=ct
 
   NiftiConverter:
-    targets: 
-    - 'mha:mod=seg'
+    in_datas: mha:mod=seg
 
   JsonSegExporter:
     targets:

@@ -24,7 +24,7 @@ modules:
   DsegConverter:
     model_name: TotalSegmentator
     body_part_examined: WHOLEBODY
-    source_segs: [nifti:mod=seg]
+    source_segs: nifti:mod=seg
     skip_empty_slices: True
   
   DataOrganizer:

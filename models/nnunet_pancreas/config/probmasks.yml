@@ -29,7 +29,7 @@ modules:
   DsegConverter:
     #source_segs: [nifti:mod=seg]
     #json_config_path: /app/models/nnunet_pancreas/config/dseg.json
-    source_segs: [nifti:mod=seg:roi=*]
+    source_segs: nifti:mod=seg:roi=*
     model_name: NNUnet Pancreas
     skip_empty_slices: True
 
