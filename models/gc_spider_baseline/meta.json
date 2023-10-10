@@ -1,0 +1,112 @@
+{
+  "id": "aed5a82e-2188-4d50-83f9-45bce09f9daa",
+  "name": "spider_baseline",
+  "title": "SPIDER Baseline algorithm: Iterative Instance Segmentation of the spine",
+  "summary": {
+    "description": "The SPIDER Challenge focuses on the segmentation of three anatomical structures in lumbar spine MRI: vertebrae, intervertebral discs (IVDs), and spinal canal. The segmentation task requires similar algorithms to produce separate masks for each vertebra, IVD, and the spinal canal in the lumbar spine MRI volume. The vertebrae are subsequently labeled between 1 and 24, with 24 being the lowest lumbar vertebra (L5). Vertebra which are not completely visible within the field of view of the MR image are labeled between 101 and 124. The intervertebral discs are labeled between 201 and 224 and are decided by the vertebra above it. The spinal canal is labeled as 100.",
+    "inputs": [
+      {
+        "label": "Sagittal Spine MRI",
+        "description": "Sagittal MRI of the spine",
+        "format": "DICOM",
+        "modality": "MR",
+        "bodypartexamined": "Spine",
+        "slicethickness": "2.0mm",
+        "non-contrast": false,
+        "contrast": false
+      }
+    ],
+    "outputs": [
+      {
+        "type": "Segmentation",
+        "classes": [
+          ""
+        ]
+      }
+    ],
+    "model": {
+      "architecture": "3D U-Net-like fully-convolutional neural network",
+      "training": "supervised",
+      "cmpapproach": "2D"
+    },
+    "data": {
+      "training": {
+        "vol_samples": 179
+      },
+      "evaluation": {
+        "vol_samples": 39
+      },
+      "public": false,
+      "external": false
+    }
+  },
+  "details": {
+    "name": "SPIDER Baseline algorithm: Iterative Instance Segmentation of the spine",
+    "version": "",
+    "devteam": "DIAGNijmegen (Diagnostic Image Analysis Group, Radboud UMC, The Netherlands)",
+    "type": "U-net",
+    "date": {
+      "weights": "",
+      "code": "2023-08-15",
+      "pub": "2023-06-23"
+    },
+    "cite": "Nikolas Lessmann, Bram van Ginneken, Pim A. de Jong, Ivana Išgum, Iterative fully convolutional neural networks for automatic vertebra segmentation and identification, Medical Image Analysis, Volume 53, 2019, Pages 142-155, ISSN 1361-8415, https://doi.org/10.1016/j.media.2019.02.005.",
+    "license": {
+      "code": "Apache 2.0",
+      "weights": "Apache 2.0"
+    },
+    "publications": [
+      {
+        "title": "Lumbar spine segmentation in MR images: a dataset and a public benchmark",
+        "uri": "https://arxiv.org/abs/2306.12217"
+      }
+    ],
+    "github": "https://github.com/DIAGNijmegen/SPIDER-Baseline-IIS",
+    "zenodo": "",
+    "colab": "",
+    "slicer": false
+  },
+  "info": {
+    "use": {
+      "title": "Intended use",
+      "text": "Segmentation of three anatomical structures in lumbar spine MRI: vertebrae, intervertebral discs (IVDs), and spinal canal.",
+      "references": [],
+      "tables": []
+    },
+    "analyses": {
+      "title": "Evaluation",
+      "text": "The segmentation performance was evaluated using two metrics: (1) The Dice coefficient to measure the volume overlap, and (2) the average absolute surface distance (ASD) as an indication of the segmentation accuracy along the sur- face of all structures.",
+      "references": [],
+      "tables": []
+    },
+    "evaluation": {
+      "title": "Evaluation data",
+      "text": "The test set consists of 39 lumbar MRI studies of unique patients, which includes 15 out of the 20 fully manually annotated studies.",
+      "references": [],
+      "tables": []
+    },
+    "training": {
+      "title": "Training data",
+      "text": "This is a large publicly available multi-center lumbar spine magnetic resonance imaging (MRI) dataset with reference segmentations of vertebrae, intervertebral discs (IVDs), and spinal canal. The dataset includes 447 sagittal T1 and T2 MRI series from 218 studies of 218 patients with a history of low back pain. ",
+      "references": [
+        {
+          "label": "SPIDER - Lumbar spine segmentation in MR images: a dataset and a public benchmark",
+          "uri": "https://zenodo.org/record/8009680"
+        }
+      ],
+      "tables": []
+    },
+    "ethics": {
+      "title": "",
+      "text": "",
+      "references": [],
+      "tables": []
+    },
+    "limitations": {
+      "title": "Limitation",
+      "text": "This algorithm was developed for research purposes only.",
+      "references": [],
+      "tables": []
+    }
+  }
+}
