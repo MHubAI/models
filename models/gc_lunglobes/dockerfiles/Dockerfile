@@ -9,8 +9,8 @@ RUN apt-get update && apt-get install ffmpeg libsm6 libxext6 -y
 # Install required dependencies for lobe segmentation (CUDA-enabled)
 RUN pip3 install --no-cache-dir \
     opencv-python \
-    torch torchvision \
-    dgl -f https://data.dgl.ai/wheels/cu118/repo.html
+    torch==2.0.1 torchvision==0.15.2 \
+    dgl==1.1.2 -f https://data.dgl.ai/wheels/cu118/repo.html
 
 # SimpleITK downgrade required for legacy Resample::Execute operation
 RUN pip3 install --no-cache-dir --force-reinstall SimpleITK==1.2.4 

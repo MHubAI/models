@@ -4,7 +4,7 @@ general:
   description: 3D Slicer configuration for CaSuSt (nrrd to nrrd)
 
 execute:
-- NrrdImporter
+- FileStructureImporter
 - NiftiConverter
 - NNUnetRunner
 - CasustRunner
@@ -12,9 +12,9 @@ execute:
 - DataOrganizer
 
 modules:
-  NrrdImporter:
-    input_dir: input_data
-    input_file_name: image.nrrd
+  FileStructureImporter:
+    structures: 
+    - image.nrrd@instance@nrrd:mod=ct
 
   NNUnetRunner:
     folds: all
