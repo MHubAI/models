@@ -1,0 +1,125 @@
+{
+  "id": "357d6573-06d2-417c-975d-b03e857fa1c7",
+  "name": "stoic2021_baseline",
+  "title": "STOIC2021 baseline",
+  "summary": {
+    "description": "The prediction of severe COVID-19, defined as intubation or death within one month from the acquisition of the CT scan (AUC, primary metric)",
+    "inputs": [
+      {
+        "label": "CT image",
+        "description": "Any CT image",
+        "format": "DICOM",
+        "modality": "CT",
+        "bodypartexamined": "Chest",
+        "slicethickness": "2.5mm",
+        "non-contrast": true,
+        "contrast": false
+      }
+    ],
+    "outputs": [
+      {
+        "type": "Prediction",
+        "valueType": "number",
+        "label": "Probability COVID-19",
+        "description": "Probability of a positive RT-PCR result",
+        "classes": []
+      },
+      {
+        "type": "Prediction",
+        "valueType": "number",
+        "label": "Probability Severe COVID-19",
+        "description": "Probability of death or intubation at 1-month follow up",
+        "classes": []
+      }
+    ],
+    "model": {
+      "architecture": "Inflated 3D convnet",
+      "training": "supervised",
+      "cmpapproach": "3D"
+    },
+    "data": {
+      "training": {
+        "vol_samples": 9000
+      },
+      "evaluation": {
+        "vol_samples": 1000
+      },
+      "public": false,
+      "external": false
+    }
+  },
+  "details": {
+    "name": "STOIC2021 Baseline Algorithm",
+    "version": "",
+    "devteam": "DIAGNijmegen (Diagnostic Image Analysis Group, Radboud UMC, The Netherlands)",
+    "type": "convnet",
+    "date": {
+      "weights": "2021-12-23",
+      "code": "2022-01-04",
+      "pub": "2023-06-25"
+    },
+    "cite": "Luuk H. Boulogne, Julian Lorenz, Daniel Kienzle, Robin Schon, Katja Ludwig, Rainer Lienhart, Simon Jegou, Guang Li, Cong Chen, Qi Wang, Derik Shi, Mayug Maniparambil, Dominik Muller, Silvan Mertes, Niklas Schroter, Fabio Hellmann, Miriam Elia, Ine Dirks, Matias Nicolas Bossa, Abel Diaz Berenguer, Tanmoy Mukherjee, Jef Vandemeulebroucke, Hichem Sahli, Nikos Deligiannis, Panagiotis Gonidakis, Ngoc Dung Huynh, Imran Razzak, Reda Bouadjenek, Mario Verdicchio, Pasquale Borrelli, Marco Aiello, James A. Meakin, Alexander Lemm, Christoph Russ, Razvan Ionasec, Nikos Paragios, Bram van Ginneken, Marie-Pierre Revel Dubois, The STOIC2021 COVID-19 AI challenge: applying reusable training methodologies to private data, arXiv:2306.10484, 2023, https://arxiv.org/abs/2306.10484v2",
+    "license": {
+      "code": "MIT license",
+      "weights": "MIT license"
+    },
+    "publications": [
+      {
+        "title": "The STOIC2021 COVID-19 AI challenge: applying reusable training methodologies to private data",
+        "uri": "https://arxiv.org/pdf/2306.10484v2.pdf"
+      }
+    ],
+    "github": "https://github.com/luukboulogne/stoic2021-baseline",
+    "zenodo": "",
+    "colab": "",
+    "slicer": false
+  },
+  "info": {
+    "use": {
+      "title": "Use",
+      "text": "The algorithm processes a CT scan of a suspected COVID-19 patient and produces the probability of a COVID-19 infection and a probability of severe outcome (death or intubation within one month).",
+      "references": [],
+      "tables": []
+    },
+    "analyses": {
+      "title": "Analysis",
+      "text": "A single I3D model, initialized with publicly available weights trained for RGB video classification, was trained to estimate both COVID-19 presence and severity. The model was trained on all training data for 40 epochs using the AdamW optimizer with a learning rate of 10, momentum parameters β1 = 0.9, β2 = 0.99, and a weight decay of 0.01. Data augmentation was employed in the form of zoom, rotation, translation, and adding gaussian noise. Patient age and sex information were not incorporated as input to the model.",
+      "references": [],
+      "tables": []
+    },
+    "evaluation": {
+      "title": "Evaluation data",
+      "text": "The entire STOIC dataset",
+      "references": [
+        {
+          "label": "Stoic project",
+          "uri": "https://pubs.rsna.org/doi/10.1148/radiol.2021210384"
+        }
+      ],
+      "tables": []
+    },
+    "training": {
+      "title": "Training data",
+      "text": " A publicly available subset of the STOIC dataset",
+      "references": [
+        {
+          "label": "Stoic project",
+          "uri": "https://pubs.rsna.org/doi/10.1148/radiol.2021210384"
+        }
+      ],
+      "tables": []
+    },
+    "ethics": {
+      "title": "",
+      "text": "",
+      "references": [],
+      "tables": []
+    },
+    "limitations": {
+      "title": "",
+      "text": "",
+      "references": [],
+      "tables": []
+    }
+  }
+}
