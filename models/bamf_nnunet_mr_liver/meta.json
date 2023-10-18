@@ -1,0 +1,127 @@
+{
+    "id": "",
+    "name": "bamf_aimi_mri_liver",
+    "title": "AIMI MRI Liver",
+    "summary": {
+        "description": "An nnU-Net basec model to segment liver from T1 weighted MRI scans",
+        "inputs": [
+            {
+                "label": "Input Image",
+                "description": "The abdominal T1 weighted  MRI scan of a patient.",
+                "format": "DICOM",
+                "modality": "MR",
+                "bodypartexamined": "LIVER",
+                "non-contrast": true,
+                "contrast": false
+            }
+        ],
+        "outputs": [
+            {
+                "label": "Segmentation",
+                "type": "Segmentation",
+                "description": "Segmentation liver",
+                "classes": [
+                    "LIVER"
+                ]
+            }
+        ],
+        "model": {
+            "architecture": "U-net",
+            "training": "Supervised",
+            "cmpapproach": "3D, ensemble"
+        },
+        "data": {
+            "training": {
+                "vol_samples": 350 // int:  number of samples used during training
+            },
+            "evaluation": {
+                "vol_samples": 7 // int:  number of samples used for evaluation
+            },
+            "public": true, // bool: wheather the model was evaluated on public data
+            "external": true // bool: wheather the model was cross-validated
+        }
+    },
+    "details": {
+        "name": "AIMI MRI Liver", // str:       the original name of the model (e.g., as used in publications)
+        "version": "1.0.0", // str:       the version of the model (x.y.z)
+        "devteam": "BAMF Health", // str:       the lab or development team of the model
+        "authors": [
+            "Soni, Rahul",
+            "McCrumb, Diana",
+            "Murugesan, Gowtham Krishnan",
+            "Van Oss, Jeff"
+        ], // list[str]: the authors of the model
+        "type": "nnU-Net (U-Net structure, optimized by data-driven heuristics)", // str:       short description of the model type (e.g., Relational two-stage U-Net (Cascade of two relational U-Net, trained end-to-end)
+        "date": {
+            "code": "17.10.2023", // str: the date the code was published
+            "weights": "28.08.2023" // str: the date the weights were published
+            // "pub": "dd.mm.yyyy" // str: the date the publication was published
+        },
+        // "cite": "", // str:       the citation of the publication (APA)
+        "licence": {
+            "code": "MIT", // str: the licence of the code
+            "weights": "CC BY-NC 4.0" // str: the licence of the weights
+        },
+        "publications": [
+            { // list[obj]: list of publications (one required)
+                "title": "The AIMI Initiative: AI-Generated Annotations in IDC Collections", // str: the full title of the publication
+                "uri": "TODO" // str: the url of the publication
+            }
+        ],
+        "github": "https://github.com/bamf-health/aimi-liver-mr" // str: the url of the github repository
+    },
+    "info": {
+        "use": {
+            "title": "Intended Use",
+            "text": "This model is intended to perform liver segmentation in T1 weighted MRI scans. The model has been trained and tested on scans aquired during clinical care of patients, so it might not be suited for a healthy population. The generalization capabilities of the model on a range of ages, genders, and ethnicities are unknown."
+        },
+        "analyses": {
+            "title": "Quantitative Analyses",
+            "text": "The model's performance was assessed using the Dice Coefficient and Normalized Surface Distance (with tolerance 7mm), as specified in the CT Liver segmentation task in the Medical Segmentation Decathlon challenge. The model was used to segment cases from the IDC collection TCGA-LIHC [1]. Seven of those cases were reviewed and corrected by a board-certified radiologist. The analysis is published here [2]",
+            "references": [
+                {
+                    "label": "TCGA-LIHC",
+                    "uri": "https://wiki.cancerimagingarchive.net/pages/viewpage.action?pageId=6885436"
+                },
+                {
+                    "label": "The AIMI Initiative: AI-Generated Annotations for Imaging Data Commons Collections",
+                    "uri": "TODO"
+                }
+            ]
+        },
+        "evaluation": {
+            "title": "Evaluation Data",
+            "text": "The model was used to segment cases from the IDC [1] collection TCGA-LIHC [1]. Seven of those cases were randomly selected to be reviewed and corrected by a board-certified radiologist. The model predictions, and radiologist corrections are published on zenodo [3]",
+            "references": [
+                {
+                    "label": "Imaging Data Collections (IDC)",
+                    "uri": "https://datacommons.cancer.gov/repository/imaging-data-commons"
+                },
+                {
+                    "label": "TCGA-LIHC",
+                    "uri": "https://wiki.cancerimagingarchive.net/pages/viewpage.action?pageId=6885436"
+                },
+                {
+                    "label": "Image segmentations produced by the AIMI Annotations initiative",
+                    "uri": "https://zenodo.org/records/10009368"
+                }
+            ]
+        },
+        "training": {
+            "title": "Training Data",
+            "text": "The training dataset consists of  350 MRI liver annotations taken from the AMOS [1] (N=40) and DUKE Liver Dataset V2 [2] (N=310).",
+            "references": [
+                {
+                    "label": "AMOS Dataset",
+                    "uri": "https://zenodo.org/records/7262581"
+                },
+                {
+                    "label": "Duke Liver Dataset (MRI) v2",
+                    "uri": "https://zenodo.org/records/7774566"
+                }
+            ]
+        }
+        // "ethics": {},
+        // "limitations": {}
+    }
+}
