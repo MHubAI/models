@@ -7,6 +7,7 @@ execute:
 - DicomImporter
 - MhaConverter
 - SpiderBaselineRunner
+- DsegConverter
 - DataOrganizer
 
 modules:
@@ -20,6 +21,16 @@ modules:
   MhaConverter:
     engine: panimg
 
+  DsegConverter:
+    model_name: GCSpiderBaseline
+    target_dicom: dicom:mod=mr
+    source_segs: [mha:mod=seg:seg=remapped]
+    skip_empty_slices: True
+    segment_id_meta_key: roi
+    body_part_examined: SPINE
+
   DataOrganizer:
     targets:
-      - mha:mod=seg-->[i:sid]/spider_baseline_vertebrae_segmentation.mha
+      - mha:mod=seg:seg=raw-->[i:sid]/spider_baseline_vertebrae_segmentation_raw.mha
+      - mha:mod=seg:seg=remapped-->[i:sid]/spider_baseline_vertebrae.seg.mha
+      - dicomseg:mod=seg-->[i:sid]/spider_baseline_vertebrae.seg.dcm
