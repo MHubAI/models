@@ -32,43 +32,41 @@
         },
         "data": {
             "training": {
-                "vol_samples": 350 // int:  number of samples used during training
+                "vol_samples": 350
             },
             "evaluation": {
-                "vol_samples": 7 // int:  number of samples used for evaluation
+                "vol_samples": 7
             },
-            "public": true, // bool: wheather the model was evaluated on public data
-            "external": true // bool: wheather the model was cross-validated
+            "public": true,
+            "external": true
         }
     },
     "details": {
-        "name": "AIMI MRI Liver", // str:       the original name of the model (e.g., as used in publications)
-        "version": "1.0.0", // str:       the version of the model (x.y.z)
-        "devteam": "BAMF Health", // str:       the lab or development team of the model
+        "name": "AIMI MRI Liver",
+        "version": "1.0.0",
+        "devteam": "BAMF Health",
         "authors": [
             "Soni, Rahul",
             "McCrumb, Diana",
             "Murugesan, Gowtham Krishnan",
             "Van Oss, Jeff"
-        ], // list[str]: the authors of the model
-        "type": "nnU-Net (U-Net structure, optimized by data-driven heuristics)", // str:       short description of the model type (e.g., Relational two-stage U-Net (Cascade of two relational U-Net, trained end-to-end)
+        ],
+        "type": "nnU-Net (U-Net structure, optimized by data-driven heuristics)",
         "date": {
-            "code": "17.10.2023", // str: the date the code was published
-            "weights": "28.08.2023" // str: the date the weights were published
-            // "pub": "dd.mm.yyyy" // str: the date the publication was published
+            "code": "17.10.2023",
+            "weights": "28.08.2023"
         },
-        // "cite": "", // str:       the citation of the publication (APA)
         "licence": {
-            "code": "MIT", // str: the licence of the code
-            "weights": "CC BY-NC 4.0" // str: the licence of the weights
+            "code": "MIT",
+            "weights": "CC BY-NC 4.0"
         },
         "publications": [
-            { // list[obj]: list of publications (one required)
-                "title": "The AIMI Initiative: AI-Generated Annotations in IDC Collections", // str: the full title of the publication
-                "uri": "TODO" // str: the url of the publication
+            {
+                "title": "The AIMI Initiative: AI-Generated Annotations in IDC Collections",
+                "uri": "TODO"
             }
         ],
-        "github": "https://github.com/bamf-health/aimi-liver-mr" // str: the url of the github repository
+        "github": "https://github.com/bamf-health/aimi-liver-mr"
     },
     "info": {
         "use": {
@@ -121,7 +119,5 @@
                 }
             ]
         }
-        // "ethics": {},
-        // "limitations": {}
     }
 }
