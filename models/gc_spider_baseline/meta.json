@@ -20,7 +20,30 @@
       {
         "type": "Segmentation",
         "classes": [
-          ""
+          "VERTEBRAE_L5",
+          "VERTEBRAE_L4",
+          "VERTEBRAE_L3",
+          "VERTEBRAE_L2",
+          "VERTEBRAE_L1",
+          "VERTEBRAE_T12",
+          "VERTEBRAE_T11",
+          "VERTEBRAE_T10",
+          "VERTEBRAE_T9",
+          "VERTEBRAE_T8",
+          "VERTEBRAE_T7",
+          "VERTEBRAE_T6",
+          "VERTEBRAE_T5",
+          "VERTEBRAE_T4",
+          "VERTEBRAE_T3",
+          "VERTEBRAE_T2",
+          "VERTEBRAE_T1",
+          "VERTEBRAE_C7",
+          "VERTEBRAE_C6",
+          "VERTEBRAE_C5",
+          "VERTEBRAE_C4",
+          "VERTEBRAE_C3",
+          "VERTEBRAE_C2",
+          "VERTEBRAE_C1"
         ]
       }
     ],
