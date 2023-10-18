@@ -1,7 +1,7 @@
 general:
   data_base_dir: /app/data
   version: 1.0
-  description: SPIDER baseline segment vertebrae in Sagittal Spine MRI (dicom to mha segmentation)
+  description: SPIDER baseline segment vertebrae in Sagittal Spine MRI (dicom to dicom segmentation)
   
 execute:
 - DicomImporter

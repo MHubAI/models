@@ -83,7 +83,7 @@ class SpiderBaselineRunner(Module):
         self.log(f"Move raw generated segmentation output from: {source_output_file} -> {out_data_raw.abspath}", level="NOTICE")
         shutil.move(str(source_output_file), out_data_raw.abspath)
 
-        # Create the remamapping dictionary to reorder output labels so they will be picked up in the correct order by DicomSeg
+        # Create the remapping dictionary to reorder output labels so they will be picked up in the correct order by DicomSeg
         remap_dict = {i:i for i in range(0, 26)}                    # keep labels 0-25 the same
         remap_dict.update({i:i-100 for i in range(101, 126)})       # partially visible vertebrae get remapped to regular vertebrae labels
         # TODO the following two lines can be added if their rois are added to the segdb
