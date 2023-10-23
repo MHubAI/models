@@ -1,0 +1,134 @@
+{
+  "id": "37ec076c-6cca-4601-a7fc-bdbe7eecbdcf",
+  "name": "node21_baseline",
+  "title": "NODE21 challenge baseline",
+  "summary": {
+    "description": "The NODE21 challenge was to detect and generate nodules in chest radiographs, this particular model focuses on detecting nodules.",
+    "inputs": [
+      {
+        "label": "Chest radiograph",
+        "description": "Chest radiograph",
+        "format": "DICOM",
+        "modality": "CR",
+        "bodypartexamined": "Chest",
+        "slicethickness": "",
+        "non-contrast": false,
+        "contrast": false
+      }
+    ],
+    "outputs": [
+      {
+        "type": "Prediction",
+        "valueType": "JSON",
+        "label": "Nodule bounding boxes",
+        "description": "Multiple bounding boxes for the nodule locations for the input chest radiograph. Each bounding box also has an associated nodule likelihood (probability).",
+        "classes": []
+      }
+    ],
+    "model": {
+      "architecture": "Faster R-CNN",
+      "training": "supervised",
+      "cmpapproach": "2D"
+    },
+    "data": {
+      "training": {
+        "vol_samples": 4382
+      },
+      "evaluation": {
+        "vol_samples": 500
+      },
+      "public": false,
+      "external": false
+    }
+  },
+  "details": {
+    "name": "NODE21 baseline",
+    "version": "6e57f5c564eb1d527e0f030de9755179b213731a",
+    "devteam": "E. Sogancioglu & K. Murphy",
+    "type": "Classification",
+    "date": {
+      "weights": "2021-11-01",
+      "code": "2022-02-01",
+      "pub": ""
+    },
+    "cite": "",
+    "license": {
+      "code": "Apache 2.0",
+      "weights": "Apache 2.0"
+    },
+    "publications": [],
+    "github": "https://github.com/node21challenge/node21_detection_baseline",
+    "zenodo": "",
+    "colab": "",
+    "slicer": false
+  },
+  "info": {
+    "use": {
+      "title": "Intended use",
+      "text": "Prediction of the location and likelihood of nodules in frontal chest radiographs.",
+      "references": [],
+      "tables": []
+    },
+    "analyses": {
+      "title": "Evaluation",
+      "text": "The submitted algorithms was evaluated on the experimental test set. Specifically the AUC score and the sensitivity at various average false positive rates using FROC (1/4, 1/2, 1) were computed. The final metric used to rank the leaderboard will be calculated as follows: rank_metric = (0.75 * AUC) + (0.25 * Sensitivity at 1/4 FP/image) ",
+      "references": [
+        {
+          "label": "NODE21 challenge details",
+          "uri": "https://node21.grand-challenge.org/Details/"
+        }
+      ],
+      "tables": []
+    },
+    "evaluation": {
+      "title": "Evaluation data",
+      "text": "The test set consists of two private datasets of 281 frontal chest X-rays, 166 of which are positive (with nodules)",
+      "references": [
+        {
+          "label": "NODE21 data section",
+          "uri": "https://node21.grand-challenge.org/Data/"
+        }
+      ],
+      "tables": []
+    },
+    "training": {
+      "title": "Training data",
+      "text": "For the NODE21 challenge four publicly available training datasets were combined: 1. JSRT 2. PadChest 3. Chestx-ray14 4. Open-I",
+      "references": [
+        {
+          "label": "NODE21 training data (combined)",
+          "uri": "https://zenodo.org/record/5548363"
+        },
+        {
+          "label": "JSRT",
+          "uri": "https://dx.doi.org/10.2214/ajr.174.1.1740071"
+        },
+        {
+          "label": "PadChest",
+          "uri": "https://dx.doi.org/10.1016/j.media.2020.101797"
+        },
+        {
+          "label": "Chestx-ray14",
+          "uri": "https://dx.doi.org/10.1109/cvpr.2017.369"
+        },
+        {
+          "label": "Open-I",
+          "uri": "https://dx.doi.org/10.5626/JCSE.2012.6.2.168"
+        }
+      ],
+      "tables": []
+    },
+    "ethics": {
+      "title": "",
+      "text": "",
+      "references": [],
+      "tables": []
+    },
+    "limitations": {
+      "title": "Limitations",
+      "text": "This algorithm was developed for research purposes only.",
+      "references": [],
+      "tables": []
+    }
+  }
+}
