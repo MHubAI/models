@@ -1,0 +1,133 @@
+{
+  "id": "c5f886fb-9f54-4555-a954-da02b22d6d3f",
+  "name": "picai_baseline",
+  "title": "PI-CAI challenge baseline",
+  "summary": {
+    "description": "The PI-CAI challenge is to validate modern AI algorithms at clinically significant prostate cancer (csPCa) detection and diagnosis. This model algorithm provides the baseline for the challenge.",
+    "inputs": [
+      {
+        "label": "Prostate biparametric MRI",
+        "description": "Prostate biparametric MRI exam",
+        "format": "DICOM",
+        "modality": "MR",
+        "bodypartexamined": "Prostate",
+        "slicethickness": "",
+        "non-contrast": false,
+        "contrast": false
+      }
+    ],
+    "outputs": [
+      {
+        "type": "Prediction",
+        "valueType": "Probability",
+        "label": "Prostate cancer probability",
+        "description": "Case-level likelihood of harboring clinically significant prostate cancer, in range [0,1]",
+        "classes": []
+      },
+      {
+        "type": "Prediction",
+        "valueType": "Probability map",
+        "label": "Transverse cancer detection map",
+        "description": "Detection map of clinically significant prostate cancer lesions in 3D, where each voxel represents a floating point in range [0,1]",
+        "classes": []
+      }
+    ],
+    "model": {
+      "architecture": "3d fullres nnUNet",
+      "training": "supervised",
+      "cmpapproach": "3D"
+    },
+    "data": {
+      "training": {
+        "vol_samples": 1200
+      },
+      "evaluation": {
+        "vol_samples": 300
+      },
+      "public": false,
+      "external": false
+    }
+  },
+  "details": {
+    "name": "PI-CAI challenge baseline",
+    "version": "v2.1.1",
+    "devteam": "Diagnostic Image Analysis Group, Radboud University Medical Center, Nijmegen, The Netherlands",
+    "type": "Prediction",
+    "date": {
+      "weights": "2022-06-22",
+      "code": "2022-09-05",
+      "pub": ""
+    },
+    "cite": "",
+    "license": {
+      "code": "Apache 2.0",
+      "weights": "Apache 2.0"
+    },
+    "publications": [],
+    "github": "https://github.com/DIAGNijmegen/picai_nnunet_semi_supervised_gc_algorithm",
+    "zenodo": "",
+    "colab": "",
+    "slicer": false
+  },
+  "info": {
+    "use": {
+      "title": "Intended use",
+      "text": "Prediction of the likelihood of harboring clinically significant prostate cancer (csPCa) in prostate biparametric MRI exams.",
+      "references": [],
+      "tables": []
+    },
+    "analyses": {
+      "title": "Evaluation",
+      "text": "Patient-level diagnosis performance is evaluated using the Area Under Receiver Operating Characteristic (AUROC) metric. Lesion-level detection performance is evaluated using the Average Precision (AP) metric. Overall score used to rank each AI algorithm is the average of both task-specific metrics: Overall Ranking Score = (AP + AUROC) / 2",
+      "references": [
+        {
+          "label": "PI-CAI AI challenge details",
+          "uri": "https://pi-cai.grand-challenge.org/AI/"
+        }
+      ],
+      "tables": []
+    },
+    "evaluation": {
+      "title": "Evaluation data",
+      "text": "The test sets are two private cohorts of 100 and 1000 biparametric MRI exams respectively. The first was used to tune the algorithms in a public leaderboard, the second was used to determine the top 5 AI algorithms.",
+      "references": [
+        {
+          "label": "PI-CAI data section",
+          "uri": "https://pi-cai.grand-challenge.org/DATA/"
+        }
+      ],
+      "tables": []
+    },
+    "training": {
+      "title": "Training data",
+      "text": "For the PI-CAI a publicly available training datasets of 1500 biparametric MRI exams including 328 cases from the ProstateX challenge were made available.",
+      "references": [
+        {
+          "label": "PI-CAI publicly available training data",
+          "uri": "https://zenodo.org/record/6624726"
+        },
+        {
+          "label": "PI-CAI publicly available training data annotations",
+          "uri": "https://github.com/DIAGNijmegen/picai_labels"
+        },
+        {
+          "label": "ProstateX challenge",
+          "uri": "https://prostatex.grand-challenge.org/"
+        }
+      ],
+      "tables": []
+    },
+    "ethics": {
+      "title": "",
+      "text": "",
+      "references": [],
+      "tables": []
+    },
+    "limitations": {
+      "title": "Limitations",
+      "text": "This algorithm was developed for research purposes only.",
+      "references": [],
+      "tables": []
+    }
+  }
+}
