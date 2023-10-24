@@ -29,7 +29,10 @@ RUN git clone https://github.com/vuno/tiger_challenge.git /vuno && \
 RUN pip3 install --no-cache-dir -r /vuno/requirements.txt
 
 # Reinstall correct version of Numpy to function with ASAP 2.1
-RUN pip install --no-cache-dir --force-reinstall numpy==1.22
+RUN pip3 install --no-cache-dir --force-reinstall numpy==1.22
+
+# Enforce minimum version of panimg (with WSI fix)
+RUN pip3 install --no-cache-dir panimg>=0.13.2
 
 # Download and install model weights file from zenodo
 RUN rm -rf /vuno/pretrained_weights && \
