@@ -45,7 +45,7 @@
     "name": "LB2",
     "version": "55c49c9e-4216-4142-b1c8-f5d85781add3",
     "devteam": "VUNO",
-    "type": "Segmentation/Classification hybrid",
+    "type": "Segmentation/Prediction hybrid",
     "date": {
       "weights": "2023-07-06",
       "code": "2023-07-06",
