@@ -1,0 +1,122 @@
+{
+  "id": "4172acab-b6f9-4baf-aafd-3e0cc806d59a",
+  "name": "gc_ode_colon_glands",
+  "title": "AutoPET challenge winner: False Positive Reduction Network",
+  "summary": {
+    "description": "Ordinary Differential Equations algorithm for segmentation of individual colon glands",
+    "inputs": [
+      {
+        "label": "Colon histology image",
+        "description": "Hematoxylin and Eosin (H&E) stained colon histology image",
+        "format": "DICOM",
+        "modality": "SM",
+        "bodypartexamined": "Colon",
+        "slicethickness": "",
+        "non-contrast": false,
+        "contrast": false
+      }
+    ],
+    "outputs": [
+      {
+        "type": "Segmentation",
+        "description": "Colon glands segmentation for the input histology image. Each individual segmented colon gland is assigned a different label.",
+        "classes":
+        ["BACKGROUND", "COLON_GLANDS"]
+      }
+    ],
+    "model": {
+      "architecture": "U-Node network based on a combination of Neural Ordinary Differential Equations (NODE) and a U-Net",
+      "training": "supervised",
+      "cmpapproach": "2D"
+    },
+    "data": {
+      "training": {
+        "vol_samples": 85
+      },
+      "evaluation": {
+        "vol_samples": 80
+      },
+      "public": false,
+      "external": false
+    }
+  },
+  "details": {
+    "name": "U-Node architecture",
+    "version": "6dd0505c1f456e733b63a80a62bcd578d7769340",
+    "devteam": "Hans Pinckaers",
+    "type": "Segmentation",
+    "date": {
+      "weights": "2020-04-09",
+      "code": "2020-04-09",
+      "pub": "2019-10-23"
+    },
+    "cite": "H. Pinckaers and G. Litjens, 'Neural Ordinary Differential Equations for Semantic Segmentation of Individual Colon Glands', In arXiv:1910.10470, doi: 10.48550/arXiv:1910.10470.",
+    "license": {
+      "code": "MIT",
+      "weights": "MIT"
+    },
+    "publications": [
+      {
+        "title": "Neural Ordinary Differential Equations for Semantic Segmentation of Individual Colon Glands",
+        "uri": "https://arxiv.org/abs/1910.10470"
+      }
+    ],
+    "github": "https://github.com/DIAGNijmegen/neural-odes-segmentation",
+    "zenodo": "",
+    "colab": "",
+    "slicer": false
+  },
+  "info": {
+    "use": {
+      "title": "Intended use",
+      "text": "Segmentation of the colon glands in H&E stained colon histology slides. Only intended for data similar to the data found in the colon gland segmentation dataset for the GlaS challenge.",
+      "references": [
+        {
+          "label": "Gland segmentation in colon histology images: The glas challenge contest",
+          "uri": "https://www.sciencedirect.com/science/article/pii/S1361841516301542"
+        }
+      ],
+      "tables": []
+    },
+    "analyses": {
+      "title": "Evaluation",
+      "text": "The model was evaluated using the GlaS challenge metrics against the test dataset. A weighted Dice coefficient per gland (object Dice), a gland detection F1 score, and a weighted shape similarity metric based on the Hausdorff distance (where lower is better). Results can be found in [1].",
+      "references": [
+        {
+          "label": "Neural Ordinary Differential Equations for Semantic Segmentation of Individual Colon Glands",
+          "uri": "https://arxiv.org/pdf/1910.10470.pdf"
+        }
+      ],
+      "tables": []
+    },
+    "evaluation": {
+      "title": "Evaluation data",
+      "text": "The GlaS dataset has a test set with 80 images. The majority are 775x522 pixel patches from scanned whole-slide histology images of the colon, where epithelial glands have ben annotated. The test dataset is divided into two subsets: subset A (60 images) and subset B (20 images).",
+      "references": [],
+      "tables": []
+    },
+    "training": {
+      "title": "Training data",
+      "text": "The GlaS dataset has a training set with 85 images. The majority are 775x522 pixel patches from scanned whole-slide histology images of the colon, where epithelial glands have ben annotated.",
+      "references": [
+        {
+          "label": "The GlaS dataset",
+          "uri": "https://warwick.ac.uk/fac/sci/dcs/research/tia/glascontest"
+        }
+      ],
+      "tables": []
+    },
+    "ethics": {
+      "title": "",
+      "text": "",
+      "references": [],
+      "tables": []
+    },
+    "limitations": {
+      "title": "Limitations",
+      "text": "This algorithm was developed for research purposes only.",
+      "references": [],
+      "tables": []
+    }
+  }
+}
