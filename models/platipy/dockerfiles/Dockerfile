@@ -14,7 +14,7 @@ RUN apt-get update && apt-get install ffmpeg libsm6 libxext6  -y
 # Install nnunet and platipy
 RUN pip3 install --no-cache-dir \
   nnunet \
-  platipy[cardiac]
+  platipy[cardiac]==0.7.0
 
 # Clone the main branch of MHubAI/models
 RUN git stash \
@@ -41,4 +41,5 @@ RUN unzip ${WEIGHTS_DIR}${WEIGHTS_FN} -d ${WEIGHTS_DIR}
 RUN rm ${WEIGHTS_DIR}${WEIGHTS_FN}
 
 # Default run script
-CMD ["python3", "-m", "mhubio.run", "--config", "/app/models/platipy/config/default.yml"]
+ENTRYPOINT ["python3", "-m", "mhubio.run"]
+CMD ["--config", "/app/models/platipy/config/default.yml"]

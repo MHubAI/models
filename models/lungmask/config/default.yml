@@ -24,10 +24,9 @@ modules:
   DsegConverter:
     model_name: LungMask
     body_part_examined: CHEST
-    source_segs: [nifti:mod=seg:roi=*]
+    source_segs: nifti:mod=seg:roi=*
     skip_empty_slices: True
   
   DataOrganizer:
     targets:
     - dicomseg:mod=seg-->[i:sid]/lungmask.seg.dcm
-    - nifti:mod=seg-->[i:sid]/[filename]
