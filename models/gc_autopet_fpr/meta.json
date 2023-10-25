@@ -1,0 +1,132 @@
+{
+  "id": "7e3ea0d1-182e-4dff-a5ed-84977d822760",
+  "name": "gc_autopet",
+  "title": "AutoPET challenge winner: False Positive Reduction Network",
+  "summary": {
+    "description": "The task of the AutoPET challenge was algorithm creation for automatic tumor lesion segmentation in whole-body FDG-PET/CT",
+    "inputs": [
+      {
+        "label": "FDG-PET image",
+        "description": "Positron Emission Tomography (PET) image with fluorodeoxyglucose (FDG) tracer",
+        "format": "DICOM",
+        "modality": "PT",
+        "bodypartexamined": "Whole Body",
+        "slicethickness": "3mm",
+        "non-contrast": false,
+        "contrast": false
+      },
+      {
+        "label": "CT image",
+        "description": "Computed Tomography (CT) image after contrast administration",
+        "format": "DICOM",
+        "modality": "CT",
+        "bodypartexamined": "Whole Body",
+        "slicethickness": "3mm",
+        "non-contrast": false,
+        "contrast": true
+      }
+    ],
+    "outputs": [
+      {
+        "type": "Segmentation",
+        "description": "Binary tumor lesion segmentation for the input PET/CT images.",
+        "classes":
+        ["BACKGROUND", "TUMOR_LESION"]
+      }
+    ],
+    "model": {
+      "architecture": "An ensemble of two nnUNets",
+      "training": "supervised",
+      "cmpapproach": "3D"
+    },
+    "data": {
+      "training": {
+        "vol_samples": 736
+      },
+      "evaluation": {
+        "vol_samples": 368
+      },
+      "public": false,
+      "external": false
+    }
+  },
+  "details": {
+    "name": "False Positive Reduction Network",
+    "version": "828bbf683da730f6c36be9d53b5a506a0eff3ae4",
+    "devteam": "Yige Peng et al.",
+    "type": "Segmentation",
+    "date": {
+      "weights": "2022-09-14",
+      "code": "2022-09-19",
+      "pub": "2022-09-16"
+    },
+    "cite": "Y. Peng, J. Kim, D. Feng and L. Bi, 'Automatic Tumor Segmentation via False Positive Reduction Network for Whole-Body Multi-Modal PET/CT Images', In arXiv:2209.07705, doi: 10.48550/arXiv:2209.07705.",
+    "license": {
+      "code": "MIT",
+      "weights": "MIT"
+    },
+    "publications": [
+      {
+        "title": "Automatic Tumor Segmentation via False Positive Reduction Network for Whole-Body Multi-Modal PET/CT Images",
+        "uri": "https://arxiv.org/abs/2209.07705"
+      }
+    ],
+    "github": "https://github.com/YigePeng/AutoPET_False_Positive_Reduction",
+    "zenodo": "",
+    "colab": "",
+    "slicer": false
+  },
+  "info": {
+    "use": {
+      "title": "Intended use",
+      "text": "Tumor segmentation for whole-body FDG-PET/CT image pairs.",
+      "references": [],
+      "tables": []
+    },
+    "analyses": {
+      "title": "Evaluation",
+      "text": "The DICE score was used for evaluation segmentation performance on an independent private test set of 150 studies for the final ranking.",
+      "references": [
+        {
+          "label": "AutoPET challenge dataset information",
+          "uri": "https://autopet.grand-challenge.org/Dataset/"
+        }
+      ],
+      "tables": []
+    },
+    "evaluation": {
+      "title": "Evaluation data",
+      "text": "The final test set consists of a separate private dataset of 150 FDG-PET/CT image pairs",
+      "references": [
+        {
+          "label": "AutoPET challenge dataset information",
+          "uri": "https://autopet.grand-challenge.org/Dataset/"
+        }
+      ],
+      "tables": []
+    },
+    "training": {
+      "title": "Training data",
+      "text": "Training data consists of 1014 studies acquired at the University Hospital Tübingen and is made publicly available on TCIA (as DICOM, NiFTI and HDF5 files).",
+      "references": [
+        {
+          "label": "A whole-body FDG-PET/CT dataset with manually annotated tumor lesions (FDG-PET-CT-Lesions)",
+          "uri": "https://doi.org/10.7937/gkr0-xv29"
+        }
+      ],
+      "tables": []
+    },
+    "ethics": {
+      "title": "",
+      "text": "",
+      "references": [],
+      "tables": []
+    },
+    "limitations": {
+      "title": "Limitations",
+      "text": "This algorithm was developed for research purposes only.",
+      "references": [],
+      "tables": []
+    }
+  }
+}
