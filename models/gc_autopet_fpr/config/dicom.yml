@@ -26,9 +26,10 @@ modules:
     target_dicom: dicom:mod=ct
     source_segs: [mha:mod=seg:roi=*]
     skip_empty_slices: True
-    json_config_path: /app/models/gc_autopet_fpr/dseg.json
+    segment_id_meta_key: roi
+    body_part_examined: WHOLEBODY
 
   DataOrganizer:
     targets:
       - mha:mod=seg-->[i:sid]/gc_autopet_fpr.seg.mha
-      - dicomseg-->[i:sid]/gc_autopet_fpr.seg.dcm
+      - dicomseg:mod=seg-->[i:sid]/gc_autopet_fpr.seg.dcm

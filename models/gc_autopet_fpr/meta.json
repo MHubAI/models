@@ -31,7 +31,7 @@
         "type": "Segmentation",
         "description": "Binary tumor lesion segmentation for the input PET/CT images.",
         "classes":
-        ["BACKGROUND", "TUMOR_LESION"]
+        ["BACKGROUND", "NEOPLASM_MALIGNANT_PRIMARY"]
       }
     ],
     "model": {
