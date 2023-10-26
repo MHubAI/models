@@ -1,21 +1,42 @@
 general:
   data_base_dir: /app/data
   version: 1.0
-  description: AutoPET False Positive Reduction nnUNet algorithm (mha to mha)
+  description: AutoPET False Positive Reduction nnUNet algorithm (dicom to dicom)
 
 execute:
 - FileStructureImporter
+- MhaConverter
 - AutoPETRunner
 - DataOrganizer
+- DsegConverter
 
 modules:
   FileStructureImporter:
     input_dir: 'input_data'
     structures:
-      - '$sid@instance/images/ct/ct.mha@mha:mod=ct'
-      - '$sid/images/pet/pet.mha@mha:mod=pt'
+      - '$sid@instance/.*/.*-GK.*@dicom:mod=ct'
+      - '$sid/.*/.*-PET.*@dicom:mod=pt'
     import_id: sid
+
+  DicomImporter:
+    source_dir: input_data
+    import_dir: sorted_data
+    sort_data: True
+    meta:
+      mod: '%Modality'
+
+  MhaConverter:
+    engine: panimg
+
+  DsegConverter:
+    model_name: GCAutoPETfpr
+    target_dicom: dicom:mod=ct
+    source_segs: [mha:mod=seg:roi=*]
+    skip_empty_slices: True
+    segment_id_meta_key: roi
+    body_part_examined: WHOLEBODY
 
   DataOrganizer:
     targets:
       - mha:mod=seg-->[i:sid]/gc_autopet_fpr.seg.mha
+      - dicomseg:mod=seg-->[i:sid]/gc_autopet_fpr.seg.dcm
