@@ -5,7 +5,7 @@ general:
 
 execute:
 - FileStructureImporter
-- MhaConverter
+- TciaDicomProcessor
 - AutoPETRunner
 - DataOrganizer
 - DsegConverter
@@ -17,10 +17,6 @@ modules:
       - $sid@instance/re:.*::/re:.*-GK.*::@dicom:mod=ct
       - $sid/re:.*::/re:.*-PET.*::@dicom:mod=pt
     import_id: sid
-
-  MhaConverter:
-    engine: panimg
-    allow_multi_input: True
 
   DsegConverter:
     model_name: GCAutoPETfpr

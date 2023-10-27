@@ -34,6 +34,16 @@ RUN mkdir -p /opt/algorithm/nnUNet_raw_data_base/nnUNet_raw_data/Task504_Total_P
 ENV nnUNet_raw_data_base="/opt/algorithm/nnUNet_raw_data_base"
 ENV RESULTS_FOLDER="/opt/algorithm/checkpoints"
 
+# install DICOM TCIA preprocessing (registration and nifti conversion)
+RUN git clone https://github.com/lab-midas/TCIA_processing /tmp/algorithm && \
+    cd /tmp/algorithm && git reset --hard fb7b0740bcab896ed8c8e646c4491cadafbb8789 && cd /app && \
+    mv /tmp/algorithm/tcia_dicom_to_nifti.py /opt/algorithm/ && \
+    mv /tmp/algorithm/requirements.txt /opt/algorithm/ && \
+    rm -rf /tmp/algorithm
+
+# Install additional preprocessing requirements
+RUN pip3 install --no-cache-dir -r /opt/algorithm/requirements.txt
+
 # TODO Clone the main branch of MHubAI/models
 #RUN git stash \
 #    && git fetch https://github.com/MHubAI/models.git main \
