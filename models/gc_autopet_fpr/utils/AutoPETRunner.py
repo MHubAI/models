@@ -28,14 +28,14 @@ class AutoPETRunner(Module):
     @IO.Input('in_data_pet', 'mha:mod=pt', the='input FDG PET scan')
     @IO.Output('out_data', 'tumor_segmenation.mha', 'mha:mod=seg:model=AutoPET:roi=NEOPLASM_MALIGNANT_PRIMARY', bundle='model', the='predicted tumor segmentation within the input FDG PET/CT scan')
     def task(self, instance: Instance, in_data_ct: InstanceData, in_data_pet: InstanceData, out_data: InstanceData) -> None:
+        # Instantiate the algorithm and check GPU availability
+        algorithm = AutoPETAlgorithm()
+        algorithm.check_gpu()
+
         # Define some paths which are used internally by the algorithm
         internal_ct_nifti_file = Path(algorithm.nii_path) / 'TCIA_001_0001.nii.gz'
         internal_pet_nifti_file = Path(algorithm.nii_path) / 'TCIA_001_0000.nii.gz'
         internal_output_nifti_file = Path(algorithm.result_path) / algorithm.nii_seg_file
-
-        # Instantiate the algorithm and check GPU availability
-        algorithm = AutoPETAlgorithm()
-        algorithm.check_gpu()
 
         self.v(" > Prepare input data")
         algorithm.convert_mha_to_nii(in_data_ct.abspath, str(internal_ct_nifti_file))

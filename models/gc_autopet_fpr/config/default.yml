@@ -14,19 +14,13 @@ modules:
   FileStructureImporter:
     input_dir: 'input_data'
     structures:
-      - '$sid@instance/.*/.*-GK.*@dicom:mod=ct'
-      - '$sid/.*/.*-PET.*@dicom:mod=pt'
+      - $sid@instance/re:.*::/re:.*-GK.*::@dicom:mod=ct
+      - $sid/re:.*::/re:.*-PET.*::@dicom:mod=pt
     import_id: sid
-
-  DicomImporter:
-    source_dir: input_data
-    import_dir: sorted_data
-    sort_data: True
-    meta:
-      mod: '%Modality'
 
   MhaConverter:
     engine: panimg
+    allow_multi_input: True
 
   DsegConverter:
     model_name: GCAutoPETfpr
