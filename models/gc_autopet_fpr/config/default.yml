@@ -7,8 +7,8 @@ execute:
 - FileStructureImporter
 - TciaDicomProcessor
 - AutoPETRunner
-- DataOrganizer
 - DsegConverter
+- DataOrganizer
 
 modules:
   FileStructureImporter:
@@ -20,7 +20,7 @@ modules:
 
   DsegConverter:
     model_name: GCAutoPETfpr
-    target_dicom: dicom:mod=ct
+    target_dicom: dicom:mod=pt
     source_segs: [mha:mod=seg:roi=*]
     skip_empty_slices: True
     segment_id_meta_key: roi
