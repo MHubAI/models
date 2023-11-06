@@ -14,13 +14,12 @@ modules:
   FileStructureImporter:
     input_dir: input_data
     structures:
-      - $sid@instance/images/transverse-adc-prostate-mri@dicom:mod=mradc
-      - $sid/images/transverse-t2-prostate-mri@dicom:mod=mrt2
-      - $sid/images/transverse-hbv-prostate-mri@dicom:mod=mrhbv
+      - $sid@instance/$type@dicom:mod=mr
     import_id: sid
 
   MhaConverter:
     engine: panimg
+    allow_multi_input: true
 
   ReportExporter:
     format: compact

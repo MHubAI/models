@@ -30,9 +30,9 @@ class ProstateCancerProbability(ValueOutput):
 class PicaiBaselineRunner(Module):
 
     @IO.Instance()
-    @IO.Input('in_data_t2', 'mha:mod=mrt2', the='input T2 weighted prostate MR image')
-    @IO.Input('in_data_adc', 'mha:mod=mradc', the='input ADC prostate MR image')
-    @IO.Input('in_data_hbv', 'mha:mod=mrhbv', the='input HBV prostate MR image')
+    @IO.Input('in_data_t2', 'mha:mod=mr:type=t2w', the='input T2 weighted prostate MR image')
+    @IO.Input('in_data_adc', 'mha:mod=mr:type=adc', the='input ADC prostate MR image')
+    @IO.Input('in_data_hbv', 'mha:mod=mr:type=hbv', the='input HBV prostate MR image')
     @IO.Output('cancer_probability_json', 'cspca-case-level-likelihood.json', "json", bundle='model', the='output JSON file with PICAI baseline prostate cancer probability')
     @IO.Output('cancer_detection_heatmap', 'cspca_detection_map.mha', "mha:mod=hm", bundle='model', the='output heatmap indicating prostate cancer probability')
     @IO.OutputData('cancer_probability', ProstateCancerProbability, the='PICAI baseline prostate cancer probability')
