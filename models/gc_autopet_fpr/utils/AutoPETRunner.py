@@ -5,7 +5,7 @@ Mhub / DIAG - Run Module for AutoPET false positive reduction algorithm
 
 -----------------------------------------------------------------------
 Author: Sil van de Leemput
-Email:  s.vandeleemput@radboudumc.nl
+Email:  sil.vandeleemput@radboudumc.nl
 -----------------------------------------------------------------------
 """
 

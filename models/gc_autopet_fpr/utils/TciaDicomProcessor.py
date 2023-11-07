@@ -5,7 +5,7 @@ Mhub / DIAG - Run Module for preprocessing the TCIA FDG-PET CT Lesions DICOM dat
 
 ------------------------------------------------------------------------------------
 Author: Sil van de Leemput
-Email:  s.vandeleemput@radboudumc.nl
+Email:  sil.vandeleemput@radboudumc.nl
 ------------------------------------------------------------------------------------
 """
 
