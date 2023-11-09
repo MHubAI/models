@@ -16,11 +16,9 @@ RUN pip3 install --no-cache-dir \
   nnunet \
   platipy[cardiac]==0.7.0
 
-# Clone the main branch of MHubAI/models
-RUN git stash \
- && git sparse-checkout set "models/platipy" \
- && git fetch https://github.com/MHubAI/models.git main \
- && git merge FETCH_HEAD
+# Import the MHub model definiton
+ARG MHUB_MODELS_REPO
+RUN buildutils/import_mhub_model.sh platipy ${MHUB_MODELS_REPO}
 
 # pull weights for platipy's nnU-Net so that the user doesn't need to every time a container is run
 ENV WEIGHTS_DIR="/root/.platipy/nnUNet_models/nnUNet/"

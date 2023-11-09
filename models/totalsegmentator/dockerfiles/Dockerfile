@@ -10,11 +10,9 @@ ENV SKLEARN_ALLOW_DEPRECATED_SKLEARN_PACKAGE_INSTALL=True
 # Install TotalSegmentator
 RUN pip3 install --no-cache-dir totalsegmentator==1.5.6 
 
-# Clone the main branch of MHubAI/models
-RUN git stash \
- && git sparse-checkout set "models/totalsegmentator" \
- && git fetch https://github.com/MHubAI/models.git main \
- && git merge FETCH_HEAD
+# Import the MHub model definiton
+ARG MHUB_MODELS_REPO
+RUN buildutils/import_mhub_model.sh totalsegmentator ${MHUB_MODELS_REPO}
 
 # Download weights using the script in utils
 # Usage: utils/download_weights.sh <weights_dir> <url1> <url2> ...
