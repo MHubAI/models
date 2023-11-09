@@ -18,7 +18,7 @@ RUN git stash \
 
 # Download weights using the script in utils
 # Usage: utils/download_weights.sh <weights_dir> <url1> <url2> ...
-RUN utils/download_weights.sh \
+RUN buildutils/download_weights.sh \
   /root/.totalsegmentator/nnunet/results/nnUNet/3d_fullres/ \
   https://zenodo.org/record/6802052/files/Task256_TotalSegmentator_3mm_1139subj.zip \
   https://zenodo.org/record/6802342/files/Task251_TotalSegmentator_part1_organs_1139subj.zip \
