@@ -58,10 +58,10 @@ RUN pip3 install --upgrade pip && pip3 install --no-cache-dir \
 RUN pip3 install git+https://github.com/MHubAI/mhubio.git \
   && pip3 install git+https://github.com/MHubAI/segdb.git \
   && git init \
-  && git sparse-checkout set "base/utils" "base/bin" \
+  && git sparse-checkout set "base/buildutils" "base/bin" \
   && git fetch https://github.com/MHubAI/models.git main \
   && git merge FETCH_HEAD \
-  && mv base/utils . \
+  && mv base/buildutils . \
   && chmod +x base/bin/* \
   && cp base/bin/* /usr/bin/ \
   && rm -r base
