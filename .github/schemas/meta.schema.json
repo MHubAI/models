@@ -1,0 +1,416 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "$defs": {
+        "inputProperty": {
+            "type": "object",
+            "properties": {
+                "label": {
+                    "type": "string",
+                    "description": "The label for the input."
+                },
+                "description": {
+                    "type": "string",
+                    "description": "A description of the input.",
+                    "maxLength": 200
+                },
+                "format": {
+                    "type": "string",
+                    "description": "The format of the input."
+                },
+                "modality": {
+                    "type": "string",
+                    "description": "The modality of the input."
+                },
+                "bodypartexamined": {
+                    "type": "string",
+                    "description": "The examined body part for the input."
+                },
+                "slicethickness": {
+                    "type": "string",
+                    "description": "The slice thickness of the input."
+                },
+                "non-contrast": {
+                    "type": "boolean",
+                    "description": "Whether non-contrast is used."
+                },
+                "contrast": {
+                    "type": "boolean",
+                    "description": "Whether contrast is used."
+                }
+            },
+            "required": [
+                "label",
+                "description",
+                "format",
+                "modality",
+                "bodypartexamined",
+                "slicethickness",
+                "non-contrast",
+                "contrast"
+            ]
+        },
+        "outputSegmentation": {
+            "type": "object",
+            "properties": {
+                "type": {
+                    "const": "Segmentation",
+                    "description": "Output type is Segmentation."
+                },
+                "classes": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "description": "The classes for segmentation."
+                }
+            },
+            "required": [
+                "type",
+                "classes"
+            ]
+        },
+        "outputPrediction": {
+            "type": "object",
+            "properties": {
+                "type": {
+                    "const": "Prediction",
+                    "description": "Output type is Prediction."
+                },
+                "valueType": {
+                    "type": "string",
+                    "description": "The value type for predictions."
+                },
+                "label": {
+                    "type": "string",
+                    "description": "The label of the prediction output."
+                },
+                "description": {
+                    "type": "string",
+                    "description": "A description of the prediction output."
+                }
+            },
+            "required": [
+                "type",
+                "valueType",
+                "label",
+                "description"
+            ]
+        },
+        "outputClassification": {
+            "type": "object",
+            "properties": {
+                "type": {
+                    "const": "Classification",
+                    "description": "Output type is Classification."
+                },
+                "classes": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "description": "The classes for classification."
+                }
+            },
+            "required": [
+                "type",
+                "classes"
+            ]
+        },
+        "inputArray": {
+            "type": "array",
+            "items": {
+                "$ref": "#/$defs/inputProperty"
+            }
+        },
+        "outputArray": {
+            "type": "array",
+            "items": {
+                "anyOf": [
+                    {
+                        "$ref": "#/$defs/outputSegmentation"
+                    },
+                    {
+                        "$ref": "#/$defs/outputPrediction"
+                    },
+                    {
+                        "$ref": "#/$defs/outputClassification"
+                    }
+                ]
+            }
+        },
+        "commonInfo": {
+            "type": "object",
+            "properties": {
+                "title": {
+                    "type": "string"
+                },
+                "text": {
+                    "type": "string"
+                },
+                "references": {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "label": {
+                                "type": "string"
+                            },
+                            "uri": {
+                                "type": "string",
+                                "format": "uri"
+                            }
+                        },
+                        "required": [
+                            "label",
+                            "uri"
+                        ]
+                    }
+                },
+                "tables": {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "label": {
+                                "type": "string"
+                            },
+                            "entries": {
+                                "type": "object",
+                                "additionalProperties": {
+                                    "type": "string"
+                                }
+                            }
+                        },
+                        "required": [
+                            "label",
+                            "entries"
+                        ]
+                    }
+                }
+            },
+            "required": [
+                "title",
+                "text"
+            ]
+        }
+    },
+    "type": "object",
+    "required": ["id", "name", "title", "summary", "details", "info"],
+    "properties": {
+        "id": {
+            "type": "string",
+            "format": "uuid",
+            "description": "The unique identifier of the model (UUID Version 4)."
+        },
+        "name": {
+            "type": "string",
+            "pattern": "^[a-z0-9_]+$",
+            "description": "The name of the model, using lowercase letters and hyphens only."
+        },
+        "title": {
+            "type": "string",
+            "description": "The title of the model."
+        },
+        "summary": {
+            "type": "object",
+            "required": ["description", "inputs", "outputs", "model", "data"],
+            "properties": {
+                "description": {
+                    "type": "string",
+                    "description": "A description of the model."
+                },
+                "inputs": {
+                    "$ref": "#/$defs/inputArray"
+                },
+                "outputs": {
+                    "$ref": "#/$defs/outputArray"
+                },
+                "model": {
+                    "type": "object",
+                    "properties": {
+                        "architecture": {
+                            "type": "string",
+                            "description": "The architecture of the model."
+                        },
+                        "training": {
+                            "type": "string",
+                            "description": "The training method of the model.",
+                            "enum": ["supervised", "semi-supervised", "unsupervised", "other"]
+                        },
+                        "cmpapproach": {
+                            "type": "string",
+                            "description": "The approach for comparison (2D, 3D, ensemble).",
+                            "enum": ["2D", "3D", "ensemble"]
+                        }
+                    },
+                    "required": [
+                        "architecture",
+                        "training",
+                        "cmpapproach"
+                    ]
+                },
+                "data": {
+                    "type": "object",
+                    "properties": {
+                        "training": {
+                            "type": "object",
+                            "properties": {
+                                "vol_samples": {
+                                    "type": "integer",
+                                    "description": "The number of volume samples used for training."
+                                }
+                            }
+                        },
+                        "evaluation": {
+                            "type": "object",
+                            "properties": {
+                                "vol_samples": {
+                                    "type": "integer",
+                                    "description": "The number of volume samples used for evaluation."
+                                }
+                            }
+                        },
+                        "public": {
+                            "type": "boolean",
+                            "description": "Wheather the model was evaluated on public data."
+                        },
+                        "external": {
+                            "type": "boolean",
+                            "description": "Wheather the model was cross-validated."
+                        }
+                    },
+                    "required": [
+                        "training",
+                        "evaluation",
+                        "public",
+                        "external"
+                    ]
+                }
+            }
+        },
+        "details": {
+            "type": "object",
+            "required": ["name", "version", "devteam", "type", "date", "cite", "license", "publications", "github"],
+            "properties": {
+                "name": {
+                    "type": "string",
+                    "description": "The name of the model."
+                },
+                "version": {
+                    "type": "string",
+                    "description": "The version of the model."
+                },
+                "devteam": {
+                    "type": "string",
+                    "description": "The development team of the model."
+                },
+                "type": {
+                    "type": "string",
+                    "description": "The type of the model."
+                },
+                "date": {
+                    "type": "object",
+                    "properties": {
+                        "weights": {
+                            "type": "string",
+                            "description": "The date of model weights (yyy-mm-dd).",
+                            "format": "date"
+                        },
+                        "code": {
+                            "type": "string",
+                            "description": "The date of model code (yyy-mm-dd).",
+                            "format": "date"
+                        },
+                        "pub": {
+                            "type": "string",
+                            "description": "The publication year (yyy-mm-dd).",
+                            "format": "date"
+                        }
+                    }
+                },
+                "cite": {
+                    "type": "string",
+                    "description": "Citation information for the model."
+                },
+                "license": {
+                    "type": "object",
+                    "properties": {
+                        "code": {
+                            "type": "string",
+                            "description": "The code license of the model."
+                        },
+                        "weights": {
+                            "type": "string",
+                            "description": "The weights license of the model."
+                        }
+                    }
+                },
+                "publications": {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "title": {
+                                "type": "string",
+                                "description": "The title of the publication."
+                            },
+                            "uri": {
+                                "type": "string",
+                                "format": "uri",
+                                "description": "The URI of the publication."
+                            }
+                        },
+                        "required": [
+                            "title",
+                            "uri"
+                        ]
+                    }
+                },
+                "github": {
+                    "type": "string",
+                    "format": "uri",
+                    "description": "The GitHub repository of the model."
+                },
+                "zenodo": {
+                    "type": "string",
+                    "format": "uri",
+                    "description": "The Zenodo record of the model."
+                },
+                "colab": {
+                    "type": "string",
+                    "format": "uri",
+                    "description": "The Colab notebook for the model."
+                },
+                "slicer": {
+                    "type": "boolean",
+                    "description": "Whether Slicer is supported.",
+                    "default": false
+                }
+            }
+        },
+        "info": {
+            "type": "object",
+            "required": ["use", "analyses", "evaluation", "training"],
+            "properties": {
+                "use": {
+                    "$ref": "#/$defs/commonInfo"
+                },
+                "analyses": {
+                    "$ref": "#/$defs/commonInfo"
+                },
+                "evaluation": {
+                    "$ref": "#/$defs/commonInfo"
+                },
+                "training": {
+                    "$ref": "#/$defs/commonInfo"
+                },
+                "ethics": {
+                    "$ref": "#/$defs/commonInfo"
+                },
+                "limitations": {
+                    "$ref": "#/$defs/commonInfo"
+                }
+            }
+        }
+    }
+}
