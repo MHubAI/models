@@ -7,6 +7,7 @@ execute:
 - DicomImporter
 - NiftiConverter
 - NNUnetRunner
+- BamfProcessorRunner
 - DsegConverter
 - DataOrganizer
 
@@ -17,12 +18,17 @@ modules:
     sort_data: true
     meta: 
       mod: 'mr'
+  
+  NiftiConverter:
 
   NNUnetRunner:
     in_data: nifti:mod=mr
     nnunet_task: 'Task882_Liver_AMD'
     nnunet_model: '3d_fullres'
     roi: LIVER
+
+  BamfProcessorRunner:
+    in_data: 'nifti:mod=mr'
 
   DsegConverter:
     source_segs: 'nifti:mod=seg'

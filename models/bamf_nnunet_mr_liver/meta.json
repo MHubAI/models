@@ -1,9 +1,9 @@
 {
     "id": "",
-    "name": "bamf_aimi_mri_liver",
+    "name": "bamf_nnunet_mr_liver",
     "title": "AIMI MRI Liver",
     "summary": {
-        "description": "An nnU-Net basec model to segment liver from T1 weighted MRI scans",
+        "description": "An nnU-Net based model to segment liver from T1 weighted MRI scans",
         "inputs": [
             {
                 "label": "Input Image",
