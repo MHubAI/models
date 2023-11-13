@@ -17,7 +17,7 @@ import numpy as np
 import shutil
 
 
-@IO.ConfigInput('in_data', 'nifti:mod=ct', the="input data to run BamfProcessor on")
+@IO.ConfigInput('in_data', 'nifti:mod=ct|mr', the="input data to run BamfProcessor on")
 class BamfProcessorRunner(Module):
 
     @IO.Instance
