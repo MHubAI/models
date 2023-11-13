@@ -1,41 +1,52 @@
 """
 -------------------------------------------------
-MedicalHub - Run Module for Thresholding.
+MedicalHub - Run Module for ensembling nnUNet inference.
 -------------------------------------------------
 -------------------------------------------------
-Author: Leonard Nürnberg
-Email:  leonard.nuernberg@maastrichtuniversity.nl
+Author: Rahul Soni
+Email:  rahul.soni@bamfhealth.com
 -------------------------------------------------
 """
 
 from mhubio.core import Instance, InstanceData, DataType, FileType, CT, SEG
-from mhubio.modules.runner.ModelRunner import ModelRunner
-
+from mhubio.core import Module, IO
 import os, numpy as np
 import SimpleITK as sitk
 from skimage import measure, filters
 import numpy as np
+import shutil
 
 
-class BamfProcessorRunner(ModelRunner):
-    def runModel(self, instance: Instance) -> None:
+@IO.ConfigInput('in_data', 'nifti:mod=ct', the="input data to run BamfProcessor on")
+class BamfProcessorRunner(Module):
+
+    @IO.Instance
+    @IO.Input("in_data", the="input data to run nnunet on")
+    def task(self, instance: Instance, in_data: InstanceData, out_data: InstanceData) -> None:
+
+       # Log bamf runner info
+        self.v("Running BamfProcessor on....")
+        self.v(f" > input data:  {in_data.abspath}")
+        self.v(f" > output data: {out_data.abspath}")
 
         # data
-        inp_data = instance.data.filter(DataType(FileType.NIFTI, CT)).first()
+        # bring input data in nnunet specific format
+        # NOTE: only for nifti data as we hardcode the nnunet-formatted-filename (and extension) for now.
+        assert in_data.type.ftype == FileType.NIFTI
+        assert in_data.abspath.endswith('.nii.gz')
 
         # read image
-        self.v(f"Reading image from {inp_data.abspath}")
-        img_itk = sitk.ReadImage(inp_data.abspath)
+        self.v(f"Reading image from {in_data.abspath}")
+        img_itk = sitk.ReadImage(in_data.abspath)
         img_np = sitk.GetArrayFromImage(img_itk)
 
         # apply post-processing
         img_bamf_processed = self.n_connected(img_np)
 
-        # store image
+        # store image temporarily
         out_file = os.path.join(instance.abspath, f'bamf_processed.nrrd')
-        self.v(f"Writing image to {out_file}")
+        self.v(f"Writing tmp image to {out_file}")
         img_bamf_processed_itk = sitk.GetImageFromArray(img_bamf_processed)
-
         img_bamf_processed_itk.CopyInformation(img_itk)
         sitk.WriteImage(img_bamf_processed_itk, out_file)
 
@@ -45,7 +56,7 @@ class BamfProcessorRunner(ModelRunner):
         }
 
         # create output data
-        seg_data_type = DataType(FileType.NRRD, SEG + meta)           
+        seg_data_type = DataType(FileType.NRRD, SEG + meta)
         seg_data = InstanceData(out_file, type=seg_data_type)
         instance.addData(seg_data)
         seg_data.confirm()
@@ -71,3 +82,4 @@ class BamfProcessorRunner(ModelRunner):
 
         img_data[img_filtered != 1] = 0
         return img_data
+    

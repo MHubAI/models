@@ -29,15 +29,6 @@ RUN rm ${WEIGHTS_DIR}${WEIGHTS_FN}
 # specify nnunet specific environment variables
 ENV WEIGHTS_FOLDER=$WEIGHTS_DIR
 
-#####################################################################################
-# Copy changes to config if you have any
-#####################################################################################
-RUN mkdir -p /app/models/bamf_nnunet_ct_liver/config/
-COPY config/* /app/models/bamf_nnunet_ct_liver/config/
-
-RUN mkdir -p /app/models/bamf_nnunet_ct_liver/scripts/
-COPY scripts/* /app/models/bamf_nnunet_ct_liver/scripts/
-
 # Default run script
-ENTRYPOINT ["python3", "-m", "mhubio.run", "--config", "/app/models/bamf_nnunet_ct_liver/config/default.yml"]
-CMD ["--script", "/app/models/bamf_nnunet_ct_liver/scripts/run.py"]
+ENTRYPOINT ["python3", "-m", "mhubio.run"]
+CMD ["--config", "/app/models/bamf_nnunet_ct_liver/config/default.yml"]
