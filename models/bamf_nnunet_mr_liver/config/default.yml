@@ -18,8 +18,6 @@ modules:
     sort_data: true
     meta: 
       mod: 'mr'
-  
-  NiftiConverter:
 
   NNUnetRunner:
     in_data: nifti:mod=mr
@@ -28,7 +26,6 @@ modules:
     roi: LIVER
 
   BamfProcessorRunner:
-    in_data: 'nifti:mod=mr'
 
   DsegConverter:
     source_segs: 'nifti:mod=seg'
