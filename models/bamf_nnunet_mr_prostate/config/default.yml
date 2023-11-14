@@ -7,6 +7,7 @@ execute:
 - DicomImporter
 - NiftiConverter
 - NNUnetRunner
+- BamfProcessorRunner
 - DsegConverter
 - DataOrganizer
 
@@ -24,15 +25,16 @@ modules:
 
   NNUnetRunner:
     in_data: nifti:mod=mr
-    nnunet_task: 'Task788_ProstateX'
-    nnunet_model: '3d_fullres'
+    nnunet_task: Task788_ProstateX
+    nnunet_model: 3d_fullres
+
+  BamfProcessorRunner:
 
   DsegConverter:
     source_segs: nifti:mod=seg
     target_dicom: dicom:mod=mr
     model_name: 'Bamf NNUnet MR Prostate'
     skip_empty_slices: True
-    json_config_path: /app/models/bamf_nnunet_mr_prostate/config/meta.json
 
   DataOrganizer:
     targets:

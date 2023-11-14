@@ -17,7 +17,9 @@
         ],
         "outputs": [
             {
+                "label": "Segmentation",
                 "type": "Segmentation",
+                "description": "Segmentation Prostate",
                 "classes": [
                     "Prostate"
                 ]
@@ -26,73 +28,107 @@
         "model": {
             "architecture": "U-net",
             "training": "Supervised",
-            "cmpapproach": "2D, 3D, ensemble"
-        }
+            "cmpapproach": "3D, ensemble"
+        },
+        "data": {
+            "training": {
+                "vol_samples": 439
+            },
+            "evaluation": {
+                "vol_samples": 81
+            },
+            "public": true,
+            "external": true
+        }        
     },
     "details": {
-        "name": "bamf_nnunet_mr_prostate",
+        "name": "AIMI MR Prostate",
         "version": "1.0.0",
-        "devteam": "BAMF Health Pvt Ltd",
+        "devteam": "BAMF Health",
         "type": "nnU-Net (U-Net structure, optimized by data-driven heuristics)",
         "date": {
-            "weights": "09\/07\/23",
-            "code": "n\/a",
-            "pub": 2023
+            "code": "17.10.2023",
+            "weights": "28.08.2023",
+            "pub": "23.10.2023"
         },
+        "cite": "Murugesan, Gowtham Krishnan, Diana McCrumb, Mariam Aboian, Tej Verma, Rahul Soni, Fatima Memon, and Jeff Van Oss. The AIMI Initiative: AI-Generated Annotations for Imaging Data Commons Collections. arXiv preprint arXiv:2310.14897 (2023).",
         "license": {
-            "code": "Apache 2.0",
+            "code": "MIT",
             "weights": "CC BY-NC 4.0"
         },
         "publications": [
             {
-                "title": "",
-                "uri": ""
+                "title": "The AIMI Initiative: AI-Generated Annotations in IDC Collections",
+                "uri": "https://arxiv.org/abs/2310.14897"
             }
         ],
-        "github": "https:\/\/github.com\/bamf-health\/aimi-prostate-mr",
-        "zenodo": "https:\/\/zenodo.org\/record\/8290093",
-        "slicer": true
+        "github": "https://github.com/bamf-health/aimi-prostate-mr"
     },
     "info": {
         "use": {
             "title": "Intended Use",
-            "text": "This model is intended to perform segmentations of prostate region that are relevant for use cases such as organ volumetry, disease characterization, and surgical or radiation therapy planning."
+            "text": "This model is intended to perform segmentations of prostate region in MR scans. The model has been trained and tested on scans aquired during clinical care of patients, so it might not be suited for a healthy population. The generalization capabilities of the model on a range of ages, genders, and ethnicities are unknown."
         },
         "analyses": {
             "title": "Quantitative Analyses",
-            "text": "The model's performance was assessed using the Dice Coefficient on a held-out portion of the in-house dataset (public). For more information, please refer to the model's publication [1].",
+            "text": "The model's performance was assessed using the Dice Coefficient and Normalized Surface Distance (NSD) with tolerance 7mm, as specified in the MR prostate segmentation task in the Medical Segmentation Decathlon challenge. The model was used to segment cases from the IDC collection ProstateX [1]. Seven of those cases were reviewed and corrected by a board-certified radiologist and a non-expert. The analysis is published here [2]",
+            "tables": [
+                {
+                    "label": "Label-wise metrics (mean (standard deviation)) between AI derived and manually corrected MR prostate annotations",
+                    "entries": {
+                        "Dice: Radiologist": "1.00 (0.00)",
+                        "NSD: Radiologist": "0.00 (0.00)"
+                    }
+                }
+            ],
             "references": [
                 {
-                    "label": "nnUNet: Robust Segmentation of Prostate in MR Images",
-                    "uri": "https:\/\/pubs.rsna.org\/doi\/10.1148\/ryai.230024"
+                    "label": "PROSTATEx",
+                    "uri": "https://wiki.cancerimagingarchive.net/pages/viewpage.action?pageId=23691656"
+                },
+                {
+                    "label": "The AIMI Initiative: AI-Generated Annotations for Imaging Data Commons Collections",
+                    "uri": "https://arxiv.org/abs/2310.14897"
                 }
             ]
         },
         "evaluation": {
             "title": "Evaluation Data",
-            "text": "The evaluation dataset consists of 65 MR scans of patients with different ages, presenting various pathologies, and acquired with various imaging protocols. The Nora Imaging Platform was used for manual segmentation or further refinement of generated segmentations, starting from data uniformely resampled to 1.5mm isotropic. Segmentation was supervised by two physicians with three and six years of experience in body imaging. If an existing model for a given structure was publicly available, that model was used to create a first segmentation, which was then validated and refined manually. Furthermore, the authors used an iterative learning approach to speed up the segmentation process [1][2]. The evaluation process was conducted on images resampled to 1.5mm isotropic.",
+            "text": "The model was used to segment cases from the PROSTATEx dataset. A test/holdout validation split of 81/34 was created from the 115 prostates. These were reviewed and corrected by a board-certified radiologist. The model predictions, and radiologist corrections are published on zenodo [2]",
             "references": [
                 {
-                    "label": "TotalSegmentator: Robust Segmentation of 104 Anatomic Structures in CT Images",
-                    "uri": "https:\/\/pubs.rsna.org\/doi\/10.1148\/ryai.230024"
+                    "label": "Imaging Data Collections (IDC)",
+                    "uri": "https://datacommons.cancer.gov/repository/imaging-data-commons"
                 },
                 {
-                    "label": "TotalSegmentator dataset",
-                    "uri": "https:\/\/doi.org\/10.5281\/zenodo.6802613"
+                    "label": "PROSTATEx",
+                    "uri": "https://wiki.cancerimagingarchive.net/pages/viewpage.action?pageId=23691656"
+                },
+                {
+                    "label": "Image segmentations produced by the AIMI Annotations initiative",
+                    "uri": "https://zenodo.org/records/10009368"
                 }
             ]
         },
         "training": {
             "title": "Training Data",
-            "text": "The training dataset consists of 1082 CT scans of patients with different ages, presenting various pathologies, and acquired with various imaging protocols [1][2]. All of the CT images were resampled to a common resolution of 1.5mm isotropic before training. For details regarding the labels the model was trained with, see the section above.",
+            "text": "The training dataset consists of 439 T2W MRI prostate annotations taken from IDC [1] (N=98), ProstateX dataset found publicly [2] (N=134), T2W MRI scans from Prostate158 [3] (N=138), and ISBI-MR-Prostate-2013 dataset [4] (N=69)",
             "references": [
                 {
-                    "label": "TotalSegmentator: Robust Segmentation of 104 Anatomic Structures in CT Images",
-                    "uri": "https:\/\/pubs.rsna.org\/doi\/10.1148\/ryai.230024"
+                    "label": "Imaging Data Collections (IDC)",
+                    "uri": "https://datacommons.cancer.gov/repository/imaging-data-commons"
                 },
                 {
-                    "label": "TotalSegmentator dataset",
-                    "uri": "https:\/\/doi.org\/10.5281\/zenodo.6802613"
+                    "label": "ProstateX dataset",
+                    "uri": "https://wiki.cancerimagingarchive.net/pages/viewpage.action?pageId=23691656"
+                },
+                {
+                    "label": "Prostate158 dataset",
+                    "uri": "https://zenodo.org/records/6481141"
+                },
+                {
+                    "label": "ISBI-MR-Prostate-2013 dataset",
+                    "uri": "https://wiki.cancerimagingarchive.net/display/public/nci-isbi+2013+challenge+-+automated+segmentation+of+prostate+structures"
                 }
             ]
         }
