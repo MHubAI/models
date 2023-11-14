@@ -12,10 +12,8 @@ RUN pip3 install --no-cache-dir \
   nnunet 
 
 # Clone the main branch of MHubAI/models
-RUN git stash \
- && git sparse-checkout set "models/bamf_nnunet_ct_liver" \
- && git fetch https://github.com/MHubAI/models.git main \
- && git merge FETCH_HEAD
+ARG MHUB_MODELS_REPO
+RUN buildutils/import_mhub_model.sh bamf_nnunet_ct_liver ${MHUB_MODELS_REPO}
 
 # Pull weights into the container
 ENV WEIGHTS_DIR=/root/.nnunet/nnUNet_models/nnUNet/
@@ -30,5 +28,5 @@ RUN rm ${WEIGHTS_DIR}${WEIGHTS_FN}
 ENV WEIGHTS_FOLDER=$WEIGHTS_DIR
 
 # Default run script
-ENTRYPOINT ["python3", "-m", "mhubio.run"]
+ENTRYPOINT ["mhub.run"]
 CMD ["--config", "/app/models/bamf_nnunet_ct_liver/config/default.yml"]

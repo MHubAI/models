@@ -17,23 +17,17 @@ import numpy as np
 import shutil
 
 
-@IO.ConfigInput('in_data', 'nifti:mod=ct|mr', the="input data to run BamfProcessor on")
+
 class BamfProcessorRunner(Module):
 
     @IO.Instance
-    @IO.Input("in_data", the="input data to run nnunet on")
+    @IO.Input('in_data', 'nifti:mod=ct|mr', the='input data to run nnunet on')
     def task(self, instance: Instance, in_data: InstanceData, out_data: InstanceData) -> None:
 
        # Log bamf runner info
         self.v("Running BamfProcessor on....")
         self.v(f" > input data:  {in_data.abspath}")
         self.v(f" > output data: {out_data.abspath}")
-
-        # data
-        # bring input data in nnunet specific format
-        # NOTE: only for nifti data as we hardcode the nnunet-formatted-filename (and extension) for now.
-        assert in_data.type.ftype == FileType.NIFTI
-        assert in_data.abspath.endswith('.nii.gz')
 
         # read image
         self.v(f"Reading image from {in_data.abspath}")

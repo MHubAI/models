@@ -7,6 +7,7 @@ execute:
 - NrrdImporter
 - NiftiConverter
 - NNUnetRunner
+- BamfProcessorRunner
 - JsonSegExporter
 - DataOrganizer
 
@@ -25,6 +26,8 @@ modules:
     nnunet_model: '3d_fullres'
     roi: LIVER
 
+  BamfProcessorRunner:
+  
   DataOrganizer:
     targets:
     - nifti:mod=seg-->[basename]
