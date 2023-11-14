@@ -64,7 +64,8 @@ RUN pip3 install git+https://github.com/MHubAI/mhubio.git \
   && mv base/buildutils . \
   && chmod +x base/bin/* \
   && cp base/bin/* /usr/bin/ \
-  && rm -r base
+  && rm -r base \
+  && rm -r .git
 
 # Install DCMQI by pulling the latest release from GitHub (via GitHub API)
 # Run everything in a single RUN command to avoid creating intermediate layers (and allowing environment variables to be used)
