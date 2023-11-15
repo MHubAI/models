@@ -73,7 +73,12 @@
     "use": {
       "title": "Intended use",
       "text": "Prediction of the likelihood of harboring clinically significant prostate cancer (csPCa) in prostate biparametric MRI exams.",
-      "references": [],
+      "references": [
+        {
+          "label": "PI-CAI baseline algorithm on grand-challenge",
+          "uri": "https://grand-challenge.org/algorithms/pi-cai-baseline-nnu-net-semi-supervised/"
+        }
+      ],
       "tables": []
     },
     "analyses": {
