@@ -77,7 +77,7 @@
         },
         "analyses": {
             "title": "Quantitative Analyses",
-            "text": "The model's performance was assessed using the Dice Coefficient and Normalized Surface Distance (NSD) with tolerance 7mm, as specified in the CT Liver segmentation task in the Medical Segmentation Decathlon challenge. The model was used to segment cases from the IDC collection TCGA-LIHC [1]. Seven of those cases were reviewed and corrected by a board-certified radiologist and a non-expert. The analysis is published here [2]",
+            "text": "The model's performance was assessed using the Dice Coefficient and Normalized Surface Distance (NSD) with tolerance 7mm, as specified in the CT Liver segmentation task in the Medical Segmentation Decathlon challenge. The model was used to segment cases from the IDC collection TCGA-LIHC [1]. Nine of those cases were reviewed and corrected by a board-certified radiologist and a non-expert. The analysis is published here [2]",
             "tables": [
                 {
                     "label": "Label-wise metrics (mean (standard deviation)) between AI derived and manually corrected MRI liver annotations",
@@ -102,7 +102,7 @@
         },
         "evaluation": {
             "title": "Evaluation Data",
-            "text": "The model was used to segment cases from the IDC [1] collection TCGA-LIHC [1]. Seven of those cases were randomly selected to be reviewed and corrected by a board-certified radiologist. The model predictions, and radiologist corrections are published on zenodo [3]",
+            "text": "The model was used to segment cases from the IDC [1] collection TCGA-LIHC [1]. Nine of those cases were randomly selected to be reviewed and corrected by a board-certified radiologist. The model predictions, and radiologist corrections are published on zenodo [3]",
             "references": [
                 {
                     "label": "Imaging Data Collections (IDC)",
