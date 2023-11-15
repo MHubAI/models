@@ -59,7 +59,7 @@
             "pub": "23.10.2023"
         },
         "cite": "Murugesan, Gowtham Krishnan, Diana McCrumb, Mariam Aboian, Tej Verma, Rahul Soni, Fatima Memon, and Jeff Van Oss. The AIMI Initiative: AI-Generated Annotations for Imaging Data Commons Collections. arXiv preprint arXiv:2310.14897 (2023).",
-        "licence": {
+        "license": {
             "code": "MIT",
             "weights": "CC BY-NC 4.0"
         },
