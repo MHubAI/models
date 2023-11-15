@@ -30,19 +30,6 @@ RUN pip3 install --no-cache-dir git+https://github.com/DIAGNijmegen/Tiger.git@4c
 #    && git sparse-checkout set "models/gc_spider_baseline" \
 #    && git fetch https://github.com/MHubAI/models.git main
 
-# Add two static configuration json files required by the SPIDER baseline algorithm
-RUN echo '{"filters": 50, "traversal_direction": "up"}' > /app/src/experiments/SPIDER-Baseline/arguments.json
-RUN echo '[{\
-    "identifier": "input_img",\
-    "subset": "testing",\
-    "filetype": "mha",\
-    "slice-order-reversed": false,\
-    "rescale-intercept": 0,\
-    "modality": "MRI",\
-    "ignore_slices_top": 0,\
-    "ignore_slices_bottom": 0\
-}]' > /app/src/datasets/spider_input/metadata.json
-
 # Setup required environment variables for SPIDER algorithm
 ENV PYTHONPATH="/app:/app/src/devel"
 ENV VERSEG_BASEDIR="/app/src/"

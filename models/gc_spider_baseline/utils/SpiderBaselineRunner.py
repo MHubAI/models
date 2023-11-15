@@ -11,6 +11,7 @@ Email:  sil.vandeleemput@radboudumc.nl
 from pathlib import Path
 import shutil
 import os
+import json
 
 import SimpleITK
 import numpy as np
@@ -21,15 +22,21 @@ from mhubio.core import Instance, InstanceData, IO, Module
 from TestSpine import Module as SpiderAlgorithm
 
 
+@IO.Config('traversal_direction_up', bool, True, the="Direction to traverse the image")
+@IO.ConfigInput('in_data', 'nifti|nrrd|mha:mod=ct|mr', the='supported datatypes for the spider baseline model')
 class SpiderBaselineRunner(Module):
+
+    traversal_direction_up: bool
 
     SPIDER_DATA_DIR = Path(os.environ["VERSEG_BASEDIR"])
     SPIDER_INTERNAL_DATASET_PATH = SPIDER_DATA_DIR / "datasets" / "spider_input"
     SPIDER_EXPERIMENT_DIR = SPIDER_DATA_DIR / "experiments" / "SPIDER-Baseline"
     SPIDER_INTERNAL_OUTPUT_DIR = SPIDER_EXPERIMENT_DIR / "results" / "spider_input"
+    SPIDER_EXPERIMENT_ARGUMENTS_FILE = SPIDER_EXPERIMENT_DIR / "arguments.json"
+    SPIDER_INTERNAL_DATASET_META_FILE = SPIDER_INTERNAL_DATASET_PATH / "metadata.json"
 
     @IO.Instance()
-    @IO.Input('in_data', 'mha|nrrd|nifti:mod=mr', the='input sagittal spine MRI')
+    @IO.Input('in_data', the='input sagittal spine image')
     @IO.Output(
         'out_data_raw',
         'spider_baseline_vertebrae_segmentation_raw.mha',
@@ -59,7 +66,16 @@ class SpiderBaselineRunner(Module):
         self.log(f"Copying data files to internal SPIDER data structure: {in_data_path} -> {internal_img_path}", level="NOTICE")
         shutil.copy(str(in_data_path), str(internal_img_path))
 
-        self.log("Run the SPIDER-Baseline algorithm", level="NOTICE")
+        filetype = str(in_data.type.ftype).lower()
+        modality = in_data.type.meta["mod"].upper()
+        is_modality_mr = modality == "MR"
+
+        if modality not in ["CT", "MR"]:
+            raise ValueError(f"SpiderBaselineRunner does not support modality: `{modality}`")
+
+        self.create_input_metadata_file(modality=modality, filetype=filetype)
+
+        self.log(f"Run the SPIDER-Baseline algorithm, using `{modality}` settings", level="NOTICE")
         # The algorithm is configured to run on an internal data folder structure and is
         # further configured by the JSON files in the Dockerfile
         # The algorithm parameters specify the following:
@@ -73,7 +89,9 @@ class SpiderBaselineRunner(Module):
                 "SPIDER-Baseline",
                 "--epoch", "999999",
                 "--dataset", "spider_input",
-                "--surface_erosion_threshold", "-2000",
+                "--surface_erosion_threshold", "-2000" if is_modality_mr else "200",
+                "--min_fragment_size", "100" if is_modality_mr else "500",
+                "--min_size_cont", "100" if is_modality_mr else "500",
                 "--export_original"
             ]
         ).execute()
@@ -106,3 +124,32 @@ class SpiderBaselineRunner(Module):
 
         # Run internal output cleanup
         shutil.rmtree(str(self.SPIDER_INTERNAL_OUTPUT_DIR))
+
+    def create_arguments_config_file(self, traversal_direction_up: bool = True):
+        with open(self.SPIDER_EXPERIMENT_ARGUMENTS_FILE, "w") as f:
+            json.dump({
+                "filters": 50,  # Fixed for this model
+                "traversal_direction": "up" if traversal_direction_up else "down"
+                }, f
+            )
+
+    def create_input_metadata_file(self, modality: str, filetype: str = "mha"):
+        with open(self.SPIDER_INTERNAL_DATASET_META_FILE, "w") as f:
+            json.dump(
+                [{
+                    "identifier": "input_img",
+                    "subset": "testing",
+                    "filetype": filetype,
+                    "slice-order-reversed": False,
+                    "rescale-intercept": 0,
+                    "modality": modality,
+                    "ignore_slices_top": 0,
+                    "ignore_slices_bottom": 0
+                }]
+            , f)
+
+    def __init__(self, config, local_config):
+        # Create the arguments config json file on initialization
+        # based on the traversal_direction_up configuration setting
+        super().__init__(config=config, local_config=local_config)
+        self.create_arguments_config_file(traversal_direction_up=self.traversal_direction_up)
