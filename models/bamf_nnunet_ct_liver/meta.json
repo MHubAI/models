@@ -28,7 +28,7 @@
         ],
         "model": {
             "architecture": "U-net",
-            "training": "Supervised",
+            "training": "supervised",
             "cmpapproach": "3D, ensemble"
         },
         "data": {
