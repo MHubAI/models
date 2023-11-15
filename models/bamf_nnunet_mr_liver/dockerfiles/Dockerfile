@@ -13,7 +13,7 @@ RUN pip3 install --no-cache-dir \
 
 # Clone the main branch of MHubAI/models
 ARG MHUB_MODELS_REPO
-RUN buildutils/import_mhub_model.sh bamf_nnunet_ct_liver ${MHUB_MODELS_REPO}
+RUN buildutils/import_mhub_model.sh bamf_nnunet_mr_liver ${MHUB_MODELS_REPO}
 
 # Pull weights into the container
 ENV WEIGHTS_DIR=/root/.nnunet/nnUNet_models/nnUNet/
