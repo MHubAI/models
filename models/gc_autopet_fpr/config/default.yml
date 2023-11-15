@@ -5,9 +5,8 @@ general:
 
 execute:
 - FileStructureImporter
+- NiftiConverter
 - TciaDicomProcessor
-- AutoPETRunner
-- DsegConverter
 - DataOrganizer
 
 modules:
@@ -17,6 +16,12 @@ modules:
       - $sid@instance/re:.*::/re:.*-GK.*::@dicom:mod=ct
       - $sid/re:.*::/re:.*-PET.*::@dicom:mod=pt
     import_id: sid
+
+  NiftiConverter:
+    engine: plastimatch
+    allow_multi_input: true
+    converted_file_name: '[basename].nii.gz'
+    in_datas: dicom:mod=ct|pt
 
   DsegConverter:
     model_name: GCAutoPETfpr
@@ -28,5 +33,5 @@ modules:
 
   DataOrganizer:
     targets:
-      - mha:mod=seg-->[i:sid]/gc_autopet_fpr.seg.mha
-      - dicomseg:mod=seg-->[i:sid]/gc_autopet_fpr.seg.dcm
+      - nifti:mod=pt-->[i:sid]/pt.nii.gz
+      - nifti:mod=ct:resampled=true-->[i:sid]/ct_res.nii.gz

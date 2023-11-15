@@ -25,7 +25,7 @@ PT = Meta(mod="PT")  # Positron emission tomography (PET)
 class AutoPETRunner(Module):
 
     @IO.Instance()
-    @IO.Input('in_data_ct', 'mha|nifti:mod=ct', the='input FDG CT scan')
+    @IO.Input('in_data_ct', 'mha|nifti:mod=ct:registered=true', the='input FDG CT scan')
     @IO.Input('in_data_pet', 'mha|nifti:mod=pt', the='input FDG PET scan')
     @IO.Output('out_data', 'tumor_segmenation.mha', 'mha:mod=seg:model=AutoPET:roi=NEOPLASM_MALIGNANT_PRIMARY', bundle='model', the='predicted tumor segmentation within the input FDG PET/CT scan')
     def task(self, instance: Instance, in_data_ct: InstanceData, in_data_pet: InstanceData, out_data: InstanceData) -> None:

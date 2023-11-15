@@ -12,7 +12,7 @@ modules:
   FileStructureImporter:
     input_dir: 'input_data'
     structures:
-      - '$sid@instance/images/ct/ct.mha@mha:mod=ct'
+      - '$sid@instance/images/ct/ct.mha@mha:mod=ct:resampled=true'
       - '$sid/images/pet/pet.mha@mha:mod=pt'
     import_id: sid
 
