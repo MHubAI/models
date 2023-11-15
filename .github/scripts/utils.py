@@ -130,14 +130,40 @@ def validateDockerfile(base: str, model_name: str):
     if not lines[0].strip() == "FROM mhubai/base:latest":
         raise MHubComplianceError(f"Dockerfile does not contain the correct FROM command: {lines[0]}", DocuRef.DOCKERFILE)
 
-    # check that dockerfile contains no ADD or COPY commands 
-    #  so no new line is allowed to start with ADD or COPY 
+    # some status variables from parsing the dockerfile
+    dockerfile_defines_arg_mhub_models_repo = False
+    dockerfile_contains_mhubio_import = False
+
+    # check that dockerfile contains no ADD or COPY commands
+    # We also don't allow changing the WORKDIR which is set to /app in the base and must be consistent across all models
+    #  so no new line is allowed to start with ADD, COPY, WORKDIR, .. 
     for i, line in enumerate(lines):
+
+        # forbidden keywords
+
+        if line.startswith("WORKDIR"):
+            raise MHubComplianceError(f"WORKDIR must not be set to any other than `/app` as defined in our base image. {line}", DocuRef.DOCKERFILE)
+
         if line.startswith("ADD") or line.startswith("COPY"):
             raise MHubComplianceError(f"Dockerfile contains ADD or COPY command: {line}", DocuRef.DOCKERFILE)
 
         if line.startswith("FROM") and i > 0:
             raise MHubComplianceError(f"Dockerfile contains FROM command not at the beginning of the file: {line}", DocuRef.DOCKERFILE)
+
+        # required keywords & status variables
+
+        if line == "ARG MHUB_MODELS_REPO":
+            dockerfile_defines_arg_mhub_models_repo = True
+
+        if line == f"RUN buildutils/import_mhub_model.sh {model_name} ${{MHUB_MODELS_REPO}}":
+           dockerfile_contains_mhubio_import = True
+
+    # check if the dockerfile contains the required ARG MHUB_MODELS_REPO and model import
+    if not dockerfile_defines_arg_mhub_models_repo:
+        raise MHubComplianceError(f"Dockerfile does not define 'ARG MHUB_MODELS_REPO'", DocuRef.DOCKERFILE)
+    
+    if not dockerfile_contains_mhubio_import:
+        raise MHubComplianceError(f"Dockerfile does not contain the required mhubio import command: 'RUN buildutils/import_mhub_model.sh {model_name} ${{MHUB_MODELS_REPO}}'.", DocuRef.DOCKERFILE)
 
     # check that the entrypoint of the dockerfile matches
     #  ENTRYPOINT ["mhub.run"]  |  ENTRYPOINT ["python", "-m", "mhubio.run"]
