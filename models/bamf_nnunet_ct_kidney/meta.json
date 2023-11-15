@@ -11,6 +11,7 @@
                 "format": "DICOM",
                 "modality": "CT",
                 "bodypartexamined": "KIDNEY",
+                "slicethickness": "2.5mm",
                 "non-contrast": true,
                 "contrast": false
             }
@@ -21,7 +22,8 @@
                 "type": "Segmentation",
                 "description": "Segmentation kidney",
                 "classes": [
-                    "KIDNEY"
+                    "LEFT_KIDNEY",
+                    "RIGHT_KIDNEY"
                 ]
             }
         ],
