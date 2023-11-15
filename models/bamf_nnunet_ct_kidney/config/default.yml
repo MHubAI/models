@@ -7,6 +7,7 @@ execute:
 - DicomImporter
 - NiftiConverter
 - NNUnetRunner
+- BamfProcessorRunner
 - DsegConverter
 - DataOrganizer
 
@@ -19,15 +20,17 @@ modules:
       mod: '%Modality'
 
   NNUnetRunner:
-    in_data: 'nifti:mod=ct'
-    nnunet_task: 'Task779_Kidneys_KIRC'
-    nnunet_model: '3d_fullres'
-    
+    in_data: nifti:mod=ct
+    nnunet_task: Task779_Kidneys_KIRC
+    nnunet_model: 3d_fullres
+    roi: LEFT_KIDNEY, RIGHT_KIDNEY
+
+  BamfProcessorRunner:
+
   DsegConverter:
-    source_segs: 'nifti:mod=seg'
-    model_name: 'Bamf NNUnet CT Kidney'
+    source_segs: nifti:mod=seg
+    model_name: Bamf NNUnet CT Kidney
     skip_empty_slices: True
-    json_config_path: '/app/models/bamf_nnunet_ct_kidney/config/meta.json'
 
   DataOrganizer:
     targets:

@@ -12,10 +12,8 @@ RUN pip3 install --no-cache-dir \
   nnunet 
 
 # Clone the main branch of MHubAI/models
-RUN git stash \
- && git sparse-checkout set "models/bamf_nnunet_ct_kidney" \
- && git fetch https://github.com/MHubAI/models.git main \
- && git merge FETCH_HEAD
+ARG MHUB_MODELS_REPO
+RUN buildutils/import_mhub_model.sh bamf_nnunet_ct_kidney ${MHUB_MODELS_REPO}
 
 # Pull weights into the container
 ENV WEIGHTS_DIR=/root/.nnunet/nnUNet_models/nnUNet/
@@ -29,15 +27,6 @@ RUN rm ${WEIGHTS_DIR}${WEIGHTS_FN}
 # specify nnunet specific environment variables
 ENV WEIGHTS_FOLDER=$WEIGHTS_DIR
 
-#####################################################################################
-# Copy changes to config and scripts if any
-#####################################################################################
-RUN mkdir -p /app/models/bamf_nnunet_ct_kidney/config/
-COPY config/* /app/models/bamf_nnunet_ct_kidney/config/
-
-RUN mkdir -p /app/models/bamf_nnunet_ct_kidney/scripts/
-COPY scripts/* /app/models/bamf_nnunet_ct_kidney/scripts/
-
 # Default run script
-ENTRYPOINT ["python3", "-m", "mhubio.run", "--config", "/app/models/bamf_nnunet_ct_kidney/config/default.yml"]
-CMD ["--script", "/app/models/bamf_nnunet_ct_kidney/scripts/run.py"]
+ENTRYPOINT ["mhub.run"]
+CMD ["--config", "/app/models/bamf_nnunet_ct_kidney/config/default.yml"]

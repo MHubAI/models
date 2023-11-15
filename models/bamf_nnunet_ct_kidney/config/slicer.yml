@@ -7,6 +7,7 @@ execute:
 - NrrdImporter
 - NiftiConverter
 - NNUnetRunner
+- BamfProcessorRunner
 - JsonSegExporter
 - DataOrganizer
 
@@ -23,7 +24,9 @@ modules:
   NNUnetRunner:
     nnunet_task: 'Task779_Kidneys_KIRC'
     nnunet_model: '3d_fullres'
-    roi: KIDNEY
+    roi: LEFT_KIDNEY, RIGHT_KIDNEY
+
+  BamfProcessorRunner:
 
   DataOrganizer:
     targets:
