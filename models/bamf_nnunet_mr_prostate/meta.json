@@ -11,6 +11,7 @@
                 "format": "DICOM",
                 "modality": "MR",
                 "bodypartexamined": "PROSTATE",
+                "slicethickness": "2.5mm",
                 "non-contrast": true,
                 "contrast": true
             }
