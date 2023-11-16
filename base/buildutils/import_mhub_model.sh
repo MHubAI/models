@@ -40,3 +40,4 @@ git init
 git fetch ${REPO_URL} ${REPO_BRANCH}
 git merge FETCH_HEAD
 git sparse-checkout set "models/${MODEL_NAME}"
+rm -r .git
