@@ -1,6 +1,6 @@
 """
 -------------------------------------------------
-MedicalHub - Run Module for ensembling nnUNet inference.
+MHub - Run Module for ensembling nnUNet inference.
 -------------------------------------------------
 -------------------------------------------------
 Author: Rahul Soni
@@ -22,8 +22,8 @@ class BamfProcessorRunner(Module):
 
     @IO.Instance
     @IO.Input('in_data', 'nifti:mod=ct|mr', the='input data to run nnunet on')
+    @IO.Output('out_data', 'nrrd:mod=seg:processor=bamf', data='in_data', the="keep the two largest connected components of the segmentation and remove all other ones")
     def task(self, instance: Instance, in_data: InstanceData, out_data: InstanceData) -> None:
-
        # Log bamf runner info
         self.v("Running BamfProcessor on....")
         self.v(f" > input data:  {in_data.abspath}")
@@ -38,22 +38,10 @@ class BamfProcessorRunner(Module):
         img_bamf_processed = self.n_connected(img_np)
 
         # store image temporarily
-        out_file = os.path.join(instance.abspath, f'bamf_processed.nrrd')
-        self.v(f"Writing tmp image to {out_file}")
+        self.v(f"Writing tmp image to {out_data.abspath}")
         img_bamf_processed_itk = sitk.GetImageFromArray(img_bamf_processed)
         img_bamf_processed_itk.CopyInformation(img_itk)
-        sitk.WriteImage(img_bamf_processed_itk, out_file)
-
-        # meta
-        meta = {
-            "model": "BamfProcessor"
-        }
-
-        # create output data
-        seg_data_type = DataType(FileType.NRRD, SEG + meta)
-        seg_data = InstanceData(out_file, type=seg_data_type)
-        instance.addData(seg_data)
-        seg_data.confirm()
+        sitk.WriteImage(img_bamf_processed_itk, out_data.abspath)
 
 
     def n_connected(self, img_data):
@@ -76,4 +64,3 @@ class BamfProcessorRunner(Module):
 
         img_data[img_filtered != 1] = 0
         return img_data
-    
