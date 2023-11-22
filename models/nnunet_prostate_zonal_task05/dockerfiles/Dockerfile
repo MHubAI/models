@@ -1,4 +1,3 @@
-# Specify the base image for the environment
 FROM mhubai/base:latest
 
 # Authors of the image
