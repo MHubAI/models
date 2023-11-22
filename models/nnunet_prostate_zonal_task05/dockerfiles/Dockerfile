@@ -30,10 +30,11 @@ RUN rm ${WEIGHTS_DIR}${WEIGHTS_FN}
 
 # Import the MHub model definiton
 ARG MHUB_MODELS_REPO
-RUN buildutils/import_mhub_model.sh nnunet_prostate ${MHUB_MODELS_REPO}
+RUN buildutils/import_mhub_model.sh nnunet_prostate_zonal_task05 ${MHUB_MODELS_REPO}
 
 # specify nnunet specific environment variables
 ENV WEIGHTS_FOLDER=$WEIGHTS_DIR
 
 # Default run script
-CMD ["python3", "/app/models/nnunet_prostate/scripts/run.py"]
+ENTRYPOINT ["mhub.run"]
+CMD ["--config", "/app/models/nnunet_prostate_zonal_task05/config/default.yml"]
