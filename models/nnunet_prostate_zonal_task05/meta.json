@@ -1,0 +1,136 @@
+{
+    "id": "f2eb536b-448a-4e9a-8981-3efc51301f62",
+    "name": "nnunet_prostate_zonal_task05",
+    "title": "nnU-Net (Prostate transitional zone and peripheral zone segmentation)",
+    "summary": {
+        "description": "nnU-Net's zonal prostate segmentation model is a multi-modality input AI-based pipeline for the automated segmentation of the peripheral and transition zone of the prostate on MRI scans.",
+        "inputs": [
+            {
+                "label": "T2 input image",
+                "description": "The T2 axial sequence being one of the two input image",
+                "format": "DICOM",
+                "modality": "MR",
+                "bodypartexamined": "Prostate",
+                "slicethickness": "3.6 mm",
+                "non-contrast": true,
+                "contrast": false
+            },
+            {
+                "label": "ADC Input Image",
+                "description": "The ADC axial sequence being one of the two input image",
+                "format": "DICOM",
+                "modality": "MR",
+                "bodypartexamined": "Prostate",
+                "slicethickness": "3.6 mm",
+                "non-contrast": true,
+                "contrast": false
+            }
+        ],
+        "outputs": [
+            {
+                "type": "Segmentation",
+                "classes": [
+                    "PROSTATE_PERIPHERAL_ZONE",
+                    "PROSTATE_TRANSITION_ZONE"
+                ]
+            }
+        ],
+        "model": {
+            "architecture": "U-net",
+            "training": "Supervised",
+            "cmpapproach": "2D, 3D, ensemble"
+        },
+        "data": {
+            "training": {
+                "vol_samples": 32
+            },
+            "evaluation": {
+                "vol_samples": 16
+            },
+            "public": "Yes",
+            "external": false
+        }
+    },
+    "details": {
+        "name": "nnU-Net Zonal prostate regions Segmentation Model",
+        "version": "1.0.0",
+        "devteam": "MIC-DKFZ (Helmholtz Imaging Applied Computer Vision Lab)",
+        "type": "nnU-Net (U-Net structure, optimized by data-driven heuristics)",
+        "date": {
+            "weights": "2020",
+            "code": "2020",
+            "pub": "2020"
+        },
+        "cite": "Isensee, F., Jaeger, P. F., Kohl, S. A., Petersen, J., & Maier-Hein, K. H. (2020). nnU-Net: a self-configuring method for deep learning-based biomedical image segmentation. Nature Methods, 1-9.",
+        "license": {
+            "code": "Apache 2.0",
+            "weights": "CC BY-NC 4.0"
+        },
+        "publications": [
+            {
+                "title": "nnU-Net: a self-configuring method for deep learning-based biomedical image segmentation",
+                "uri": "https://www.nature.com/articles/s41592-020-01008-z"
+            }
+        ],
+        "github": "https://github.com/MIC-DKFZ/nnUNet/tree/nnunetv1",
+        "zenodo": "https://zenodo.org/record/4485926"
+    },
+    "info": {
+        "use": {
+            "title": "Intended Use",
+            "text": "This model is intended to perform prostate regions anatomy segmentation in MR ADC and T2 scans. The slice thickness of the training data is 3.6mm. ADC and T2 input modalities are co-registered during training. To assure optimal results during inference, co-registration of ADC and T2 input sequences is recommended. No endorectal coil was present during training."
+        },
+        "analyses": {
+            "title": "Quantitative Analyses",
+            "text": "The model's performance was assessed using the Dice Coefficient, in the context of the Medical Segmentation Decathlon challenge. The complete breakdown of the metrics can be consulted on GrandChallenge [1] and is reported in the supplementary material to the publication [2].",
+            "references": [
+                {
+                    "label": "Medical Segmentation Decathlon on GrandChallenge",
+                    "uri": "https://decathlon-10.grand-challenge.org/evaluation/challenge/leaderboard"
+                },
+                {
+                    "label": "nnU-Net: a self-configuring method for deep learning-based biomedical image segmentation",
+                    "uri": "https://www.nature.com/articles/s41592-020-01008-z"
+                }
+            ]
+        },
+        "evaluation": {
+            "title": "Evaluation Data",
+            "text": "The evaluation dataset consists of 16 validation samples coming from the same training collection.",
+            "tables": [],
+            "references": [
+                {
+                    "label": "Medical Segmentation Decathlon",
+                    "uri": "https://www.nature.com/articles/s41467-022-30695-9"
+                },
+                {
+                    "label": "Medical Decathlon Prostate dataset (direct download)",
+                    "uri": "https://drive.google.com/drive/folders/1HqEgzS8BV2c7xYNrZdEAnrHk7osJJ--2"
+                }
+            ]
+        },
+        "training": {
+            "title": "Training Data",
+            "text": "The training dataset consists of 32 MRI cases containing the prostate, from the Medical Segmentation Decathlon. The authors report the following characteristics for the portal venous phase CT scans of the training dataset:",
+            "tables": [
+                {
+                    "label": "Medical Image Decathlon dataset (training)",
+                    "entries": {
+                        "Slice Thickness": "3.6 mm",
+                        "In-Plane Resolution": "0.62 mm"
+                    }
+                }
+            ],
+            "references": [
+                {
+                    "label": "Medical Segmentation Decathlon",
+                    "uri": "https://www.nature.com/articles/s41467-022-30695-9"
+                },
+                {
+                    "label": "Medical Decathlon Prostate dataset (direct download)",
+                    "uri": "https://drive.google.com/drive/folders/1HqEgzS8BV2c7xYNrZdEAnrHk7osJJ--2"
+                }
+            ]
+        }
+    }
+}
