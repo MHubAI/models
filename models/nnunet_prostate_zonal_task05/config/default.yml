@@ -8,6 +8,7 @@ execute:
 - NiftiConverter
 - ProstateResampler
 - ProstateRunner
+- DsegConverter
 - DataOrganizer
 
 modules:
@@ -24,7 +25,16 @@ modules:
     allow_multi_input: true
     overwrite_existing_file: true
 
+  DsegConverter:
+    model_name: nnUNet Zonal Prostate (Task05)
+    target_dicom: dicom:part=T2
+    source_segs: nifti:mod=seg:roi=*
+    body_part_examined: PROSTATE
+    skip_empty_slices: True
+    segment_id_meta_key: roi
+
   DataOrganizer:
     targets:
+    - DICOMSEG:mod=seg-->[i:patientID]/[i:studyID]/nnunet_prostate_zonal_task05.seg.dcm
     - NIFTI:mod=seg-->[i:patientID]/[i:studyID]/results.nii.gz
     - LOG-->[i:patientID]/[i:studyID]/logs/[d:part]/[d:log-task]_[path]

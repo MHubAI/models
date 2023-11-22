@@ -6,7 +6,7 @@ class ProstateRunner(Module):
     @IO.Instance()
     @IO.Input('T2', 'nifti:part=T2', the="T2 image")
     @IO.Input('ADC', 'nifti:part=ADC:resampled_to=T2', the="ADC image resampled to T2")
-    @IO.Output('P', 'VOLUME_001.nii.gz', 'nifti:mod=seg:model=nnunet_t005_prostate', bundle='nnunet-out', the="Prostate segmentation")
+    @IO.Output('P', 'VOLUME_001.nii.gz', 'nifti:mod=seg:model=nnunet_t005_prostate:roi=PROSTATE_PERIPHERAL_ZONE,PROSTATE_TRANSITION_ZONE', bundle='nnunet-out', the="Prostate segmentation")
     def task(self, instance: Instance, T2: InstanceData, ADC: InstanceData, P: InstanceData) -> None:
         
         # copy input files to align with the nnunet input folder and file name format
