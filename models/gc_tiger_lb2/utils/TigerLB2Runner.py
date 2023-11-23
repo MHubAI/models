@@ -20,7 +20,7 @@ import json
 
 
 @ValueOutput.Name('til_score')
-@ValueOutput.Meta(Meta(key="value"))
+@ValueOutput.Meta(Meta(scale="percent", min=0, max=100))
 @ValueOutput.Label('TIL score')
 @ValueOutput.Type(int)
 @ValueOutput.Description('percentage of stromal area covered by tumour infiltrating lymphocytes. Values between 0 (percent) to 100 (percent).')
