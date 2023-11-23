@@ -23,18 +23,14 @@ RUN git clone https://github.com/DIAGNijmegen/SPIDER-Baseline-IIS.git /tmp/algor
 # Install additional spider baseline dependencies (stable branch commit at 2023-09-12)
 RUN pip3 install --no-cache-dir git+https://github.com/DIAGNijmegen/Tiger.git@4c63f6d58ed3f8e7a0cec04b0352949f7b512919
 
-# TODO Clone the main branch of MHubAI/models
-#RUN git stash \
-#    && git fetch https://github.com/MHubAI/models.git main \
-#    && git merge FETCH_HEAD \
-#    && git sparse-checkout set "models/gc_spider_baseline" \
-#    && git fetch https://github.com/MHubAI/models.git main
+# Import the MHub model definiton
+ARG MHUB_MODELS_REPO
+RUN buildutils/import_mhub_model.sh gc_spider_baseline ${MHUB_MODELS_REPO}
 
 # Setup required environment variables for SPIDER algorithm
 ENV PYTHONPATH="/app:/app/src/devel"
 ENV VERSEG_BASEDIR="/app/src/"
 
 # Default run script
-WORKDIR "/app"
 ENTRYPOINT ["python3", "-m", "mhubio.run"]
 CMD ["--config", "/app/models/gc_spider_baseline/config/default.yml"]
