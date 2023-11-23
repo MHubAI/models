@@ -15,13 +15,9 @@ RUN pip3 install --no-cache-dir \
 # SimpleITK downgrade required for legacy Resample::Execute operation
 RUN pip3 install --no-cache-dir --force-reinstall SimpleITK==1.2.4 
 
-# FIXME: temporary fix waiting for the latest base image update
-# Clone the main branch of MHubAI/models
-RUN git stash \
-    && git fetch https://github.com/MHubAI/models.git main \
-    && git merge FETCH_HEAD \
-    && git sparse-checkout set "models/gc_lunglobes" \
-    && git fetch https://github.com/MHubAI/models.git main
+# Import the MHub model definiton
+ARG MHUB_MODELS_REPO
+RUN buildutils/import_mhub_model.sh gc_lunglobes ${MHUB_MODELS_REPO}
 
 # Install Xie's pulmonary lobe segmentation algorithm and model weights
 RUN git clone https://github.com/DIAGNijmegen/bodyct-pulmonary-lobe-segmentation.git src && \
