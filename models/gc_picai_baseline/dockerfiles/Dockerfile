@@ -1,4 +1,3 @@
-# Specify the base image for the environment
 FROM mhubai/base:latest
 
 # Specify/override authors label
@@ -35,13 +34,9 @@ RUN SITE_PKG=`pip3 show nnunet | grep "Location:" | awk '{print $2}'` && \
 RUN sed -i "s|file_paths = list(Path(folder).glob(scan_glob_format))|return|g" /opt/algorithm/process.py && \
     sed -i "s|self.cspca_detection_map_path.parent.mkdir(exist_ok=True, parents=True)||g" /opt/algorithm/process.py
 
-# FIXME: temporary fix waiting for the latest base image update
-# Clone the main branch of MHubAI/models
-#RUN git stash \
-#    && git fetch https://github.com/MHubAI/models.git main \
-#    && git merge FETCH_HEAD \
-#    && git sparse-checkout set "models/gc_picai_baseline" \
-#    && git fetch https://github.com/MHubAI/models.git main
+# Import the MHub model definiton
+ARG MHUB_MODELS_REPO
+RUN buildutils/import_mhub_model.sh gc_picai_baseline ${MHUB_MODELS_REPO}
 
 # Add lobe segmentation code base to python path
 ENV PYTHONPATH="/app:/opt/algorithm"
