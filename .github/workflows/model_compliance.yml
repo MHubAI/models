@@ -1,0 +1,49 @@
+name: MHub Contribution Check
+
+on:
+  pull_request:
+    branches:
+      - "main"
+      
+env:
+  PR_NUMBER: ${{ github.event.number }}
+
+jobs:
+  test:
+    name: Setup Compliance
+    runs-on: ubuntu-latest
+
+    steps:
+      
+      # Checkout the latest code from the repo
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      # Setup which version of Python to use
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+            python-version: 3.8
+
+      # Display the Python version being used
+      - name: Display Python version
+        run: python -c "import sys; print(sys.version)"
+
+      # Install Python dependencies
+      - name: Install Python dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install requests jsonschema
+
+      # Get the list of files modified in the PR
+      - name: Get files modified in PR
+        id: modified_files
+        uses: Ana06/get-changed-files@v2.2.0
+        with:
+          format: json
+
+      # Run check script
+      - name: Run MHub compliance test
+        run: python .github/scripts/mhub_check.py 
+        env: 
+          MODIFIED_FILES: ${{ steps.modified_files.outputs.all }}

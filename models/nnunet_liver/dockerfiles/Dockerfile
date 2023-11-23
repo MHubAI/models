@@ -11,11 +11,9 @@ ENV SKLEARN_ALLOW_DEPRECATED_SKLEARN_PACKAGE_INSTALL=True
 RUN pip3 install --no-cache-dir \
   nnunet==1.7.1 
 
-# Clone the main branch of MHubAI/models
-RUN git stash \
- && git sparse-checkout set "models/nnunet_liver" \
- && git fetch https://github.com/MHubAI/models.git main \
- && git merge FETCH_HEAD
+# Import the MHub model definiton
+ARG MHUB_MODELS_REPO
+RUN buildutils/import_mhub_model.sh nnunet_liver ${MHUB_MODELS_REPO}
 
 # pull weights for platipy's nnU-Net so that the user doesn't need to every time a container is run
 ENV WEIGHTS_DIR="/root/.nnunet/nnUNet_models/nnUNet/"
