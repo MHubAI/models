@@ -22,13 +22,9 @@ RUN git clone https://github.com/luukboulogne/stoic2021-baseline.git /tmp/algori
 # Install stoic2021 dependencies
 RUN pip3 install --no-cache-dir -r src/requirements.txt
 
-# FIXME: temporary fix waiting for the latest base image update
-# Clone the main branch of MHubAI/models
-RUN git stash \
-    && git fetch https://github.com/MHubAI/models.git main \
-    && git merge FETCH_HEAD \
-    && git sparse-checkout set "models/gc_stoic_baseline" \
-    && git fetch https://github.com/MHubAI/models.git main
+# Import the MHub model definiton
+ARG MHUB_MODELS_REPO
+RUN buildutils/import_mhub_model.sh gc_stoic_baseline ${MHUB_MODELS_REPO}
 
 # Configure STOIC src path and add it to the python path
 ENV STOIC_SRC_PATH=/app/src
