@@ -1,4 +1,3 @@
-# Specify the base image for the environment
 FROM mhubai/base:latest
 
 # Specify/override authors label
@@ -31,20 +30,15 @@ RUN pip3 install --no-cache-dir -r /vuno/requirements.txt
 # Reinstall correct version of Numpy to function with ASAP 2.1
 RUN pip3 install --no-cache-dir --force-reinstall numpy==1.22
 
-# Enforce minimum version of panimg (with WSI fix)
-RUN pip3 install --no-cache-dir panimg>=0.13.2
-
 # Download and install model weights file from zenodo
 RUN rm -rf /vuno/pretrained_weights && \
     wget https://zenodo.org/record/8112176/files/pretrained_weights.zip -O /vuno/pretrained_weights.zip && \
     unzip /vuno/pretrained_weights.zip -d /vuno && \
     rm /vuno/pretrained_weights.zip
 
-# Clone the main branch of MHubAI/models TODO
-#RUN git stash \
-# && git sparse-checkout set "models/gc_tiger_lb2" \
-# && git fetch https://github.com/MHubAI/models.git main \
-# && git merge FETCH_HEAD
+# Import the MHub model definiton
+ARG MHUB_MODELS_REPO
+RUN buildutils/import_mhub_model.sh gc_tiger_lb2 ${MHUB_MODELS_REPO}
 
 # Add model and algorithm code bases to python path
 ENV PYTHONPATH="/vuno:/app"
