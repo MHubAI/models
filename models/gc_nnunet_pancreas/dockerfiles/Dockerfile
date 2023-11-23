@@ -31,12 +31,9 @@ RUN pip3 install --no-cache-dir -r /opt/algorithm/requirements.txt
 RUN SITE_PKG=`pip3 show nnunet | grep "Location:" | awk '{print $2}'` && \
     mv /opt/algorithm/nnUNetTrainerV2_Loss_CE_checkpoints.py "$SITE_PKG/nnunet/training/network_training/nnUNetTrainerV2_Loss_CE_checkpoints.py"
 
-# Clone the main branch of MHubAI/models TODO check if ok
-RUN git stash \
-    && git fetch https://github.com/MHubAI/models.git main \
-    && git merge FETCH_HEAD \
-    && git sparse-checkout set "models/gc_nnunet_pancreas" \
-    && git fetch https://github.com/MHubAI/models.git main
+# Import the MHub model definiton
+ARG MHUB_MODELS_REPO
+RUN buildutils/import_mhub_model.sh gc_nnunet_pancreas ${MHUB_MODELS_REPO}
 
 # Add algorithm files to python path
 ENV PYTHONPATH=/opt/algorithm:/app
