@@ -25,7 +25,6 @@ STOIC_SRC_PATH = Path(os.environ["STOIC_SRC_PATH"])
 
 
 @ValueOutput.Name('probability-covid-19')
-@ValueOutput.Meta(Meta(key="value"))
 @ValueOutput.Label('Covid19Probability')
 @ValueOutput.Type(float)
 @ValueOutput.Description('Probability of presence of Covid19.')
@@ -34,7 +33,6 @@ class Covid19ProbabilityOutput(ValueOutput):
 
 
 @ValueOutput.Name('probability-severe-covid-19')
-@ValueOutput.Meta(Meta(key="value"))
 @ValueOutput.Label('SevereCovid19Probability')
 @ValueOutput.Type(float)
 @ValueOutput.Description('Probability of presence of severe Covid19.')
