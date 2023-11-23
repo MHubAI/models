@@ -27,12 +27,9 @@ RUN git clone https://github.com/node21challenge/node21_detection_baseline.git /
 # Install Node21 additional dependencies
 RUN pip3 install --no-cache-dir evalutils==0.2.4
 
-# TODO: FIXME: temporary fix waiting for the latest base image update
-#RUN git stash \
-#    && git fetch https://github.com/MHubAI/models.git main \
-#    && git merge FETCH_HEAD \
-#    && git sparse-checkout set "models/gc_node21_baseline" \
-#    && git fetch https://github.com/MHubAI/models.git main
+# Import the MHub model definiton
+ARG MHUB_MODELS_REPO
+RUN buildutils/import_mhub_model.sh gc_node21_baseline ${MHUB_MODELS_REPO}
 
 # Configure app /opt/algorithm to be the torch hub directory to pick up the model weights correctly
 ENV TORCH_HOME /opt/algorithm
