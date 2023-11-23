@@ -4,14 +4,9 @@ FROM mhubai/base:latest
 RUN pip3 install --no-cache-dir \
     lungmask==0.2.16
   
-# FIXME: temporary fix waiting for the latest base image update
-# Clone the main branch of MHubAI/models
-RUN git stash \
-  && git fetch https://github.com/MHubAI/models.git main \
-  && git merge FETCH_HEAD \
-  && git sparse-checkout set "models/lungmask" \
-  && git fetch https://github.com/MHubAI/models.git main \
-  && git merge FETCH_HEAD
+# Import the MHub model definiton
+ARG MHUB_MODELS_REPO
+RUN buildutils/import_mhub_model.sh lungmask ${MHUB_MODELS_REPO}
 
 # pull the weights for the lung segmentation 2D U-Net model
 ENV WEIGHTS_DIR="/root/.cache/torch/hub/checkpoints/"
