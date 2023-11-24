@@ -1,4 +1,3 @@
-# Specify the base image for the environment
 FROM mhubai/base:latest
 
 # Specify/override authors label
@@ -24,11 +23,9 @@ RUN git clone --branch v2.0.0 https://github.com/DIAGNijmegen/bodyct-dsb2017-grt
     rm -rf /gc_grt123_lung_cancer/.git/* && \
     mv /gc_grt123_lung_cancer/HEAD /gc_grt123_lung_cancer/.git
 
-# Clone MHub model (m-gc-grt123-lung-cancer branch, fixed to commit TODO)
-#RUN git init \
-# && git sparse-checkout set "models/grt123_lung_cancer" \
-# && git fetch https://github.com/MHubAI/models.git m-gc-grt123-lung-cancer \
-# && git merge TODO
+# Import the MHub model definition
+ARG MHUB_MODELS_REPO
+RUN buildutils/import_mhub_model.sh gc_grt123_lung_cancer ${MHUB_MODELS_REPO}
 
 # Add lobe segmentation code base to python path
 ENV PYTHONPATH="/gc_grt123_lung_cancer:/app"
