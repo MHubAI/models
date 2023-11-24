@@ -14,8 +14,6 @@ from mhubio.core import Instance, InstanceData, IO, Module
 from typing import Dict
 import json
 from pathlib import Path
-import numpy as np
-import SimpleITK as sitk
 
 import torch
 
@@ -45,7 +43,6 @@ def cleanup_json_report(data: Dict):
 class LungCancerClassifierRunner(Module):
 
     n_preprocessing_workers: int
-    tmp_path: str
 
     @IO.Instance()
     @IO.Input('in_data', 'mha:mod=ct', the='input ct scan')
@@ -60,10 +57,10 @@ class LungCancerClassifierRunner(Module):
 
         # determine the number of GPUs we can use
         if torch.cuda.is_available():
-            self.v("Running with a GPU")
+            self.log("Running with a GPU", "NOTICE")
             n_gpu = 1
         else:
-            self.v("Running on the CPU, might be slow...")
+            self.log("Running on the CPU, might be slow...", "NOTICE")
             n_gpu = 0
 
         # apply grt123 algorithm
@@ -79,8 +76,8 @@ class LungCancerClassifierRunner(Module):
             data_filter=r".*.mha"
         )
 
-        # store classification results
-        self.v(f"Writing classification results to {out_data.abspath}")
+        # store classification results (original json file)
+        self.log(f"Writing classification results to {out_data.abspath}", "NOTICE")
         assert len(results) > 0, "LungCancerClassifierRunner - Always expects at least one output report"
         results_json = results[0].to_json()
         cleanup_json_report(results_json)
