@@ -1,0 +1,3 @@
+#!/bin/bash
+PYTHON=$(which python3)
+$PYTHON -m mhubio.run "$@"

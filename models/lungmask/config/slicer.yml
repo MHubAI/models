@@ -4,16 +4,16 @@ general:
   description: LungMask segmentation default (dicom to dicom)
 
 execute:
-- NrrdImporter
+- FileStructureImporter
 - NiftiConverter
 - LungMaskRunner
 - JsonSegExporter
 - DataOrganizer
 
 modules:
-  NrrdImporter:
-    input_dir: input_data
-    input_file_name: image.nrrd
+  FileStructureImporter:
+    structures: 
+    - image.nrrd@instance@nrrd:mod=ct
 
   LungMaskRunner:
     batchsize: 32

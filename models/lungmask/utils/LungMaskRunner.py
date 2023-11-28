@@ -23,7 +23,6 @@ class LungMaskRunner(ModelRunner):
     @IO.Input('image', 'nifti:mod=ct',  the='input ct scan')
     @IO.Output('roi1_lungs', 'roi1_lungs.nii.gz', 'nifti:mod=seg:model=LungMask:roi=RIGHT_LUNG,LEFT_LUNG', bundle='model', the='predicted segmentation of the lungs')
     @IO.Output('roi2_lunglobes', 'roi2_lunglobes.nii.gz', 'nifti:mod=seg:model=LungMask:roi=LEFT_UPPER_LUNG_LOBE,LEFT_LOWER_LUNG_LOBE,RIGHT_UPPER_LUNG_LOBE,RIGHT_MIDDLE_LUNG_LOBE,RIGHT_LOWER_LUNG_LOBE', bundle='model', the='predicted segmentation of the lung lobes')
-
     def task(self, instance: Instance, image: InstanceData, roi1_lungs: InstanceData, roi2_lunglobes: InstanceData) -> None:
         
         # bash command for the lung segmentation *
@@ -36,7 +35,7 @@ class LungMaskRunner(ModelRunner):
         self.v(">> run lungmask (R231): ", " ".join(bash_command))
         
         # run the lung segmentation model
-        bash_return = subprocess.run(bash_command, check=True, text=True)
+        self.subprocess(bash_command, text=True)
 
 
         # bash command for the lung lobes segmentation (fusion)
@@ -49,4 +48,4 @@ class LungMaskRunner(ModelRunner):
         self.v(">> run lungmask (LTRCLobes_R231): ", " ".join(bash_command))
         
         # run the lung lobes segmentation model
-        bash_return = subprocess.run(bash_command, check=True, text=True)
+        self.subprocess(bash_command, text=True)
