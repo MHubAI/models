@@ -50,7 +50,7 @@ class SpiderBaselineRunner(Module):
             '1-24: different vertebrae numbered from the bottom (i.e. L5 = 1, C1 = 24) '
             '100: spinal canal '
             '101-124 for partially visible vertebrae '
-            '201-224: different intervertebral discs (also numbered from the bottom, i.e. L5/S1 = 201, C2/C3 = 224) '
+            '201-223: different intervertebral discs (also numbered from the bottom, i.e. L5/S1 = 201, C2/C3 = 223)'
     )
     @IO.Output(
         'out_data',
@@ -67,9 +67,9 @@ class SpiderBaselineRunner(Module):
         bundle='model',
         the='Spider baseline vertebrae segmentation for the input sagittal spine MRI or CT. Remapped segmentation output: '
             '0: background '
-            '1-24: different vertebrae numbered from the bottom (i.e. L5 = 1, C1 = 24) (includes partially visible vertebrae from raw segmentation)'
-            '25-48: different intervertebral discs (also numbered from the bottom, i.e. L5/S1 = 25, C2/C3 = 48) '
-            '49: spinal canal'
+            '1-24: different vertebrae numbered from the bottom (i.e. L5 = 1, C1 = 24) (includes partially visible vertebrae from raw segmentation) '
+            '25-47: different intervertebral discs (also numbered from the bottom, i.e. L5/S1 = 25, C2/C3 = 47) '
+            '48: spinal canal'
     )
     def task(self, instance: Instance, in_data: InstanceData, out_data_raw: InstanceData, out_data: InstanceData) -> None:
         if in_data.type.meta <= MR:
@@ -87,22 +87,21 @@ class SpiderBaselineRunner(Module):
 
     def create_remapped_segmentation(self, out_data_raw: InstanceData, out_data: InstanceData):
         # Create the remapping dictionary to reorder output labels so they will be picked up in the correct order by DicomSeg
-        remap_dict = {i: i for i in range(0, 25)}  # keep labels 0-24 the same
-        remap_dict.update({i: i - 100 for i in
-                           range(101, 125)})  # partially visible vertebrae get remapped to regular vertebrae labels
-        remap_dict.update({i:i-201+25 for i in range(201, 225)})  # remaps intervertebral discs to 25-48
-        remap_dict.update({100: 49})                              # remaps spinal canal to 49
-
+        remap_dict = {i: i for i in range(0, 25)}                 # keep labels 0-24 the same (background + vertebrae)
+        remap_dict.update({i: i - 100 for i in range(101, 125)})  # partially visible vertebrae get remapped to regular vertebrae labels
+        remap_dict.update({i:i-176 for i in range(201, 224)})     # remaps intervertebral discs to 25-47
+        remap_dict.update({100: 48})                              # remaps spinal canal to 48
         # Convert the mapping to a 1d numpy vector by generating a value for each potential segmentation value
         # Each value is mapped to zero by default and the mapping values are overwritten by the remap_dict
         remap_np = np.zeros((226,), dtype=int)
         remap_np[list(remap_dict.keys())] = list(remap_dict.values())
-
         self.log(f"Remap generated segmentation output to: {out_data.abspath}", level="NOTICE")
         self.log(f"  mapping used: {remap_dict}", level="DEBUG")
         seg_sitk = SimpleITK.ReadImage(out_data_raw.abspath)
         seg_np = SimpleITK.GetArrayFromImage(seg_sitk)
         seg_remapped_np = remap_np[seg_np]  # actual remapping
+        assert np.sum((seg_remapped_np < 0) | (seg_remapped_np > max(remap_dict.values()))) == 0, \
+            f"Values were found outside the allowed remapping range [0-{max(remap_dict.values())}], this should never happen..."
         seg_remapped_sitk = SimpleITK.GetImageFromArray(seg_remapped_np)
         seg_remapped_sitk.CopyInformation(seg_sitk)
         SimpleITK.WriteImage(seg_remapped_sitk, out_data.abspath, True)
