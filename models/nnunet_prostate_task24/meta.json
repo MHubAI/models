@@ -33,7 +33,7 @@
             "training": {
                 "vol_samples": 50
             },
-            "test": {
+            "evaluation": {
                 "vol_samples": 30
             },
             "public": true,
@@ -84,8 +84,8 @@
             ]
         },
         "evaluation": {
-            "title": "Testing Data",
-            "text": "The test dataset consists of 30 test samples coming from the same training collection.",
+            "title": "Evaluation Data",
+            "text": "The evaluation dataset consists of 30 test samples coming from the Promise12 challenge.",
             "tables": [],
             "references": [
                 {
