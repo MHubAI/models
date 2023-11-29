@@ -1,0 +1,41 @@
+general:
+  data_base_dir: /app/data
+  version: 1.0
+  description: default configuration for nnUNet MR Prostate segmentation (dicom to dicom)
+
+execute:
+- DicomImporter
+- NiftiConverter
+- NNUnetRunner
+- DsegConverter
+- DataOrganizer
+
+modules:
+  DicomImporter:
+    source_dir: input_data
+    import_dir: sorted_data
+    sort_data: true
+    meta: 
+      mod: 'mr'
+
+  NiftiConverter:
+    in_datas: dicom:mod=mr
+    engine: dcm2niix
+
+  NNUnetRunner:
+    in_data: nifti:mod=mr
+    nnunet_task: Task024_Promise
+    nnunet_model: 3d_fullres
+    roi: PROSTATE
+
+  BamfProcessorRunner:
+
+  DsegConverter:
+    source_segs: nifti:mod=seg
+    target_dicom: dicom:mod=mr
+    model_name: 'nnUNet MR Prostate'
+    skip_empty_slices: True
+
+  DataOrganizer:
+    targets:
+    - dicomseg-->[i:sid]/nnunet_mr_prostate.seg.dcm
