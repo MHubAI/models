@@ -7,7 +7,9 @@ LABEL authors="sil.vandeleemput@radboudumc.nl"
 RUN pip3 install --no-cache-dir torch==2.0.1+cu118 -f https://download.pytorch.org/whl/torch_stable.html
 
 # Install git-lfs (required for unpacking model weights)
-RUN apt update && apt install -y --no-install-recommends git-lfs && rm -rf /var/lib/apt/lists/*
+RUN apt update && \
+    apt install -y --no-install-recommends git-lfs && \
+    rm -rf /var/lib/apt/lists/*
 
 # Install PICAI baseline algorithm and model weights
 #   - Git clone the algorithm repository for v2.1.1 (fixed to v2.1.1 tag)
@@ -16,6 +18,13 @@ RUN apt update && apt install -y --no-install-recommends git-lfs && rm -rf /var/
 RUN git clone --depth 1 --branch v2.1.1 https://github.com/DIAGNijmegen/picai_nnunet_semi_supervised_gc_algorithm.git /opt/algorithm && \
     rm -rf /opt/algorithm/test && \
     rm -rf /opt/algorithm/.git
+
+# Set this environment variable as a shortcut to avoid nnunet==1.7.0 crashing the build
+# by pulling sklearn instead of scikit-learn
+# N.B. this is a known issue:
+# https://github.com/MIC-DKFZ/nnUNet/issues/1281
+# https://github.com/MIC-DKFZ/nnUNet/pull/1209
+ENV SKLEARN_ALLOW_DEPRECATED_SKLEARN_PACKAGE_INSTALL=True
 
 # Install additional PICAI requirements
 RUN pip3 install --no-cache-dir -r /opt/algorithm/requirements.txt
