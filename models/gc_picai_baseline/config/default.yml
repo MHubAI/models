@@ -24,8 +24,8 @@ modules:
   ReportExporter:
     format: compact
     includes:
-      - data: prostate_cancer_probability
-        label: prostate_cancer_probability
+      - data: prostate_cancer_likelihood
+        label: prostate_cancer_likelihood
         value: value
 
   DataOrganizer:
