@@ -78,7 +78,7 @@
       "code": "2022-09-05",
       "pub": ""
     },
-    "cite": "",
+    "cite": "J. S. Bosma, A. Saha, M. Hosseinzadeh, I. Slootweg, M. de Rooij, and H. Huisman, \"Semisupervised Learning with Report-guided Pseudo Labels for Deep Learning–based Prostate Cancer Detection Using Biparametric MRI\", Radiology: Artificial Intelligence, 230031, 2023. DOI: 10.1148/ryai.230031",
     "license": {
       "code": "Apache 2.0",
       "weights": "CC-BY-NC-4.0"
