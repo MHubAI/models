@@ -1,7 +1,10 @@
 import os, shutil
 from mhubio.core import Module, Instance, InstanceData, IO
 
+@IO.Config("disbale_tta", bool, default=False, the="Disable test time augmentation for nnUNet.")
 class ProstateRunner(Module):
+
+    disable_tta: bool
 
     @IO.Instance()
     @IO.Input('T2', 'nifti:part=T2', the="T2 image")
@@ -35,6 +38,10 @@ class ProstateRunner(Module):
         bash_command += ["--output_folder", str(P.bundle.abspath)]
         bash_command += ["--task_name", 'Task005_Prostate']
         bash_command += ["--model", '3d_fullres']
+        
+        # optional / customizable arguments
+        if self.disable_tta:
+            bash_command += ["--disable_tta"]
 
         # run command
         self.subprocess(bash_command, text=True)
