@@ -27,9 +27,7 @@ modules:
     nnunet_task: Task024_Promise
     nnunet_model: 3d_fullres
     roi: PROSTATE
-
-  BamfProcessorRunner:
-
+    
   DsegConverter:
     source_segs: nifti:mod=seg
     target_dicom: dicom:mod=mr
