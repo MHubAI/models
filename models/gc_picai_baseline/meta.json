@@ -6,32 +6,32 @@
     "description": "This algorithm predicts a detection map for the likelihood of clinically significant prostate cancer (csPCa) using biparametric MRI (bpMRI). The algorithm ensembles 5-fold cross-validation models that were trained on the PI-CAI: Public Training and Development Dataset v2.0. The detection map is at the same spatial resolution and physical dimensions as the input axial T2-weighted image. This model algorithm was used as a baseline for the PI-CAI challenge hosted on Grand Challenge.",
     "inputs": [
       {
-        "label": "Transverse T2-weighted Prostate biparametric MRI",
-        "description": " Transverse T2-weighted Prostate biparametric MRI exam",
+        "label": "Transverse T2-weighted prostate biparametric MRI",
+        "description": "Transverse T2-weighted prostate biparametric MRI exam.",
         "format": "DICOM",
         "modality": "MR",
         "bodypartexamined": "Prostate",
-        "slicethickness": "",
+        "slicethickness": "0.5 x 0.5 x 3.0 mm",
         "non-contrast": false,
         "contrast": false
       },
       {
-        "label": "High b-value diffusion-weighted maps",
-        "description": "High b-value diffusion-weighted maps, with b-value of 1400 or 2000, either acquired or vendor-calculated.",
+        "label": "Transverse high b-value diffusion-weighted maps of the prostate",
+        "description": "Transverse high b-value diffusion-weighted (DWI) maps, with b-value of 1400 or 2000, either acquired or vendor-calculated.",
         "format": "DICOM",
         "modality": "MR",
         "bodypartexamined": "Prostate",
-        "slicethickness": "",
+        "slicethickness": "0.5 x 0.5 x 3.0 mm",
         "non-contrast": false,
         "contrast": false
       },
       {
-        "label": "ADC map",
-        "description": "ADC map",
+        "label": "Transverse apparent diffusion coefficient map of the prostate",
+        "description": "Transverse apparent diffusion coefficient (ADC) prostate MRI map.",
         "format": "DICOM",
         "modality": "MR",
         "bodypartexamined": "Prostate",
-        "slicethickness": "",
+        "slicethickness": "0.5 x 0.5 x 3.0 mm",
         "non-contrast": false,
         "contrast": false
       }
@@ -41,14 +41,14 @@
         "type": "Prediction",
         "valueType": "Likelihood",
         "label": "Prostate cancer likelihood",
-        "description": "Case-level likelihood of harboring clinically significant prostate cancer, in range [0,1]",
+        "description": "Case-level likelihood of harboring clinically significant prostate cancer, in range [0,1].",
         "classes": []
       },
       {
         "type": "Prediction",
         "valueType": "Likelihood map",
         "label": "Transverse cancer detection map",
-        "description": "Detection map of clinically significant prostate cancer lesions in 3D, where each voxel represents a floating point in range [0,1]",
+        "description": "Detection map of clinically significant prostate cancer lesions in 3D, where each voxel represents a floating point in range [0,1]. This map is at the same spatial resolution and physical dimensions as the input transversal T2-weighted image.",
         "classes": []
       }
     ],
@@ -101,7 +101,7 @@
   "info": {
     "use": {
       "title": "Intended use",
-      "text": "This algorithm is a deep learning-based detection/diagnosis model, which ensembles 5 independent nnU-Net models (5-fold cross-validation). To predict the likelihood of harboring clinically significant prostate cancer (csPCa), the transversal T2-weighted, apparent diffusion coefficient (ADC) and high b-value diffusion maps are required. The input sequences should be co-registered or aligned reasonably well and the prostate gland should be localized within a volume of 460 cm³ from the centre coordinate. To train these models, a total of 1500 prostate biparametric MRI (bpMRI) scans paired with human-annotated or AI-derived ISUP ≥ 2 delineations were used.",
+      "text": "This algorithm is a deep learning-based detection/diagnosis model, which ensembles 5 independent nnU-Net models (5-fold cross-validation). To predict the likelihood of harboring clinically significant prostate cancer (csPCa), the transversal T2-weighted, apparent diffusion coefficient (ADC) and high b-value diffusion weighted maps are required. The input sequences should be co-registered or aligned reasonably well and the prostate gland should be localized within a volume of 460 cm³ from the centre coordinate. The nnU-Net framework will internally resample all input scans to 0.5 x 0.5 x 3.0 mm. Per case the input data should be put into the following folder structure: `case1/adc`, `case1/hbv`, `case1/t2w`, corresponding respectively with the ADC, high b-value DWI, and the T2 weighted MR inputs for a case called `case1`.",
       "references": [
         {
           "label": "PI-CAI baseline algorithm on grand-challenge",
@@ -146,7 +146,7 @@
     },
     "training": {
       "title": "Training data",
-      "text": "The publicly available PI-CAI training and development dataset of 1500 biparametric MRI exams was used for training [1]. AI-derived annotations were created for cases without manual annotations [2]. This model was trained using a custom preprocessing step followed by the standard nnU-Net pipeline. The default nnU-Net loss-function was changed to Cross-Entropy + Focal loss. [3]",
+      "text": "The publicly available PI-CAI training and development dataset of 1500 biparametric MRI exams was used for training [1]. AI-derived annotations were created for cases without manual annotations [2]. This model was trained using a custom preprocessing step followed by the standard nnU-Net pipeline. The default nnU-Net loss-function was changed to Cross-Entropy + Focal loss [3].",
       "references": [
         {
           "label": "PI-CAI publicly available training and development dataset",
