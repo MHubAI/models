@@ -16,20 +16,20 @@ modules:
     import_dir: sorted_data
     sort_data: true
     meta: 
-      mod: ct
+      mod: '%Modality'
 
   MhaConverter:
     engine: panimg
+    targets: [dicom:mod=ct]
 
   DsegConverter:
     model_name: 'GC NNUnet Pancreas'
-    source_segs: ['mha:mod=seg']
+    source_segs: ['mha:mod=seg:type=remapped']
     target_dicom: dicom:mod=ct
     skip_empty_slices: True
-    json_config_path: /app/models/gc_nnunet_pancreas/config/dseg.json
 
   DataOrganizer:
     targets:
     - mha:mod=heatmap-->[i:sid]/nnunet_pancreas_heatmap.mha
-    - mha:mod=seg-->[i:sid]/nnunet_pancreas.seg.mha
+    - mha:mod=seg:type=original-->[i:sid]/nnunet_pancreas.seg.mha
     - dicomseg:mod=seg-->[i:sid]/nnunet_pancreas.seg.dcm
