@@ -14,9 +14,10 @@ from mhubio.core import Module, Instance, InstanceData, DataType, Meta, IO
 from pathlib import Path
 import SimpleITK
 import numpy as np
+import sys
 
-# Import the algorithm pipeline class from the CE-CT_PDAC_AutomaticDetection_nnUnet repository
-from process import PDACDetectionContainer
+
+CLI_PATH = Path(__file__).parent / "cli.py"
 
 
 class GCNNUnetPancreasRunner(Module):
@@ -31,12 +32,15 @@ class GCNNUnetPancreasRunner(Module):
                the="remapped segmentation of the pancreas (without the veins and arteries), with the following classes: "
                    "0-background, 1-pancreas, 2-pancreatic duct, 3-bile duct, 4-cysts, 5-renal vein")
     def task(self, instance: Instance, in_data: InstanceData, heatmap: InstanceData, segmentation: InstanceData, segmentation_remapped: InstanceData, **kwargs) -> None:
-        # Configure the algorithm pipeline class and run it
-        algorithm = PDACDetectionContainer()
-        algorithm.ct_image = in_data.abspath  # set as str not Path
-        algorithm.heatmap = Path(heatmap.abspath)
-        algorithm.segmentation = Path(segmentation.abspath)
-        algorithm.process()
+        # Call the PDAC CLI
+        cmd = [
+            sys.executable,
+            str(CLI_PATH),
+            in_data.abspath,
+            heatmap.abspath,
+            segmentation.abspath
+        ]
+        self.subprocess(cmd, text=True)
 
         # Generate remapped segmentation
         self.remap_segementation(
