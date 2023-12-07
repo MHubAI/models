@@ -1,17 +1,19 @@
 import os, shutil
 from mhubio.core import Module, Instance, InstanceData, IO
 
-@IO.Config("disbale_tta", bool, default=False, the="Disable test time augmentation for nnUNet.")
+@IO.Config('use_tta', bool, False, the='flag to enable test time augmentation')
+@IO.Config('nnunet_model', str, None, the='nnunet model name (2d, 3d_lowres, 3d_fullres, 3d_cascade_fullres)')
 class ProstateRunner(Module):
 
-    disable_tta: bool
+    use_tta: bool
+    nnunet_model: str
 
     @IO.Instance()
     @IO.Input('T2', 'nifti:part=T2', the="T2 image")
     @IO.Input('ADC', 'nifti:part=ADC:resampled_to=T2', the="ADC image resampled to T2")
     @IO.Output('P', 'VOLUME_001.nii.gz', 'nifti:mod=seg:model=nnunet_t005_prostate:roi=PROSTATE_PERIPHERAL_ZONE,PROSTATE_TRANSITION_ZONE', bundle='nnunet-out', the="Prostate segmentation")
     def task(self, instance: Instance, T2: InstanceData, ADC: InstanceData, P: InstanceData) -> None:
-        
+
         # copy input files to align with the nnunet input folder and file name format
         # T2:  0000 
         # ADC: 0001
@@ -37,10 +39,10 @@ class ProstateRunner(Module):
         bash_command += ["--input_folder", str(inp_dir)]
         bash_command += ["--output_folder", str(P.bundle.abspath)]
         bash_command += ["--task_name", 'Task005_Prostate']
-        bash_command += ["--model", '3d_fullres']
+        bash_command += ["--model", self.nnunet_model]
         
         # optional / customizable arguments
-        if self.disable_tta:
+        if not self.use_tta:
             bash_command += ["--disable_tta"]
 
         # run command
