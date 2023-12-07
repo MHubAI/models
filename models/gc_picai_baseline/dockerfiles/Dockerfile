@@ -12,10 +12,10 @@ RUN apt update && \
     rm -rf /var/lib/apt/lists/*
 
 # Install PICAI baseline algorithm and model weights
-#   - Git clone the algorithm repository for v2.1.1 (fixed to v2.1.1 tag)
+#   - Git clone the algorithm repository for v2.1.2 (fixed to v2.1.2 tag)
 #   - We remove unnecessary files for a compacter docker layer
 #   - Subsequently we remove the .git directory to procuce a compacter docker layer
-RUN git clone --depth 1 --branch v2.1.1 https://github.com/DIAGNijmegen/picai_nnunet_semi_supervised_gc_algorithm.git /opt/algorithm && \
+RUN git clone --depth 1 --branch v2.1.2 https://github.com/DIAGNijmegen/picai_nnunet_semi_supervised_gc_algorithm.git /opt/algorithm && \
     rm -rf /opt/algorithm/test && \
     rm -rf /opt/algorithm/.git
 
