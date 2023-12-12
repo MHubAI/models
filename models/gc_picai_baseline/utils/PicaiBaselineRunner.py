@@ -10,12 +10,13 @@ Email:  sil.vandeleemput@radboudumc.nl
 """
 
 import json
+import sys
 from pathlib import Path
 
 from mhubio.core import Instance, InstanceData, IO, Module, ValueOutput, ClassOutput, Meta
 
-# Import the PICAI Classifier algorithm class from /opt/algorithm
-from process import csPCaAlgorithm as PicaiClassifier
+
+CLI_PATH = Path(__file__).parent / "cli.py"
 
 
 @ValueOutput.Name('prostate_cancer_likelihood')
@@ -36,22 +37,19 @@ class PicaiBaselineRunner(Module):
     @IO.Output('cancer_detection_heatmap', 'cspca_detection_map.mha', "mha:mod=hm", bundle='model', the='output heatmap indicating prostate cancer likelihood')
     @IO.OutputData('cancer_likelihood', ProstateCancerLikelihood, the='PICAI baseline prostate cancer likelihood')
     def task(self, instance: Instance, in_data_t2: InstanceData, in_data_adc: InstanceData, in_data_hbv: InstanceData, cancer_likelihood_json: InstanceData, cancer_detection_heatmap: InstanceData, cancer_likelihood: ProstateCancerLikelihood) -> None:
-        # Initialize classifier object
-        classifier = PicaiClassifier()
-
-        # Specify input files (the order is important!)
-        classifier.scan_paths = [
-            Path(in_data_t2.abspath),
-            Path(in_data_adc.abspath),
-            Path(in_data_hbv.abspath),
+        # build command (order matters!)
+        cmd = [
+            sys.executable,
+            str(CLI_PATH),
+            in_data_t2.abspath,
+            in_data_adc.abspath,
+            in_data_hbv.abspath,
+            cancer_likelihood_json.abspath,
+            cancer_detection_heatmap.abspath,
         ]
 
-        # Specify output files
-        classifier.cspca_detection_map_path = Path(cancer_detection_heatmap.abspath)
-        classifier.case_confidence_path = Path(cancer_likelihood_json.abspath)
-
-        # Run the classifier on the input images
-        classifier.process()
+        # run the command as subprocess
+        self.subprocess(cmd, text=True)
 
         # Extract cancer likelihood value from cancer_likelihood_file
         if not Path(cancer_likelihood_json.abspath).is_file():
