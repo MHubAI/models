@@ -24,12 +24,12 @@ modules:
 
   DsegConverter:
     model_name: 'GC NNUnet Pancreas'
-    source_segs: ['mha:mod=seg:type=remapped']
+    source_segs: ['mha:mod=seg']
     target_dicom: dicom:mod=ct
     skip_empty_slices: True
 
   DataOrganizer:
     targets:
     - mha:mod=heatmap-->[i:sid]/nnunet_pancreas_heatmap.mha
-    - mha:mod=seg:type=original-->[i:sid]/nnunet_pancreas.seg.mha
+    - mha:mod=seg-->[i:sid]/nnunet_pancreas.seg.mha
     - dicomseg:mod=seg-->[i:sid]/nnunet_pancreas.seg.dcm
