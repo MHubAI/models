@@ -34,9 +34,9 @@ class PicaiBaselineRunner(Module):
     @IO.Input('in_data_adc', 'mha:mod=mr:type=adc', the='input ADC prostate MR image')
     @IO.Input('in_data_hbv', 'mha:mod=mr:type=hbv', the='input HBV prostate MR image')
     @IO.Output('cancer_likelihood_json', 'cspca-case-level-likelihood.json', "json", bundle='model', the='output JSON file with PICAI baseline prostate cancer likelihood')
-    @IO.Output('cancer_detection_heatmap', 'cspca_detection_map.mha', "mha:mod=hm", bundle='model', the='output heatmap indicating prostate cancer likelihood')
+    @IO.Output('cancer_lesion_detection_map', 'cspca-detection-map.mha', "mha:mod=dm", bundle='model', the='output detection map of clinically significant prostate cancer lesions in 3D, where each voxel represents a floating point in range [0,1]')
     @IO.OutputData('cancer_likelihood', ProstateCancerLikelihood, the='PICAI baseline prostate cancer likelihood')
-    def task(self, instance: Instance, in_data_t2: InstanceData, in_data_adc: InstanceData, in_data_hbv: InstanceData, cancer_likelihood_json: InstanceData, cancer_detection_heatmap: InstanceData, cancer_likelihood: ProstateCancerLikelihood) -> None:
+    def task(self, instance: Instance, in_data_t2: InstanceData, in_data_adc: InstanceData, in_data_hbv: InstanceData, cancer_likelihood_json: InstanceData, cancer_lesion_detection_map: InstanceData, cancer_likelihood: ProstateCancerLikelihood) -> None:
         # build command (order matters!)
         cmd = [
             sys.executable,
@@ -45,7 +45,7 @@ class PicaiBaselineRunner(Module):
             in_data_adc.abspath,
             in_data_hbv.abspath,
             cancer_likelihood_json.abspath,
-            cancer_detection_heatmap.abspath,
+            cancer_lesion_detection_map.abspath,
         ]
 
         # run the command as subprocess

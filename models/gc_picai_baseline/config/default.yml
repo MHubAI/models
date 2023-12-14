@@ -31,4 +31,4 @@ modules:
   DataOrganizer:
     targets:
       - json:mod=report-->[i:sid]/cspca-case-level-likelihood.json
-      - mha:mod=hm-->[i:sid]/cspca-detection-map.mha
+      - mha:mod=dm-->[i:sid]/cspca-detection-map.mha
