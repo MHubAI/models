@@ -6,7 +6,7 @@ general:
 execute:
 - DicomImporter
 - NiftiConverter
-- NNUnetRunner
+- Prostate158Runner
 - DsegConverter
 - DataOrganizer
 
@@ -24,16 +24,14 @@ modules:
 
   Prostate158Runner:
     in_data: nifti:mod=mr
-    nnunet_task: prostate_mri_anatomy
-    # nnunet_model: 3d_fullres
-    roi: PROSTATE
+    apply_center_crop: False
 
   DsegConverter:
-    source_segs: nifti:mod=seg
+    source_segs: nifti:mod=seg:roi=PROSTATE_TRANSITION_ZONE,PROSTATE_PERIPHERAL_ZONE
     target_dicom: dicom:mod=mr
-    model_name: 'Prostate158'
+    model_name: 'Segmentation of prostate regions, Prostate158'
     skip_empty_slices: True
 
   DataOrganizer:
     targets:
-    - dicomseg-->[i:sid]/nnunet_mr_prostate.seg.dcm
+    - dicomseg-->[i:sid]/prostate158.seg.dcm
