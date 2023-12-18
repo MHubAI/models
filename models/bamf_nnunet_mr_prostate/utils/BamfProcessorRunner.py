@@ -22,7 +22,7 @@ class BamfProcessorRunner(Module):
 
     @IO.Instance
     @IO.Input('in_data', 'nifti:mod=ct|mr', the='input data to run nnunet on')
-    @IO.Output('out_data', 'nrrd:mod=seg:processor=bamf', data='in_data', the="keep the two largest connected components of the segmentation and remove all other ones")
+    @IO.Output('out_data', 'bamf_processed.nrrd', 'nrrd:mod=seg:processor=bamf', data='in_data', the="keep the two largest connected components of the segmentation and remove all other ones")
     def task(self, instance: Instance, in_data: InstanceData, out_data: InstanceData) -> None:
        # Log bamf runner info
         self.v("Running BamfProcessor on....")
