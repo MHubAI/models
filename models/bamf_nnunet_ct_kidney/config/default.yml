@@ -23,7 +23,7 @@ modules:
     in_data: nifti:mod=ct
     nnunet_task: Task779_Kidneys_KIRC
     nnunet_model: 3d_fullres
-    roi: LEFT_KIDNEY, RIGHT_KIDNEY
+    roi: KIDNEY,NEOPLASM_MALIGNANT_PRIMARY,CYST
 
   BamfProcessorRunner:
 
