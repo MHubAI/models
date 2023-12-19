@@ -25,7 +25,7 @@ modules:
     
   NNUnetRunner:
     in_data: nifti:mod=mr
-    nnunet_task: 'Task882_Liver_AMD'
+    nnunet_task: 'Task822_Liver_AMD'
     nnunet_model: '3d_fullres'
     roi: LIVER
 
@@ -33,9 +33,9 @@ modules:
 
   DsegConverter:
     source_segs: 'nifti:mod=seg'
+    target_dicom: dicom:mod=mr
     model_name: 'Bamf NNUnet MR Liver'
     skip_empty_slices: True
-    json_config_path: '/app/models/bamf_nnunet_mr_liver/config/meta.json'
 
   DataOrganizer:
     targets:
