@@ -19,6 +19,10 @@ modules:
     meta: 
       mod: 'mr'
 
+  NiftiConverter:
+    in_datas: dicom:mod=mr
+    engine: dcm2niix
+    
   NNUnetRunner:
     in_data: nifti:mod=mr
     nnunet_task: 'Task882_Liver_AMD'
