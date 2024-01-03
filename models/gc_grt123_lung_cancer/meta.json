@@ -3,7 +3,7 @@
   "name": "lung_cancer_risk_estimation",
   "title": "Lung cancer risk estimation on thorax CT scans",
   "summary": {
-    "description": "This algorithm analyzes non-contrast CT scans of the thorax and predicts the lung cancer risk. ",
+    "description": "This algorithm analyzes non-contrast CT scans of the thorax and predicts the lung cancer risk. The model consists of two modules. The first one is a 3D region proposal network for nodule detection, which outputs all suspicious nodules for a subject. The second one selects the top five nodules based on the detection confidence, evaluates their cancer probabilities and combines them with a leaky noisy-or gate to obtain the probability of lung cancer for the subject",
     "inputs": [
       {
         "label": "CT",
@@ -71,19 +71,35 @@
     "use": {
       "title": "Intended use",
       "text": "This algorithm analyzes non-contrast CT scans of the thorax and predicts the lung cancer risk. ",
-      "references": [],
+      "references": [
+        {
+          "label": "Lung cancer risk estimation algorithm on grand-challenge",
+          "url": "https://grand-challenge.org/algorithms/dsb2017-grt123/"
+        }
+      ],
       "tables": []
     },
     "analyses": {
-      "title": "",
-      "text": "",
+      "title": "Evaluation",
+      "text": "The nodule detection was evaluated on the validation set of DSB. It contains data from 198 cases and there are 71 (7 nodules smaller than 6 mm are ruled out) nodules in total. The Free Response Operating Characteristic (FROC) is used to evaluate the performance and can be viewed in the publication. The Case classification is evaluated using the Area Under the Curve (AUC) metric.",
       "references": [],
-      "tables": []
+      "tables": [{
+        "label": "AUC for the Case classification",
+        "entries": {
+          "AUC training set": 0.90,
+          "AUC test set": 0.87
+        }
+      }]
     },
     "evaluation": {
-      "title": "",
-      "text": "",
-      "references": [],
+      "title": "Evaluation data",
+      "text": "The model was evaluated against a private dataset of 300 low-dose CT images. 150 patient scans were from the competition set and 150 were from an independent dataset. Both test datasets contained 50 cancer-positive scans and 100 cancer-negative scans.",
+      "references": [
+        {
+          "label": "Evaluation paper",
+          "uri": "https://pubmed.ncbi.nlm.nih.gov/34870218/"
+        }
+      ],
       "tables": []
     },
     "training": {
