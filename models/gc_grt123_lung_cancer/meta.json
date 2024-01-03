@@ -85,8 +85,11 @@
     },
     "analyses": {
       "title": "Evaluation",
-      "text": "The nodule detection was evaluated on the validation set of DSB. It contains data from 198 cases and there are 71 (7 nodules smaller than 6 mm are ruled out) nodules in total. The Free Response Operating Characteristic (FROC) is used to evaluate the performance and can be viewed in the publication. The Case classification is evaluated using the Area Under the Curve (AUC) metric.",
-      "references": [],
+      "text": "The nodule detection was evaluated on the validation set of Data Science Bowl 2017 challenge. It contains data from 198 cases and there are 71 (7 nodules smaller than 6 mm are ruled out) nodules in total. The Free Response Operating Characteristic (FROC) is used to evaluate the performance and can be viewed in the publication. The Case classification is evaluated using the Area Under the Curve (AUC) metric.",
+      "references": [{
+        "label": "Data Science Bowl 2017 challenge",
+        "uri": "https://www.kaggle.com/c/data-science-bowl-2017"
+      }],
       "tables": [{
         "label": "AUC for the Case classification",
         "entries": {
@@ -97,7 +100,7 @@
     },
     "evaluation": {
       "title": "Evaluation data",
-      "text": "The model was evaluated against a private dataset of 300 low-dose CT images. 150 patient scans were from the competition set and 150 were from an independent dataset. Both test datasets contained 50 cancer-positive scans and 100 cancer-negative scans.",
+      "text": "The model was evaluated against a private dataset of 300 low-dose CT images, containing 100 cancer-positive scans and 200 cancer-negative scans.",
       "references": [
         {
           "label": "Evaluation paper",
