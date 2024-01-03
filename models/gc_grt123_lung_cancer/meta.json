@@ -90,8 +90,8 @@
       "tables": [{
         "label": "AUC for the Case classification",
         "entries": {
-          "AUC training set": 0.90,
-          "AUC test set": 0.87
+          "AUC training set": "0.90",
+          "AUC test set": "0.87"
         }
       }]
     },
