@@ -60,6 +60,10 @@
       {
         "title": "JOURNAL OF LATEX CLASS FILES, VOL. 14, NO. 8, AUGUST 2015 1 Evaluate the Malignancy of Pulmonary Nodules Using the 3D Deep Leaky Noisy-or Network",
         "uri": "https://arxiv.org/pdf/1711.08324.pdf"
+      },
+      {
+        "title": "Deep Learning for Lung Cancer Detection on Screening CT Scans: Results of a Large-Scale Public Competition and an Observer Study with 11 Radiologists",
+        "uri": "https://pubmed.ncbi.nlm.nih.gov/34870218/"
       }
     ],
     "github": "https://github.com/DIAGNijmegen/bodyct-dsb2017-grt123",
@@ -70,11 +74,11 @@
   "info": {
     "use": {
       "title": "Intended use",
-      "text": "This algorithm analyzes non-contrast CT scans of the thorax and predicts the lung cancer risk. ",
+      "text": "This algorithm analyzes non-contrast CT scans of the thorax and predicts the lung cancer risk.",
       "references": [
         {
           "label": "Lung cancer risk estimation algorithm on grand-challenge",
-          "url": "https://grand-challenge.org/algorithms/dsb2017-grt123/"
+          "uri": "https://grand-challenge.org/algorithms/dsb2017-grt123/"
         }
       ],
       "tables": []
