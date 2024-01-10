@@ -1,0 +1,179 @@
+{
+  "id": "c5f886fb-9f54-4555-a954-da02b22d6d3f",
+  "name": "gc_picai_baseline",
+  "title": "PI-CAI challenge baseline",
+  "summary": {
+    "description": "This algorithm predicts a detection map for the likelihood of clinically significant prostate cancer (csPCa) using biparametric MRI (bpMRI). The algorithm ensembles 5-fold cross-validation models that were trained on the PI-CAI: Public Training and Development Dataset v2.0. The detection map is at the same spatial resolution and physical dimensions as the input axial T2-weighted image. This model algorithm was used as a baseline for the PI-CAI challenge hosted on Grand Challenge.",
+    "inputs": [
+      {
+        "label": "Transverse T2-weighted prostate biparametric MRI",
+        "description": "Transverse T2-weighted prostate biparametric MRI exam.",
+        "format": "DICOM",
+        "modality": "MR",
+        "bodypartexamined": "Prostate",
+        "slicethickness": "0.5 x 0.5 x 3.0 mm",
+        "non-contrast": false,
+        "contrast": false
+      },
+      {
+        "label": "Transverse high b-value diffusion-weighted maps of the prostate",
+        "description": "Transverse high b-value diffusion-weighted (DWI) maps, with b-value of 1400 or 2000, either acquired or vendor-calculated.",
+        "format": "DICOM",
+        "modality": "MR",
+        "bodypartexamined": "Prostate",
+        "slicethickness": "0.5 x 0.5 x 3.0 mm",
+        "non-contrast": false,
+        "contrast": false
+      },
+      {
+        "label": "Transverse apparent diffusion coefficient map of the prostate",
+        "description": "Transverse apparent diffusion coefficient (ADC) prostate MRI map.",
+        "format": "DICOM",
+        "modality": "MR",
+        "bodypartexamined": "Prostate",
+        "slicethickness": "0.5 x 0.5 x 3.0 mm",
+        "non-contrast": false,
+        "contrast": false
+      }
+    ],
+    "outputs": [
+      {
+        "type": "Prediction",
+        "valueType": "Likelihood",
+        "label": "Prostate cancer likelihood",
+        "description": "Case-level likelihood of harboring clinically significant prostate cancer, in range [0,1].",
+        "classes": []
+      },
+      {
+        "type": "Prediction",
+        "valueType": "Likelihood map",
+        "label": "Transverse cancer detection map",
+        "description": "Detection map of clinically significant prostate cancer lesions in 3D, where each voxel represents a floating point in range [0,1]. This map is at the same spatial resolution and physical dimensions as the input transversal T2-weighted image.",
+        "classes": []
+      }
+    ],
+    "model": {
+      "architecture": "3d fullres nnUNet",
+      "training": "semi-supervised",
+      "cmpapproach": "3D"
+    },
+    "data": {
+      "training": {
+        "vol_samples": 1500
+      },
+      "evaluation": {
+        "vol_samples": 1000
+      },
+      "public": false,
+      "external": false
+    }
+  },
+  "details": {
+    "name": "PI-CAI challenge baseline",
+    "version": "v2.1.1",
+    "devteam": "Diagnostic Image Analysis Group, Radboud University Medical Center, Nijmegen, The Netherlands",
+    "type": "Prediction",
+    "date": {
+      "weights": "2022-06-22",
+      "code": "2022-09-05",
+      "pub": ""
+    },
+    "cite": "J. S. Bosma, A. Saha, M. Hosseinzadeh, I. Slootweg, M. de Rooij, and H. Huisman, \"Semisupervised Learning with Report-guided Pseudo Labels for Deep Learning–based Prostate Cancer Detection Using Biparametric MRI\", Radiology: Artificial Intelligence, 230031, 2023. DOI: 10.1148/ryai.230031",
+    "license": {
+      "code": "Apache 2.0",
+      "weights": "CC-BY-NC-SA-4.0"
+    },
+    "publications": [
+      {
+        "uri": "https://doi.org/10.5281/zenodo.6667655",
+        "title": "Artificial Intelligence and Radiologists at Prostate Cancer Detection in MRI: The PI-CAI Challenge (Study Protocol)"
+      },
+      {
+        "uri": "https://pubs.rsna.org/doi/10.1148/ryai.230031",
+        "title": "Semisupervised Learning with Report-guided Pseudo Labels for Deep Learning–based Prostate Cancer Detection Using Biparametric MRI"
+      }
+    ],
+    "github": "https://github.com/DIAGNijmegen/picai_nnunet_semi_supervised_gc_algorithm",
+    "zenodo": "",
+    "colab": "",
+    "slicer": false
+  },
+  "info": {
+    "use": {
+      "title": "Intended use",
+      "text": "This algorithm is a deep learning-based detection/diagnosis model, which ensembles 5 independent nnU-Net models (5-fold cross-validation). To predict the likelihood of harboring clinically significant prostate cancer (csPCa), the transversal T2-weighted, apparent diffusion coefficient (ADC) and high b-value diffusion weighted maps are required. The input sequences should be co-registered or aligned reasonably well and the prostate gland should be localized within a volume of 460 cm³ from the centre coordinate. The nnU-Net framework will internally resample all input scans to 0.5 x 0.5 x 3.0 mm. Per case the input data should be put into the following folder structure: `case1/adc`, `case1/hbv`, `case1/t2w`, corresponding respectively with the ADC, high b-value DWI, and the T2 weighted MR inputs for a case called `case1`.",
+      "references": [
+        {
+          "label": "PI-CAI baseline algorithm on grand-challenge",
+          "uri": "https://grand-challenge.org/algorithms/pi-cai-baseline-nnu-net-semi-supervised/"
+        }
+      ],
+      "tables": []
+    },
+    "analyses": {
+      "title": "Evaluation",
+      "text": "Patient-level diagnosis performance is evaluated using the Area Under Receiver Operating Characteristic (AUROC) metric. Lesion-level detection performance is evaluated using the Average Precision (AP) metric.",
+      "references": [
+        {
+          "label": "PI-CAI AI challenge details",
+          "uri": "https://pi-cai.grand-challenge.org/AI/"
+        },
+        {
+          "label": "PI-CAI baseline algorithm evaluation results on grand-challenge.",
+          "uri": "https://pi-cai.grand-challenge.org/evaluation/fe187cdb-cb61-4cbb-ab63-2de483a52d60/"
+        }
+      ],
+      "tables": [
+        {
+          "label": "Evaluation results on the PI-CAI testing cohort of 1000 cases.",
+          "entries": {
+              "AUROC": "0.865",
+              "AP": "0.576"
+          }
+        }
+      ]
+    },
+    "evaluation": {
+      "title": "Evaluation data",
+      "text": "The PI-CAI Hidden Testing Cohort (1000 cases) includes internal testing data (unseen cases from seen centers) and external testing data (unseen cases from an unseen center).",
+      "references": [
+        {
+          "label": "PI-CAI data section",
+          "uri": "https://pi-cai.grand-challenge.org/DATA/"
+        }
+      ],
+      "tables": []
+    },
+    "training": {
+      "title": "Training data",
+      "text": "The publicly available PI-CAI training and development dataset of 1500 biparametric MRI exams was used for training [1]. AI-derived annotations were created for cases without manual annotations [2]. This model was trained using a custom preprocessing step followed by the standard nnU-Net pipeline. The default nnU-Net loss-function was changed to Cross-Entropy + Focal loss [3].",
+      "references": [
+        {
+          "label": "PI-CAI publicly available training and development dataset",
+          "uri": "https://zenodo.org/record/6624726"
+        },
+        {
+          "label": "Method to obtain AI-derived annotations",
+          "uri": "https://fastmri.eu/research/bosma22a.html"
+        },
+        {
+          "label": "Detailed description of training method",
+          "uri": "https://github.com/DIAGNijmegen/picai_baseline/blob/main/nnunet_baseline.md"
+        }
+      ],
+      "tables": []
+    },
+    "ethics": {
+      "title": "",
+      "text": "",
+      "references": [],
+      "tables": []
+    },
+    "limitations": {
+      "title": "Limitations",
+      "text": "This algorithm was developed for research purposes only.",
+      "references": [],
+      "tables": []
+    }
+  }
+}
