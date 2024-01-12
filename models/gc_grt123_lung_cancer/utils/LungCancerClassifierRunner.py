@@ -17,9 +17,6 @@ from pathlib import Path
 
 import torch
 
-# Import the main module for the grt123 algorithm, which must be used for running the classification
-import main
-
 
 @ValueOutput.Name('lncancerprob')
 @ValueOutput.Meta(Meta(min=0.0, max=1.0, type="probability"))
@@ -83,6 +80,9 @@ class LungCancerClassifierRunner(Module):
         else:
             self.log("Running on the CPU, might be slow...", "NOTICE")
             n_gpu = 0
+
+        # Import the main module for the grt123 algorithm, which must be used for running the classification
+        import main
 
         # apply grt123 algorithm
         results = main.main(
