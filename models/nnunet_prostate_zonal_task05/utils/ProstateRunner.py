@@ -2,7 +2,7 @@ import os, shutil
 from mhubio.core import Module, Instance, InstanceData, IO
 
 @IO.Config('use_tta', bool, False, the='flag to enable test time augmentation')
-@IO.Config('nnunet_model', str, None, the='nnunet model name (2d, 3d_lowres, 3d_fullres, 3d_cascade_fullres)')
+@IO.Config('nnunet_model', str, '3d_fullres', the='nnunet model name (2d, 3d_lowres, 3d_fullres, 3d_cascade_fullres)')
 class ProstateRunner(Module):
 
     use_tta: bool
