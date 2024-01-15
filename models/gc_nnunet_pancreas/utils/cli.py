@@ -1,12 +1,15 @@
 """
-----------------------------------------------------
+-------------------------------------------------------------
 GC / MHub - CLI for the GC nnUnet Pancreas Algorithm
-----------------------------------------------------
+  The model algorith was wrapped in a CLI to ensure
+  the mhub framework is able to properly capture the nnUNet
+  stdout/stderr outputs
+-------------------------------------------------------------
 
-----------------------------------------------------
+-------------------------------------------------------------
 Author: Sil van de Leemput
 Email:  sil.vandeleemput@radboudumc.nl
-----------------------------------------------------
+-------------------------------------------------------------
 """
 import argparse
 from pathlib import Path

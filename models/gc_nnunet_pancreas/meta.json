@@ -24,16 +24,21 @@
           "arteries",
           "pancreas",
           "pancreatic duct",
-          "bile duct",
-          "cysts",
-          "renal vein"
+          "bile duct"
         ]
       },
       {
         "type": "Prediction",
-        "valueType": "number",
+        "valueType": "Likelihood map",
+        "label": "Pancreatic tumor likelihood heatmap",
+        "description": "Pancreatic tumor likelihood heatmap, where each voxel represents a floating point in range [0,1].",
+        "classes": []
+      },
+      {
+        "type": "Prediction",
+        "valueType": "Likelihood",
         "label": "Pancreatic tumor likelihood",
-        "description": "Pancreatic tumor likelihood map with values between 0 and 1",
+        "description": "Case-level pancreatic tumor likelihood value with a value in range [0,1].",
         "classes": []
       }
     ],

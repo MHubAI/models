@@ -1,13 +1,14 @@
 general:
   version: 1.0
   data_base_dir: /app/data
-  description: base configuration for GC NNUnet Pancreas model (dicom to dicom)
+  description: base configuration for GC NNUnet Pancreas model (dicom to dicom, and json output)
 
 execute:
 - DicomImporter
 - MhaConverter
 - GCNNUnetPancreasRunner
 - DsegConverter
+- ReportExporter
 - DataOrganizer
 
 modules:
@@ -24,12 +25,20 @@ modules:
 
   DsegConverter:
     model_name: 'GC NNUnet Pancreas'
-    source_segs: ['mha:mod=seg']
+    source_segs: ['mha:mod=seg:src=cleaned']
     target_dicom: dicom:mod=ct
     skip_empty_slices: True
+
+  ReportExporter:
+    format: compact
+    includes:
+      - data: prostate_cancer_likelihood
+        label: prostate_cancer_likelihood
+        value: value
 
   DataOrganizer:
     targets:
     - mha:mod=heatmap-->[i:sid]/nnunet_pancreas_heatmap.mha
-    - mha:mod=seg-->[i:sid]/nnunet_pancreas.seg.mha
+    - mha:mod=seg:src=cleaned-->[i:sid]/nnunet_pancreas.seg.mha
     - dicomseg:mod=seg-->[i:sid]/nnunet_pancreas.seg.dcm
+    - json:mod=report-->[i:sid]/nnunet_pancreas_case_level_likelihood.json
