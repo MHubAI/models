@@ -93,20 +93,33 @@
     },
     "analyses": {
       "title": "Analysis",
-      "text": "The study evaluated a medical model's performance for tumor detection by analyzing receiver operating characteristic (ROC) and free-response receiver operating characteristic (FROC) curves, assessing both tumor presence and lesion localization, and compared three configurations using statistical tests and ensemble modeling.",
-      "references": [],
-      "tables": []
+      "text": "The study evaluated a medical model's performance for tumor detection by analyzing receiver operating characteristic (ROC) and free-response receiver operating characteristic (FROC) curves, assessing both tumor presence and lesion localization, and compared three configurations using statistical tests and ensemble modeling. The table below lists the model's performance on an external evaluation dataset of 361 cases. Additional analysis details and results can be found in the original paper [1].",
+      "references": [
+        {
+          "label": "Fully Automatic Deep Learning Framework for Pancreatic Ductal Adenocarcinoma Detection on Computed Tomography",
+          "uri": "https://www.mdpi.com/2072-6694/14/2/376"
+        }
+      ],
+      "tables": [
+        {
+          "label": "Evaluation results of the nnUnet_MS model on the external test set of 361 cases.",
+          "entries": {
+              "Mean AUC-ROC (95% CI)": "0.991 (0.970-1.0)",
+              "Mean pAUC-FROC (95% CI)": "3.996 (3.027-4.965)"
+          }
+        }
+      ]
     },
     "evaluation": {
       "title": "Evaluation Data",
-      "text": "This framework was tested in an independent, external cohort consisting of two publicly available datasets.",
+      "text": "This framework was tested in an independent, external cohort consisting of two publicly available datasets of respectively 281 and 80 patients each. The Medical Segmentation Decathlon pancreas dataset (training portion) [1] consisting of 281 patients with pancreatic malignancies (including lesions in the head, neck, body, and tail of the pancreas) and voxel-level annotations for the pancreas and lesion. The Cancer Imaging Archive dataset from the US National Institutes of Health Clinical Center [2], containing 80 patients with normal pancreas and respective voxel-level annotations.",
       "references": [
         {
-          "label": "The Medical Segmentation Decathlon pancreas dataset (training portion) consisting of 281 patients with pancreatic malignancies (including lesions in the head, neck, body, and tail of the pancreas) and voxel-level annotations for the pancreas and lesion.",
+          "label": "The Medical Segmentation Decathlon pancreas dataset (training portion)",
           "uri": "http://medicaldecathlon.com/"
         },
         {
-          "label": "The Cancer Imaging Archive dataset from the US National Institutes of Health Clinical Center, containing 80 patients with normal pancreas and respective voxel-level annotations.",
+          "label": "The Cancer Imaging Archive dataset from the US National Institutes of Health Clinical Center",
           "uri": "https://wiki.cancerimagingarchive.net/display/Public/Pancreas-CT"
         }
       ],
