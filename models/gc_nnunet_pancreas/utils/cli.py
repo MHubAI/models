@@ -23,7 +23,7 @@ def run_pdac_detection(
 ):
     # Configure the algorithm pipeline class and run it
     algorithm = PDACDetectionContainer()
-    algorithm.ct_image = str(input_ct_image)  # set as str not Path
+    algorithm.ct_image = input_ct_image
     algorithm.heatmap = output_heatmap
     algorithm.segmentation = output_segmentation
     algorithm.process()

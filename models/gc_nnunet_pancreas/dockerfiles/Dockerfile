@@ -12,20 +12,12 @@ RUN apt update && \
     rm -rf /var/lib/apt/lists/*
 
 # Install the model weights and the algorithm files
-#  * Pull algorithm from repo into /opt/algorithm (main branch, commit e4f4008c6e18e60a79f693448562a340a9252aa8)
+#  * Pull algorithm from repo into /opt/algorithm (main branch, commit 2d74e98f66f0a57da66ed26e97448e53571199db)
 #  * Remove .git folder to keep docker layer small
-#  * Replace input images path in process.py with an existing folder to avoid errors
-#  * Add specific data types and compression options to output data structures in process.py to reduce generated output footprint
 RUN git clone https://github.com/DIAGNijmegen/CE-CT_PDAC_AutomaticDetection_nnUnet.git /opt/algorithm && \
     cd /opt/algorithm && \
-    git reset --hard e4f4008c6e18e60a79f693448562a340a9252aa8 && \
-    rm -rf /opt/algorithm/.git && \
-    sed -i 's/Path("\/input\/images\/")/Path("\/app")/g' /opt/algorithm/process.py && \
-    sed -i 's/pred_2_np  = sitk\.GetArrayFromImage(pred_2_nii)/pred_2_np  = sitk\.GetArrayFromImage(pred_2_nii)\.astype(np\.uint8)/g' /opt/algorithm/process.py && \
-    sed -i 's/pm_image = np\.zeros(image_np\.shape)/pm_image = np\.zeros(image_np\.shape, dtype=np\.float32)/g' /opt/algorithm/process.py && \
-    sed -i 's/segmentation_np = np\.zeros(image_np\.shape)/segmentation_np = np\.zeros(image_np\.shape, dtype=np\.uint8)/g' /opt/algorithm/process.py && \
-    sed -i 's/sitk\.WriteImage(segmentation_image, str(self\.segmentation))/sitk\.WriteImage(segmentation_image, str(self\.segmentation), True)/g' /opt/algorithm/process.py && \
-    sed -i 's/sitk\.WriteImage(pred_itk_resampled, str(self\.heatmap))/sitk\.WriteImage(pred_itk_resampled, str(self\.heatmap), True)/g' /opt/algorithm/process.py
+    git reset --hard 2d74e98f66f0a57da66ed26e97448e53571199db && \
+    rm -rf /opt/algorithm/.git
 
 # Set this environment variable as a shortcut to avoid nnunet 1.7.0 crashing the build
 # by pulling sklearn instead of scikit-learn
