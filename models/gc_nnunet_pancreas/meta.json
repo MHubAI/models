@@ -1,6 +1,6 @@
 {
   "id": "bf7ae4bb-c6f5-4b1e-89aa-a8de246def57",
-  "name": "pdac_detection_in_ct",
+  "name": "gc_nnunet_pancreas",
   "title": "Pancreatic Ductal Adenocarcinoma Detection in CT",
   "summary": {
     "description": "This algorithm produces a tumor likelihood heatmap for the presence of pancreatic ductal adenocarcinoma (PDAC) in an input venous-phase contrast-enhanced computed tomography scan (CECT). Additionally, the algorithm provides the segmentation of multiple surrounding anatomical structures such as the pancreatic duct, common bile duct, veins and arteries. The heatmap and segmentations are resampled to the same spatial resolution and physical dimensions as the input CECT image for easier visualisation.",
