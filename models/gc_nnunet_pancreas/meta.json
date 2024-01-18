@@ -18,16 +18,6 @@
     ],
     "outputs": [
       {
-        "type": "Segmentation",
-        "classes": [
-          "veins",
-          "arteries",
-          "pancreas",
-          "pancreatic duct",
-          "bile duct"
-        ]
-      },
-      {
         "type": "Prediction",
         "valueType": "Likelihood map",
         "label": "Pancreatic tumor likelihood heatmap",
@@ -40,6 +30,17 @@
         "label": "Pancreatic tumor likelihood",
         "description": "Case-level pancreatic tumor likelihood value with a value in range [0,1].",
         "classes": []
+      },
+      {
+        "type": "Segmentation",
+        "label": "Segmentation of pancreas related tissues. These segmentation classes were not thoroughly validated, use them on your own risk!",
+        "classes": [
+          "veins",
+          "arteries",
+          "pancreas",
+          "pancreatic duct",
+          "bile duct"
+        ]
       }
     ],
     "model": {
