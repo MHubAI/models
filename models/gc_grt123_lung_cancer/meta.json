@@ -1,6 +1,6 @@
 {
   "id": "2e67a3cc-4680-4058-bf4e-f965cf50f06f",
-  "name": "lung_cancer_risk_estimation",
+  "name": "gc_grt123_lung_cancer",
   "title": "Lung cancer risk estimation on thorax CT scans",
   "summary": {
     "description": "This algorithm analyzes non-contrast CT scans of the thorax and predicts the lung cancer risk. The model consists of two modules. The first one is a 3D region proposal network for nodule detection, which outputs all suspicious nodules for a subject. The second one selects the top five nodules based on the detection confidence, evaluates their cancer probabilities and combines them with a leaky noisy-or gate to obtain the probability of lung cancer for the subject. This model was the winner of the Data Science Bowl 2017 competition hosted on Kaggle.",
@@ -20,8 +20,8 @@
       {
         "type": "Prediction",
         "valueType": "number",
-        "label": "Cancer probability score",
-        "description": "Probability that the scan contains cancer nodules",
+        "label": "Lung thorax cancer nodule probability score",
+        "description": "The likelihood of the presence of cancer nodules in the lungs.",
         "classes": []
       }
     ],
