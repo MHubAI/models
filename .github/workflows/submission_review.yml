@@ -19,3 +19,9 @@ jobs:
       if: ${{ startsWith(github.event.comment.body, '/review') }}
       with:
         labels: REQUEST REVIEW
+        
+    - name: Add Request Test Label
+      uses: actions-ecosystem/action-add-labels@v1
+      if: ${{ startsWith(github.event.comment.body, '/test') }}
+      with:
+        labels: REQUEST TEST
