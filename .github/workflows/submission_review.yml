@@ -1,0 +1,21 @@
+name: MHub Contribution Magic Keywords
+
+on:
+  issue_comment:                                     
+    types: [created, edited]
+
+jobs:
+ autolabel:
+  if: ${{ github.event.issue.pull_request }}
+  name: Add labels to PR
+  runs-on: [ubuntu-latest]
+  
+  permissions: 
+    pull-requests: write
+
+  steps:
+    - name: Add Request Review Label
+      uses: actions-ecosystem/action-add-labels@v1
+      if: ${{ startsWith(github.event.comment.body, '/review') }}
+      with:
+        labels: REQUEST REVIEW
