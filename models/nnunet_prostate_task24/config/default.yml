@@ -16,7 +16,7 @@ modules:
     import_dir: sorted_data
     sort_data: true
     meta: 
-      mod: 'mr'
+      mod: '%Modality'
 
   NiftiConverter:
     in_datas: dicom:mod=mr
