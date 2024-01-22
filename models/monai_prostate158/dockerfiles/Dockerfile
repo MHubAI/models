@@ -25,9 +25,6 @@ RUN python3 -m monai.bundle download "prostate_mri_anatomy" --bundle_dir ${WEIGH
 #define path to bundle root
 ENV BUNDLE_ROOT=/app/models/monai_prostate158/bundle/prostate_mri_anatomy
 
-# specify nnunet specific environment variables
-# ENV WEIGHTS_FOLDER=$WEIGHTS_DIR
-
 # Default run script
 ENTRYPOINT ["mhub.run"]
 CMD ["--config", "/app/models/monai_prostate158/config/default.yml"]
