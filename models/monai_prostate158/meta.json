@@ -81,10 +81,32 @@
             ]
         },
         "evaluation": {
-            "title": "Evaluation Data",
-            "text": "The evaluation dataset consists of 20 internal validation samples.",
-            "tables": [],
-            "references": []
+            "title": "External Evaluation Data",
+            "text": "The evaluation datasets consist of 186 ProstateX samples and 32 prostate MRI Medical Decathlon dataset samples.",
+            "tables": [
+                {
+                    "label": "Medical Decathlon mean DSC for the segmentation of the central gland and peripheral zone",
+                    "entries": {
+                        "Central gland": "0.82",
+                        "Peripheral zone": "0.64"
+                    }
+                },
+                {
+                    "label": "ProstateX mean DSC for the segmentation of the central gland and peripheral zone",
+                    "entries": {
+                        "Central gland": "0.86",
+                        "Peripheral zone": "0.71"
+                    }
+                }
+            ],
+            "references": [{
+                    "label": "Medical Segmentation Decathlon",
+                    "uri": "https://www.nature.com/articles/s41467-022-30695-9"
+                },
+                {
+                    "label": "Quality control and whole-gland, zonal and lesion annotations for the PROSTATEx challenge public dataset",
+                    "uri": "https://www.sciencedirect.com/science/article/abs/pii/S0720048X21001273"
+                }]
         },
         "training": {
             "title": "Training Data",
@@ -99,10 +121,6 @@
                 }
             ],
             "references": [
-                {
-                    "label": "Medical Segmentation Decathlon",
-                    "uri": "https://www.nature.com/articles/s41467-022-30695-9"
-                },
                 {
                     "label": "Prostate158 dataset (Zenodo access)",
                     "uri": "https://zenodo.org/records/6481141"
