@@ -1,0 +1,34 @@
+general:
+  data_base_dir: /app/data
+  version: 1.0
+  description: Prostate MRI classification default (dicom to json)
+
+execute:
+- FileStructureImporter
+- MhaConverter
+- PicaiBaselineRunner
+- ReportExporter
+- DataOrganizer
+
+modules:
+  FileStructureImporter:
+    input_dir: input_data
+    structures:
+      - $sid@instance/$type@dicom:mod=mr
+    import_id: sid
+
+  MhaConverter:
+    engine: panimg
+    allow_multi_input: true
+
+  ReportExporter:
+    format: compact
+    includes:
+      - data: prostate_cancer_likelihood
+        label: prostate_cancer_likelihood
+        value: value
+
+  DataOrganizer:
+    targets:
+      - json:mod=report-->[i:sid]/cspca-case-level-likelihood.json
+      - mha:mod=dm-->[i:sid]/cspca-detection-map.mha

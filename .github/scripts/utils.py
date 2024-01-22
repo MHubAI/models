@@ -110,6 +110,16 @@ def validateModelMetaJson(model_meta_json_file: str):
     except jsonschema.ValidationError as e:
         raise MHubComplianceError(f"Model meta json is not compliant with the schema: {e.message}", DocuRef.MODEL_META_JSON)
 
+def validateModelMetaJson_modelName(model_meta_json_file: str, model_name: str):
+
+    # load model meta json
+    with open(model_meta_json_file, "r") as f:
+        model_meta_json = json.load(f)
+
+    # check that the model name is correct
+    if model_meta_json["name"] != model_name:
+        raise MHubComplianceError(f"Model name in meta.json does not match model name in folder structure: {model_meta_json['name']} != {model_name}", DocuRef.MODEL_META_JSON)
+
 def validateDockerfile(base: str, model_name: str):
     
     # get dockerfile path

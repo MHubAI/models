@@ -34,8 +34,11 @@ try:
     # check folder structure
     utils.validateModelFolder(base='models', model_name=model_name)
 
-    # check meta.json
+    # check meta.json (schema)
     utils.validateModelMetaJson(model_meta_json_file=os.path.join('models', model_name, 'meta.json'))
+
+    # check additional requirements for meta.json
+    utils.validateModelMetaJson_modelName(model_meta_json_file=os.path.join('models', model_name, 'meta.json'), model_name=model_name)
 
     # validate dockerfile
     utils.validateDockerfile(base='models', model_name=model_name)
