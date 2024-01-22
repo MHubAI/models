@@ -1,6 +1,6 @@
 {
   "id": "c5397909-0397-489f-8744-6bf3952e9a1c",
-  "name": "tiger_lb2",
+  "name": "gc_tiger_lb2",
   "title": "TIGER challenge winner: Team VUNO",
   "summary": {
     "description": "Participants in the TIGER challenge will have to develop computer algorithms to analyze H&E-stained whole-slide images of breast cancer histopathology, to perform three tasks:  detection of lymphocytes and plasma cells, which are the main types of cells considered as tumor-infiltrating lymphocytes; segmentation of invasive tumor and tumor-associated stroma, which are the main tissue compartments considered when identifying relevant regions for the TILs; compute an automated TILs score, one score per slide, based on the output of detection and segmentation.",
@@ -65,7 +65,7 @@
   "info": {
     "use": {
       "title": "Intended use",
-      "text": "Prediction of the percentage of stomal area covered by tumour infiltrating lymphocytes on H&E-stained whole-slide image of breast cancer histopathology.",
+      "text": "Prediction of the percentage of stromal area covered by tumour infiltrating lymphocytes on H&E-stained whole-slide image of breast cancer histopathology.",
       "references": [],
       "tables": []
     },
