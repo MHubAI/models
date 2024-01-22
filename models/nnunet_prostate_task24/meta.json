@@ -1,6 +1,6 @@
 {
     "id": "...",
-    "name": "nnunet_prostate_task24_promise",
+    "name": "nnunet_prostate_task24",
     "title": "nnU-Net (Whole prostate segmentation)",
     "summary": {
         "description": "nnU-Net's whole prostate segmentation model is a single-modality (i.e. T2) input AI-based pipeline for the automated segmentation of the whole prostate on MRI scans.",
@@ -86,7 +86,23 @@
         "evaluation": {
             "title": "Evaluation Data",
             "text": "The evaluation dataset consists of 30 test samples coming from the Promise12 challenge.",
-            "tables": [],
+            "tables": [
+                {
+                "label": "Promise12 training set Average DSC using five fold cross-validation",
+                "entries": {
+                    "2D": "0.8932",
+                    "3d_fullres": "0.8891",
+                    "Best ensemble (2D + 3D_fullres)": "0.9029",
+                    "Postprocessed": "0.9030",
+                }
+            },
+                {
+                "label": "Promise12 test set Average DSC",
+                "entries": {
+                    "Test set average DSC": "0.9194m"
+                }
+            }
+            ],
             "references": [
                 {
                     "label": "Evaluation of prostate segmentation algorithms for MRI: The PROMISE12 challenge",
