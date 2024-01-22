@@ -55,6 +55,7 @@ except Exception as e:
     print()
     print("---------------- CHECK FAILED ----------------")
     print("An unexpected error occured during compliance checks.")
+    print(str(e))
     print()
     sys.exit(1)
 
