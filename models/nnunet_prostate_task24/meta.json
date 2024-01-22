@@ -71,7 +71,7 @@
         },
         "analyses": {
             "title": "Quantitative Analyses",
-            "text": "The model's performance was assessed using the Dice Coefficient, in the context of the Promise12 challenge. The complete breakdown of the metrics can be consulted on GrandChallenge [1] and is reported in the supplementary material to the publication [2].",
+            "text": "The model's performance was assessed using the Dice Coefficient, in the context of the Promise12 challenge. A brief summary of the evaluation results on internal data can be found in the evaluation section. The complete breakdown of the metrics can be consulted on GrandChallenge [1] and is reported in the supplementary material to the publication [2].",
             "references": [
                 {
                     "label": "Evaluation of prostate segmentation algorithms for MRI: The PROMISE12 challenge",
@@ -88,20 +88,20 @@
             "text": "The evaluation dataset consists of 30 test samples coming from the Promise12 challenge.",
             "tables": [
                 {
-                "label": "Promise12 training set Average DSC using five fold cross-validation",
-                "entries": {
-                    "2D": "0.8932",
-                    "3d_fullres": "0.8891",
-                    "Best ensemble (2D + 3D_fullres)": "0.9029",
-                    "Postprocessed": "0.9030",
-                }
-            },
+                    "label": "Promise12 training set Average DSC using five fold cross-validation",
+                    "entries": {
+                        "2D": "0.8932",
+                        "3d_fullres": "0.8891",
+                        "Best ensemble (2D + 3D_fullres)": "0.9029",
+                        "Postprocessed": "0.9030"
+                    }
+                },
                 {
-                "label": "Promise12 test set Average DSC",
-                "entries": {
-                    "Test set average DSC": "0.9194m"
+                    "label": "Promise12 test set Average DSC",
+                    "entries": {
+                        "Test set average DSC": "0.9194"
+                    }
                 }
-            }
             ],
             "references": [
                 {
