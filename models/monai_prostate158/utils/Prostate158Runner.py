@@ -17,18 +17,16 @@ from mhubio.core import Module, Instance, InstanceData, DataType, FileType, IO
 from mhubio.modules.runner.ModelRunner import ModelRunner
 import json
 
-@IO.Config('apply_center_crop', bool, False, the='flag to apply center cropping to input_image')
-
-class Prostate158Runner(ModelRunner):
+@IO.Config('apply_center_crop', bool, True, the='flag to apply center cropping to input_image')
+class Prostate158Runner(Module):
 
     apply_center_crop : bool
 
     @IO.Instance()
     @IO.Input("in_data", 'nifti:mod=mr', the="input T2 sequence data to run prostate158 on")
     @IO.Output('out_data', 'monai_prostate158.nii.gz', 
-               'nifti:mod=seg:model=Prostate158:roi=PROSTATE_TRANSITION_ZONE,PROSTATE_PERIPHERAL_ZONE', 
+               'nifti:mod=seg:model=MonaiProstate158:roi=PROSTATE_TRANSITION_ZONE,PROSTATE_PERIPHERAL_ZONE', 
                data='in_data', bundle='model', the="predicted segmentation model")
-
     def task(self, instance: Instance, in_data: InstanceData, out_data: InstanceData) -> None:
 
         # bring input data in nnunet specific format
