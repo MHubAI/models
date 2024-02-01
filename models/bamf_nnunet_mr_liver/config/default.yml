@@ -17,22 +17,20 @@ modules:
     import_dir: sorted_data
     sort_data: true
     meta: 
-      mod: 'mr'
+      mod: '%Modality'
 
   NiftiConverter:
     in_datas: dicom:mod=mr
-    engine: dcm2niix
+    engine: plastimatch
     
   NNUnetRunner:
     in_data: nifti:mod=mr
-    nnunet_task: 'Task822_Liver_AMD'
-    nnunet_model: '3d_fullres'
+    nnunet_task: Task822_Liver_AMD
+    nnunet_model: 3d_fullres
     roi: LIVER
 
-  BamfProcessorRunner:
-
   DsegConverter:
-    source_segs: 'nifti:mod=seg'
+    source_segs: nifti:mod=seg
     target_dicom: dicom:mod=mr
     model_name: 'Bamf NNUnet MR Liver'
     skip_empty_slices: True

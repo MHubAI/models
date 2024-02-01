@@ -8,13 +8,12 @@ Email:  rahul.soni@bamfhealth.com
 -------------------------------------------------
 """
 
-from mhubio.core import Instance, InstanceData, DataType, FileType, CT, SEG
+from mhubio.core import Instance, InstanceData
 from mhubio.core import Module, IO
-import os, numpy as np
-import SimpleITK as sitk
-from skimage import measure, filters
 import numpy as np
-import shutil
+import SimpleITK as sitk
+from skimage import measure
+import numpy as np
 
 
 
@@ -24,13 +23,14 @@ class BamfProcessorRunner(Module):
     @IO.Input('in_data', 'nifti:mod=ct|mr', the='input data to run nnunet on')
     @IO.Output('out_data', 'bamf_processed.nrrd', 'nrrd:mod=seg:processor=bamf', data='in_data', the="keep the two largest connected components of the segmentation and remove all other ones")
     def task(self, instance: Instance, in_data: InstanceData, out_data: InstanceData) -> None:
-       # Log bamf runner info
-        self.v("Running BamfProcessor on....")
-        self.v(f" > input data:  {in_data.abspath}")
-        self.v(f" > output data: {out_data.abspath}")
+
+        # Log bamf runner info
+        self.log("Running BamfProcessor on....")
+        self.log(f" > input data:  {in_data.abspath}")
+        self.log(f" > output data: {out_data.abspath}")
 
         # read image
-        self.v(f"Reading image from {in_data.abspath}")
+        self.log(f"Reading image from {in_data.abspath}")
         img_itk = sitk.ReadImage(in_data.abspath)
         img_np = sitk.GetArrayFromImage(img_itk)
 
@@ -38,7 +38,7 @@ class BamfProcessorRunner(Module):
         img_bamf_processed = self.n_connected(img_np)
 
         # store image temporarily
-        self.v(f"Writing tmp image to {out_data.abspath}")
+        self.log(f"Writing tmp image to {out_data.abspath}")
         img_bamf_processed_itk = sitk.GetImageFromArray(img_bamf_processed)
         img_bamf_processed_itk.CopyInformation(img_itk)
         sitk.WriteImage(img_bamf_processed_itk, out_data.abspath)
