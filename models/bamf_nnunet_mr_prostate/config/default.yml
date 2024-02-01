@@ -17,7 +17,7 @@ modules:
     import_dir: sorted_data
     sort_data: true
     meta: 
-      mod: 'mr'
+      mod: '%Modality'
 
   NiftiConverter:
     in_datas: dicom:mod=mr
@@ -34,7 +34,7 @@ modules:
   DsegConverter:
     source_segs: nifti:mod=seg
     target_dicom: dicom:mod=mr
-    model_name: 'Bamf NNUnet MR Prostate'
+    model_name: Bamf NNUnet MR Prostate
     skip_empty_slices: True
 
   DataOrganizer:
