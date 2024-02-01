@@ -21,7 +21,7 @@ modules:
 
   NiftiConverter:
     in_datas: dicom:mod=mr
-    engine: dcm2niix
+    engine: plastimatch
 
   NNUnetRunner:
     in_data: nifti:mod=mr
