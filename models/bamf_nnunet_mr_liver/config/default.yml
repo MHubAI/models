@@ -32,7 +32,7 @@ modules:
   DsegConverter:
     source_segs: nifti:mod=seg
     target_dicom: dicom:mod=mr
-    model_name: 'Bamf NNUnet MR Liver'
+    model_name: Bamf NNUnet MR Liver
     skip_empty_slices: True
 
   DataOrganizer:
