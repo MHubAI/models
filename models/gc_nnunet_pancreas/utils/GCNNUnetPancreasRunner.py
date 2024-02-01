@@ -32,7 +32,7 @@ class GCNNUnetPancreasRunner(Module):
     @IO.Instance()
     @IO.Input('in_data', 'mha:mod=ct', the="input data")
     @IO.Output('heatmap', 'heatmap.mha', 'mha:mod=heatmap:model=GCNNUnetPancreas', data="in_data",
-               the="heatmap of the pancreatic tumor likelihood")
+               the="raw heatmap of the pancreatic tumor likelihood (not masked with any pancreas segmentations).")
     @IO.Output('segmentation_raw', 'segmentation_raw.mha', 'mha:mod=seg:src=original:model=GCNNUnetPancreas:roi=VEIN,ARTERY,PANCREAS,PANCREATIC_DUCT,BILE_DUCT,PANCREAS+CYST,RENAL_VEIN', data="in_data",
                the="original segmentation of the pancreas, with the following classes: "
                    "0-background, 1-veins, 2-arteries, 3-pancreas, 4-pancreatic duct, 5-bile duct, 6-cysts, 7-renal vein")
@@ -56,7 +56,7 @@ class GCNNUnetPancreasRunner(Module):
         # Insufficient training samples were present in the training data for these classes.
         # Hence, these classes should be omitted from the final output, since these are not
         # expected to produce reliable segmentations.
-        cancer_likelihood.value = self.clean_segementation(
+        self.clean_segementation(
             segmentation_in=segmentation_raw,
             segmentation_out=segmentation
         )

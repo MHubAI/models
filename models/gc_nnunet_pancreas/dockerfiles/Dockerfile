@@ -12,11 +12,11 @@ RUN apt update && \
     rm -rf /var/lib/apt/lists/*
 
 # Install the model weights and the algorithm files
-#  * Pull algorithm from repo into /opt/algorithm (main branch, commit 2d74e98f66f0a57da66ed26e97448e53571199db)
+#  * Pull algorithm from repo into /opt/algorithm (main branch, commit 15dd550beada43a8a55b81a32d9b3904a1cf8d30)
 #  * Remove .git folder to keep docker layer small
 RUN git clone https://github.com/DIAGNijmegen/CE-CT_PDAC_AutomaticDetection_nnUnet.git /opt/algorithm && \
     cd /opt/algorithm && \
-    git reset --hard 2d74e98f66f0a57da66ed26e97448e53571199db && \
+    git reset --hard 15dd550beada43a8a55b81a32d9b3904a1cf8d30 && \
     rm -rf /opt/algorithm/.git
 
 # Set this environment variable as a shortcut to avoid nnunet 1.7.0 crashing the build

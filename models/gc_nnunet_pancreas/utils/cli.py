@@ -22,9 +22,9 @@ def run_pdac_detection(
     input_ct_image: Path, output_heatmap: Path, output_segmentation: Path
 ):
     # Configure the algorithm pipeline class and run it
-    algorithm = PDACDetectionContainer()
+    algorithm = PDACDetectionContainer(output_raw_heatmap=True)
     algorithm.ct_image = input_ct_image
-    algorithm.heatmap = output_heatmap
+    algorithm.heatmap_raw = output_heatmap
     algorithm.segmentation = output_segmentation
     algorithm.process()
 
@@ -39,7 +39,7 @@ def run_pdac_detection_cli():
     parser.add_argument(
         "output_heatmap",
         type=str,
-        help="heatmap of the pancreatic tumor likelihood (MHA)",
+        help="raw heatmap of the pancreatic tumor likelihood (MHA)",
     )
     parser.add_argument(
         "output_segmentation",
