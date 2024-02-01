@@ -23,7 +23,7 @@ modules:
     in_data: nifti:mod=ct
     nnunet_task: Task779_Kidneys_KIRC
     nnunet_model: 3d_fullres
-    roi: Kidney+NEOPLASM_MALIGNANT_PRIMARY,KIDNEY+CYST
+    roi: KIDNEY+NEOPLASM_MALIGNANT_PRIMARY,KIDNEY+CYST
 
   DsegConverter:
     source_segs: nifti:mod=seg
