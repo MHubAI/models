@@ -33,7 +33,8 @@
       },
       {
         "type": "Segmentation",
-        "label": "Segmentation of pancreas related tissues. These segmentation classes were not thoroughly validated, use them on your own risk!",
+        "label": "Pancreas segmentation",
+        "description": "Segmentation of pancreas related tissues, these segmentation classes were not thoroughly validated, use them on your own risk!",
         "classes": [
           "veins",
           "arteries",
