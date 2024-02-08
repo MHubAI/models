@@ -27,7 +27,7 @@ RUN git clone https://github.com/DIAGNijmegen/CE-CT_PDAC_AutomaticDetection_nnUn
 ENV SKLEARN_ALLOW_DEPRECATED_SKLEARN_PACKAGE_INSTALL=True
 
 # Install nnUNet 1.7.0 and other requirements
-RUN pip3 install --no-cache-dir -r /opt/algorithm/requirements.txt
+RUN pip3 install --no-cache-dir evalutils==0.3.0 nnunet==1.7.0
 
 # Extend the nnUNet installation with custom trainers
 RUN SITE_PKG=`pip3 show nnunet | grep "Location:" | awk '{print $2}'` && \
