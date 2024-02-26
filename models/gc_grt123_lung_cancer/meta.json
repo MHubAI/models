@@ -43,7 +43,7 @@
   },
   "details": {
     "name": " bodyct-dsb2017-grt123",
-    "version": "",
+    "version": "2.0.0",
     "devteam": "DIAGNijmegen (Diagnostic Image Analysis Group, Radboud UMC, The Netherlands)",
     "type": "3D Deep Leaky Noisy-or Network",
     "date": {
