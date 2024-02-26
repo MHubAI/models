@@ -62,7 +62,7 @@
   },
   "details": {
     "name": "Fully Automatic Deep Learning Framework for Pancreatic Ductal Adenocarcinoma Detection on Computed Tomography",
-    "version": "",
+    "version": "0.1.0",
     "devteam": "DIAGNijmegen (Diagnostic Image Analysis Group, Radboud UMC, The Netherlands)",
     "type": "The models were developed using nnUnet. All models employed a 3D U-Net as the base architecture and were trained for 250.000 training steps with five-fold cross-validation.",
     "date": {
