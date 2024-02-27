@@ -78,7 +78,7 @@
     "info": {
         "use": {
             "title": "Intended Use",
-            "text": "This model is intended to perform prostate regions anatomy segmentation in MR ADC and T2 scans. The slice thickness of the training data is 3.6mm. ADC and T2 input modalities are co-registered during training. To assure optimal results during inference, co-registration of ADC and T2 input sequences is recommended. No endorectal coil was present during training."
+            "text": "This model is intended to perform prostate regions anatomy segmentation in MR ADC and T2 scans. The slice thickness of the training data is 3.6mm. Input ADC and T2 modalities are co-registered during training. No endorectal coil was present during training."
         },
         "analyses": {
             "title": "Quantitative Analyses",
@@ -96,8 +96,32 @@
         },
         "evaluation": {
             "title": "Evaluation Data",
-            "text": "The evaluation dataset consists of 16 validation samples coming from the same training collection.",
-            "tables": [],
+            "text": "The evaluation dataset consists of 16 validation samples coming from the Medical Decathlon collection.",
+            "tables": [{
+                "label": "mean DSC peripheral zone results on internal training data, using five fold cross-validation",
+                "entries": {
+                    "2D": "0.6285",
+                    "3D_fullres": "0.6663",
+                    "Best ensemble (2D + 3D_fullres)": "0.6611",
+                    "Postprocessed": "0.6611"
+                }
+            },
+            {
+                "label": "mean DSC transition zone results on internal training data, using five fold cross-validation",
+                "entries": {
+                    "2D": "0.8380",
+                    "3D_fullres": "0.8410",
+                    "Best ensemble (2D + 3D_fullres)": "0.8575",
+                    "Postprocessed": "0.8577"
+                }
+            },
+            {
+                "label": "mean DSC prostate zonal regions results on internal test data",
+                "entries": {
+                    "mean DSC for PZ": "0.77",
+                    "mean DSC for TZ": "0.90"
+                }
+            }],
             "references": [
                 {
                     "label": "Medical Segmentation Decathlon",
@@ -129,6 +153,24 @@
                 {
                     "label": "Medical Decathlon Prostate dataset (direct download)",
                     "uri": "https://drive.google.com/drive/folders/1HqEgzS8BV2c7xYNrZdEAnrHk7osJJ--2"
+                }
+            ]
+        },
+        "limitations":{
+            "title": "Dealing with multi-modality input",
+            "text": "Authors recommend co-registration of ADC and T2 input sequences, as applied during training. At the very least, the ADC and T2 sequence need to have identical geometry for nnUNet to run. Since evaluated ADC and T2 sequences during evaluation might more often that not fail this requirement, we apply resampling of the ADC sequence to the T2 sequence, since T2 tends to have a higher resolution. Below are some references regarding nnUnet recommendations for multi-modality input, alongside the paper describing the registration process of Medical Image Decathlon dataset for the ADC and T2 sequences.",
+            "references": [
+                {
+                    "label": "Litjens et al., A pattern recognition approach to zonal segmentation of the prostate on MRI",
+                    "uri": "https://pubmed.ncbi.nlm.nih.gov/23286075/"
+                },
+                {
+                    "label": "Alignment of multi channel inputs for nnunet #502",
+                    "uri": "https://github.com/MIC-DKFZ/nnUNet/issues/502"
+                },
+                {
+                    "label": "Multi-modality dataset conversion issue #306",
+                    "uri": "https://github.com/MIC-DKFZ/nnUNet/issues/306"
                 }
             ]
         }
