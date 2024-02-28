@@ -1,0 +1,30 @@
+general:
+  data_base_dir: /app/data
+  version: 1.0
+  description: grt123 lung nodule and lung cancer classifier default (dicom to json)
+
+execute:
+  - DicomImporter
+  - MhaConverter
+  - LungCancerClassifierRunner
+  - DataOrganizer
+
+modules:
+  DicomImporter:
+    source_dir: input_data
+    import_dir: sorted_data
+    sort_data: True
+    meta: 
+      mod: ct
+
+  MhaConverter:
+    engine: panimg
+
+  LungCancerClassifierRunner:
+    n_preprocessing_workers: 8
+
+  DataOrganizer:
+    target_dir: output_data
+    require_data_confirmation: true
+    targets:
+      - json-->[i:sid]/gc_grt123_lung_cancer_findings.json
