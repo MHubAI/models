@@ -1,0 +1,149 @@
+{
+  "id": "bf7ae4bb-c6f5-4b1e-89aa-a8de246def57",
+  "name": "gc_nnunet_pancreas",
+  "title": "Pancreatic Ductal Adenocarcinoma Detection in CT",
+  "summary": {
+    "description": "This algorithm produces a tumor likelihood heatmap for the presence of pancreatic ductal adenocarcinoma (PDAC) in an input venous-phase contrast-enhanced computed tomography scan (CECT). Additionally, the algorithm provides the segmentation of multiple surrounding anatomical structures such as the pancreatic duct, common bile duct, veins and arteries. The heatmap and segmentations are resampled to the same spatial resolution and physical dimensions as the input CECT image for easier visualisation.",
+    "inputs": [
+      {
+        "label": "Venous phase CT scan",
+        "description": "A contrast-enhanced CT scan in the venous phase and axial reconstruction",
+        "format": "DICOM",
+        "modality": "CT",
+        "bodypartexamined": "Abdomen",
+        "slicethickness": "2.5mm",
+        "non-contrast": false,
+        "contrast": false
+      }
+    ],
+    "outputs": [
+      {
+        "type": "Prediction",
+        "valueType": "Likelihood map",
+        "label": "Pancreatic tumor likelihood heatmap",
+        "description": "Pancreatic tumor likelihood heatmap, where each voxel represents a floating point in range [0,1].",
+        "classes": []
+      },
+      {
+        "type": "Prediction",
+        "valueType": "Likelihood",
+        "label": "Pancreatic tumor likelihood",
+        "description": "Case-level pancreatic tumor likelihood value with a value in range [0,1].",
+        "classes": []
+      },
+      {
+        "type": "Segmentation",
+        "label": "Pancreas segmentation",
+        "description": "Segmentation of pancreas related tissues, these segmentation classes were not thoroughly validated, use them on your own risk!",
+        "classes": [
+          "veins",
+          "arteries",
+          "pancreas",
+          "pancreatic duct",
+          "bile duct"
+        ]
+      }
+    ],
+    "model": {
+      "architecture": "nnUnet ",
+      "training": "supervised",
+      "cmpapproach": "3D"
+    },
+    "data": {
+      "training": {
+        "vol_samples": 242
+      },
+      "evaluation": {
+        "vol_samples": 361
+      },
+      "public": true,
+      "external": false
+    }
+  },
+  "details": {
+    "name": "Fully Automatic Deep Learning Framework for Pancreatic Ductal Adenocarcinoma Detection on Computed Tomography",
+    "version": "0.1.0",
+    "devteam": "DIAGNijmegen (Diagnostic Image Analysis Group, Radboud UMC, The Netherlands)",
+    "type": "The models were developed using nnUnet. All models employed a 3D U-Net as the base architecture and were trained for 250.000 training steps with five-fold cross-validation.",
+    "date": {
+      "weights": "2023-06-28",
+      "code": "2022-07-19",
+      "pub": "2022-01-13"
+    },
+    "cite": "Alves N, Schuurmans M, Litjens G, Bosma JS, Hermans J, Huisman H. Fully Automatic Deep Learning Framework for Pancreatic Ductal Adenocarcinoma Detection on Computed Tomography. Cancers (Basel). 2022 Jan 13;14(2):376. doi: 10.3390/cancers14020376. PMID: 35053538; PMCID: PMC8774174.",
+    "license": {
+      "code": "Apache 2.0",
+      "weights": "Apache 2.0"
+    },
+    "publications": [
+      {
+        "title": "Fully Automatic Deep Learning Framework for Pancreatic Ductal Adenocarcinoma Detection on Computed Tomography ",
+        "uri": "https://www.mdpi.com/2072-6694/14/2/376"
+      }
+    ],
+    "github": "https://github.com/DIAGNijmegen/CE-CT_PDAC_AutomaticDetection_nnUnet",
+    "zenodo": "",
+    "colab": "",
+    "slicer": false
+  },
+  "info": {
+    "use": {
+      "title": "Intended Use",
+      "text": "This algorithm is intended to be used only on venous-phase CECT examinations of patients with clinical suspicion of PDAC. This algorithm should not be used in different patient demographics.",
+      "references": [],
+      "tables": []
+    },
+    "analyses": {
+      "title": "Analysis",
+      "text": "The study evaluated a medical model's performance for tumor detection by analyzing receiver operating characteristic (ROC) and free-response receiver operating characteristic (FROC) curves, assessing both tumor presence and lesion localization, and compared three configurations using statistical tests and ensemble modeling. The table below lists the model's performance on an external evaluation dataset of 361 cases. Additional analysis details and results can be found in the original paper [1].",
+      "references": [
+        {
+          "label": "Fully Automatic Deep Learning Framework for Pancreatic Ductal Adenocarcinoma Detection on Computed Tomography",
+          "uri": "https://www.mdpi.com/2072-6694/14/2/376"
+        }
+      ],
+      "tables": [
+        {
+          "label": "Evaluation results of the nnUnet_MS model on the external test set of 361 cases.",
+          "entries": {
+              "Mean AUC-ROC (95% CI)": "0.991 (0.970-1.0)",
+              "Mean pAUC-FROC (95% CI)": "3.996 (3.027-4.965)"
+          }
+        }
+      ]
+    },
+    "evaluation": {
+      "title": "Evaluation Data",
+      "text": "This framework was tested in an independent, external cohort consisting of two publicly available datasets of respectively 281 and 80 patients each. The Medical Segmentation Decathlon pancreas dataset (training portion) [1] consisting of 281 patients with pancreatic malignancies (including lesions in the head, neck, body, and tail of the pancreas) and voxel-level annotations for the pancreas and lesion. The Cancer Imaging Archive dataset from the US National Institutes of Health Clinical Center [2], containing 80 patients with normal pancreas and respective voxel-level annotations.",
+      "references": [
+        {
+          "label": "The Medical Segmentation Decathlon pancreas dataset (training portion)",
+          "uri": "http://medicaldecathlon.com/"
+        },
+        {
+          "label": "The Cancer Imaging Archive dataset from the US National Institutes of Health Clinical Center",
+          "uri": "https://wiki.cancerimagingarchive.net/display/Public/Pancreas-CT"
+        }
+      ],
+      "tables": []
+    },
+    "training": {
+      "title": "Training data",
+      "text": "CE-CT scans in the portal venous phase from 119 patients with pathology-proven PDAC in the pancreatic head (PDAC cohort) and 123 patients with normal pancreas (non-PDAC cohort), acquired between 1 January 2013 and 1 June 2020, were selected for model development.",
+      "references": [],
+      "tables": []
+    },
+    "ethics": {
+      "title": "",
+      "text": "",
+      "references": [],
+      "tables": []
+    },
+    "limitations": {
+      "title": "Before using this model",
+      "text": "Test the model retrospectively and prospectively on a diagnostic cohort that reflects the target population that the model will be used upon to confirm the validity of the model within a local setting.",
+      "references": [],
+      "tables": []
+    }
+  }
+}
