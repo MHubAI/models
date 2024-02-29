@@ -70,7 +70,7 @@
   },
   "details": {
     "name": "PI-CAI challenge baseline",
-    "version": "v2.1.1",
+    "version": "2.1.1",
     "devteam": "Diagnostic Image Analysis Group, Radboud University Medical Center, Nijmegen, The Netherlands",
     "type": "Prediction",
     "date": {
