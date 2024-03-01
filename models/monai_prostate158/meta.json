@@ -47,14 +47,14 @@
         "devteam": "Lisa C. Adams, Keno K. Bressem",
         "type": "Prostate158 (U-Net structure for prostate segmentation)",
         "date": {
-            "weights": "2022",
-            "code": "2022",
-            "pub": "2022"
+            "weights": "March 2022",
+            "code": "April 2022",
+            "pub": "September 2022"
         },
         "cite": "Lisa C. Adams and Marcus R. Makowski and Günther Engel and Maximilian Rattunde and Felix Busch and Patrick Asbach and Stefan M. Niehues and Shankeeth Vinayahalingam and Bram {van Ginneken} and Geert Litjens and Keno K. Bressem, Prostate158 - An expert-annotated 3T MRI dataset and algorithm for prostate cancer detection",
         "license": {
-            "code": "Apache 2.0",
-            "weights": ""
+            "code": "MIT",
+            "weights": "CC BY-NC 4.0"
         },
         "publications": [
             {
