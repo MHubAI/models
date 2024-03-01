@@ -16,7 +16,7 @@ modules:
     import_dir: sorted_data
     sort_data: true
     meta: 
-      mod: 'mr'
+      mod: '%Modality'
 
   NiftiConverter:
     in_datas: dicom:mod=mr
@@ -33,4 +33,4 @@ modules:
 
   DataOrganizer:
     targets:
-    - dicomseg-->[i:sid]/prostate158.seg.dcm
+    - dicomseg-->[i:sid]/monai_prostate158.seg.dcm
