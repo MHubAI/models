@@ -16,14 +16,13 @@ modules:
     import_dir: sorted_data
     sort_data: True
     meta: 
-      mod: ct
+      mod: '%Modality'
 
   MhaConverter:
     engine: panimg
 
   DsegConverter:
     model_name: GCLungLobes
-    source_segs: nifti:mod=seg
     skip_empty_slices: True
 
   DataOrganizer:
