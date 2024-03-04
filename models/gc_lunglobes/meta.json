@@ -10,7 +10,7 @@
             "format": "DICOM",
             "modality": "CT",
             "bodypartexamined": "Chest",
-            "slicethickness": "2.5mm",
+            "slicethickness": "0.75mm",
             "non-contrast": true,
             "contrast": false
             } ],
@@ -36,7 +36,7 @@
             "evaluation": {
                 "vol_samples": 1155
             },
-            "public": "false",
+            "public": false,
             "external": true
         }
     },
