@@ -4,24 +4,74 @@ on:
   issue_comment:                                     
     types: [created, edited]
 
-jobs:
- autolabel:
-  if: ${{ github.event.issue.pull_request }}
-  name: Add labels to PR
-  runs-on: [ubuntu-latest]
-  
-  permissions: 
-    pull-requests: write
+permissions: 
+  pull-requests: write
 
-  steps:
-    - name: Add Request Review Label
-      uses: actions-ecosystem/action-add-labels@v1
-      if: ${{ startsWith(github.event.comment.body, '/review') }}
-      with:
-        labels: REQUEST REVIEW
-        
-    - name: Add Request Test Label
-      uses: actions-ecosystem/action-add-labels@v1
-      if: ${{ startsWith(github.event.comment.body, '/test') }}
-      with:
-        labels: REQUEST TEST
+jobs:
+  request_review:
+    if: ${{ github.event.issue.pull_request && startsWith(github.event.comment.body, '/review')}}
+    name: Request Review 
+    runs-on: [ubuntu-latest]
+
+    steps:
+      - name: Add Request Review Label
+        uses: actions-ecosystem/action-add-labels@v1
+        with:
+          labels: REQUEST REVIEW
+
+  request_test:
+    if: ${{ github.event.issue.pull_request && startsWith(github.event.comment.body, '/test') }}
+    name: Request Test 
+    runs-on: [ubuntu-latest]
+
+    steps:
+
+      # Checkout the latest code from the repo
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      # Setup which version of Python to use
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: 3.8
+
+      # install python dependencies
+      - name: Install Python dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install jsonschema PyYAML 
+
+      # Display the Python version being used
+      - name: Display Python version
+        run: python -c "import sys; print(sys.version)"
+
+      - name: Run check comment script
+        id: check_comment
+        env:
+          COMMENT: ${{ github.event.comment.body }}
+        run: python .github/scripts/comment_check.py "$COMMENT"
+
+      - name: Add TEST REQUESTED Label
+        uses: actions-ecosystem/action-add-labels@v1
+        if: ${{ steps.check_comment.outputs.test_report == 'passed' }}
+        with:
+          labels: TEST REQUESTED
+
+      - name: Remove INVALID TEST REQUEST Label
+        uses: actions-ecosystem/action-remove-labels@v1
+        if: ${{ steps.check_comment.outputs.test_report == 'passed' }}
+        with:
+          labels: INVALID TEST REQUEST
+
+      - name: Remove TEST REQUESTED Label
+        uses: actions-ecosystem/action-remove-labels@v1
+        if: ${{ steps.check_comment.outputs.test_report == 'failed' }}
+        with:
+          labels: TEST REQUESTED
+
+      - name: Add INVALID TEST REQUEST Label
+        uses: actions-ecosystem/action-add-labels@v1
+        if: ${{ steps.check_comment.outputs.test_report == 'failed' }}
+        with:
+          labels: INVALID TEST REQUEST
