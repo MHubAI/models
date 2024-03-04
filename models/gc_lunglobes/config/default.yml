@@ -7,6 +7,7 @@ execute:
 - DicomImporter
 - MhaConverter
 - LobeSegmentationRunner
+- NiftiConverter
 - DsegConverter
 - DataOrganizer
 
@@ -19,7 +20,10 @@ modules:
       mod: ct
 
   MhaConverter:
-    engine: panimg
+    engine: plastimatch
+
+  NiftiConverter:
+    in_datas: mha:mod=seg
 
   DsegConverter:
     model_name: GCLungLobes

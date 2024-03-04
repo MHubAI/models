@@ -10,7 +10,7 @@
             "format": "DICOM",
             "modality": "CT",
             "bodypartexamined": "Chest",
-            "slicethickness": "0.75mm",
+            "slicethickness": "2.5mm",
             "non-contrast": true,
             "contrast": false
             } ],
@@ -26,7 +26,7 @@
             } ],
         "model": {
             "architecture":  "Relational two-stage U-net",
-            "training": "supervised",
+            "training": "Supervised",
             "cmpapproach": "3D"
         },
         "data": {
@@ -36,7 +36,7 @@
             "evaluation": {
                 "vol_samples": 1155
             },
-            "public": false,
+            "public": "Partially",
             "external": true
         }
     },
@@ -46,9 +46,9 @@
         "devteam": "DIAGNijmegen (Diagnostic Image Analysis Group, Radboud UMC, The Netherlands)",
         "type": "Relational two-stage U-Net (Cascade of two relational U-Net, trained end-to-end)",
         "date": {
-            "weights": "2022-02-14",
-            "code": "2023-11-27",
-            "pub": "2020-05-15"
+            "weights": "14/02/22",
+            "code": "n/a",
+            "pub": "n/a"
         },
         "cite": "W. Xie, C. Jacobs, J. -P. Charbonnier and B. van Ginneken, 'Relational Modeling for Robust and Efficient Pulmonary Lobe Segmentation in CT Scans,' in IEEE Transactions on Medical Imaging, vol. 39, no. 8, pp. 2664-2675, Aug. 2020, doi: 10.1109/TMI.2020.2995108.",        
         "license": {

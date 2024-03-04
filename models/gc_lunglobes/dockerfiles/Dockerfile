@@ -1,7 +1,7 @@
 FROM mhubai/base:latest
 
 # Update authors label
-LABEL authors="sil.vandeleemput@radboudumc.nl,dbontempi@bwh.harvard.edu,lnuernberg@bwh.harvard.edu"
+LABEL authors="s.vandeleemput@radboudumc.nl,dbontempi@bwh.harvard.edu,lnuernberg@bwh.harvard.edu"
 
 # Install system dependencies for OpenCV
 RUN apt-get update && apt-get install ffmpeg libsm6 libxext6 -y
@@ -19,8 +19,8 @@ RUN pip3 install --no-cache-dir --force-reinstall SimpleITK==1.2.4
 ARG MHUB_MODELS_REPO
 RUN buildutils/import_mhub_model.sh gc_lunglobes ${MHUB_MODELS_REPO}
 
-# Install Xie's pulmonary lobe segmentation algorithm and model weights (release gclobe165 v1.6.5)
-RUN git clone --depth 1 --branch v1.6.5 https://github.com/DIAGNijmegen/bodyct-pulmonary-lobe-segmentation.git src && \
+# Install Xie's pulmonary lobe segmentation algorithm and model weights
+RUN git clone https://github.com/DIAGNijmegen/bodyct-pulmonary-lobe-segmentation.git src && \
     sed -i 's/from models import CTSUNet/from src.models import CTSUNet/g' src/test.py
 
 # Default run script
