@@ -36,11 +36,11 @@
         "label": "Pancreas segmentation",
         "description": "Segmentation of pancreas related tissues, these segmentation classes were not thoroughly validated, use them on your own risk!",
         "classes": [
-          "veins",
-          "arteries",
-          "pancreas",
-          "pancreatic duct",
-          "bile duct"
+          "VEIN",
+          "ARTERY",
+          "PANCREAS",
+          "PANCREATIC_DUCT",
+          "BILE_DUCT"
         ]
       }
     ],
