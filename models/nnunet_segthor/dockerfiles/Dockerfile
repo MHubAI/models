@@ -11,10 +11,6 @@ ENV SKLEARN_ALLOW_DEPRECATED_SKLEARN_PACKAGE_INSTALL=True
 RUN pip3 install --no-cache-dir \
   nnunet==1.7.1 
 
-# Import the MHub model definiton
-ARG MHUB_MODELS_REPO
-RUN buildutils/import_mhub_model.sh nnunet_segthor ${MHUB_MODELS_REPO}
-
 # pull weights for platipy's nnU-Net so that the user doesn't need to every time a container is run
 ENV WEIGHTS_DIR="/root/.nnunet/nnUNet_models/nnUNet/"
 ENV WEIGHTS_URL="https://zenodo.org/record/4485926/files/Task055_SegTHOR.zip"
@@ -26,6 +22,10 @@ RUN rm ${WEIGHTS_DIR}${WEIGHTS_FN}
 
 # specify nnunet specific environment variables
 ENV WEIGHTS_FOLDER=$WEIGHTS_DIR
+
+# Import the MHub model definiton
+ARG MHUB_MODELS_REPO
+RUN buildutils/import_mhub_model.sh nnunet_segthor ${MHUB_MODELS_REPO}
 
 # Default run script
 ENTRYPOINT ["mhub.run"]
