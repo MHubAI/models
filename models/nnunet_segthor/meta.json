@@ -17,14 +17,10 @@
         "outputs": [ {
             "type": "Segmentation",
             "classes": [
+                "ESOPHAGUS",
                 "HEART",
-                "LEFT_ATRIUM",
-                "LEFT_VENTRICLE",
-                "RIGHT_ATRIUM",
-                "RIGHT_VENTRICLE",
-                "CORONARY_ARTERY_LAD",
-                "CORONARY_ARTERY_CFLX",
-                "CORONARY_ARTERY_RIGHT"
+                "TRACHEA",
+                "AORTA"
             ]
         } ],
         "model": {

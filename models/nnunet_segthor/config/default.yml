@@ -21,7 +21,7 @@ modules:
   NNUnetRunner:
     nnunet_task: Task055_SegTHOR
     nnunet_model: 3d_lowres
-    roi: HEART,LEFT_ATRIUM,LEFT_VENTRICLE,RIGHT_ATRIUM,RIGHT_VENTRICLE,CORONARY_ARTERY_LAD,CORONARY_ARTERY_CFLX,CORONARY_ARTERY_RIGHT
+    roi: ESOPHAGUS,HEART,TRACHEA,AORTA
     
   DsegConverter:
     source_segs: nifti:mod=seg
