@@ -1,0 +1,33 @@
+general:
+  data_base_dir: /app/data
+  version: 1.0
+  description: default configuration for NNUnet Abdominal Organs at Risk segmentation (dicom to dicom)
+
+execute:
+- DicomImporter
+- NiftiConverter
+- NNUnetRunner
+- DsegConverter
+- DataOrganizer
+
+modules:
+  DicomImporter:
+    source_dir: input_data
+    import_dir: sorted_data
+    sort_data: true
+    meta: 
+      mod: '%Modality'
+
+  NNUnetRunner:
+    nnunet_task: Task017_AbdominalOrganSegmentation
+    nnunet_model: 3d_lowres
+    roi: 
+    
+  DsegConverter:
+    source_segs: nifti:mod=seg
+    model_name: NNUnet Thoracic OAR
+    skip_empty_slices: True
+
+  DataOrganizer:
+    targets:
+    - dicomseg-->[i:sid]/nnunet_abdominal_oar.seg.dcm
