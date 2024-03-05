@@ -6,7 +6,7 @@
       "type": "object",
       "properties": {
         "idc_version": {
-          "type": "string"
+          "type": ["string", "number"]
         },
         "data": {
           "type": "array",
