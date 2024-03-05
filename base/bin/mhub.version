@@ -24,8 +24,9 @@ if [ -d "$MODEL_FOLDER" ]; then
     for mdir in /app/models/* ; do
         MVERSION=$(jq -r '.details.version' ${mdir}/meta.json)
         echo -e "mhub.$(basename ${mdir})==${MVERSION}"
-        echo -e "+++"
     done
+
+    echo -e "+++"
 else
     echo -e "+++"
     echo -e " "
