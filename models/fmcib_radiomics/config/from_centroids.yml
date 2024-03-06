@@ -1,11 +1,10 @@
 general:
   data_base_dir: /app/data
   version: 1.0
-  description: "FMCIB pipeline"
+  description: "FMCIB pipeline starting from a coordinate json file"
 
 execute:
 - FileStructureImporter
-- CentroidExtractor
 - FMCIBRunner
 - DataOrganizer
 
@@ -13,7 +12,7 @@ modules:
   FileStructureImporter:
     structures:
       - $patientID/CT.nrrd@instance@nrrd:mod=ct
-      - $patientID/masks/GTV-1.nrrd@nrrd:mod=seg
+      - $patientID/centroids.json@json:type=fmcibcoordinates
     import_id: patientID
 
   DataOrganizer:
