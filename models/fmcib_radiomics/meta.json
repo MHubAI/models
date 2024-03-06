@@ -1,0 +1,138 @@
+{
+  "id": "...",
+  "name": "fmcib_radiomics",
+  "title": "Foundation Model for Cancer Imaging Biomarkers",
+  "summary": {
+    "description": "A foundation model for cancer imaging biomarker discovery trained through self-supervised learning using a dataset of 11,467 radiographic lesions. The model features can be used as a data-driven substitute for classical radiomic features",
+    "inputs": [
+      {
+        "label": "Input CT Image",
+        "description": "CT imaging data containing lesions of interest, such as nodules or tumors",
+        "format": "DICOM",
+        "modality": "CT",
+        "slicethickness": "5mm",
+        "bodypartexamined": "Whole",
+        "non-contrast": true,
+        "contrast": true
+      },
+      {
+        "label": "Center of mass",        
+        "description": "Center of mass of the lesion in the CT image",
+        "format": "JSON",
+        "modality": "JSON",
+        "slicethickness": "5mm",
+        "bodypartexamined": "Whole",
+        "non-contrast": true,
+        "contrast": true
+      }
+    ],
+    "outputs": [
+      {
+        "type": "Prediction",
+        "valueType": "Feature vector",
+        "description": "A set of features extracted from the input CT image",
+        "label": "Features"
+
+      }
+    ],
+    "model": {
+      "architecture": "3D ResNet50",
+      "training": "other",
+      "cmpapproach": "3D"
+    },
+    "data": {
+      "training": {
+        "vol_samples": 11467
+      },
+      "evaluation": {
+        "vol_samples": 1944
+      },
+      "public": true,
+      "external": true
+    }
+  },
+  "details": {
+    "name": "Foundation Model for Cancer Imaging Biomarkers",
+    "version": "0.0.1",
+    "type": "Feature extractor",
+    "devteam": "Researchers from the Artificial Intelligence in Medicine (AIM) Program, Mass General Brigham, Harvard Medical School and other institutions",
+    "date": {
+      "pub": "2023 (preprint)",
+      "code": "n/a",
+      "weights": "18.01.2024"
+    },
+    "cite": "Pai, S., Bontempi, D., Hadzic, I., Prudente, V., et al. Foundation Model for Cancer Imaging Biomarkers. 2023.",
+    "license": {
+      "code": "MIT",
+      "weights": "CC BY-NC 4.0"
+    },
+    "publications": [
+      {
+        "title": "Foundation Model for Cancer Imaging Biomarkers",
+        "uri": "https://www.medrxiv.org/content/10.1101/2023.09.04.23294952v1"
+      }
+    ],
+    "github": "https://github.com/AIM-Harvard/foundation-cancer-image-biomarker",
+    "zenodo": "https://zenodo.org/records/10528450",
+    "colab": "https://colab.research.google.com/drive/1JMtj_4W0uNPzrVnM9EpN1_xpaB-5KC1H?usp=sharing",
+    "slicer": false    
+  },
+  "info": {
+    "use": {
+      "title": "Intended Use",
+      "text": "The foundation model is intended to extract features from several different types of lesions (lung, liver, kidney, mediastinal, abdominal, pelvic, bone and soft tissue). These features can be used for a variety of predictive and clustering tasks as a data-driven substitute for classical radiomic features."
+    },
+    "analyses": {
+      "title": "Quantitative Analyses",
+      "text": "The model's performance was assessed using three different downstream tasks, including malignancy prediction and lung cancer risk prediction. Refer to the publication for more details [1].",
+      "references": [
+          {
+              "label": "Foundation model for cancer image biomarkers",
+              "uri": "https://www.medrxiv.org/content/10.1101/2023.09.04.23294952v1"
+          }
+        ]
+    },
+    "evaluation": {
+        "title": "Evaluation Data",
+        "text": "The evaluation dataset consists of 1,944 lesions, including 1,221 lesions for anatomical site classification, 170 nodules for malignancy prediction, and 553 tumors (420 LUNG1 + 133 RADIO) for prognostication. The dataset was held out from the training data and gathered from several different sources [1, 2, 3, 4].",
+        "tables": [
+            {
+                "label": "Evaluation Tasks & Datasets",
+                "entries": {
+                    "Lesion Anatomical Site Prediction": "DeepLesion (n=1221)",
+                    "Nodule Malignancy Prediction": "LUNA16 (n=170)",
+                    "Tumor Prognostication": "NSCLC-Radiomics (n=420) + NSCLC-Radiogenomics (n=133)"
+                }
+            }
+        ],
+        "references": [
+                {
+                "label": "DeepLesion: automated mining of large-scale lesion annotations and universal lesion detection with deep learning.",
+                "uri": "https://pubmed.ncbi.nlm.nih.gov/30035154/"
+            },
+            {
+                "label": "LUNA16",
+                "uri": "https://www.cancerimagingarchive.net/collection/lidc-idri/"
+            },
+            {
+              "label": "NSCLC-Radiomics",
+              "uri": "https://www.cancerimagingarchive.net/collection/nsclc-radiomics/"
+          },
+          {
+            "label": "NSCLC-Radiogenomics",
+            "uri": "https://www.cancerimagingarchive.net/analysis-result/nsclc-radiogenomics-stanford/"
+          }
+        ]
+    },
+    "training": {
+    "title": "Training Data",
+    "text": "The training dataset consists of 11467 lesions sourced from 5,513 unique CT scans across 2,312 different patients. This was curated from the DeepLesion dataset [1] following two steps - 1) Lesions that did not contain anatomical labels were selected, 2) Scans with spacing 5mm or more were removed.",
+    "references": [
+      {
+        "label": "DeepLesion: automated mining of large-scale lesion annotations and universal lesion detection with deep learning.",
+        "uri": "https://pubmed.ncbi.nlm.nih.gov/30035154/"
+    }
+    ]
+    }
+  }
+}
