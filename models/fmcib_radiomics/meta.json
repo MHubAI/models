@@ -1,5 +1,5 @@
 {
-  "id": "...",
+  "id": "26e98e14-b605-4007-bd8b-79d517c935b5",
   "name": "fmcib_radiomics",
   "title": "Foundation Model for Cancer Imaging Biomarkers",
   "summary": {
@@ -32,7 +32,6 @@
         "valueType": "Feature vector",
         "description": "A set of features extracted from the input CT image",
         "label": "Features"
-
       }
     ],
     "model": {
