@@ -1,0 +1,20 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "type": "object",
+  "properties": {
+    "coordX": {
+      "type": "number"
+    },
+    "coordY": {
+      "type": "number"
+    },
+    "coordZ": {
+      "type": "number"
+    }
+  },
+  "required": [
+    "coordX",
+    "coordY",
+    "coordZ"
+  ]
+}
