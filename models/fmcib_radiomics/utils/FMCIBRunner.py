@@ -9,8 +9,58 @@ import json, jsonschema, os
 from fmcib.models import fmcib_model 
 import SimpleITK as sitk
 from mhubio.core import Instance, InstanceData, IO, Module
+from enum import Enum
+from typing import Optional
 
 COORDS_SCHEMA_PATH = os.path.join(os.path.dirname(__file__), "coords.schema.json")
+SLICERMARKUP_SCHEMA_PATH = os.path.join(os.path.dirname(__file__), "slicermarkup.schema.json")
+
+def is_valid(json_data: dict, schema_file_path: str) -> bool:
+    """Check if a json file is valid according to a given schema.
+
+    Args:
+        json_data (dict): The json data to be validated.
+        schema_file_path (str): The path to the schema file.
+
+    Returns:
+        bool: True if the json file is valid according to the schema, False otherwise.
+    """
+    with open(schema_file_path) as f:
+        schema = json.load(f)
+    
+    try:
+        jsonschema.validate(json_data, schema)
+        return True
+    except:
+        return False
+
+def get_coordinates(json_file_path: str) -> dict:
+    
+    # read json file
+    with open(json_file_path) as f:
+        json_data = json.load(f)
+        
+    # check which schema the json file adheres to
+    if is_valid(json_data, COORDS_SCHEMA_PATH):
+        return json_data
+    
+    if is_valid(json_data, SLICERMARKUP_SCHEMA_PATH):
+        markups = json_data["markups"]
+        assert markups["coordinateSystem"] == "LPS"
+        
+        controlPoints = markups["controlPoints"]
+        assert len(controlPoints) == 1
+        
+        position = controlPoints[0]["position"]
+        return {
+            "coordX": position[0],
+            "coordY": position[1],
+            "coordZ": position[2]
+        }
+        
+    #
+    raise ValueError("The input json file does not adhere to the expected schema.")
+    
 
 def fmcib(input_dict: dict, json_output_file_path: str):
     """Run the FCMIB pipeline.
@@ -46,22 +96,17 @@ class FMCIBRunner(Module):
     
     @IO.Instance()
     @IO.Input('in_data', 'nrrd:mod=ct', the='Input NRRD file')
-    @IO.Input('centroids_json', 'json:type=fmcibcoordinates', the='The centroids in the input image coordinate space')
+    @IO.Input('coordinates_json', 'json:type=fmcibcoordinates', the='The coordinates of the 3D seed point in the input image')
     @IO.Output('feature_json', 'features.json', "json:type=fmcibfeatures", bundle='model', the='Features extracted from the input image at the specified seed point.')
-    def task(self, instance: Instance, in_data: InstanceData, centroids_json: InstanceData, feature_json: InstanceData) -> None:
+    def task(self, instance: Instance, in_data: InstanceData, coordinates_json: InstanceData, feature_json: InstanceData) -> None:
         
         # read centroids from json file
-        centroids = json.load(centroids_json.abspath)
-
-        # verify input data schema
-        with open("models/fmcib_radiomics/utils/input_schema.json") as f:
-            schema = json.load(f)
-        jsonschema.validate(centroids, schema)
+        coordinates = get_coordinates(coordinates_json.abspath)
 
         # define input dictionary
         input_dict = {
             "image_path": in_data.abspath,
-            **centroids
+            **coordinates
         }
 
         # run model
