@@ -1,12 +1,16 @@
 """
---------------------------------------------------------
-Mhub / DIAG - CLI Run script for the TIGER LB2 Algorithm
---------------------------------------------------------
+-----------------------------------------------------------
+GC / MHub - CLI Run script for the TIGER LB2 Algorithm
+  The model algorith was wrapped in a CLI to ensure
+  the mhub framework is able to properly capture the nnUNet
+  stdout/stderr outputs. Furthermore, it simplifies running
+  the algorithm in its own environment using pipenv.
+-----------------------------------------------------------
 
---------------------------------------------------------
+-----------------------------------------------------------
 Author: Sil van de Leemput
 Email:  sil.vandeleemput@radboudumc.nl
---------------------------------------------------------
+-----------------------------------------------------------
 """
 
 import argparse

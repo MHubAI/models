@@ -11,11 +11,6 @@ Email:  sil.vandeleemput@radboudumc.nl
 from mhubio.core import Instance, InstanceData, IO, Module, ValueOutput, Meta, DataType, FileType
 
 from pathlib import Path
-import numpy as np
-import SimpleITK as sitk
-import torch
-
-import sys
 import json
 
 
@@ -30,20 +25,19 @@ class TilScoreOutput(ValueOutput):
 
 class TigerLB2Runner(Module):
 
-    CLI_SCRIPT_PATH = Path(__file__).parent.parent / "scripts" / "tiger_lb2_cli.py"
+    CLI_SCRIPT_PATH = Path(__file__).parent / "cli.py"
 
     @IO.Instance()
     @IO.Input('in_data', 'tiff:mod=sm', the='input whole slide image Tiff')
     @IO.Output('out_data', 'gc_tiger_lb2_til_score.json', 'json:model=TigerLB2TILScore', 'in_data', the='TIGER LB2 TIL score')
     @IO.OutputData('til_score', TilScoreOutput, data='in_data', the='TIGER LB2 TIL score - percentage of stromal area covered by tumour infiltrating lymphocytes. Values between 0-100 (percent).')
     def task(self, instance: Instance, in_data: InstanceData, out_data: InstanceData, til_score: TilScoreOutput) -> None:
-        if not torch.cuda.is_available():
-            raise NotImplementedError("TigerLB2Runner requires CUDA to be available!")
-
-        # Execute the Tiger LB2 Algorithm through a Python subprocess
+        # Execute the Tiger LB2 Algorithm through a Python subprocess and associated pipenv environment
         self.subprocess(
             [
-                sys.executable,
+                "pipenv",
+                "run",
+                "python",
                 str(self.CLI_SCRIPT_PATH),
                 in_data.abspath,
                 out_data.abspath,
