@@ -6,7 +6,6 @@ Date:   06.03.2024
 ---------------------------------------------------------
 """
 import json, jsonschema, os
-from fmcib.models import fmcib_model 
 from mhubio.core import Instance, InstanceData, IO, Module
 
 COORDS_SCHEMA_PATH = os.path.join(os.path.dirname(__file__), "coords.schema.json")
