@@ -7,10 +7,7 @@ Email:  bspai@bwh.harvard.edu
 
 import json, jsonschema, os
 from fmcib.models import fmcib_model 
-import SimpleITK as sitk
 from mhubio.core import Instance, InstanceData, IO, Module
-from enum import Enum
-from typing import Optional
 
 COORDS_SCHEMA_PATH = os.path.join(os.path.dirname(__file__), "coords.schema.json")
 SLICERMARKUP_SCHEMA_PATH = os.path.join(os.path.dirname(__file__), "slicermarkup.schema.json")
