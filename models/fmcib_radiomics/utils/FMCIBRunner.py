@@ -6,10 +6,7 @@ Date:   06.03.2024
 ---------------------------------------------------------
 """
 import json, jsonschema, os
-import SimpleITK as sitk
 from mhubio.core import Instance, InstanceData, IO, Module
-from enum import Enum
-from typing import Optional
 
 COORDS_SCHEMA_PATH = os.path.join(os.path.dirname(__file__), "coords.schema.json")
 SLICERMARKUP_SCHEMA_PATH = os.path.join(os.path.dirname(__file__), "slicermarkup.schema.json")
