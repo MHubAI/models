@@ -1,10 +1,10 @@
 """
 ---------------------------------------------------------
-Author: Suraj Pia
-Email:  bspai@bwh.harvard.edu
+Author: Suraj Pai, Leonard Nürnberg 
+Email:  bspai@bwh.harvard.edu, lnuernberg@bwh.harvard.edu
+Date:   06.03.2024
 ---------------------------------------------------------
 """
-
 import json, jsonschema, os
 from fmcib.models import fmcib_model 
 from mhubio.core import Instance, InstanceData, IO, Module
@@ -68,9 +68,10 @@ def fmcib(input_dict: dict, json_output_file_path: str):
     """
     # model dependency imports
     import torch
+    from fmcib.models import fmcib_model 
     from fmcib.preprocessing import preprocess
     
-    # initialize model
+    # initialize the ResNet50 model with pretrained weights
     model = fmcib_model()
     
     # run model preroecessing
@@ -93,18 +94,19 @@ class FMCIBRunner(Module):
     
     @IO.Instance()
     @IO.Input('in_data', 'nrrd:mod=ct', the='Input NRRD file')
-    @IO.Input('coordinates_json', 'json:type=fmcibcoordinates', the='The coordinates of the 3D seed point in the input image')
+    @IO.Input('centroids_json', "json:type=fmcibcoordinates", the='JSON file containing 3D coordinates of the centroid of the input mask.')
     @IO.Output('feature_json', 'features.json', "json:type=fmcibfeatures", bundle='model', the='Features extracted from the input image at the specified seed point.')
-    def task(self, instance: Instance, in_data: InstanceData, coordinates_json: InstanceData, feature_json: InstanceData) -> None:
+    def task(self, instance: Instance, in_data: InstanceData, centroids_json: InstanceData, feature_json: InstanceData) -> None:
         
         # read centroids from json file
-        coordinates = get_coordinates(coordinates_json.abspath)
+        coordinates = get_coordinates(centroids_json.abspath)
 
         # define input dictionary
         input_dict = {
             "image_path": in_data.abspath,
             **coordinates
         }
+
 
         # run model
         fmcib(input_dict, feature_json.abspath)

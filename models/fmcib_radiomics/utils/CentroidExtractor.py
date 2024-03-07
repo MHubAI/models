@@ -15,7 +15,7 @@ class CentroidExtractor(Module):
     @IO.Instance()
     @IO.Input('in_mask', 'nrrd:mod=seg', the='Tumor segmentation mask for the input NRRD file.')
     @IO.Output('centroids_json', 'centroids.json', "json:type=fmcibcoordinates", the='JSON file containing 3D coordinates of the centroid of the input mask.')
-    def task(self, instance: Instance, in_data: InstanceData, in_mask: InstanceData, centroids_json: InstanceData) -> None:
+    def task(self, instance: Instance, in_mask: InstanceData, centroids_json: InstanceData) -> None:
         
         # read the input mask 
         mask = sitk.ReadImage(in_mask.abspath)
