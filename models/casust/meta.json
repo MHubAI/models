@@ -1,0 +1,102 @@
+{
+  "id": "abaa7929-b02c-422f-8c97-7e4217d63487",
+  "name": "casust",
+  "title": "CaSuSt",
+  "summary": {
+      "description": "A deep learning model for cardiac sub-structure delineation on planning CT scans. The model delineates the heart contours and seven cardiac substructures based on individually trained binary models.",
+      "inputs": [ {
+          "label": "Input Image",
+          "description": "The planning chest CT scan of a RT patient.",
+          "format": "DICOM",
+          "modality": "CT",
+          "bodypartexamined": "Chest",
+          "slicethickness": "2.5mm",
+          "non-contrast": true,
+          "contrast": false
+          } ],
+      "outputs": [ {
+          "type": "Segmentation",
+          "classes": [
+              "HEART",
+              "LEFT_VENTRICLE",
+              "RIGHT_VENTRICLE",
+              "LEFT_ATRIUM",
+              "RIGHT_ATRIUM",
+              "CORONARY_ARTERY_LAD",
+              "CORONARY_ARTERY_CFLX",
+              "CORONARY_ARTERY_RIGHT"
+          ]
+          } ],
+      "model": {
+          "architecture": "Seven individual binary U-Net models",
+          "training": "supervised",
+          "cmpapproach": "2D"
+      },
+      "data": {
+          "training": {
+              "vol_samples": 126
+          },
+          "evaluation": {
+              "vol_samples": 22
+          },
+          "public": false,
+          "external": false
+      }
+  },
+  "details": {
+      "name": "Cardiac Substructure Delineation",
+      "version": "1.0.0",
+      "devteam": "Leonard N\u00fcrnberg, MAASTRO Clinic, Clinical Data Science Radiotherapie",
+      "type": "Individual 2D binary U-Net models",
+      "date": {
+          "weights": "22/03/02",
+          "code": "22/03/02",
+          "pub": "22/06/23"
+      },
+      "cite": "N\u00fcrnberg, L, Bontempi, D, De Ruysscher, D, et al. Deep learning segmentation of heart substructures in radiotherapy treatment planning. Physica Medica: European journal of medical physics, 2022",        
+      "license": {
+          "code": "Apache 2.0",
+          "weights": "Apache 2.0"
+      },
+      "publications": [
+          {
+            "title": "Deep learning segmentation of heart substructures in radiotherapy treatment planning",
+            "uri": "https:\/\/cris.maastrichtuniversity.nl\/en\/publications\/deep-learning-segmentation-of-heart-substructures-in-radiotherapy"
+          }
+      ],
+      "github": "https:\/\/github.com\/LennyN95\/CaSuSt",
+      "slicer": true
+  },
+  "info": {
+      "use": {
+          "title": "Intended Use",
+          "text": "This model is intended to segment the heart and seven substructures (left ventricle, right ventricle, left atrium, right atrium, coronary artery LAD, coronary artery CFLX, coronary artery right) on planning CT scans of radiotherapy patients. For each substructure, an individually model has been trained. The model is intended to be used in the context of radiotherapy treatment planning, to support the delineation of the heart and its substructures and has been validated by two radiation oncologists."
+      },
+      "analyses": {
+          "title": "Quantitative Analyses",
+          "text": "The model's performance was assessed against test data and compared to human readers using the surface Dice score with a 5mm tolerance for the four larger structures (ventricles and atria) and a 3mm tolerance for the three smaller structures (vessels).",
+          "tables": [
+              {
+                  "label": "Mean Surface Dice Score",
+                  "entries": {
+                      "LEFT_VENTRICLE": "0.88 ± 0.07",
+                      "RIGHT_VENTRICLE": "0.83 ± 0.08",
+                      "LEFT_ATRIUM": "0.88 ± 0.09",
+                      "RIGHT_ATRIUM": "0.87 ± 0.09",
+                      "CORONARY_ARTERY_LAD": "0.7 ± 0.16",
+                      "CORONARY_ARTERY_CFLX": "0.56 ± 0.27",
+                      "CORONARY_ARTERY_RIGHT": "0.48 ± 0.18"
+                  }
+              }
+          ]
+      },
+      "evaluation": {
+          "title": "Evaluation Data",
+          "text": "The model was evaluated on a 15% split of the dataset."
+      },
+      "training": {
+      "title": "Training Data",
+      "text": "A dataset was provided by the University Hospital of Turin, Italy. The dataset contains a single pCT scan for 80 lung cancer patients and 80 lymphoma patients, resulting in a total of 160 fully annotated pCT scans in DICOM format. The ground truth delineations were performed by multiple radiation oncologists and residents with a different level of expertise (range 1-12 years). To the best of our knowledge, no standard protocol was followed. The most common spacing among 100 of all scans was 1.171875 x 1.171875 x 3.0. All training samples have been re-sampled to this precision."
+    }
+  }
+}

@@ -7,7 +7,6 @@ execute:
 - DicomImporter
 - MhaConverter
 - LobeSegmentationRunner
-- NiftiConverter
 - DsegConverter
 - DataOrganizer
 
@@ -17,17 +16,13 @@ modules:
     import_dir: sorted_data
     sort_data: True
     meta: 
-      mod: ct
+      mod: '%Modality'
 
   MhaConverter:
-    engine: plastimatch
-
-  NiftiConverter:
-    in_datas: mha:mod=seg
+    engine: panimg
 
   DsegConverter:
     model_name: GCLungLobes
-    source_segs: nifti:mod=seg
     skip_empty_slices: True
 
   DataOrganizer:

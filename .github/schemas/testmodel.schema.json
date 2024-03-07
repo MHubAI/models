@@ -1,0 +1,60 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "type": "object",
+  "properties": {
+    "sample": {
+      "type": "object",
+      "properties": {
+        "idc_version": {
+          "type": ["string", "number"]
+        },
+        "data": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "properties": {
+              "SeriesInstanceUID": {
+                "type": "string",
+                "pattern": "^[\\d\\.]+$"
+              },
+              "aws_url": {
+                "type": "string",
+                "pattern": "^s3://[\\w\\-/]+/\\*$"
+              },
+              "path": {
+                "type": "string",
+                "pattern": "^[^\\/][\\w\\-\\/]+$"
+              }
+            },
+            "required": [
+              "SeriesInstanceUID",
+              "aws_url",
+              "path"
+            ]
+          }
+        }
+      },
+      "required": [
+        "idc_version",
+        "data"
+      ]
+    },
+    "reference": {
+      "type": "object",
+      "properties": {
+        "url": {
+          "type": "string",
+          "format": "uri"
+        }
+      },
+      "required": [
+        "url"
+      ]
+    }
+  },
+  "required": [
+    "sample",
+    "reference"
+  ]
+}
