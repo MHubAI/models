@@ -17,8 +17,5 @@ RUN pip3 install --upgrade pip && pip3 install --no-cache-dir \
 # Install FMCIB package, should install everything else ...
 RUN pip3 install foundation-cancer-image-biomarker --pre
 
-# Fix for mpmath torch bug: https://github.com/underworldcode/underworld3/issues/167
-RUN pip3 install mpmath==1.3.0
-
 ENTRYPOINT ["mhub.run"]
-CMD ["--workflow", "default", "--print"]
+CMD ["--workflow", "default"]

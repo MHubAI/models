@@ -45,9 +45,13 @@ def get_coordinates(json_file_path: str) -> dict:
     
     if is_valid(json_data, SLICERMARKUP_SCHEMA_PATH):
         markups = json_data["markups"]
-        assert markups["coordinateSystem"] == "LPS"
+
+        assert len(markups) == 1, "Currently, only one point per file is supported."
+        markup = markups[0]
         
-        controlPoints = markups["controlPoints"]
+        assert markup["coordinateSystem"] == "LPS"
+        
+        controlPoints = markup["controlPoints"]
         assert len(controlPoints) == 1
         
         position = controlPoints[0]["position"]
