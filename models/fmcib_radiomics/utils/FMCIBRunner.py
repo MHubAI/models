@@ -61,7 +61,6 @@ def get_coordinates(json_file_path: str) -> dict:
     #
     raise ValueError("The input json file does not adhere to the expected schema.")
     
-
 def fmcib(input_dict: dict, json_output_file_path: str):
     """Run the FCMIB pipeline.
 
@@ -96,7 +95,7 @@ def fmcib(input_dict: dict, json_output_file_path: str):
 class FMCIBRunner(Module):
     
     @IO.Instance()
-    @IO.Input('in_data', 'nrrd:mod=ct', the='Input NRRD file')
+    @IO.Input('in_data', 'nrrd|nifti:mod=ct', the='Input nrrd or nifti ct image file')
     @IO.Input('centroids_json', "json:type=fmcibcoordinates", the='JSON file containing 3D coordinates of the centroid of the input mask.')
     @IO.Output('feature_json', 'features.json', "json:type=fmcibfeatures", bundle='model', the='Features extracted from the input image at the specified seed point.')
     def task(self, instance: Instance, in_data: InstanceData, centroids_json: InstanceData, feature_json: InstanceData) -> None:
