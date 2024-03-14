@@ -22,15 +22,32 @@
                 "type": "string",
                 "pattern": "^s3://[\\w\\-/]+/\\*$"
               },
+              "url": {
+                "type": "string",
+                "format": "uri"
+              },
+              "description": {
+                "type": "string"
+              },
               "path": {
                 "type": "string",
                 "pattern": "^[^\\/][\\w\\-\\/]+$"
               }
             },
-            "required": [
-              "SeriesInstanceUID",
-              "aws_url",
-              "path"
+            "oneOf": [
+              {
+                "required": [
+                  "SeriesInstanceUID",
+                  "aws_url",
+                  "path"
+                ]
+              },
+              {
+                "required": [
+                  "url",
+                  "path"
+                ]
+              }
             ]
           }
         }
