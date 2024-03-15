@@ -1,0 +1,20 @@
+general:
+  data_base_dir: /app/data
+  version: 1.0
+  description: "FMCIB pipeline"
+
+execute:
+- FileStructureImporter
+- FMCIBRunner
+- DataOrganizer
+
+modules:
+  FileStructureImporter:
+    structures:
+      - $patientID@instance/re:^.*\.nrrd$::@nrrd:mod=ct
+      - $patientID/re:^.*\.json$::@json:type=fmcibcoordinates
+    import_id: patientID
+
+  DataOrganizer:
+    targets:
+      - json:type=fmcibfeatures-->[i:patientID]/features.json
