@@ -1,0 +1,35 @@
+general:
+  data_base_dir: /app/data
+  version: 1.0
+  description: run pyradiomics pipeline on dicom data
+
+execute:
+- DicomImporter
+#- FileImporter
+- DsegExtractor
+- NiftiConverter
+- PyRadiomicsRunner
+- DataOrganizer
+
+modules:
+  DicomImporter:
+    source_dir: input_data
+    import_dir: sorted_data
+    sort_data: true
+    meta: 
+      mod: '%Modality'
+
+  DsegExtractor:
+    roi: 
+    - LIVER
+    - LIVER+NEOPLASM_MALIGNANT_PRIMARY
+
+  FileImporter:
+    instance_id: sid
+    deep: true
+    meta: type=fmcibcoordinates
+    type: json
+    
+  DataOrganizer:
+    targets:
+    - csv-->[i:sid]/pyradiomics.csv
