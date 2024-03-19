@@ -125,8 +125,8 @@
             } ],
         "model": {
             "architecture":  "U-net",
-            "training": "Supervised",
-            "cmpapproach": "2D, 3D, ensemble"
+            "training": "supervised",
+            "cmpapproach": "ensemble"
         },
         "data": {
             "training": {
@@ -135,7 +135,7 @@
             "evaluation": {
                 "vol_samples": 65
             },
-            "public": "Yes",
+            "public": true,
             "external": false
         }
     },
