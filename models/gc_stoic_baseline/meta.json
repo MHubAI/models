@@ -120,7 +120,7 @@
     },
     "training": {
       "title": "Training data",
-      "text": "The STOIC Dataset[1] contains Computed Tomography scans from 10,735 patients, of which one CT scan from each patient was selected. This dataset was divided in a public training set [2] consisting of 2.000 images from this dataset, and a private training set of an additional 7.735 images. For this baseline algorithm, a single I3D model, initialized with publicly available weights trained for RGB video classification, was trained to estimate both COVID-19 presence and severity. The model was trained on all training data for 40 epochs using the AdamW optimizer with a learning rate of 10, momentum parameters β1 = 0.9, β2 = 0.99, and a weight decay of 0.01. Data augmentation was employed in the form of zoom, rotation, translation, and adding gaussian noise. Patient age and sex information were not incorporated as input to the model. The maximum obtainable performance is limited by imperfections in the COVID-19 severity and presence labels. Death at one month follow-up could have resulted from any cause. RT-PCR is an imperfect ground truth for infection. For the STOIC study, 39% of initially negative RT-PCR tests were found to be positive when repeated in patients with typical clinical signs of COVID-19.",
+      "text": "The STOIC Dataset[1] contains Computed Tomography scans from 10,735 patients, of which one CT scan from each patient was selected. This dataset was divided in a public training set [2] consisting of 2.000 images from this dataset, and a private training set of an additional 7.735 images. For this baseline algorithm, a single I3D model, initialized with publicly available weights trained for RGB video classification, was trained to estimate both COVID-19 presence and severity. The model was trained on all training data for 40 epochs using the AdamW optimizer with a learning rate of 10, momentum parameters β1 = 0.9, β2 = 0.99, and a weight decay of 0.01. Data augmentation was employed in the form of zoom, rotation, translation, and adding gaussian noise. Patient age and sex information were not incorporated as input to the model.",
       "references": [
         {
           "label": "Stoic project",
@@ -141,7 +141,7 @@
     },
     "limitations": {
       "title": "Limitations",
-      "text": "This algorithm was developed for research purposes only.",
+      "text": "This algorithm was developed for research purposes only. The maximum obtainable performance is limited by imperfections in the COVID-19 severity and presence labels. Death at one month follow-up could have resulted from any cause. RT-PCR is an imperfect ground truth for infection. For the STOIC study, 39% of initially negative RT-PCR tests were found to be positive when repeated in patients with typical clinical signs of COVID-19.",
       "references": [],
       "tables": []
     }
