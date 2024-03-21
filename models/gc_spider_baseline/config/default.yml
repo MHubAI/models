@@ -1,0 +1,36 @@
+general:
+  data_base_dir: /app/data
+  version: 1.0
+  description: SPIDER baseline segment vertebrae in Sagittal Spine MRI or CT (dicom to dicom segmentation)
+  
+execute:
+- DicomImporter
+- MhaConverter
+- SpiderBaselineRunner
+- DsegConverter
+- DataOrganizer
+
+modules:
+  DicomImporter:
+    source_dir: input_data
+    import_dir: sorted_data
+    sort_data: true
+    meta:
+      mod: '%Modality'
+
+  MhaConverter:
+    engine: panimg
+
+  DsegConverter:
+    model_name: GCSpiderBaseline
+    target_dicom: dicom:mod=mr|ct
+    source_segs: [mha:mod=seg:seg=remapped]
+    skip_empty_slices: True
+    segment_id_meta_key: roi
+    body_part_examined: SPINE
+
+  DataOrganizer:
+    targets:
+      - mha:mod=seg:seg=raw-->[i:sid]/spider_baseline_vertebrae_segmentation_raw.mha
+      - mha:mod=seg:seg=remapped-->[i:sid]/spider_baseline_vertebrae.seg.mha
+      - dicomseg:mod=seg-->[i:sid]/spider_baseline_vertebrae.seg.dcm
