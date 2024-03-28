@@ -21,10 +21,7 @@
                 "label": "Segmentation",
                 "type": "Segmentation",
                 "description": "Segmentation kidney",
-                "classes": [
-                    "LEFT_KIDNEY",
-                    "RIGHT_KIDNEY"
-                ]
+                "classes": ["KIDNEY", "KIDNEY+NEOPLASM_MALIGNANT_PRIMARY", "KIDNEY+CYST"]
             }
         ],
         "model": {
