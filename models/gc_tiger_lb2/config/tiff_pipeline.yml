@@ -1,0 +1,21 @@
+general:
+  data_base_dir: /app/data
+  version: 1.0
+  description: Tiger challenge winner LB2 (tiff:sm to json with TIL score)
+
+execute:
+- FileStructureImporter
+- TigerLB2Runner
+- DataOrganizer
+
+modules:
+  FileStructureImporter:
+    input_dir: input_data
+    structures:
+      - $instanceID@instance/wsi.tif@tiff:mod=sm
+
+  DataOrganizer:
+    target_dir: output_data
+    require_data_confirmation: true
+    targets:
+      - json-->[i:instanceID]/gc_tiger_lb2_til_score.json
