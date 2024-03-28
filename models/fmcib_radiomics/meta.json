@@ -56,11 +56,11 @@
     "type": "Feature extractor",
     "devteam": "Researchers from the Artificial Intelligence in Medicine (AIM) Program, Mass General Brigham, Harvard Medical School and other institutions",
     "date": {
-      "pub": "2023 (preprint)",
+      "pub": "2024",
       "code": "n/a",
       "weights": "18.01.2024"
     },
-    "cite": "Pai, S., Bontempi, D., Hadzic, I., Prudente, V., et al. Foundation Model for Cancer Imaging Biomarkers. 2023.",
+    "cite": "Pai, S., Bontempi, D., Hadzic, I. et al. Foundation model for cancer imaging biomarkers. Nat Mach Intell (2024). https://doi.org/10.1038/s42256-024-00807-9",
     "license": {
       "code": "MIT",
       "weights": "CC BY-NC 4.0"
@@ -68,7 +68,7 @@
     "publications": [
       {
         "title": "Foundation Model for Cancer Imaging Biomarkers",
-        "uri": "https://www.medrxiv.org/content/10.1101/2023.09.04.23294952v1"
+        "uri": "https://www.nature.com/articles/s42256-024-00807-9"
       }
     ],
     "github": "https://github.com/AIM-Harvard/foundation-cancer-image-biomarker",
@@ -87,7 +87,7 @@
       "references": [
           {
               "label": "Foundation model for cancer image biomarkers",
-              "uri": "https://www.medrxiv.org/content/10.1101/2023.09.04.23294952v1"
+              "uri": "https://www.nature.com/articles/s42256-024-00807-9"
           }
         ]
     },
