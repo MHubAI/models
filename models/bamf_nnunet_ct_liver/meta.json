@@ -36,7 +36,7 @@
                 "vol_samples": 1565
             },
             "evaluation": {
-                "vol_samples": 156
+                "vol_samples": 9
             },
             "public": true,
             "external": true
@@ -103,7 +103,7 @@
         },
         "evaluation": {
             "title": "Evaluation Data",
-            "text": "The model was used to segment cases from the IDC [1] collection TCGA-LIHC [1]. Nine cases were randomly selected to be reviewed and corrected by a board-certified radiologist. The model predictions, and radiologist corrections are published on zenodo [3]",
+            "text": "The model was used to segment cases 89 from the IDC [1] collection TCGA-LIHC [1]. Nine of those cases were randomly selected to be reviewed and corrected by a board-certified radiologist. The model predictions, and radiologist corrections are published on zenodo [3]",
             "references": [
                 {
                     "label": "Imaging Data Collections (IDC)",
