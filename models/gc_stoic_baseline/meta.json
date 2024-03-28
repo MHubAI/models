@@ -1,0 +1,149 @@
+{
+  "id": "357d6573-06d2-417c-975d-b03e857fa1c7",
+  "name": "gc_stoic_baseline",
+  "title": "STOIC2021 baseline",
+  "summary": {
+    "description": "This model predicts the probability and severity of COVID-19 in lung-CT scans. Severe COVID-19 is defined as patient intubation or death within one month from the acquisition of the CT scan.",
+    "inputs": [
+      {
+        "label": "CT image",
+        "description": "Any CT image",
+        "format": "DICOM",
+        "modality": "CT",
+        "bodypartexamined": "Chest",
+        "slicethickness": "2.5mm",
+        "non-contrast": true,
+        "contrast": false
+      }
+    ],
+    "outputs": [
+      {
+        "type": "Prediction",
+        "valueType": "number",
+        "label": "Probability of COVID-19",
+        "description": "Probability of a positive RT-PCR result, in range [0,1]",
+        "classes": []
+      },
+      {
+        "type": "Prediction",
+        "valueType": "number",
+        "label": "Probability Severe COVID-19",
+        "description": "Probability of death or intubation at 1-month follow up, in range [0,1]",
+        "classes": []
+      }
+    ],
+    "model": {
+      "architecture": "Inflated 3D convnet",
+      "training": "supervised",
+      "cmpapproach": "3D"
+    },
+    "data": {
+      "training": {
+        "vol_samples": 9735
+      },
+      "evaluation": {
+        "vol_samples": 1000
+      },
+      "public": false,
+      "external": false
+    }
+  },
+  "details": {
+    "name": "STOIC2021 Baseline Algorithm",
+    "version": "0.1.0",
+    "devteam": "DIAGNijmegen (Diagnostic Image Analysis Group, Radboud UMC, The Netherlands)",
+    "type": "convnet",
+    "date": {
+      "weights": "2021-12-23",
+      "code": "2022-01-04",
+      "pub": "2023-06-25"
+    },
+    "cite": "Luuk H. Boulogne, Julian Lorenz, Daniel Kienzle, Robin Schon, Katja Ludwig, Rainer Lienhart, Simon Jegou, Guang Li, Cong Chen, Qi Wang, Derik Shi, Mayug Maniparambil, Dominik Muller, Silvan Mertes, Niklas Schroter, Fabio Hellmann, Miriam Elia, Ine Dirks, Matias Nicolas Bossa, Abel Diaz Berenguer, Tanmoy Mukherjee, Jef Vandemeulebroucke, Hichem Sahli, Nikos Deligiannis, Panagiotis Gonidakis, Ngoc Dung Huynh, Imran Razzak, Reda Bouadjenek, Mario Verdicchio, Pasquale Borrelli, Marco Aiello, James A. Meakin, Alexander Lemm, Christoph Russ, Razvan Ionasec, Nikos Paragios, Bram van Ginneken, Marie-Pierre Revel Dubois, The STOIC2021 COVID-19 AI challenge: applying reusable training methodologies to private data, arXiv:2306.10484, 2023, https://arxiv.org/abs/2306.10484v2",
+    "license": {
+      "code": "MIT license",
+      "weights": "MIT license"
+    },
+    "publications": [
+      {
+        "title": "The STOIC2021 COVID-19 AI challenge: applying reusable training methodologies to private data",
+        "uri": "https://arxiv.org/pdf/2306.10484v2.pdf"
+      }
+    ],
+    "github": "https://github.com/luukboulogne/stoic2021-baseline",
+    "zenodo": "",
+    "colab": "",
+    "slicer": false
+  },
+  "info": {
+    "use": {
+      "title": "Intended use",
+      "text": "The algorithm processes a CT scan of a suspected COVID-19 patient and produces the probability of a COVID-19 infection and a probability of severe outcome (death or intubation within one month).",
+      "references": [{
+          "label": "Stoic baseline algorithm on grand-challenge",
+          "uri": "https://grand-challenge.org/algorithms/stoic2021-baseline/"
+        }],
+      "tables": []
+    },
+    "analyses": {
+      "title": "Evaluation",
+      "text": "The evaluation of this model was performed as part of the STOIC-19 challenge [1], using Area Under the Curve metric [2].",
+      "references": [
+        {
+          "label": "Stoic 2021 challenge details",
+          "uri": "https://stoic2021.grand-challenge.org/"
+        },
+        {
+          "label": "Stoic 2021 baseline algorithm evaluation results on grand-challenge.",
+          "uri": "https://stoic2021.grand-challenge.org/evaluation/2637a58d-2d06-4274-a9d0-6943ebce2d06/"
+        }
+      ],
+      "tables": [
+        {
+          "label": "Evaluation results on the STOIC testing cohort of 1000 cases.",
+          "entries": {
+              "AUC-severity": "0.77",
+              "AUC-COVID-19": "0.82"
+          }
+        }
+      ]
+    },
+    "evaluation": {
+      "title": "Evaluation data",
+      "text": "The STOIC Dataset[1] contains Computed Tomography scans from 10,735 patients, of which one CT scan from each patient was selected. From this dataset 1.000 images were randomly selected for evaluation.",
+      "references": [
+        {
+          "label": "Stoic project",
+          "uri": "https://pubs.rsna.org/doi/10.1148/radiol.2021210384"
+        }
+      ],
+      "tables": []
+    },
+    "training": {
+      "title": "Training data",
+      "text": "The STOIC Dataset[1] contains Computed Tomography scans from 10,735 patients, of which one CT scan from each patient was selected. This dataset was divided in a public training set [2] consisting of 2.000 images from this dataset, and a private training set of an additional 7.735 images. For this baseline algorithm, a single I3D model, initialized with publicly available weights trained for RGB video classification, was trained to estimate both COVID-19 presence and severity. The model was trained on all training data for 40 epochs using the AdamW optimizer with a learning rate of 10, momentum parameters β1 = 0.9, β2 = 0.99, and a weight decay of 0.01. Data augmentation was employed in the form of zoom, rotation, translation, and adding gaussian noise. Patient age and sex information were not incorporated as input to the model.",
+      "references": [
+        {
+          "label": "Stoic project",
+          "uri": "https://pubs.rsna.org/doi/10.1148/radiol.2021210384"
+        },
+        {
+          "label": "Direct link to public training dataset",
+          "uri": "https://registry.opendata.aws/stoic2021-training/"
+        }
+      ],
+      "tables": []
+    },
+    "ethics": {
+      "title": "",
+      "text": "",
+      "references": [],
+      "tables": []
+    },
+    "limitations": {
+      "title": "Limitations",
+      "text": "This algorithm was developed for research purposes only. The maximum obtainable performance is limited by imperfections in the COVID-19 severity and presence labels. Death at one month follow-up could have resulted from any cause. RT-PCR is an imperfect ground truth for infection. For the STOIC study, 39% of initially negative RT-PCR tests were found to be positive when repeated in patients with typical clinical signs of COVID-19.",
+      "references": [],
+      "tables": []
+    }
+  }
+}
