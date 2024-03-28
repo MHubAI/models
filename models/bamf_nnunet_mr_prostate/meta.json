@@ -10,7 +10,7 @@
                 "description": "The MR scan of a patient",
                 "format": "DICOM",
                 "modality": "MR",
-                "bodypartexamined": "PROSTATE",
+                "bodypartexamined": "Prostate",
                 "slicethickness": "2.5mm",
                 "non-contrast": true,
                 "contrast": true
