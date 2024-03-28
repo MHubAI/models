@@ -1,0 +1,34 @@
+general:
+  data_base_dir: /app/data
+  version: 1.0
+  description: configuration for Bamf NNUnet CT Liver segmentation  in 3D Slicer (nrrd to nifti)
+
+execute:
+- NrrdImporter
+- NiftiConverter
+- NNUnetRunner
+- BamfProcessorRunner
+- JsonSegExporter
+- DataOrganizer
+
+modules:
+  NrrdImporter:
+    input_dir: 'input_data'
+    input_file_name: 'image.nrrd'
+
+  JsonSegExporter:
+    segment_id_meta_key: roi
+    targets:
+    - nifti:mod=seg-->[basename]
+
+  NNUnetRunner:
+    nnunet_task: 'Task773_Liver'
+    nnunet_model: '3d_fullres'
+    roi: LIVER
+
+  BamfProcessorRunner:
+  
+  DataOrganizer:
+    targets:
+    - nifti:mod=seg-->[basename]
+    - json:mod=seg-->segdef.json

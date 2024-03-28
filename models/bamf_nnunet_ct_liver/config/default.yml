@@ -1,0 +1,36 @@
+general:
+  data_base_dir: /app/data
+  version: 1.0
+  description: default configuration for Bamf NNUnet CT Liver segmentation (dicom to dicom)
+
+execute:
+- DicomImporter
+- NiftiConverter
+- NNUnetRunner
+- BamfProcessorRunner
+- DsegConverter
+- DataOrganizer
+
+modules:
+  DicomImporter:
+    source_dir: input_data
+    import_dir: sorted_data
+    sort_data: true
+    meta: 
+      mod: '%Modality'
+
+  NNUnetRunner:
+    in_data: nifti:mod=ct
+    nnunet_task: Task773_Liver
+    nnunet_model: 3d_fullres
+    roi: LIVER
+  
+  BamfProcessorRunner:
+    
+  DsegConverter:
+    model_name: Bamf NNUnet CT Liver
+    skip_empty_slices: True
+
+  DataOrganizer:
+    targets:
+    - dicomseg-->[i:sid]/bamf_nnunet_ct_liver.seg.dcm
