@@ -1,0 +1,36 @@
+general:
+  data_base_dir: /app/data
+  version: 1.0
+  description: STOIC baseline predict COVID 19 probability scores from CT Lung (dicom to json)
+  
+execute:
+- DicomImporter
+- MhaConverter
+- StoicBaselineRunner
+- ReportExporter
+- DataOrganizer
+
+modules:
+  DicomImporter:
+    source_dir: input_data
+    import_dir: sorted_data
+    sort_data: True
+    meta: 
+      mod: ct
+
+  MhaConverter:
+    engine: panimg
+
+  ReportExporter:
+    format: compact
+    includes:
+      - data: probability-covid-19
+        label: probability-covid-19
+        value: value
+      - data: probability-severe-covid-19
+        label: probability-severe-covid-19
+        value: value
+
+  DataOrganizer:
+    targets:
+      - json-->[i:sid]/gc_stoic_baseline_covid_scores.json
