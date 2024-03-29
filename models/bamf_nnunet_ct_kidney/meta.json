@@ -76,7 +76,7 @@
     "info": {
         "use": {
             "title": "Intended Use",
-            "text": "This model is intended to perform kidney segmentation in CT scans. The model has been trained and tested on scans aquired during clinical care of patients, so it might not be suited for a healthy population. The generalization capabilities of the model on a range of ages, genders, and ethnicities are unknown."
+            "text": "This model is intended to perform kidney segmentation in CT scans. The model has been trained and tested on scans aquired during clinical care of patients, so it might not be suited for a healthy population. The generalization capabilities of the model on a range of ages, genders, and ethnicities are unknown. For detailed information on the training set design, please refer to reference section in the training section"
         },
         "analyses": {
             "title": "Quantitative Analyses",
