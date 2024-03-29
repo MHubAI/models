@@ -10,8 +10,8 @@ Date:   16.03.2024
 -------------------------------------------------
 """
 
-from mhubio.core import Module, Instance, InstanceData, IO
-import SimpleITK as sitk, numpy as np
+from mhubio.core import Module, Instance, InstanceData, IO, InstanceDataCollection
+import SimpleITK as sitk, numpy as np, csv, os
 
 class PyRadiomicsRunner(Module):
 
@@ -56,25 +56,40 @@ class PyRadiomicsRunner(Module):
         
         return seg_file_t
 
-
     @IO.Instance()
     @IO.Input('image', 'nifti|nrrd:mod=ct|mr',  the='input image ct or mr scan')
-    @IO.Input('segmentation', 'nifti|nrrd:mod=seg', the='input segmentation')
-    @IO.Output('results', '[d:roi].pyradiomics.csv', 'csv:features=pyradiomics', data='segmentation', the='output csv file with the results')
-    def task(self, instance: Instance, image: InstanceData, segmentation: InstanceData, results: InstanceData) -> None:
+    @IO.Inputs('segmentation', 'nifti|nrrd:mod=seg:roi.length=1', the='input segmentation')
+    @IO.Output('results', '[d:roi].pyradiomics.csv', 'csv:features=pyradiomics', data='image', the='output csv file with the results')
+    def task(self, instance: Instance, image: InstanceData, segmentation: InstanceDataCollection, results: InstanceData) -> None:
 
-        # imports
-        # from radiomics import featureextractor, getTestCase
+        # request temp dir for pyradiomics batch processing file
+        tmp_dir = self.config.data.requestTempDir('pyradiomics_config')
+        pyr_bp_file = os.path.join(tmp_dir, 'pyradiomics_batch.csv')
 
-        # align nifti file 
-        seg_file = self.align_seg_and_image(image.abspath, segmentation.abspath)
+        # prepare csv for pyradiomics batch processing
+        with open(pyr_bp_file, 'w') as csvfile:
+            writer = csv.writer(csvfile)
+            writer.writerow(['Image', 'Mask', 'Label', 'Label_channel', 'MHub ROI'])
+            
+            for seg_file in segmentation:
+                seg_rois = seg_file.type.meta['roi'].split(',')
+          
+                # align nifti file 
+                seg_file_abspath = self.align_seg_and_image(image.abspath, seg_file.abspath)
+                
+                # write one row per roi into the pyradiomics batch processing csv
+                for channel_id, seg_roi in enumerate(seg_rois):
+                    writer.writerow([image.abspath, seg_file_abspath, 1, channel_id + 1, seg_roi])
+
+        # for debugging print the content of the pyr_bp_file 
+        with open(pyr_bp_file, 'r') as f:
+            self.log(f.read())
 
         # build pyradiomics cli command
         #  pyradiomics <path/to/image> <path/to/segmentation> -o results.csv -f csv --param <path/to/params.yaml>
         cmd = [
             'pyradiomics',
-            image.abspath,
-            seg_file,
+            pyr_bp_file,
             '-o', results.abspath,
             '-f', 'csv',
             '--param', '/app/models/pyradiomics/res/params.yml'
