@@ -10,7 +10,7 @@
                 "description": "The CT scan of a patient.",
                 "format": "DICOM",
                 "modality": "CT",
-                "bodypartexamined": "KIDNEY",
+                "bodypartexamined": "Kidney",
                 "slicethickness": "2.5mm",
                 "non-contrast": true,
                 "contrast": false
@@ -21,7 +21,11 @@
                 "label": "Segmentation",
                 "type": "Segmentation",
                 "description": "Segmentation kidney",
-                "classes": ["KIDNEY", "KIDNEY+NEOPLASM_MALIGNANT_PRIMARY", "KIDNEY+CYST"]
+                "classes": [
+                    "KIDNEY",
+                    "KIDNEY+NEOPLASM_MALIGNANT_PRIMARY",
+                    "KIDNEY+CYST"
+                ]
             }
         ],
         "model": {
@@ -119,7 +123,7 @@
         },
         "training": {
             "title": "Training Data",
-            "text": "The training dataset consists of  489 CT kidney annotations taken from KiTS 2023 dataset [1] (N=489) and TCGA-KIRC Dataset [2] (N=45).",
+            "text": "The training dataset consists of  489 CT kidney annotations taken from KiTS 2023 dataset [1] (N=489) and TCGA-KIRC Dataset [2] (N=45). Dataset was collected by reviewing patients who underwent partial or radical nephrectomy for suspicion of renal cancer by a physician in the urology service of University of Minnesota Health between 2010 and mid-2018. 544 patients met this initial criteria. Patients for whom imaging in the late arterial phase was not available where excluded from the training set. Patients with tumor thrombus where also excluded since in these cases the tumor extends out beyond what was considered to be the primary site",
             "references": [
                 {
                     "label": "KiTS 2023 dataset",
