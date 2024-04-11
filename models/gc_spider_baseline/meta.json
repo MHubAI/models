@@ -75,7 +75,7 @@
       {
         "type": "Prediction",
         "label": "Raw Sagittal Spine Segmentation",
-        "description": "The raw segmentation of the segmented structures as mha. The vertebrae are subsequently labeled between 1 and 24, with 24 being the lowest lumbar vertebra (L5). Vertebra which are not completely visible within the field of view of the MR image are labeled between 101 and 124. The intervertebral discs are labeled between 201 and 224 and are decided by the vertebra above it. The spinal canal is labeled as 100.",
+        "description": "The raw segmentation of the segmented structures as mha. The vertebrae are subsequently labeled between 1 and 24, with 24 being the lowest lumbar vertebra (L5). Vertebra which are not completely visible within the field of view of the MR image are labeled between 101 and 124. The intervertebral discs are labeled between 201 and 224 and are decided by the vertebra above it. The spinal canal is labeled as 100."
       }
     ],
     "model": {
