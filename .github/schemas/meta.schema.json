@@ -298,6 +298,7 @@
                 },
                 "version": {
                     "type": "string",
+                    "pattern": "^\\d+(\\.\\d+)*$",
                     "description": "The version of the model."
                 },
                 "devteam": {

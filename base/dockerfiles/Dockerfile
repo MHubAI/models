@@ -47,6 +47,7 @@ RUN pip3 install --upgrade pip && pip3 install --no-cache-dir \
   panimg \
   pydicom \
   pydicom-seg \
+  highdicom \
   rt_utils \
   PyYAML \
   pyplastimatch \

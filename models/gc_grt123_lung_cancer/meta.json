@@ -1,0 +1,171 @@
+{
+  "id": "2e67a3cc-4680-4058-bf4e-f965cf50f06f",
+  "name": "gc_grt123_lung_cancer",
+  "title": "Lung cancer risk estimation on thorax CT scans",
+  "summary": {
+    "description": "This algorithm analyzes non-contrast CT scans of the thorax and predicts the lung cancer risk. The model consists of two modules. The first one is a 3D region proposal network for nodule detection, which outputs all suspicious nodules for a subject. The second one selects the top five nodules based on the detection confidence, evaluates their cancer probabilities and combines them with a leaky noisy-or gate to obtain the probability of lung cancer for the subject. This model was the winner of the Data Science Bowl 2017 competition hosted on Kaggle.",
+    "inputs": [
+      {
+        "label": "CT",
+        "description": "Chest CT",
+        "format": "DICOM",
+        "modality": "CT",
+        "bodypartexamined": "Chest",
+        "slicethickness": "2.5mm",
+        "non-contrast": true,
+        "contrast": false
+      }
+    ],
+    "outputs": [
+      {
+        "type": "Prediction",
+        "valueType": "number",
+        "label": "Lung thorax cancer nodule probability score",
+        "description": "The likelihood of the presence of cancer nodules in the lungs.",
+        "classes": []
+      }
+    ],
+    "model": {
+      "architecture": "3D convolutional neural network",
+      "training": "supervised",
+      "cmpapproach": "3D"
+    },
+    "data": {
+      "training": {
+        "vol_samples": 2483
+      },
+      "evaluation": {
+        "vol_samples": 506
+      },
+      "public": true,
+      "external": false
+    }
+  },
+  "details": {
+    "name": " bodyct-dsb2017-grt123",
+    "version": "2.0.0",
+    "devteam": "DIAGNijmegen (Diagnostic Image Analysis Group, Radboud UMC, The Netherlands)",
+    "type": "3D Deep Leaky Noisy-or Network",
+    "date": {
+      "weights": "",
+      "code": "2023-07-04",
+      "pub": "2017-11-22"
+    },
+    "cite": "F. Liao, M. Liang, Z. Li, X. Hu and S. Song, 'Evaluate the Malignancy of Pulmonary Nodules Using the 3D Deep Leaky Noisy-or Network', in IEEE Transactions on Neural Networks and Learning Systems, vol. 30, no. 11, pp. 3484-3495, Nov. 2019, doi: 10.1109/TNNLS.2019.2892409.",
+    "license": {
+      "code": "MIT",
+      "weights": "MIT"
+    },
+    "publications": [
+      {
+        "title": "Evaluate the Malignancy of Pulmonary Nodules Using the 3D Deep Leaky Noisy-or Network",
+        "uri": "https://ieeexplore.ieee.org/abstract/document/8642524"
+      },
+      {
+        "title": "Deep Learning for Lung Cancer Detection on Screening CT Scans: Results of a Large-Scale Public Competition and an Observer Study with 11 Radiologists",
+        "uri": "https://pubmed.ncbi.nlm.nih.gov/34870218/"
+      }
+    ],
+    "github": "https://github.com/DIAGNijmegen/bodyct-dsb2017-grt123",
+    "zenodo": "",
+    "colab": "",
+    "slicer": false
+  },
+  "info": {
+    "use": {
+      "title": "Intended use",
+      "text": "This algorithm analyzes non-contrast CT scans of the thorax, first it segments the lungs, subsequently it detects lung nodules within the lungs, and finally it predicts the lung cancer risk for the individual nodules and the scan as a whole. The algorithm is also hosted on Grand Challenge [1] and was the winner of the Data Science Bowl 2017 challenge on Kaggle [2]. ",
+      "references": [
+        {
+          "label": "Lung cancer risk estimation algorithm on grand-challenge",
+          "uri": "https://grand-challenge.org/algorithms/dsb2017-grt123/"
+        },
+        {
+          "label": "Data Science Bowl 2017 challenge",
+          "uri": "https://www.kaggle.com/c/data-science-bowl-2017"
+        }
+      ],
+      "tables": []
+    },
+    "analyses": {
+      "title": "Evaluation",
+      "text": "The evaluation of the model was done on the Data Science Bowl 2017 (DSB) dataset hosted on Kaggle [1] (this is no longer publicly available). The nodule detection was evaluated on the validation of the DSB dataset, which contained data from 198 cases and there were 71 (7 nodules smaller than 6 mm are ruled out) nodules in total. The Free Response Operating Characteristic (FROC) is used to evaluate the performance of the nodule detection. The case cancer classification was evaluated using the Area Under the Curve (AUC) metric on the training set and the testing set of respectively 1397 and 506 patient cases. The AUC and FROC graphs can be viewed in the publication [2]. For the final evaluation on the Data Science Bowl 2017 challenge, the model's performance was evaluated using the logistic loss on a private external dataset of 300 low-dose CT images [3], containing 100 cancer-positive scans and 200 cancer-negative scans. See tables for a summary of the results.",
+      "references": [
+        {
+          "label": "Data Science Bowl 2017 challenge",
+          "uri": "https://www.kaggle.com/c/data-science-bowl-2017"
+        },
+        {
+          "label": "Evaluate the Malignancy of Pulmonary Nodules Using the 3D Deep Leaky Noisy-or Network",
+          "uri": "https://ieeexplore.ieee.org/abstract/document/8642524"
+        },
+        {
+          "label": "Evaluation paper external dataset Data Science Bowl 2017",
+          "uri": "https://pubmed.ncbi.nlm.nih.gov/34870218/"
+        }
+      ],
+      "tables": [
+        {
+          "label": "Case cancer classification results on the DSB 2017 dataset",
+          "entries": {
+            "AUC on training set": "0.90",
+            "AUC on test set": "0.87",
+            "Logistic loss on test set": "0.39975"
+          }
+        },
+        {
+          "label": "Case cancer classification results on private external evaluation dataset.",
+          "entries": {
+            "AUC on all scans": "0.877 (95% CI: 0.842, 0.910)"
+          }
+        }
+      ]
+    },
+    "evaluation": {
+      "title": "Evaluation data",
+      "text": "The model was evaluated on the testing set of 506 patient cases the Data Science Bowl 2017 (DSB) hosted on Kaggle [1] (this is no longer publicly available). ",
+      "references": [
+        {
+          "label": "Data Science Bowl 2017 challenge",
+          "uri": "https://www.kaggle.com/c/data-science-bowl-2017"
+        }
+      ],
+      "tables": []
+    },
+    "training": {
+      "title": "Training data",
+      "text": "Two lung scan datasets were used to train the model: the LUng Nodule Analysis 2016 (LUNA16) dataset [1] [2] and the training set of the Data Science Bowl 2017 (DSB) hosted on Kaggle [3] (this is no longer publicly available). Nodules smaller than 6 mm were removed from the LUNA16 annotations before training. The LUNA16 dataset includes 1186 nodule labels in 888 patient cases annotated by radiologists. The DSB dataset includes 1397 and 198 patient cases in its training and validation sets respectively. The LUNA16 dataset is a subset from the images from the LIDC/IDRI dataset [3] that is available under a Creative Commons Attribution 3.0 Unported License.",
+      "references": [
+        {
+          "label": "LUng Nodule Analysis 2016 dataset part 1",
+          "uri": "https://zenodo.org/record/3723295"
+        },
+        {
+          "label": "LUng Nodule Analysis 2016 dataset part 2",
+          "uri": "https://zenodo.org/record/4121926"
+        },
+        {
+          "label": "Data Science Bowl 2017 challenge",
+          "uri": "https://www.kaggle.com/c/data-science-bowl-2017"
+        },
+        {
+          "label": "The LIDC/IDRI dataset",
+          "uri": "https://www.cancerimagingarchive.net/collection/lidc-idri/"
+        }
+      ],
+      "tables": []
+    },
+    "ethics": {
+      "title": "",
+      "text": "",
+      "references": [],
+      "tables": []
+    },
+    "limitations": {
+      "title": "",
+      "text": "",
+      "references": [],
+      "tables": []
+    }
+  }
+}

@@ -38,8 +38,8 @@
             } ],
         "model": {
             "architecture":  "U-net, Atlas",
-            "training": "Supervised",
-            "cmpapproach": "Hybrid"
+            "training": "supervised",
+            "cmpapproach": "3D"
         },
         "data": {
             "training": {
@@ -48,7 +48,7 @@
             "evaluation": {
                 "vol_samples": 30
             },
-            "public": "Yes",
+            "public": true,
             "external": true
         }
     },
