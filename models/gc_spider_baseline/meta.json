@@ -105,7 +105,7 @@
       "code": "2023-08-15",
       "pub": "2023-06-23"
     },
-    "cite": "Nikolas Lessmann, Bram van Ginneken, Pim A. de Jong, Ivana Išgum, Iterative fully convolutional neural networks for automatic vertebra segmentation and identification, Medical Image Analysis, Volume 53, 2019, Pages 142-155, ISSN 1361-8415, https://doi.org/10.1016/j.media.2019.02.005.",
+    "cite": "van der Graaf, J.W., van Hooff, M.L., Buckens, C.F.M. et al. Lumbar spine segmentation in MR images: a dataset and a public benchmark. Sci Data 11, 264 (2024). doi: 10.1038/s41597-024-03090-w",
     "license": {
       "code": "Apache 2.0",
       "weights": "Apache 2.0"
@@ -113,7 +113,11 @@
     "publications": [
       {
         "title": "Lumbar spine segmentation in MR images: a dataset and a public benchmark",
-        "uri": "https://arxiv.org/abs/2306.12217"
+        "uri": "https://doi.org/10.1038/s41597-024-03090-w"
+      },
+      {
+        "title": "Iterative fully convolutional neural networks for automatic vertebra segmentation and identification",
+        "uri": "https://doi.org/10.1016/j.media.2019.02.005"
       }
     ],
     "github": "https://github.com/DIAGNijmegen/SPIDER-Baseline-IIS",
@@ -124,7 +128,7 @@
   "info": {
     "use": {
       "title": "Intended use",
-      "text": "This model is intended to segment three anatomical structures in lumbar spine MRI: vertebrae, intervertebral discs (IVDs), and spinal canal. This algorithm is available on Grand Challenge [1] and is used for the SPIDER challenge [2]",
+      "text": "This model is intended to be used with MRI images of the spinal area in sagittal orientation only. This algorithm is available on Grand Challenge [1] and is used as baseline for the SPIDER challenge [2].",
       "references": [
         {
           "label": "SPIDER baseline algorithm on grand-challenge",
@@ -175,11 +179,15 @@
     },
     "training": {
       "title": "Training data",
-      "text": "For training a large, publicly available, multi-center, lumbar spine MRI dataset was used. It includes reference segmentations of vertebrae, intervertebral discs (IVDs), and spinal canal. The dataset includes 447 sagittal T1 and T2 MRI images from 218 patients with a history of low back pain. For 20 patients from the UMC dataset the images were fully, manually annotated.",
+      "text": "For training a large, publicly available, multi-center, lumbar spine MRI dataset was used. It includes reference segmentations of vertebrae, intervertebral discs (IVDs), and spinal canal. The dataset includes 447 sagittal T1 and T2 MRI images from 218 patients with a history of low back pain. For 20 patients from the UMC dataset the images were fully, manually annotated. This model is based on a previously developed model trained on both CT and MRI data [1]. It was extended by also segmenting the IVDs and spinal canal, using MRI only. For training details see Baseline 1 in the associated paper [2].",
       "references": [
         {
-          "label": "SPIDER - Lumbar spine segmentation in MR images: a dataset and a public benchmark",
-          "uri": "https://zenodo.org/record/8009680"
+          "label": "Iterative fully convolutional neural networks for automatic vertebra segmentation and identification",
+          "uri": "https://doi.org/10.1016/j.media.2019.02.005"
+        },
+        {
+          "title": "Lumbar spine segmentation in MR images: a dataset and a public benchmark",
+          "uri": "https://doi.org/10.1038/s41597-024-03090-w"
         }
       ],
       "tables": [
