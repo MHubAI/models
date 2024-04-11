@@ -1,13 +1,13 @@
 {
   "id": "aed5a82e-2188-4d50-83f9-45bce09f9daa",
-  "name": "spider_baseline",
+  "name": "gc_spider_baseline",
   "title": "SPIDER Baseline algorithm: Iterative Instance Segmentation of the spine",
   "summary": {
-    "description": "The SPIDER Challenge focuses on the segmentation of three anatomical structures in lumbar spine MRI: vertebrae, intervertebral discs (IVDs), and spinal canal. The segmentation task requires similar algorithms to produce separate masks for each vertebra, IVD, and the spinal canal in the lumbar spine MRI volume. The vertebrae are subsequently labeled between 1 and 24, with 24 being the lowest lumbar vertebra (L5). Vertebra which are not completely visible within the field of view of the MR image are labeled between 101 and 124. The intervertebral discs are labeled between 201 and 224 and are decided by the vertebra above it. The spinal canal is labeled as 100.",
+    "description": "This model segments three anatomical structures in lumbar spine MRI: vertebrae, intervertebral discs (IVDs), and spinal canal. Each vertebrae and IVD is labeled according to standard naming convention.",
     "inputs": [
       {
         "label": "Sagittal Spine MRI",
-        "description": "Sagittal MRI of the spine",
+        "description": "Sagittal MRI of the spine. It is important to provide the input image in sagittal orientation for proper functioning of the model.",
         "format": "DICOM",
         "modality": "MR",
         "bodypartexamined": "Spine",
@@ -19,6 +19,8 @@
     "outputs": [
       {
         "type": "Segmentation",
+        "label": "Sagittal Spine Segmentation",
+        "description": "DICOM Segmentation of the spine.",
         "classes": [
           "VERTEBRAE_L5",
           "VERTEBRAE_L4",
@@ -43,8 +45,38 @@
           "VERTEBRAE_C4",
           "VERTEBRAE_C3",
           "VERTEBRAE_C2",
-          "VERTEBRAE_C1"
+          "VERTEBRAE_C1",
+          "VERTEBRAE_DISK_L5S1",
+          "VERTEBRAE_DISK_L4L5",
+          "VERTEBRAE_DISK_L3L4",
+          "VERTEBRAE_DISK_L2L3",
+          "VERTEBRAE_DISK_L1L2",
+          "VERTEBRAE_DISK_T12L1",
+          "VERTEBRAE_DISK_T11T12",
+          "VERTEBRAE_DISK_T10T11",
+          "VERTEBRAE_DISK_T9T10",
+          "VERTEBRAE_DISK_T8T9",
+          "VERTEBRAE_DISK_T7T8",
+          "VERTEBRAE_DISK_T6T7",
+          "VERTEBRAE_DISK_T5T6",
+          "VERTEBRAE_DISK_T4T5",
+          "VERTEBRAE_DISK_T3T4",
+          "VERTEBRAE_DISK_T2T3",
+          "VERTEBRAE_DISK_T1T2",
+          "VERTEBRAE_DISK_C7T1",
+          "VERTEBRAE_DISK_C6C7",
+          "VERTEBRAE_DISK_C5C6",
+          "VERTEBRAE_DISK_C4C5",
+          "VERTEBRAE_DISK_C3C4",
+          "VERTEBRAE_DISK_C2C3",
+          "SPINAL_CANAL"
         ]
+      },
+      {
+        "type": "Prediction",
+        "label": "Raw Sagittal Spine Segmentation",
+        "description": "The raw segmentation of the segmented structures as mha. The vertebrae are subsequently labeled between 1 and 24, with 24 being the lowest lumbar vertebra (L5). Vertebra which are not completely visible within the field of view of the MR image are labeled between 101 and 124. The intervertebral discs are labeled between 201 and 224 and are decided by the vertebra above it. The spinal canal is labeled as 100.",
+        "classes": []
       }
     ],
     "model": {
@@ -54,18 +86,18 @@
     },
     "data": {
       "training": {
-        "vol_samples": 179
+        "vol_samples": 447
       },
       "evaluation": {
-        "vol_samples": 39
+        "vol_samples": 87
       },
-      "public": false,
+      "public": true,
       "external": false
     }
   },
   "details": {
     "name": "SPIDER Baseline algorithm: Iterative Instance Segmentation of the spine",
-    "version": "",
+    "version": "0.1.0",
     "devteam": "DIAGNijmegen (Diagnostic Image Analysis Group, Radboud UMC, The Netherlands)",
     "type": "U-net",
     "date": {
@@ -92,32 +124,76 @@
   "info": {
     "use": {
       "title": "Intended use",
-      "text": "Segmentation of three anatomical structures in lumbar spine MRI: vertebrae, intervertebral discs (IVDs), and spinal canal.",
-      "references": [],
+      "text": "This model is intended to segment three anatomical structures in lumbar spine MRI: vertebrae, intervertebral discs (IVDs), and spinal canal. This algorithm is available on Grand Challenge [1] and is used for the SPIDER challenge [2]",
+      "references": [
+        {
+          "label": "SPIDER baseline algorithm on grand-challenge",
+          "uri": "https://grand-challenge.org/algorithms/spider-baseline-iis/"
+        },
+        {
+          "label": "SPIDER challenge details",
+          "uri": "https://spider.grand-challenge.org/"
+        }
+      ],
       "tables": []
     },
     "analyses": {
       "title": "Evaluation",
-      "text": "The segmentation performance was evaluated using two metrics: (1) The Dice coefficient to measure the volume overlap, and (2) the average absolute surface distance (ASD) as an indication of the segmentation accuracy along the sur- face of all structures.",
-      "references": [],
-      "tables": []
+      "text": "The segmentation performance was evaluated as part of the SPIDER challenge using two metrics: (1) The Dice coefficient to measure the volume overlap, and (2) the average absolute surface distance (ASD) as an indication of the segmentation accuracy along the surface of all structures.",
+      "references": [
+        {
+          "label": "SPIDER baseline algorithm evaluation results on grand-challenge",
+          "uri": "https://spider.grand-challenge.org/evaluation/11bf4d89-6768-4e2f-b540-60178ba33a95/"
+        }
+      ],
+      "tables": [
+        {
+          "label": "Dice score.",
+          "entries":
+          {
+            "Vertebrae": "0.93 ± 0.05",
+            "Intervertebral discs": "0.84 ± 0.10",
+            "Spinal canal": "0.92 ± 0.04"
+          }
+        },
+        {
+          "label": "ASD (mm).",
+          "entries":
+          {
+            "Vertebrae": "0.48 ± 0.95",
+            "Intervertebral discs": "0.54 ± 0.45",
+            "Spinal canal": "0.39 ± 0.45"
+          }
+        }
+      ]
     },
     "evaluation": {
       "title": "Evaluation data",
-      "text": "The test set consists of 39 lumbar MRI studies of unique patients, which includes 15 out of the 20 fully manually annotated studies.",
+      "text": "The test set consists of 87 lumbar MRI images from 39 patients, which includes the fully manually annotated images of 15 patients, randomly selected from the set of fully annotated dataset, see Training data.",
       "references": [],
       "tables": []
     },
     "training": {
       "title": "Training data",
-      "text": "This is a large publicly available multi-center lumbar spine magnetic resonance imaging (MRI) dataset with reference segmentations of vertebrae, intervertebral discs (IVDs), and spinal canal. The dataset includes 447 sagittal T1 and T2 MRI series from 218 studies of 218 patients with a history of low back pain. ",
+      "text": "For training a large, publicly available, multi-center, lumbar spine MRI dataset was used. It includes reference segmentations of vertebrae, intervertebral discs (IVDs), and spinal canal. The dataset includes 447 sagittal T1 and T2 MRI images from 218 patients with a history of low back pain. For 20 patients from the UMC dataset the images were fully, manually annotated.",
       "references": [
         {
           "label": "SPIDER - Lumbar spine segmentation in MR images: a dataset and a public benchmark",
           "uri": "https://zenodo.org/record/8009680"
         }
       ],
-      "tables": []
+      "tables": [
+        {
+          "label": "Number of patient data provided by the various hospitals",
+          "entries":
+          {
+            "University Medical Center (UMC)": "41",
+            "Regional Hospital 1": "43",
+            "Regional Hospital 2": "44",
+            "Orthopedic Hospital": "90"
+          }
+        }
+      ]
     },
     "ethics": {
       "title": "",
