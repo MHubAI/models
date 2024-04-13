@@ -235,7 +235,7 @@
                         "training": {
                             "type": "string",
                             "description": "The training method of the model.",
-                            "enum": ["supervised", "semi-supervised", "unsupervised", "other"]
+                            "enum": ["supervised", "semi-supervised", "unsupervised", "other", "algorithmic"]
                         },
                         "cmpapproach": {
                             "type": "string",
