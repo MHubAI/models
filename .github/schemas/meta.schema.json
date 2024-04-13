@@ -313,9 +313,17 @@
                     "type": "object",
                     "properties": {
                         "weights": {
-                            "type": "string",
                             "description": "The date of model weights (yyy-mm-dd).",
-                            "format": "date"
+                            "anyOf": [
+                                {
+                                  "type": "string",
+                                  "format": "date"
+                                },
+                                {
+                                  "type": "string",
+                                  "maxLength": 0
+                                }
+                              ]
                         },
                         "code": {
                             "type": "string",
