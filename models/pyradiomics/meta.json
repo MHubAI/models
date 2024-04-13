@@ -51,9 +51,9 @@
       "devteam": "AIM Harvard and PyRadiomics Open-Source Community",
       "type": "Radiomic Feature Extraction",
       "date": {
-          "weights": "n/a",
-          "code": "31/10/17",
-          "pub": "31/10/17"
+          "weights": "",
+          "code": "31/10/2017",
+          "pub": "31/10/2017"
       },
       "cite": "van Griethuysen JJM, Fedorov A, Parmar C, Hosny A, Aucoin N, Narayan V, Beets-Tan RGH, Fillion-Robin JC, Pieper S, Aerts HJWL. Computational Radiomics System to Decode the Radiographic Phenotype. Cancer Res. 2017 Nov 1;77(21):e104-e107. doi: 10.1158/0008-5472.CAN-17-0339. PMID: 29092951; PMCID: PMC5672828.",        
       "license": {
@@ -75,11 +75,11 @@
           "text": "This is an open-source python package for the extraction of Radiomics features from medical imaging. With this package we aim to establish a reference standard for Radiomic Analysis, and provide a tested and maintained open-source platform for easy and reproducible Radiomic Feature extraction. By doing so, we hope to increase awareness of radiomic capabilities and expand the community. The platform supports both the feature extraction in 2D and 3D and can be used to calculate single values per feature for a region of interest (“segment-based”) or to generate feature maps (“voxel-based”).",
           "references": [
               {
-                  "text": "PyRadiomic Documentation",
-                  "uri": " pyradiomics.readthedocs.io/ "
-              },
+                "label": "PyRadiomic Documentation",
+                "uri": "https://pyradiomics.readthedocs.io/"
+            },
               {
-                "text": "PyRadiomic GitHub Repository",
+                "label": "PyRadiomic GitHub Repository",
                 "uri": "https://github.com/AIM-Harvard/pyradiomics"
             }
           ]
