@@ -1,0 +1,91 @@
+{
+  "id": "e91bb7f3-f8ea-4254-9dc5-56fbc993cb3f",
+  "name": "pyradiomics",
+  "title": "PyRadiomics",
+  "summary": {
+      "description": "Run PyRadiomics directly on DICOM files with MHub.",
+      "inputs": [ {
+          "label": "Input Image",
+          "description": "The input image.",
+          "format": "DICOM",
+          "modality": "CT",
+          "bodypartexamined": "WHOLEBODY",
+          "slicethickness": "2.5mm",
+          "non-contrast": true,
+          "contrast": false
+        } ],
+      "outputs": [ {
+          "type": "Prediction",
+          "valueType": "Radiomic features",
+          "description": "A CSV file containing all radiomic features as defined in the pyradiomics params file.",
+          "label": "Radiomic Features"
+        } ],
+      "model": {
+          "architecture": "Various radiomic analysis algorithms",
+          "training": "algorithmic",
+          "cmpapproach": "3D"
+      },
+      "data": {
+          "training": {
+              "vol_samples": 0
+          },
+          "evaluation": {
+              "vol_samples": 302
+          },
+          "public": true,
+          "external": true
+      }
+  },
+  "details": {
+      "name": "PyRadiomics",
+      "version": "1.0.0",
+      "devteam": "AIM Harvard and PyRadiomics Open-Source Community",
+      "type": "Radiomic Feature Extraction",
+      "date": {
+          "weights": "n/a",
+          "code": "31/10/17",
+          "pub": "31/10/17"
+      },
+      "cite": "van Griethuysen JJM, Fedorov A, Parmar C, Hosny A, Aucoin N, Narayan V, Beets-Tan RGH, Fillion-Robin JC, Pieper S, Aerts HJWL. Computational Radiomics System to Decode the Radiographic Phenotype. Cancer Res. 2017 Nov 1;77(21):e104-e107. doi: 10.1158/0008-5472.CAN-17-0339. PMID: 29092951; PMCID: PMC5672828.",        
+      "license": {
+          "code": "Apache 2.0",
+          "weights": "N/A"
+      },
+      "publications": [
+          {
+            "title": "Computational Radiomics System to Decode the Radiographic Phenotype",
+            "uri": "https://aacrjournals.org/cancerres/article/77/21/e104/662617/Computational-Radiomics-System-to-Decode-the"
+          }
+      ],
+      "github": "https://github.com/AIM-Harvard/pyradiomics",
+      "slicer": true
+  },
+  "info": {
+      "use": {
+          "title": "Intended Use",
+          "text": "This is an open-source python package for the extraction of Radiomics features from medical imaging. With this package we aim to establish a reference standard for Radiomic Analysis, and provide a tested and maintained open-source platform for easy and reproducible Radiomic Feature extraction. By doing so, we hope to increase awareness of radiomic capabilities and expand the community. The platform supports both the feature extraction in 2D and 3D and can be used to calculate single values per feature for a region of interest (“segment-based”) or to generate feature maps (“voxel-based”).",
+          "references": [
+              {
+                  "text": "PyRadiomic Documentation",
+                  "uri": " pyradiomics.readthedocs.io/ "
+              },
+              {
+                "text": "PyRadiomic GitHub Repository",
+                "uri": "https://github.com/AIM-Harvard/pyradiomics"
+            }
+          ]
+      },
+      "analyses": {
+          "title": "Quantitative Analyses",
+          "text": "In a case study, we demonstrated an application of PyRadiomics for lung lesion characterization to discriminate between benign and malignant nodules. We used the publicly available cohort of the Lung Image Database Consortium (15), which consists of diagnostic and lung cancer screening CT scans along with marked-up annotated lesions and per-lesion malignancy rating (i.e., if a nodule is benign or malignant) from experienced radiologists (Supplementary Methods S1). From 302 patients, we included 429 distinct lesions in our analysis, each with four volumetric segmentations and malignancy ratings. In total, 1,120 radiomic features (14 shape features, 19 first-order intensity statistics features, 60 texture features, 395 LoG features, and 632 wavelet features) were extracted from all four delineations of every lesion (Supplementary Methods S2–S4)."
+      },
+      "evaluation": {
+          "title": "Evaluation Data",
+          "text": "This is an algorithmic feature extraction and does not require an evaluation as we normally report for Deep-Learning models."
+      },
+      "training": {
+        "title": "Training Data",
+        "text": "This is an algorithmic feature extraction and does not require training data."
+      }
+  }
+}
