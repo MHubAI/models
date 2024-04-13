@@ -21,7 +21,7 @@ modules:
   NNUnetRunner:
     nnunet_task: Task017_AbdominalOrganSegmentation
     nnunet_model: 3d_lowres
-    roi: SPLEEN,RIGHT_KIDNEY,LEFT_KIDNEY,GALLBLADDER,ESOPHAGUS,LIVER,STOMACH,AORTA,INFERIOR_VENA_CAVA,PORTAL_AND_SPLENIC_VEIN,PANCREAS,RIGHT_ADRENAL_GLAND,LEFT_ADRENAL_GLAND
+    roi: 
     
   DsegConverter:
     source_segs: nifti:mod=seg
