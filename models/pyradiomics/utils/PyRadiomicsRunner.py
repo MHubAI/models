@@ -13,7 +13,12 @@ Date:   16.03.2024
 from mhubio.core import Module, Instance, InstanceData, IO, InstanceDataCollection
 import SimpleITK as sitk, numpy as np, csv, os
 
+@IO.Config('config_file', str, '/app/models/pyradiomics/res/params.yml', the='path to the pyradiomics parameter file')
+@IO.Config('z_align_seg_and_image', bool, False, the='align segmentation and image in their z direction')
 class PyRadiomicsRunner(Module):
+
+    config_file: str
+    z_align_seg_and_image: bool
 
     def align_seg_and_image(self, image_file: str, seg_file: str) -> str:
         
@@ -67,19 +72,24 @@ class PyRadiomicsRunner(Module):
         pyr_bp_file = os.path.join(tmp_dir, 'pyradiomics_batch.csv')
 
         # prepare csv for pyradiomics batch processing
+        # NOTE: we could allow custom columns that extract any metadata specified from the config but 
+        #       for now we simply include the metadata string from each segmentation file
         with open(pyr_bp_file, 'w') as csvfile:
             writer = csv.writer(csvfile)
-            writer.writerow(['Image', 'Mask', 'Label', 'Label_channel', 'MHub ROI'])
+            writer.writerow(['Image', 'Mask', 'Label', 'Label_channel', 'MHub ROI', 'MHub Metadata'])
             
             for seg_file in segmentation:
                 seg_rois = seg_file.type.meta['roi'].split(',')
           
-                # align nifti file 
-                seg_file_abspath = self.align_seg_and_image(image.abspath, seg_file.abspath)
-                
+                # optionally align nifti file 
+                if self.z_align_seg_and_image:
+                    seg_file_abspath = self.align_seg_and_image(image.abspath, seg_file.abspath)
+                else:
+                    seg_file_abspath = seg_file.abspath
+                    
                 # write one row per roi into the pyradiomics batch processing csv
                 for channel_id, seg_roi in enumerate(seg_rois):
-                    writer.writerow([image.abspath, seg_file_abspath, 1, channel_id + 1, seg_roi])
+                    writer.writerow([image.abspath, seg_file_abspath, 1, channel_id + 1, seg_roi, seg_file.type.meta])
 
         # for debugging print the content of the pyr_bp_file 
         with open(pyr_bp_file, 'r') as f:
@@ -92,7 +102,7 @@ class PyRadiomicsRunner(Module):
             pyr_bp_file,
             '-o', results.abspath,
             '-f', 'csv',
-            '--param', '/app/models/pyradiomics/res/params.yml'
+            '--param', self.config_file
         ]
 
         self.log(cmd)
