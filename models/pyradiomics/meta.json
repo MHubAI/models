@@ -12,7 +12,16 @@
           "bodypartexamined": "WHOLEBODY",
           "slicethickness": "2.5mm",
           "non-contrast": true,
-          "contrast": false
+          "contrast": true
+        }, {
+          "label": "Input Segmentation",
+          "description": "The input segmentation to be analysed.",
+          "format": "DICOMSEG",
+          "modality": "SEG",
+          "bodypartexamined": "WHOLEBODY",
+          "slicethickness": "2.5mm",
+          "non-contrast": true,
+          "contrast": true
         } ],
       "outputs": [ {
           "type": "Prediction",
