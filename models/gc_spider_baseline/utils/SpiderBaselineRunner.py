@@ -31,7 +31,13 @@ SPIDER_EXPERIMENT_ARGUMENTS_FILE = SPIDER_EXPERIMENT_DIR / "arguments.json"
 SPIDER_INTERNAL_DATASET_META_FILE = SPIDER_INTERNAL_DATASET_PATH / "metadata.json"
 
 
-@IO.Config('traversal_direction_up', bool, True, the="Direction to traverse the image")
+@IO.Config(
+    'traversal_direction_up', bool, True,
+    the="Direction to traverse the image for the iterative instance segmentation approach. "
+        "Default is to start at the bottom of the image and to iteratively scan upward, set this to false to make it start at the top of the image and to iteratively scan downwards. "
+        "It will assume vertebrea to appear starting from L5, hence the resulting segmentations will usually significantly differ. "
+        "Generally spine images are expected to start from the bottom, hence the default direction is up."
+)
 @IO.ConfigInput('in_data', 'mha:mod=ct|mr', the='supported datatypes for the spider baseline model')
 class SpiderBaselineRunner(Module):
 
@@ -83,28 +89,43 @@ class SpiderBaselineRunner(Module):
             out_data_raw=out_data_raw,
             **config
         )
-        self.create_remapped_segmentation(out_data_raw, out_data)
+        self._create_remapped_segmentation(
+            input_path=Path(out_data_raw.abspath),
+            output_path=Path(out_data.abspath),
+            remap_dict=self.get_roi_remap_dict()
+        )
 
-    def create_remapped_segmentation(self, out_data_raw: InstanceData, out_data: InstanceData):
-        # Create the remapping dictionary to reorder output labels so they will be picked up in the correct order by DicomSeg
+    def get_raw_remap_dict(self) -> Dict[int, int]:
+        # Create the remapping dictionary to reorder output labels so L5 appears first instead of last
+        remap_dict = {0:0, 100: 100}                              # background and spinal canal labels remain the same
+        remap_dict.update({i: 25 - i for i in range(1, 25)})      # vertebrae labels 1-24 -> 24-1 (vertebrae)
+        remap_dict.update({i: 225 - i for i in range(101, 125)})  # partially visible vertebrae labels 101-124 -> 124-101
+        remap_dict.update({i: 425 - i for i in range(201, 225)})  # intervertebral discs labels 201-224 -> 224-201
+        return remap_dict
+
+    def get_roi_remap_dict(self) -> Dict[int, int]:
+        # Create the remapping dictionary to reorder output labels so they will match with the annotations in the roi meta parameter
         remap_dict = {i: i for i in range(0, 25)}                 # keep labels 0-24 the same (background + vertebrae)
         remap_dict.update({i: i - 100 for i in range(101, 125)})  # partially visible vertebrae get remapped to regular vertebrae labels
         remap_dict.update({i:i-176 for i in range(201, 224)})     # remaps intervertebral discs to 25-47
         remap_dict.update({100: 48})                              # remaps spinal canal to 48
+        return remap_dict
+
+    def _create_remapped_segmentation(self, input_path: Path, output_path: Path, remap_dict: Dict[int, int]):
         # Convert the mapping to a 1d numpy vector by generating a value for each potential segmentation value
         # Each value is mapped to zero by default and the mapping values are overwritten by the remap_dict
         remap_np = np.zeros((226,), dtype=int)
         remap_np[list(remap_dict.keys())] = list(remap_dict.values())
-        self.log(f"Remap generated segmentation output to: {out_data.abspath}", level="NOTICE")
+        self.log(f"Remap segmentation output to: {output_path}", level="NOTICE")
         self.log(f"  mapping used: {remap_dict}", level="DEBUG")
-        seg_sitk = SimpleITK.ReadImage(out_data_raw.abspath)
+        seg_sitk = SimpleITK.ReadImage(str(input_path))
         seg_np = SimpleITK.GetArrayFromImage(seg_sitk)
         seg_remapped_np = remap_np[seg_np]  # actual remapping
         assert np.sum((seg_remapped_np < 0) | (seg_remapped_np > max(remap_dict.values()))) == 0, \
             f"Values were found outside the allowed remapping range [0-{max(remap_dict.values())}], this should never happen..."
-        seg_remapped_sitk = SimpleITK.GetImageFromArray(seg_remapped_np)
+        seg_remapped_sitk = SimpleITK.GetImageFromArray(seg_remapped_np.astype(np.uint16))
         seg_remapped_sitk.CopyInformation(seg_sitk)
-        SimpleITK.WriteImage(seg_remapped_sitk, out_data.abspath, True)
+        SimpleITK.WriteImage(seg_remapped_sitk, str(output_path), True)
 
     def setup_mr(self) -> Dict:
         self.log(f"Setup the SPIDER-Baseline algorithm, using `MR` settings", level="NOTICE")
@@ -116,7 +137,7 @@ class SpiderBaselineRunner(Module):
         )
 
     def setup_ct(self) -> Dict:
-        self.log(f"Setup the SPIDER-Baseline algorithm, using `CT` settings", level="NOTICE")
+        self.log(f"Setup the SPIDER-Baseline algorithm, using `CT` settings, WARNING unsupported, model was not trained for CT!", level="WARNING")
         self._create_input_metadata_file(modality="CT")
         return dict(
             surface_erosion_threshold = 200,
@@ -154,11 +175,15 @@ class SpiderBaselineRunner(Module):
                 "--export_original"
             ]
         ).execute()
-        # Export generated output segmentation
+        # Export generated output segmentation and ensure mapping is in correct order starting from L5 = 1
         source_output_file = SPIDER_INTERNAL_OUTPUT_DIR / "input_img_total_segmentation_original.mha"
         self.log(f"Move raw generated segmentation output from: {source_output_file} -> {out_data_raw.abspath}",
                  level="NOTICE")
-        shutil.move(str(source_output_file), out_data_raw.abspath)
+        self._create_remapped_segmentation(
+            input_path=source_output_file,
+            output_path=Path(out_data_raw.abspath),
+            remap_dict=self.get_raw_remap_dict()
+        )
         # Run internal output cleanup
         shutil.rmtree(str(SPIDER_INTERNAL_OUTPUT_DIR))
 

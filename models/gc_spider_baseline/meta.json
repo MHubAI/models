@@ -6,8 +6,8 @@
     "description": "This model segments three anatomical structures in lumbar spine MRI: vertebrae, intervertebral discs (IVDs), and spinal canal. Each vertebrae and IVD is labeled according to standard naming convention.",
     "inputs": [
       {
-        "label": "Sagittal Spine MRI",
-        "description": "Sagittal MRI of the spine. It is important to provide the input image in sagittal orientation for proper functioning of the model.",
+        "label": "Sagittal Spine T1 T2 MRI",
+        "description": "Sagittal T1 or T2 weighted MRI of the spine. It is important to provide the input image in sagittal orientation for proper functioning of the model.",
         "format": "DICOM",
         "modality": "MR",
         "bodypartexamined": "Spine",
@@ -128,7 +128,7 @@
   "info": {
     "use": {
       "title": "Intended use",
-      "text": "This model is intended to be used with MRI images of the spinal area in sagittal orientation only. This algorithm is available on Grand Challenge [1] and is used as baseline for the SPIDER challenge [2].",
+      "text": "This model is intended to be used with T1 or T2 weighted MRI images of the spinal area in sagittal orientation only. This algorithm is available on Grand Challenge [1] and is used as baseline for the SPIDER challenge [2].",
       "references": [
         {
           "label": "SPIDER baseline algorithm on grand-challenge",
