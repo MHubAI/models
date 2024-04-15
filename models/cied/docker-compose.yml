@@ -1,0 +1,24 @@
+version: '3'
+
+services:
+  backend:
+    container_name: cied_backend
+    mem_limit: 12g
+    mem_reservation: 6g
+
+    build: 
+      context: .
+      dockerfile: Dockerfile-backend
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./logs/:/logs/
+  frontend:
+    container_name: cied_frontend
+    build: 
+      context: .
+      dockerfile: Dockerfile-frontend
+    ports:
+      - "8050:8050"
+    depends_on:
+      - backend

@@ -1,0 +1,14 @@
+FROM python:3.9
+
+RUN mkdir -p /models
+RUN wget --directory-prefix /models/ https://zenodo.org/record/10955502/files/classification_manuf.pkl
+RUN wget --directory-prefix /models/ https://zenodo.org/record/10955502/files/classification_model.pkl
+RUN wget --directory-prefix /models/ https://zenodo.org/record/10955502/files/segmentation.pkl
+
+WORKDIR /app
+
+COPY requirements_backend.txt requirements.txt
+RUN pip install --no-cache-dir -r requirements.txt
+
+COPY . . 
+CMD ["uvicorn", "app:app", "--host", "0.0.0.0", "--port", "8000"]

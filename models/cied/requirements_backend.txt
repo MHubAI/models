@@ -1,0 +1,6 @@
+fastai==2.7.14
+scikit-image==0.22.0
+fastapi==0.110.1
+uvicorn==0.29.0
+pillow==10.3.0
+python-multipart==0.0.9
