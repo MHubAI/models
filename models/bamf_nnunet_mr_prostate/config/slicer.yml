@@ -1,0 +1,33 @@
+general:
+  data_base_dir: /app/data
+  version: 1.0
+  description: configuration for Bamf NNUnet MR Prostate segmentation  in 3D Slicer (nrrd to nifti)
+
+execute:
+- NrrdImporter
+- NiftiConverter
+- NNUnetRunner
+- BamfProcessorRunner
+- JsonSegExporter
+- DataOrganizer
+
+modules:
+  NrrdImporter:
+    input_dir: input_data
+    input_file_name: image.nrrd
+
+  JsonSegExporter:
+    segment_id_meta_key: roi
+    targets:
+    - nifti:mod=seg-->[basename]
+
+  NNUnetRunner:
+    nnunet_task: Task778_MR_Prostate
+    nnunet_model: 3d_fullres
+
+  BamfProcessorRunner:
+
+  DataOrganizer:
+    targets:
+    - nifti:mod=seg-->[basename]
+    - json:mod=seg-->segdef.json

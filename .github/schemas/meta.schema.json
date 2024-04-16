@@ -235,7 +235,7 @@
                         "training": {
                             "type": "string",
                             "description": "The training method of the model.",
-                            "enum": ["supervised", "semi-supervised", "unsupervised", "other"]
+                            "enum": ["supervised", "semi-supervised", "unsupervised", "other", "algorithmic"]
                         },
                         "cmpapproach": {
                             "type": "string",
@@ -298,6 +298,7 @@
                 },
                 "version": {
                     "type": "string",
+                    "pattern": "^\\d+(\\.\\d+)*$",
                     "description": "The version of the model."
                 },
                 "devteam": {
@@ -312,9 +313,17 @@
                     "type": "object",
                     "properties": {
                         "weights": {
-                            "type": "string",
                             "description": "The date of model weights (yyy-mm-dd).",
-                            "format": "date"
+                            "anyOf": [
+                                {
+                                  "type": "string",
+                                  "format": "date"
+                                },
+                                {
+                                  "type": "string",
+                                  "maxLength": 0
+                                }
+                              ]
                         },
                         "code": {
                             "type": "string",

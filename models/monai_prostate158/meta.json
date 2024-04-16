@@ -1,0 +1,131 @@
+{
+    "id": "...",
+    "name": "monai_prostate158",
+    "title": "Prostate158 (Prostate transitional zone and peripheral zone segmentation)",
+    "summary": {
+        "description": "Prostate158 is a zonal prostate segmentation model, a multi-modality input AI-based pipeline for the automated segmentation of the peripheral and central gland of the prostate on MRI T2 axial scans.",
+        "inputs": [
+            {
+                "label": "T2 input image",
+                "description": "The T2 axial sequence being one of the two input image",
+                "format": "DICOM",
+                "modality": "MR",
+                "bodypartexamined": "Prostate",
+                "slicethickness": "3 mm",
+                "non-contrast": true,
+                "contrast": false
+            }
+        ],
+        "outputs": [
+            {
+                "type": "Segmentation",
+                "classes": [
+                    "PROSTATE_TRANSITION_ZONE",
+                    "PROSTATE_PERIPHERAL_ZONE"
+                ]
+            }
+        ],
+        "model": {
+            "architecture": "U-net",
+            "training": "supervised",
+            "cmpapproach": "3D"
+        },
+        "data": {
+            "training": {
+                "vol_samples": 139
+            },
+            "evaluation": {
+                "vol_samples": 20
+            },
+            "public": true,
+            "external": false
+        }
+    },
+    "details": {
+        "name": "Prostate158 - An expert-annotated 3T MRI dataset and algorithm for prostate cancer detection",
+        "version": "1.0.0",
+        "devteam": "Lisa C. Adams, Keno K. Bressem",
+        "type": "Prostate158 (U-Net structure for prostate segmentation)",
+        "date": {
+            "weights": "March 2022",
+            "code": "April 2022",
+            "pub": "September 2022"
+        },
+        "cite": "Lisa C. Adams and Marcus R. Makowski and Günther Engel and Maximilian Rattunde and Felix Busch and Patrick Asbach and Stefan M. Niehues and Shankeeth Vinayahalingam and Bram {van Ginneken} and Geert Litjens and Keno K. Bressem, Prostate158 - An expert-annotated 3T MRI dataset and algorithm for prostate cancer detection",
+        "license": {
+            "code": "MIT",
+            "weights": "CC BY-NC 4.0"
+        },
+        "publications": [
+            {
+                "title": "Prostate158 - An expert-annotated 3T MRI dataset and algorithm for prostate cancer detection",
+                "uri": "https://doi.org/10.1016/j.compbiomed.2022.105817"
+            }
+        ],
+        "github": "https://github.com/Project-MONAI/model-zoo/tree/dev/models/prostate_mri_anatomy",
+        "zenodo": "https://zenodo.org/records/6481141"
+    },
+    "info": {
+        "use": {
+            "title": "Intended Use",
+            "text": "This model is intended to perform prostate regions anatomy segmentation in MR ADC and T2 scans. The slice thickness of the training data is 3mm. T2 input modality is used during training. To align with the model training pre-processing scheme, center-cropping of the input T2 image is recommended. No endorectal coil was present during training."
+        },
+        "analyses": {
+            "title": "Quantitative Analyses",
+            "text": "The model's performance was assessed using the Dice Coefficient, on an internal test set and ProstateX collection. The complete breakdown of the metrics can be consulted in the publication.",
+            "references": [
+                {
+                    "label": "Prostate158 - An expert-annotated 3T MRI dataset and algorithm for prostate cancer detection",
+                    "uri": "https://doi.org/10.1016/j.compbiomed.2022.105817"
+                }
+            ]
+        },
+        "evaluation": {
+            "title": "External Evaluation Data",
+            "text": "The evaluation datasets consist of 186 ProstateX samples and 32 prostate MRI Medical Decathlon dataset samples.",
+            "tables": [
+                {
+                    "label": "Medical Decathlon mean DSC for the segmentation of the central gland and peripheral zone",
+                    "entries": {
+                        "Central gland": "0.82",
+                        "Peripheral zone": "0.64"
+                    }
+                },
+                {
+                    "label": "ProstateX mean DSC for the segmentation of the central gland and peripheral zone",
+                    "entries": {
+                        "Central gland": "0.86",
+                        "Peripheral zone": "0.71"
+                    }
+                }
+            ],
+            "references": [{
+                    "label": "Medical Segmentation Decathlon",
+                    "uri": "https://www.nature.com/articles/s41467-022-30695-9"
+                },
+                {
+                    "label": "Quality control and whole-gland, zonal and lesion annotations for the PROSTATEx challenge public dataset",
+                    "uri": "https://www.sciencedirect.com/science/article/abs/pii/S0720048X21001273"
+                }]
+        },
+        "training": {
+            "title": "Training Data",
+            "text": "The training dataset consists of 139 MRI cases containing the prostate, from the Prostate158 collection. The authors report the following characteristics for the T2 imaging sequeneces:",
+            "tables": [
+                {
+                    "label": "Prostate158 dataset (training)",
+                    "entries": {
+                        "Slice Thickness": "3 mm",
+                        "In-Plane Resolution": "0.47 mm"
+                    }
+                }
+            ],
+            "references": [
+                {
+                    "label": "Prostate158 dataset (Zenodo access)",
+                    "uri": "https://zenodo.org/records/6481141"
+                }
+            ]
+        }
+    }
+}

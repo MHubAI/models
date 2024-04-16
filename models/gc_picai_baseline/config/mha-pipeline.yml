@@ -1,0 +1,31 @@
+general:
+  data_base_dir: /app/data
+  version: 1.0
+  description: Prostate MRI classification MHA pipeline (mha to json)
+
+execute:
+- FileStructureImporter
+- PicaiBaselineRunner
+- ReportExporter
+- DataOrganizer
+
+modules:
+  FileStructureImporter:
+    input_dir: input_data
+    structures:
+      - $sid@instance/images/transverse-adc-prostate-mri/adc.mha@mha:mod=mradc
+      - $sid/images/transverse-t2-prostate-mri/t2w.mha@mha:mod=mrt2
+      - $sid/images/transverse-hbv-prostate-mri/hbv.mha@mha:mod=mrhbv
+    import_id: sid
+
+  ReportExporter:
+    format: compact
+    includes:
+      - data: prostate_cancer_likelihood
+        label: prostate_cancer_likelihood
+        value: value
+
+  DataOrganizer:
+    targets:
+      - json:mod=report-->[i:sid]/cspca-case-level-likelihood.json
+      - mha:mod=hm-->[i:sid]/cspca-detection-map.mha

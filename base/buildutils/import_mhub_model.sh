@@ -40,4 +40,16 @@ git init
 git fetch ${REPO_URL} ${REPO_BRANCH}
 git merge FETCH_HEAD
 git sparse-checkout set "models/${MODEL_NAME}"
+
+# get the commit hash, store it in a file and print it out
+MODEL_COMMIT_HASH=$(git rev-parse HEAD)
+echo ${MODEL_COMMIT_HASH} > buildutils/model_commit_hash.txt
+
+# print models commit
+echo
+echo "Imported model definition from MHub models repository."
+echo "└── COMMIT HASH .... ${MODEL_COMMIT_HASH}"
+echo
+
+# remove the .git folder
 rm -r .git

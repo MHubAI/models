@@ -1,0 +1,141 @@
+{
+    "id": "...",
+    "name": "nnunet_prostate_task24",
+    "title": "nnU-Net (Whole prostate segmentation)",
+    "summary": {
+        "description": "nnU-Net's whole prostate segmentation model is a single-modality (i.e. T2) input AI-based pipeline for the automated segmentation of the whole prostate on MRI scans.",
+        "inputs": [
+            {
+                "label": "T2 input image",
+                "description": "The T2 axial-acquired sequence being the input image",
+                "format": "DICOM",
+                "modality": "MR",
+                "bodypartexamined": "Prostate",
+                "slicethickness": "3.6 mm",
+                "non-contrast": true,
+                "contrast": false
+            }
+        ],
+        "outputs": [
+            {
+                "type": "Segmentation",
+                "classes": [
+                    "PROSTATE"
+                ]
+            }
+        ],
+        "model": {
+            "architecture": "U-net",
+            "training": "supervised",
+            "cmpapproach": "3D"
+        },
+        "data": {
+            "training": {
+                "vol_samples": 50
+            },
+            "evaluation": {
+                "vol_samples": 30
+            },
+            "public": true,
+            "external": false
+        }
+    },
+    "details": {
+        "name": "nnU-Net whole prostate segmentation model",
+        "version": "1.0.0",
+        "devteam": "MIC-DKFZ (Helmholtz Imaging Applied Computer Vision Lab)",
+        "type": "nnU-Net (U-Net structure, optimized by data-driven heuristics)",
+        "date": {
+            "weights": "2020",
+            "code": "2020",
+            "pub": "2020"
+        },
+        "cite": "Isensee, F., Jaeger, P. F., Kohl, S. A., Petersen, J., & Maier-Hein, K. H. (2020). nnU-Net: a self-configuring method for deep learning-based biomedical image segmentation. Nature Methods, 1-9.",
+        "license": {
+            "code": "Apache 2.0",
+            "weights": "CC BY-NC 4.0"
+        },
+        "publications": [
+            {
+                "title": "nnU-Net: a self-configuring method for deep learning-based biomedical image segmentation",
+                "uri": "https://www.nature.com/articles/s41592-020-01008-z"
+            }
+        ],
+        "github": "https://github.com/MIC-DKFZ/nnUNet/tree/nnunetv1",
+        "zenodo": "https://zenodo.org/record/4485926"
+    },
+    "info": {
+        "use": {
+            "title": "Intended Use",
+            "text": "This model is intended to perform prostate anatomy segmentation in MR T2 scans. The slice thickness of the training data is 2.2~4mm. Endorectal coil was present during training."
+        },
+        "analyses": {
+            "title": "Quantitative Analyses",
+            "text": "The model's performance was assessed using the Dice Coefficient, in the context of the Promise12 challenge. A brief summary of the evaluation results on internal data can be found in the evaluation section. The complete breakdown of the metrics can be consulted on GrandChallenge [1] and is reported in the supplementary material to the publication [2].",
+            "references": [
+                {
+                    "label": "Evaluation of prostate segmentation algorithms for MRI: The PROMISE12 challenge",
+                    "uri": "https://doi.org/10.1016/j.media.2013.12.002"
+                },
+                {
+                    "label": "nnU-Net: a self-configuring method for deep learning-based biomedical image segmentation",
+                    "uri": "https://www.nature.com/articles/s41592-020-01008-z"
+                }
+            ]
+        },
+        "evaluation": {
+            "title": "Evaluation Data",
+            "text": "The evaluation dataset consists of 30 test samples coming from the Promise12 challenge.",
+            "tables": [
+                {
+                    "label": "Promise12 training set Average DSC using five fold cross-validation",
+                    "entries": {
+                        "2D": "0.8932",
+                        "3d_fullres": "0.8891",
+                        "Best ensemble (2D + 3D_fullres)": "0.9029",
+                        "Postprocessed": "0.9030"
+                    }
+                },
+                {
+                    "label": "Promise12 test set Average DSC",
+                    "entries": {
+                        "Test set average DSC": "0.9194"
+                    }
+                }
+            ],
+            "references": [
+                {
+                    "label": "Evaluation of prostate segmentation algorithms for MRI: The PROMISE12 challenge",
+                    "uri": "https://doi.org/10.1016/j.media.2013.12.002"
+                },
+                {
+                    "label": "PROMISE12 dataset (direct download)",
+                    "uri": "https://zenodo.org/records/8026660"
+                }
+            ]
+        },
+        "training": {
+            "title": "Training Data",
+            "text": "The training dataset consists of 50 MRI cases containing the prostate, from the Promise12 challenge. The authors report the following characteristics for the training dataset:",
+            "tables": [
+                {
+                    "label": "Medical Image Decathlon dataset (training)",
+                    "entries": {
+                        "Slice Thickness": "2.2~4 mm",
+                        "In-Plane Resolution": "0.27 mm"
+                    }
+                }
+            ],
+            "references": [
+                {
+                    "label": "Evaluation of prostate segmentation algorithms for MRI: The PROMISE12 challenge",
+                    "uri": "https://doi.org/10.1016/j.media.2013.12.002"
+                },
+                {
+                    "label": "PROMISE12 dataset (direct download)",
+                    "uri": "https://zenodo.org/records/8026660"
+                }
+            ]
+        }
+    }
+}
