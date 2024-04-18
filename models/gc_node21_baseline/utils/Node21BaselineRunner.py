@@ -8,14 +8,14 @@ Author: Sil van de Leemput
 Email:  sil.vandeleemput@radboudumc.nl
 -------------------------------------------------------------
 """
-import SimpleITK
 import json
+import sys
 from pathlib import Path
 
 from mhubio.core import Instance, InstanceData, IO, Module, Meta, ValueOutput, OutputDataCollection
 
-# Import Node21 baseline nodule detection algorithm from the node21_detection_baseline repo
-from process import Noduledetection
+
+CLI_PATH = Path(__file__).parent.absolute() / "cli.py"
 
 
 @ValueOutput.Name('noduleprob')
@@ -44,16 +44,25 @@ class Node21BaselineRunner(Module):
     @IO.OutputDatas('nodule_probs', NoduleProbability)
     @IO.OutputDatas('nodule_bounding_boxes', NoduleBoundingBox)
     def task(self, instance: Instance, in_data: InstanceData, out_data: InstanceData, nodule_probs: OutputDataCollection, nodule_bounding_boxes: OutputDataCollection) -> None:
-        # Read input image
-        input_image = SimpleITK.ReadImage(in_data.abspath)
+        # build command (order matters!)
+        cmd = [
+            sys.executable,
+            str(CLI_PATH),
+            in_data.abspath,
+            out_data.abspath
+        ]
 
-        # Run nodule detection algorithm on the input image and generate predictions
-        tmp_path = Path("/app/tmp")
-        predictions = Noduledetection(input_dir=tmp_path, output_dir=tmp_path).predict(input_image=input_image)
+        # run the command as subprocess
+        self.subprocess(cmd, text=True)
 
-        # Export the predictions to a JSON file
-        with open(out_data.abspath, "w") as f:
-            json.dump(predictions, f, indent=4)
+        # Confirm the expected output file was generated
+        if not Path(out_data.abspath).is_file():
+            raise FileNotFoundError(f"Node21BaseLineRunner - Could not find the expected "
+                                    f"output file: {out_data.abspath}, something went wrong running the CLI.")
+
+        # Read the predictions to a JSON file
+        with open(out_data.abspath, "r") as f:
+            predictions = json.load(f)
 
         # Export the relevant data
         for nodule_idx, box in enumerate(predictions["boxes"]):
