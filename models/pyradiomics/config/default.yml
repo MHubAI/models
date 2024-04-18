@@ -29,4 +29,5 @@ modules:
   DataOrganizer:
     targets:
     - csv-->[i:sid]/pyradiomics.csv
+  # - nifit:mod=seg:origin=dicomseg-->[i:sid]/masks/[basename]
   # - nifti-->[i:sid]/nifti/[d:mod]/[basename]
