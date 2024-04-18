@@ -1,9 +1,9 @@
 {
   "id": "37ec076c-6cca-4601-a7fc-bdbe7eecbdcf",
-  "name": "node21_baseline",
+  "name": "gc_node21_baseline",
   "title": "NODE21 challenge baseline",
   "summary": {
-    "description": "The NODE21 challenge was to detect and generate nodules in chest radiographs, this particular model focuses on detecting nodules.",
+    "description": "This model detects the location of nodules in Chest radiographs, and generates bounding boxes around these nodules.",
     "inputs": [
       {
         "label": "Chest radiograph",
@@ -32,10 +32,10 @@
     },
     "data": {
       "training": {
-        "vol_samples": 4382
+        "vol_samples": 4882
       },
       "evaluation": {
-        "vol_samples": 500
+        "vol_samples": 579
       },
       "public": false,
       "external": false
@@ -43,20 +43,25 @@
   },
   "details": {
     "name": "NODE21 baseline",
-    "version": "6e57f5c564eb1d527e0f030de9755179b213731a",
-    "devteam": "E. Sogancioglu & K. Murphy",
-    "type": "Classification",
+    "version": "v1.0addedtag",
+    "devteam": "DIAGNijmegen (Diagnostic Image Analysis Group, Radboud UMC, The Netherlands)",
+    "type": "Faster R-CNN architecture using ResNet50 as the backbone.",
     "date": {
       "weights": "2021-11-01",
       "code": "2022-02-01",
       "pub": ""
     },
-    "cite": "",
+    "cite": "E. Sogancioglu et al., Nodule detection and generation on chest X-rays: NODE21 Challenge, in IEEE Transactions on Medical Imaging, doi: 10.1109/TMI.2024.3382042.",
     "license": {
       "code": "Apache 2.0",
       "weights": "Apache 2.0"
     },
-    "publications": [],
+    "publications": [
+      {
+        "title": "Nodule detection and generation on chest X-rays: NODE21 Challenge",
+        "uri": "https://ieeexplore.ieee.org/document/10479589"
+      }
+    ],
     "github": "https://github.com/node21challenge/node21_detection_baseline",
     "zenodo": "",
     "colab": "",
@@ -65,24 +70,51 @@
   "info": {
     "use": {
       "title": "Intended use",
-      "text": "Prediction of the location and likelihood of nodules in frontal chest radiographs.",
-      "references": [],
+      "text": "The algorithm processes a frontal radiograph of the chest and predicts the location and likelihood of nodules.",
+      "references": [{
+          "label": "Node21 baseline algorithm on grand-challenge",
+          "uri": "https://grand-challenge.org/algorithms/node21_baseline_detector/"
+        }],
       "tables": []
     },
     "analyses": {
       "title": "Evaluation",
-      "text": "The submitted algorithms was evaluated on the experimental test set. Specifically the AUC score and the sensitivity at various average false positive rates using FROC (1/4, 1/2, 1) were computed. The final metric used to rank the leaderboard will be calculated as follows: rank_metric = (0.75 * AUC) + (0.25 * Sensitivity at 1/4 FP/image) ",
+      "text": "The evaluation of this model was performed in two parts, firstly as part of the Node21 challenge [1], and secondly as part of the experiments for the publication. Specifically the AUC score and the sensitivity at various average false positive rates using FROC (1/4, 1/2, 1) were computed. The final metric used to rank the leaderboard will be calculated as follows: rank_metric = (0.75 * AUC) + (0.25 * Sensitivity at 1/4 FP/image) [2]",
       "references": [
         {
           "label": "NODE21 challenge details",
           "uri": "https://node21.grand-challenge.org/Details/"
+        },
+        {
+          "label": "NODE21 baseline algorithm evaluation results on grand-challenge.",
+          "uri": "https://node21.grand-challenge.org/evaluation/a626f004-1c38-45e1-9e35-89ccfb807e2d/"
         }
       ],
-      "tables": []
+      "tables": [
+        {
+          "label": "Evaluation results on the first NODE21 testing cohort of 281 cases as reported in the NODE21 challenge.",
+          "entries": {
+            "AUC": 0.839,
+            "sensitivity_5": 0.532,
+            "sensitivity_25": 0.443,
+            "sensitivity_125": 0.350,
+            "final_ranking": 0.740
+          }
+        },
+        {
+          "label": "Evaluation results on the second NODE21 testing cohort of 298 cases as described in the publication.",
+          "entries": {
+            "AUC": 0.816,
+            "sensitivity_5": 0.714,
+            "sensitivity_25": 0.635,
+            "sensitivity_125": 0.504
+          }
+        }
+      ]
     },
     "evaluation": {
       "title": "Evaluation data",
-      "text": "The test set consists of two private datasets of 281 frontal chest X-rays, 166 of which are positive (with nodules)",
+      "text": "The model was evaluated with two separate, private datasets [1]. The first dataset consists of 281 frontal chest X-rays, 166 of which are positive (with nodules). The second dataset used in the experiments described in the publication consist of 298 frontal radiographs with or without nodules. They originate from multiple medical centers and have been acquired with multiple different x-ray machines.",
       "references": [
         {
           "label": "NODE21 data section",
@@ -93,27 +125,15 @@
     },
     "training": {
       "title": "Training data",
-      "text": "For the NODE21 challenge four publicly available training datasets were combined: 1. JSRT 2. PadChest 3. Chestx-ray14 4. Open-I",
+      "text": "The model was trained on the NODE21 training dataset [1] that was preprocessed with the publicly available OpenCXR library [2]. This dataset consist of 4882 radiographs, of which 1476 contain nodules. In order to tackle the data imbalance issue, images with nodules were oversampled until the number of negative images was reached. The model was trained for 30 epochs, and early stopping was used in case of no improvement in the validation set performance for 5 consecutive epochs",
       "references": [
         {
-          "label": "NODE21 training data (combined)",
+          "label": "NODE21 training data",
           "uri": "https://zenodo.org/record/5548363"
         },
         {
-          "label": "JSRT",
-          "uri": "https://dx.doi.org/10.2214/ajr.174.1.1740071"
-        },
-        {
-          "label": "PadChest",
-          "uri": "https://dx.doi.org/10.1016/j.media.2020.101797"
-        },
-        {
-          "label": "Chestx-ray14",
-          "uri": "https://dx.doi.org/10.1109/cvpr.2017.369"
-        },
-        {
-          "label": "Open-I",
-          "uri": "https://dx.doi.org/10.5626/JCSE.2012.6.2.168"
+          "label": "OpenCXR library",
+          "uri": "https://github.com/DIAGNijmegen/opencxr"
         }
       ],
       "tables": []
