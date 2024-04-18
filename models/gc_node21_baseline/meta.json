@@ -94,20 +94,20 @@
         {
           "label": "Evaluation results on the first NODE21 testing cohort of 281 cases as reported in the NODE21 challenge.",
           "entries": {
-            "AUC": 0.839,
-            "sensitivity_5": 0.532,
-            "sensitivity_25": 0.443,
-            "sensitivity_125": 0.350,
-            "final_ranking": 0.740
+            "AUC": "0.839",
+            "sensitivity_5": "0.532",
+            "sensitivity_25": "0.443",
+            "sensitivity_125": "0.350",
+            "final_ranking": "0.740"
           }
         },
         {
           "label": "Evaluation results on the second NODE21 testing cohort of 298 cases as described in the publication.",
           "entries": {
-            "AUC": 0.816,
-            "sensitivity_5": 0.714,
-            "sensitivity_25": 0.635,
-            "sensitivity_125": 0.504
+            "AUC": "0.816",
+            "sensitivity_5": "0.714",
+            "sensitivity_25": "0.635",
+            "sensitivity_125": "0.504"
           }
         }
       ]
