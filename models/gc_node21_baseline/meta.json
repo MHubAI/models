@@ -43,7 +43,7 @@
   },
   "details": {
     "name": "NODE21 baseline",
-    "version": "v1.0addedtag",
+    "version": "1.0",
     "devteam": "DIAGNijmegen (Diagnostic Image Analysis Group, Radboud UMC, The Netherlands)",
     "type": "Faster R-CNN architecture using ResNet50 as the backbone.",
     "date": {
