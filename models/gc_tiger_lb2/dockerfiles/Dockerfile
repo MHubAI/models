@@ -20,13 +20,10 @@ RUN apt-get update && \
     rm ASAP-2.1-py38-Ubuntu2004.deb
 
 # Install tiger LB2 algorithm
-#   - Clone tiger LB2 codebase (master branch, fixed to commit 720f8dfca4624792c8e57915c4222efec5a0c2d4)
+#   - Clone tiger LB2 codebase (master branch, fixed to version 0.1.0)
 #   - Subsequently we remove the .git directory to procuce a compacter docker layer
-#   - We also fix a reproducibility issue with the segmentation prediction by fixing the torch random seed
-RUN git clone https://github.com/vuno/tiger_challenge.git /vuno && \
-    cd /vuno && git reset --hard 720f8dfca4624792c8e57915c4222efec5a0c2d4 && \
-    rm -rf /vuno/.git && \
-    sed -i "238i \        torch.manual_seed(0)" /vuno/segmentation/inference.py
+RUN git clone --depth 1 --branch 0.1.0 https://github.com/DIAGNijmegen/tiger_vuno_algorithm /vuno && \
+    rm -rf /vuno/.git
 
 # Setup and install algorithm pipenv environment
 #   1. Ensure we configure a new empty pipenv for Python 3.8

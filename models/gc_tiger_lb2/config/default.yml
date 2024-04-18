@@ -29,3 +29,4 @@ modules:
     require_data_confirmation: true
     targets:
       - json-->[i:sid]/gc_tiger_lb2_til_score.json
+      - mha:mod=seg-->[i:sid]/gc_tiger_lb2_segmentation.mha
