@@ -128,7 +128,7 @@
   "info": {
     "use": {
       "title": "Intended use",
-      "text": "This model is intended to be used with T1 or T2 weighted MRI images of the lumbar spine in sagittal orientation only. Ensure that the lumbar spine is visible in the input MRI images to ensure reliable results. This algorithm is available on Grand Challenge [1] and is used as baseline for the SPIDER challenge [2].",
+      "text": "This model is intended to be used with T1 or T2 weighted MRI images of the lumbar spine. It is important to provide the input image in sagittal orientation for proper functioning of the model. Ensure that the lumbar spine is visible in the input MRI images to ensure reliable results. This algorithm is available on Grand Challenge [1] and is used as baseline for the SPIDER challenge [2].",
       "references": [
         {
           "label": "SPIDER baseline algorithm on grand-challenge",
@@ -179,8 +179,12 @@
     },
     "training": {
       "title": "Training data",
-      "text": "For training a large, publicly available, multi-center, lumbar spine MRI dataset was used. It includes reference segmentations of vertebrae, intervertebral discs (IVDs), and spinal canal. The dataset includes 447 sagittal T1 and T2 MRI images from 218 patients with a history of low back pain. For 20 patients from the UMC dataset the images were fully, manually annotated. This model is based on a previously developed model trained on both CT and MRI data [1]. It was extended by also segmenting the IVDs and spinal canal, using MRI only. For training details see Baseline 1 in the associated paper [2].",
+      "text": "For training a large, publicly available, multi-center, lumbar spine MRI dataset was used [1]. It includes reference segmentations of vertebrae, intervertebral discs (IVDs), and spinal canal. The dataset includes 447 sagittal T1 and T2 MRI images from 218 patients with a history of low back pain. For 20 patients from the UMC dataset the images were fully, manually annotated. This model is based on a previously developed model trained on both CT and MRI data [2]. It was extended by also segmenting the IVDs and spinal canal, using MRI only. For training details see Baseline 1 in the associated paper [3].",
       "references": [
+        {
+          "label": "The public dataset of lumbar spine MRI",
+          "uri": "https://doi.org/10.5281/zenodo.10159290"
+        },
         {
           "label": "Iterative fully convolutional neural networks for automatic vertebra segmentation and identification",
           "uri": "https://doi.org/10.1016/j.media.2019.02.005"
@@ -211,7 +215,7 @@
     },
     "limitations": {
       "title": "Limitation",
-      "text": "This algorithm was developed for research purposes only.",
+      "text": "This algorithm was developed for research purposes only. Ensure that the lumbar spine is visible in the input MRI image to ensure reliable results. When the lumbar spine is absent, the model will produce unreliable labels for the detected structures.",
       "references": [],
       "tables": []
     }
