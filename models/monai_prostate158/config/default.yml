@@ -1,0 +1,36 @@
+general:
+  data_base_dir: /app/data
+  version: 1.0
+  description: default configuration for MONAI Prostate158 MR Prostate zonal regions segmentation (dicom to dicom)
+
+execute:
+- DicomImporter
+- NiftiConverter
+- Prostate158Runner
+- DsegConverter
+- DataOrganizer
+
+modules:
+  DicomImporter:
+    source_dir: input_data
+    import_dir: sorted_data
+    sort_data: true
+    meta: 
+      mod: '%Modality'
+
+  NiftiConverter:
+    in_datas: dicom:mod=mr
+    engine: dcm2niix
+
+  Prostate158Runner:
+    in_data: nifti:mod=mr
+    
+  DsegConverter:
+    source_segs: nifti:mod=seg:roi=PROSTATE_TRANSITION_ZONE,PROSTATE_PERIPHERAL_ZONE
+    target_dicom: dicom:mod=mr
+    model_name: 'MONAI Prostate158'
+    skip_empty_slices: True
+
+  DataOrganizer:
+    targets:
+    - dicomseg-->[i:sid]/monai_prostate158.seg.dcm

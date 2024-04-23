@@ -1,0 +1,223 @@
+{
+  "id": "aed5a82e-2188-4d50-83f9-45bce09f9daa",
+  "name": "gc_spider_baseline",
+  "title": "SPIDER Baseline algorithm: Iterative Instance Segmentation of the spine",
+  "summary": {
+    "description": "This model segments three anatomical structures in lumbar spine MRI: vertebrae, intervertebral discs (IVDs), and spinal canal. Each vertebrae and IVD is labeled according to standard naming convention.",
+    "inputs": [
+      {
+        "label": "Sagittal Lumbar Spine T1 T2 MRI",
+        "description": "Sagittal T1 or T2 weighted MRI of the lumbar spine. It is important to provide the input image in sagittal orientation for proper functioning of the model.",
+        "format": "DICOM",
+        "modality": "MR",
+        "bodypartexamined": "Spine",
+        "slicethickness": "2.0mm",
+        "non-contrast": false,
+        "contrast": false
+      }
+    ],
+    "outputs": [
+      {
+        "type": "Segmentation",
+        "label": "Sagittal Spine Segmentation",
+        "description": "DICOM Segmentation of the spine.",
+        "classes": [
+          "VERTEBRAE_L5",
+          "VERTEBRAE_L4",
+          "VERTEBRAE_L3",
+          "VERTEBRAE_L2",
+          "VERTEBRAE_L1",
+          "VERTEBRAE_T12",
+          "VERTEBRAE_T11",
+          "VERTEBRAE_T10",
+          "VERTEBRAE_T9",
+          "VERTEBRAE_T8",
+          "VERTEBRAE_T7",
+          "VERTEBRAE_T6",
+          "VERTEBRAE_T5",
+          "VERTEBRAE_T4",
+          "VERTEBRAE_T3",
+          "VERTEBRAE_T2",
+          "VERTEBRAE_T1",
+          "VERTEBRAE_C7",
+          "VERTEBRAE_C6",
+          "VERTEBRAE_C5",
+          "VERTEBRAE_C4",
+          "VERTEBRAE_C3",
+          "VERTEBRAE_C2",
+          "VERTEBRAE_C1",
+          "VERTEBRAE_DISK_L5S1",
+          "VERTEBRAE_DISK_L4L5",
+          "VERTEBRAE_DISK_L3L4",
+          "VERTEBRAE_DISK_L2L3",
+          "VERTEBRAE_DISK_L1L2",
+          "VERTEBRAE_DISK_T12L1",
+          "VERTEBRAE_DISK_T11T12",
+          "VERTEBRAE_DISK_T10T11",
+          "VERTEBRAE_DISK_T9T10",
+          "VERTEBRAE_DISK_T8T9",
+          "VERTEBRAE_DISK_T7T8",
+          "VERTEBRAE_DISK_T6T7",
+          "VERTEBRAE_DISK_T5T6",
+          "VERTEBRAE_DISK_T4T5",
+          "VERTEBRAE_DISK_T3T4",
+          "VERTEBRAE_DISK_T2T3",
+          "VERTEBRAE_DISK_T1T2",
+          "VERTEBRAE_DISK_C7T1",
+          "VERTEBRAE_DISK_C6C7",
+          "VERTEBRAE_DISK_C5C6",
+          "VERTEBRAE_DISK_C4C5",
+          "VERTEBRAE_DISK_C3C4",
+          "VERTEBRAE_DISK_C2C3",
+          "SPINAL_CANAL"
+        ]
+      },
+      {
+        "type": "Prediction",
+        "label": "Raw Sagittal Spine Segmentation",
+        "valueType": "Raw segmentation image",
+        "description": "The raw segmentation of the segmented structures as mha. The vertebrae are subsequently labeled between 1 and 24, with 24 being the lowest lumbar vertebra (L5). Vertebra which are not completely visible within the field of view of the MR image are labeled between 101 and 124. The intervertebral discs are labeled between 201 and 224 and are decided by the vertebra above it. The spinal canal is labeled as 100."
+      }
+    ],
+    "model": {
+      "architecture": "3D U-Net-like fully-convolutional neural network",
+      "training": "supervised",
+      "cmpapproach": "2D"
+    },
+    "data": {
+      "training": {
+        "vol_samples": 447
+      },
+      "evaluation": {
+        "vol_samples": 87
+      },
+      "public": true,
+      "external": false
+    }
+  },
+  "details": {
+    "name": "SPIDER Baseline algorithm: Iterative Instance Segmentation of the spine",
+    "version": "0.1.0",
+    "devteam": "DIAGNijmegen (Diagnostic Image Analysis Group, Radboud UMC, The Netherlands)",
+    "type": "U-net",
+    "date": {
+      "weights": "",
+      "code": "2023-08-15",
+      "pub": "2023-06-23"
+    },
+    "cite": "van der Graaf, J.W., van Hooff, M.L., Buckens, C.F.M. et al. Lumbar spine segmentation in MR images: a dataset and a public benchmark. Sci Data 11, 264 (2024). doi: 10.1038/s41597-024-03090-w",
+    "license": {
+      "code": "Apache 2.0",
+      "weights": "Apache 2.0"
+    },
+    "publications": [
+      {
+        "title": "Lumbar spine segmentation in MR images: a dataset and a public benchmark",
+        "uri": "https://doi.org/10.1038/s41597-024-03090-w"
+      },
+      {
+        "title": "Iterative fully convolutional neural networks for automatic vertebra segmentation and identification",
+        "uri": "https://doi.org/10.1016/j.media.2019.02.005"
+      }
+    ],
+    "github": "https://github.com/DIAGNijmegen/SPIDER-Baseline-IIS",
+    "zenodo": "",
+    "colab": "",
+    "slicer": false
+  },
+  "info": {
+    "use": {
+      "title": "Intended use",
+      "text": "This model is intended to be used with T1 or T2 weighted MRI images of the lumbar spine. It is important to provide the input image in sagittal orientation for proper functioning of the model. Ensure that the lumbar spine is visible in the input MRI images to ensure reliable results. This algorithm is available on Grand Challenge [1] and is used as baseline for the SPIDER challenge [2].",
+      "references": [
+        {
+          "label": "SPIDER baseline algorithm on grand-challenge",
+          "uri": "https://grand-challenge.org/algorithms/spider-baseline-iis/"
+        },
+        {
+          "label": "SPIDER challenge details",
+          "uri": "https://spider.grand-challenge.org/"
+        }
+      ],
+      "tables": []
+    },
+    "analyses": {
+      "title": "Evaluation",
+      "text": "The segmentation performance was evaluated as part of the SPIDER challenge using two metrics: (1) The Dice coefficient to measure the volume overlap, and (2) the average absolute surface distance (ASD) as an indication of the segmentation accuracy along the surface of all structures.",
+      "references": [
+        {
+          "label": "SPIDER baseline algorithm evaluation results on grand-challenge",
+          "uri": "https://spider.grand-challenge.org/evaluation/11bf4d89-6768-4e2f-b540-60178ba33a95/"
+        }
+      ],
+      "tables": [
+        {
+          "label": "Dice score.",
+          "entries":
+          {
+            "Vertebrae": "0.93 ± 0.05",
+            "Intervertebral discs": "0.84 ± 0.10",
+            "Spinal canal": "0.92 ± 0.04"
+          }
+        },
+        {
+          "label": "ASD (mm).",
+          "entries":
+          {
+            "Vertebrae": "0.48 ± 0.95",
+            "Intervertebral discs": "0.54 ± 0.45",
+            "Spinal canal": "0.39 ± 0.45"
+          }
+        }
+      ]
+    },
+    "evaluation": {
+      "title": "Evaluation data",
+      "text": "The test set consists of 87 lumbar MRI images from 39 patients, which includes the fully manually annotated images of 15 patients, randomly selected from the set of fully annotated dataset, see Training data.",
+      "references": [],
+      "tables": []
+    },
+    "training": {
+      "title": "Training data",
+      "text": "For training a large, publicly available, multi-center, lumbar spine MRI dataset was used [1]. It includes reference segmentations of vertebrae, intervertebral discs (IVDs), and spinal canal. The dataset includes 447 sagittal T1 and T2 MRI images from 218 patients with a history of low back pain. For 20 patients from the UMC dataset the images were fully, manually annotated. This model is based on a previously developed model trained on both CT and MRI data [2]. It was extended by also segmenting the IVDs and spinal canal, using MRI only. For training details see Baseline 1 in the associated paper [3].",
+      "references": [
+        {
+          "label": "The public dataset of lumbar spine MRI",
+          "uri": "https://doi.org/10.5281/zenodo.10159290"
+        },
+        {
+          "label": "Iterative fully convolutional neural networks for automatic vertebra segmentation and identification",
+          "uri": "https://doi.org/10.1016/j.media.2019.02.005"
+        },
+        {
+          "label": "Lumbar spine segmentation in MR images: a dataset and a public benchmark",
+          "uri": "https://doi.org/10.1038/s41597-024-03090-w"
+        }
+      ],
+      "tables": [
+        {
+          "label": "Number of patient data provided by the various hospitals",
+          "entries":
+          {
+            "University Medical Center (UMC)": "41",
+            "Regional Hospital 1": "43",
+            "Regional Hospital 2": "44",
+            "Orthopedic Hospital": "90"
+          }
+        }
+      ]
+    },
+    "ethics": {
+      "title": "",
+      "text": "",
+      "references": [],
+      "tables": []
+    },
+    "limitations": {
+      "title": "Limitation",
+      "text": "This algorithm was developed for research purposes only. Ensure that the lumbar spine is visible in the input MRI image to ensure reliable results. When the lumbar spine is absent, the model will produce unreliable labels for the detected structures.",
+      "references": [],
+      "tables": []
+    }
+  }
+}
