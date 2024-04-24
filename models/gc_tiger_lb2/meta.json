@@ -23,6 +23,13 @@
         "label": "TIL score",
         "description": "Percentage of stromal area covered by tumour infiltrating lymphocytes. Values between 0 (percent) to 100 (percent).",
         "classes": []
+      },
+      {
+        "type": "Prediction",
+        "valueType": "Segmentation mask",
+        "label": "WSI Tumor and stroma segmentation mask",
+        "description": "WSI tumor and stroma segmentation mask (MHA) used as first step in the pipeline. This segmentation mask was not validated, use it at your own risk! The labels are: 1-tumor, 2-stroma, 3-rest.",
+        "classes": []
       }
     ],
     "model": {
