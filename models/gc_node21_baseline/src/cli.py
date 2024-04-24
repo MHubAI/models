@@ -30,6 +30,17 @@ def run_classifier(input_cxr: Path, output_json_file: Path):
         tmp_path = Path("/app/tmp")
         predictions = Noduledetection(input_dir=tmp_path, output_dir=tmp_path).predict(input_image=input_image)
 
+        # sort predictions on probability first (descending), corner positions second (ascending)
+        # this was implemented because the old sorting only sorts on probability (descending) and can give different
+        # results if two probabilities are the same
+        predictions["boxes"] = list(
+            sorted(
+                predictions["boxes"],
+                key=lambda x : tuple([-x["probability"]] + [tuple(c) for c in x["corners"]]),
+                reverse=False
+            )
+        )
+
         # Export the predictions to a JSON file
         with open(output_json_file, "w") as f:
             json.dump(predictions, f, indent=4)

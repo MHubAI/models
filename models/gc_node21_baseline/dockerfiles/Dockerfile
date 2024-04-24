@@ -10,10 +10,10 @@ RUN pip3 install --no-cache-dir torch==2.0.1+cu118 torchvision==0.15.2+cu118 -f 
 RUN apt update && apt install -y --no-install-recommends git-lfs && rm -rf /var/lib/apt/lists/*
 
 # Install node21 baseline algorithm
-#  - Git clone to tmp directory (main branch, tag v1.0addedtag)
+#  - Git clone to tmp directory (main branch, tag v1.1)
 #  - Extract relevant files to /opt/algorithm/
 #  - Remove tmp directory
-RUN git clone --depth 1 --branch v1.0addedtag https://github.com/node21challenge/node21_detection_baseline.git /tmp/algorithm && \
+RUN git clone --depth 1 --branch v1.1 https://github.com/node21challenge/node21_detection_baseline.git /tmp/algorithm && \
     mkdir -p /opt/algorithm && \
     mv /tmp/algorithm/process.py /opt/algorithm/process.py && \
     mv /tmp/algorithm/postprocessing.py /opt/algorithm/postprocessing.py && \

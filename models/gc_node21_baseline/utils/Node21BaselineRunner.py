@@ -15,7 +15,7 @@ from pathlib import Path
 from mhubio.core import Instance, InstanceData, IO, Module, Meta, ValueOutput, OutputDataCollection
 
 
-CLI_PATH = Path(__file__).parent.absolute() / "cli.py"
+CLI_PATH = Path(__file__).parent.parent.absolute() / "src" / "cli.py"
 
 
 @ValueOutput.Name('noduleprob')
