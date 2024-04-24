@@ -4,17 +4,16 @@ general:
   description: 3D Slicer configuration for nnuner pancreas model
 
 execute:
-  - NrrdImporter
+  - FileStructureImporter
   - NiftiConverter
   - NNUnetRunner
   - JsonSegExporter
   - DataOrganizer
 
 modules:
-
-  NrrdImporter:
-    input_dir: input_data
-    input_file_name: image.nrrd
+  FileStructureImporter:
+    structures: 
+    - image.nrrd@instance@nrrd:mod=ct
 
   NNUnetRunner:
     input_data_type: nifti:mod=ct

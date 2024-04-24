@@ -27,7 +27,7 @@ modules:
     prob_map_segments: [Background, Pancreas, Pancreatic_cancer]
     
   DsegConverter:
-    source_segs: [nifti:mod=seg:roi=*]
+    source_segs: nifti:mod=seg:roi=*
     model_name: NNUnet Pancreas
     skip_empty_slices: True
 

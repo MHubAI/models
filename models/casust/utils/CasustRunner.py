@@ -42,7 +42,7 @@ class CasustRunner(ModelRunner):
         command += ['--tta', str(self.test_time_augmentation)]
 
         self.v("> Running preparation (1/3): ", " ".join(command))
-        subprocess.run(command)
+        self.subprocess(command)
 
         # 2 predict
         command =  [ 'python3', 'models/casust/src/cli/predict.py']
@@ -52,7 +52,7 @@ class CasustRunner(ModelRunner):
         #command += ['--roi', '']
 
         self.v("> Running prediction (2/3): ", " ".join(command))
-        subprocess.run(command)
+        self.subprocess(command)
 
         # 3 finalize
         command =  [ 'python3', 'models/casust/src/cli/finalize.py']
@@ -62,7 +62,7 @@ class CasustRunner(ModelRunner):
         #command += ['--roi', '']
 
         self.v("> Running finalization (3/3): ", " ".join(command))
-        subprocess.run(command)
+        self.subprocess(command)
 
         # copy over the output files
         shutil.copyfile(os.path.join(out_dir, 'nrrd', 'Atrium_L.org.pred.nrrd'), al.abspath)

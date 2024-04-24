@@ -1,0 +1,137 @@
+{
+    "id": "",
+    "name": "bamf_nnunet_mr_liver",
+    "title": "AIMI MRI Liver",
+    "summary": {
+        "description": "An nnU-Net based model to segment liver from T1 weighted MRI scans",
+        "inputs": [
+            {
+                "label": "Input Image",
+                "description": "The abdominal T1 weighted  MRI scan of a patient.",
+                "format": "DICOM",
+                "modality": "MR",
+                "bodypartexamined": "LIVER",
+                "slicethickness": "2.5mm",
+                "non-contrast": true,
+                "contrast": false
+            }
+        ],
+        "outputs": [
+            {
+                "label": "Segmentation",
+                "type": "Segmentation",
+                "description": "Segmentation liver",
+                "classes": [
+                    "LIVER"
+                ]
+            }
+        ],
+        "model": {
+            "architecture": "U-net",
+            "training": "supervised",
+            "cmpapproach": "3D"
+        },
+        "data": {
+            "training": {
+                "vol_samples": 350
+            },
+            "evaluation": {
+                "vol_samples": 7
+            },
+            "public": true,
+            "external": true
+        }
+    },
+    "details": {
+        "name": "AIMI MRI Liver",
+        "version": "1.0.0",
+        "devteam": "BAMF Health",
+        "authors": [
+            "Soni, Rahul",
+            "McCrumb, Diana",
+            "Murugesan, Gowtham Krishnan",
+            "Van Oss, Jeff"
+        ],
+        "type": "nnU-Net (U-Net structure, optimized by data-driven heuristics)",
+        "date": {
+            "code": "17.10.2023",
+            "weights": "28.08.2023",
+            "pub": "23.10.2023"
+        },
+        "cite": "Murugesan, Gowtham Krishnan, Diana McCrumb, Mariam Aboian, Tej Verma, Rahul Soni, Fatima Memon, and Jeff Van Oss. The AIMI Initiative: AI-Generated Annotations for Imaging Data Commons Collections. arXiv preprint arXiv:2310.14897 (2023).",
+        "license": {
+            "code": "MIT",
+            "weights": "CC BY-NC 4.0"
+        },
+        "publications": [
+            {
+                "title": "The AIMI Initiative: AI-Generated Annotations in IDC Collections",
+                "uri": "https://arxiv.org/abs/2310.14897"
+            }
+        ],
+        "github": "https://github.com/bamf-health/aimi-liver-mr"
+    },
+    "info": {
+        "use": {
+            "title": "Intended Use",
+            "text": "This model is intended to perform liver segmentation in T1 weighted MRI scans. The model has been trained and tested on scans aquired during clinical care of patients, so it might not be suited for a healthy population. The generalization capabilities of the model on a range of ages, genders, and ethnicities are unknown."
+        },
+        "analyses": {
+            "title": "Quantitative Analyses",
+            "text": "The model's performance was assessed using the Dice Coefficient and Normalized Surface Distance (NSD) with tolerance 7mm, as specified in the CT Liver segmentation task in the Medical Segmentation Decathlon challenge. The model was used to segment 67 cases from the IDC collection TCGA-LIHC [1]. Seven of those cases were reviewed and corrected by a board-certified radiologist and a non-expert. The analysis is published here [2]",
+            "tables": [
+                {
+                    "label": "Label-wise metrics (mean (standard deviation)) between AI derived and manually corrected MRI liver annotations",
+                    "entries": {
+                        "Dice: Radiologist": "0.91 (0.18)",
+                        "NSD: Radiologist": "0.89 (0.20)",
+                        "Dice: Non-expert": "0.90 (0.15)",
+                        "NSD: Non-expert": "0.85 (0.20)"
+                    }
+                }
+            ],
+            "references": [
+                {
+                    "label": "TCGA-LIHC",
+                    "uri": "https://wiki.cancerimagingarchive.net/pages/viewpage.action?pageId=6885436"
+                },
+                {
+                    "label": "The AIMI Initiative: AI-Generated Annotations for Imaging Data Commons Collections",
+                    "uri": "https://arxiv.org/abs/2310.14897"
+                }
+            ]
+        },
+        "evaluation": {
+            "title": "Evaluation Data",
+            "text": "The model was used to segment 67 cases from the IDC [1] collection TCGA-LIHC [1]. Seven of those cases were randomly selected to be reviewed and corrected by a board-certified radiologist. The model predictions, and radiologist corrections are published on zenodo [3]",
+            "references": [
+                {
+                    "label": "Imaging Data Collections (IDC)",
+                    "uri": "https://datacommons.cancer.gov/repository/imaging-data-commons"
+                },
+                {
+                    "label": "TCGA-LIHC",
+                    "uri": "https://wiki.cancerimagingarchive.net/pages/viewpage.action?pageId=6885436"
+                },
+                {
+                    "label": "Image segmentations produced by the AIMI Annotations initiative",
+                    "uri": "https://zenodo.org/records/10009368"
+                }
+            ]
+        },
+        "training": {
+            "title": "Training Data",
+            "text": "The training dataset consists of 350 MRI liver annotations taken from the AMOS [1] (N=40) and DUKE Liver Dataset V2 [2] (N=310).",
+            "references": [
+                {
+                    "label": "AMOS Dataset",
+                    "uri": "https://zenodo.org/records/7262581"
+                },
+                {
+                    "label": "Duke Liver Dataset (MRI) v2",
+                    "uri": "https://zenodo.org/records/7774566"
+                }
+            ]
+        }
+    }
+}

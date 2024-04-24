@@ -51,7 +51,7 @@ class TotalSegmentatorRunner(ModelRunner):
         self.v(">> run: ", " ".join(bash_command))
 
         # run the model
-        bash_return = subprocess.run(bash_command, check=True, text=True)
+        self.subprocess(bash_command, text=True)
 
         # add output data
         for out_file in os.listdir(output.abspath):

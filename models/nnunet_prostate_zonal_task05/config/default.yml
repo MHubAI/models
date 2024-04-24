@@ -1,0 +1,40 @@
+general:
+  data_base_dir: /app/data
+  version: 1.0
+  description: Prostate MR ADC-T2 segmentation (dicom2dicom) 
+
+execute:
+- FileStructureImporter
+- NiftiConverter
+- ProstateResampler
+- ProstateRunner
+- DsegConverter
+- DataOrganizer
+
+modules:
+  FileStructureImporter:
+    outsource_instances: True 
+    import_id: patientID/studyID
+    structures:
+    - $patientID/$studyID@instance/$part@bundle@dicom
+    - $patientID@instance:studyID=none/ADC$part@bundle@dicom
+    - $patientID@instance:studyID=none/T2$part@bundle@dicom
+    
+  NiftiConverter:
+    in_datas: dicom:part=ADC|T2
+    allow_multi_input: true
+    overwrite_existing_file: true
+
+  DsegConverter:
+    model_name: nnUNet Zonal Prostate (Task05)
+    target_dicom: dicom:part=T2
+    source_segs: nifti:mod=seg:roi=*
+    body_part_examined: PROSTATE
+    skip_empty_slices: True
+    segment_id_meta_key: roi
+
+  DataOrganizer:
+    targets:
+    - DICOMSEG:mod=seg-->[i:patientID]/[i:studyID]/nnunet_prostate_zonal_task05.seg.dcm
+#   - NIFTI:mod=seg-->[i:patientID]/[i:studyID]/results.nii.gz
+#   - LOG-->[i:patientID]/[i:studyID]/logs/[d:part]/[basename]
