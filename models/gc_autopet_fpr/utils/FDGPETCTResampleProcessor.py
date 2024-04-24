@@ -1,12 +1,12 @@
 """
--------------------------------------------------------------
-Mhub / DIAG - Run Module for resampling FDG CT to the FDG-PET
--------------------------------------------------------------
+---------------------------------------------------------
+Mhub / DIAG - Run Module for resampling FDG CT to FDG PET
+---------------------------------------------------------
 
--------------------------------------------------------------
+---------------------------------------------------------
 Author: Sil van de Leemput
 Email:  sil.vandeleemput@radboudumc.nl
--------------------------------------------------------------
+---------------------------------------------------------
 """
 
 import nibabel
@@ -22,7 +22,7 @@ class FDGPETCTResampleProcessor(Module):
     @IO.Input('in_data_pet', 'nifti:mod=pt', the='input FDG PET scan')
     @IO.Output('out_data_ct', 'CTres.nii.gz', 'nifti:mod=ct:resampled=true', bundle='registered', the='Converted CT image resampled to PET image resolution and size')
     def task(self, instance: Instance, in_data_ct: InstanceData, in_data_pet: InstanceData, out_data_ct: InstanceData) -> None:
-        # Convert PET and CT data to Nifti
+        # Load PET and CT data
         ct   = nibabel.load(in_data_ct.abspath)
         pet  = nibabel.load(in_data_pet.abspath)
         # Register and Resample CT to PET
