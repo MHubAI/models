@@ -6,15 +6,17 @@ general:
 execute:
 - FileStructureImporter
 - NiftiConverter
-- TciaDicomProcessor
+- FDGPETCTResampleProcessor
+- AutoPETRunner
+- DsegConverter
 - DataOrganizer
 
 modules:
   FileStructureImporter:
     input_dir: 'input_data'
     structures:
-      - $sid@instance/re:.*::/re:.*-GK.*::@dicom:mod=ct
-      - $sid/re:.*::/re:.*-PET.*::@dicom:mod=pt
+      - $sid@instance/ct@dicom:mod=ct
+      - $sid/pet@dicom:mod=pt
     import_id: sid
 
   NiftiConverter:
@@ -33,5 +35,5 @@ modules:
 
   DataOrganizer:
     targets:
-      - nifti:mod=pt-->[i:sid]/pt.nii.gz
-      - nifti:mod=ct:resampled=true-->[i:sid]/ct_res.nii.gz
+      - mha:mod=seg-->[i:sid]/autopet_fpr_tumor_segmentation.mha
+      - dicomseg:mod=seg-->[i:sid]/autopet_fpr_tumor_segmentation.seg.dcm
