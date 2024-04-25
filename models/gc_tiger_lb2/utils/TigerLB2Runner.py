@@ -30,7 +30,7 @@ class TigerLB2Runner(Module):
     @IO.Instance()
     @IO.Input('in_data', 'tiff:mod=sm', the='input whole slide image Tiff')
     @IO.Output('out_data', 'gc_tiger_lb2_til_score.json', 'json:model=TigerLB2TIL', 'in_data', the='TIGER LB2 TIL score')
-    @IO.Output('out_segmentation', 'gc_tiger_lb2_segmentation.tif', 'mha:mod=seg:model=TigerLB2TIL', 'in_data', the='Raw initial TIGER LB2 segmentation map for the input WSI image. The labels are: 1-Tumor, 2-Stroma, 3-Rest.')
+    @IO.Output('out_segmentation', 'gc_tiger_lb2_segmentation.mha', 'mha:mod=seg:model=TigerLB2TIL', 'in_data', the='Raw initial TIGER LB2 segmentation map for the input WSI image. The labels are: 1-Tumor, 2-Stroma, 3-Rest.')
     @IO.OutputData('til_score', TilScoreOutput, data='in_data', the='TIGER LB2 TIL score - percentage of stromal area covered by tumour infiltrating lymphocytes. Values between 0-100 (percent).')
     def task(self, instance: Instance, in_data: InstanceData, out_data: InstanceData, out_segmentation: InstanceData, til_score: TilScoreOutput) -> None:
         # Execute the Tiger LB2 Algorithm through a Python subprocess and associated pipenv environment
