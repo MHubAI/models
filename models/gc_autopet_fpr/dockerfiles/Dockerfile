@@ -26,9 +26,6 @@ RUN git clone https://github.com/YigePeng/AutoPET_False_Positive_Reduction.git /
 # Install nnunet as a dependency
 RUN pip3 install --no-cache-dir nnunet==1.7.1
 
-# Install additional dependencies for data preprocessing
-RUN pip3 install --no-cache-dir nilearn==0.10.4 nibabel==5.2.1
-
 # nnUNet specific setup
 RUN mkdir -p /opt/algorithm/nnUNet_raw_data_base/nnUNet_raw_data/Task504_Total_PET_Lesion_Only/imagesTs && \
     mkdir -p /opt/algorithm/nnUNet_raw_data_base/nnUNet_raw_data/Task504_Total_PET_Lesion_Only/result
