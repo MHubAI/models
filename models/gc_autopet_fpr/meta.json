@@ -1,7 +1,7 @@
 {
   "id": "7e3ea0d1-182e-4dff-a5ed-84977d822760",
   "name": "gc_autopet_fpr",
-  "title": "AutoPET challenge winner: False Positive Reduction Network",
+  "title": "Second place in AutoPET challenge: False Positive Reduction Network",
   "summary": {
     "description": "This algorithm segments tumor lesions in whole-body FDG-PET/CT. To prevent over-segmenting tumor regions due to high-uptake organs or inflammations, the model uses a false positive reduction network. First a self-supervised pre-trained global segmentation module coarsely delineates the candidate tumor regions using a self-supervised pre-trained encoder. The candidate tumor regions are then refined by removing false positives via a local refinement module.",
     "inputs": [
@@ -79,10 +79,10 @@
   "info": {
     "use": {
       "title": "Intended use",
-      "text": "This model is intended to be used with both a whole-body FDG-PET scan as well as a whole-body CT scan. The input images need to be roughly aligned as only resampling is used to map the CT to the PET scan. The algorithm is available upon request on Grand Challenge [1] and declared winner of the AutoPET challenge [2].",
+      "text": "This model is intended to be used with both a whole-body FDG-PET scan as well as a whole-body CT scan. The input images need to be roughly aligned as only resampling is used to map the CT to the PET scan. The algorithm is available upon request on Grand Challenge [1] and was the runner-up of the AutoPET challenge [2].",
       "references": [
         {
-          "label": "The winning AutoPET algorithm on grand-challenge",
+          "label": "The AutoPET algorithm on grand-challenge",
           "uri": "https://grand-challenge.org/algorithms/multi_stage_hybrid_cnn_13/"
         },
         {
