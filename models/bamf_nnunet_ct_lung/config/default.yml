@@ -1,0 +1,46 @@
+general:
+  data_base_dir: /app/data
+  version: 1.0
+  description: default configuration for Bamf NNUnet Lung, Nodules and Tumor segmentation (dicom to dicom)
+
+execute:
+- DicomImporter
+- NiftiConverter
+- NNUnetRunner
+- CustomNNUnetRunner
+- DsegConverter
+- DataOrganizer
+
+modules:
+  DicomImporter:
+    source_dir: input_data
+    import_dir: sorted_data
+    sort_data: true
+    meta: 
+      mod: '%Modality'
+
+  CustomNNUnetRunner:
+    in_data: nifti:mod=ct
+    nnunet_task: Task777_CT_Nodules
+    nnunet_model: 3d_fullres
+    roi: LEFT_LUNG,LEFT_LUNG+RIGHT_LUNG
+    export_prob_maps: False
+
+  NNUnetRunner:
+    in_data: nifti:mod=ct
+    nnunet_task: Task775_CT_NSCLC_RG
+    nnunet_model: 3d_fullres    
+    roi: NEOPLASM_MALIGNANT_PRIMARY
+    export_prob_maps: False
+  
+  DsegConverter:
+    model_name: Bamf NNUnet CT Lung  
+    target_dicom: dicom:mod=ct
+    source_segs: nifti:mod=seg:roi=*
+    skip_empty_slices: True
+    body_part_examined: LEFT_LUNG+RIGHT_LUNG
+    segment_id_meta_key: roi
+
+  DataOrganizer:
+    targets:
+    - dicomseg-->[i:sid]/bamf_nnunet_ct_lung.seg.dcm
