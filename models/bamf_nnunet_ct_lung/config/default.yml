@@ -8,6 +8,7 @@ execute:
 - NiftiConverter
 - NNUnetRunner
 - CustomNNUnetRunner
+- LungPostProcessor
 - DsegConverter
 - DataOrganizer
 
@@ -23,7 +24,7 @@ modules:
     in_data: nifti:mod=ct
     nnunet_task: Task777_CT_Nodules
     nnunet_model: 3d_fullres
-    roi: LEFT_LUNG,LEFT_LUNG+RIGHT_LUNG
+    roi: LEFT_LUNG+RIGHT_LUNG,LEFT_LUNG+RIGHT_LUNG+NODULES
     export_prob_maps: False
 
   NNUnetRunner:
@@ -32,14 +33,17 @@ modules:
     nnunet_model: 3d_fullres    
     roi: NEOPLASM_MALIGNANT_PRIMARY
     export_prob_maps: False
-  
+
+  LungPostProcessor:
+    in_rg_data: nifti:mod=seg:nnunet_task=Task775_CT_NSCLC_RG
+    in_nodules_data: nifti:mod=seg:nnunet_task=Task777_CT_Nodules
+
   DsegConverter:
     model_name: Bamf NNUnet CT Lung  
     target_dicom: dicom:mod=ct
-    source_segs: nifti:mod=seg:roi=*
+    source_segs: nifti:mod=seg:processor=bamf
     skip_empty_slices: True
-    body_part_examined: LEFT_LUNG+RIGHT_LUNG
-    segment_id_meta_key: roi
+    json_config_path: models/bamf_nnunet_ct_lung/config/dseg.json
 
   DataOrganizer:
     targets:

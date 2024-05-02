@@ -1,0 +1,63 @@
+{
+  "ContentCreatorName": "BAMFHealth^AI",
+  "ClinicalTrialSeriesID": "Session1",
+  "ClinicalTrialTimePointID": "1",
+  "SeriesDescription": "AIMI Lung Nodule Segmentation",
+  "SeriesNumber": "300",
+  "InstanceNumber": "1",
+  "BodyPartExamined": "LUNG",
+  "segmentAttributes": [
+    [
+      {
+        "labelID": 1,
+        "SegmentDescription": "Lung",
+        "SegmentAlgorithmType": "AUTOMATIC",
+        "SegmentAlgorithmName": "BAMF-Lung-CT",
+        "SegmentedPropertyCategoryCodeSequence": {
+          "CodeValue": "123037004",
+          "CodingSchemeDesignator": "SCT",
+          "CodeMeaning": "Anatomical Structure"
+        },
+        "SegmentedPropertyTypeCodeSequence": {
+          "CodeValue": "39607008",
+          "CodingSchemeDesignator": "SCT",
+          "CodeMeaning": "Lung"
+        },
+        "SegmentedPropertyTypeModifierCodeSequence": {
+          "CodeValue": "51440002",
+          "CodingSchemeDesignator": "SCT",
+          "CodeMeaning": "Right and left"
+        }
+      },
+      {
+        "labelID": 2,
+        "SegmentDescription": "Nodule",
+        "SegmentAlgorithmType": "AUTOMATIC",
+        "SegmentAlgorithmName": "BAMF-Lung-CT",
+        "AnatomicRegionSequence": {
+          "CodeValue": "39607008",
+          "CodingSchemeDesignator": "SCT",
+          "CodeMeaning": "Lung"
+        },
+        "AnatomicRegionModifierSequence": {
+          "CodeValue": "51440002",
+          "CodingSchemeDesignator": "SCT",
+          "CodeMeaning": "Right and left"
+        },
+        "SegmentedPropertyCategoryCodeSequence": {
+          "CodeValue": "49755003",
+          "CodingSchemeDesignator": "SCT",
+          "CodeMeaning": "Morphologically Altered Structure"
+        },
+        "SegmentedPropertyTypeCodeSequence": {
+          "CodeValue": "27925004",
+          "CodingSchemeDesignator": "SCT",
+          "CodeMeaning": "Nodule"
+        }
+      }
+    ]
+  ],
+  "ContentLabel": "SEGMENTATION",
+  "ContentDescription": "Image segmentation",
+  "ClinicalTrialCoordinatingCenterName": "dcmqi"
+}
