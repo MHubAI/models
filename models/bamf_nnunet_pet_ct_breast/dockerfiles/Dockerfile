@@ -11,9 +11,12 @@ ENV SKLEARN_ALLOW_DEPRECATED_SKLEARN_PACKAGE_INSTALL=True
 RUN pip3 install --no-cache-dir \
   nnunet 
 
+# Install TotalSegmentator
+RUN pip3 install --no-cache-dir totalsegmentator==1.5.6
+
 # Clone the main branch of MHubAI/models
 ARG MHUB_MODELS_REPO
-RUN buildutils/import_mhub_model.sh bamf_nnunet_ct_liver ${MHUB_MODELS_REPO}
+RUN buildutils/import_mhub_model.sh bamf_nnunet_pet_ct_breast ${MHUB_MODELS_REPO}
 
 # Pull nnUNet model weights into the container for Task777_CT_Nodules
 ENV WEIGHTS_DIR=/root/.nnunet/nnUNet_models/nnUNet/
