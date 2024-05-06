@@ -128,7 +128,7 @@ class CustomNNUnetRunner(Module):
 
     @IO.Instance()
     @IO.Input("in_data", the="input data to run nnunet on")
-    @IO.Output("out_data", 'VOLUME_001.nii.gz', 'nifti:mod=seg:model=nnunet_nodule', data='in_data', the="output data from nnunet nodules")
+    @IO.Output("out_data", 'VOLUME_002.nii.gz', 'nifti:mod=seg:model=nnunet_nodule', data='in_data', the="output data from nnunet nodules")
     def task(self, instance: Instance, in_data: InstanceData, out_data: InstanceData) -> None:
         
         # get the nnunet model to run
