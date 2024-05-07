@@ -6,7 +6,12 @@ general:
 execute:
 - DicomImporter
 - NiftiConverter
-- NNUnetRunner
+- module: NNUnetRunner
+  nnunet_task: Task777_CT_Nodules
+  roi: LUNG+NODULE
+- module: NNUnetRunner
+  nnunet_task: Task775_CT_NSCLC_RG
+  roi: LUNG,LUNG+NEOPLASM_MALIGNANT_PRIMARY
 - CustomNNUnetRunner
 - LungPostProcessor
 - DsegConverter
@@ -20,18 +25,9 @@ modules:
     meta: 
       mod: '%Modality'
 
-  CustomNNUnetRunner:
-    in_data: nifti:mod=ct
-    nnunet_task: Task777_CT_Nodules
-    nnunet_model: 3d_fullres
-    roi: LUNG+NODULE
-    export_prob_maps: False
-
   NNUnetRunner:
     in_data: nifti:mod=ct
-    nnunet_task: Task775_CT_NSCLC_RG
-    nnunet_model: 3d_fullres    
-    roi: LUNG,LUNG+NEOPLASM_MALIGNANT_PRIMARY
+    nnunet_model: 3d_fullres
     export_prob_maps: False
 
   LungPostProcessor:
