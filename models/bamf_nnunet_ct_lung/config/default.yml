@@ -24,14 +24,14 @@ modules:
     in_data: nifti:mod=ct
     nnunet_task: Task777_CT_Nodules
     nnunet_model: 3d_fullres
-    roi: LEFT_LUNG+RIGHT_LUNG,LEFT_LUNG+RIGHT_LUNG+NODULES
+    roi: LUNG+NODULE
     export_prob_maps: False
 
   NNUnetRunner:
     in_data: nifti:mod=ct
     nnunet_task: Task775_CT_NSCLC_RG
     nnunet_model: 3d_fullres    
-    roi: NEOPLASM_MALIGNANT_PRIMARY
+    roi: LUNG,LUNG+NEOPLASM_MALIGNANT_PRIMARY
     export_prob_maps: False
 
   LungPostProcessor:
@@ -43,7 +43,6 @@ modules:
     target_dicom: dicom:mod=ct
     source_segs: nifti:mod=seg:processor=bamf
     skip_empty_slices: True
-    json_config_path: models/bamf_nnunet_ct_lung/config/dseg.json
 
   DataOrganizer:
     targets:
