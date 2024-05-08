@@ -31,8 +31,8 @@ class WSIBackgroundSegmentationRunner(Module):
                     "run",
                     "python",
                     str(self.CLI_SCRIPT_PATH),
-                    str(Path(in_data.abspath).parent),
-                    str(Path(out_data.abspath).parent),
+                    in_data.abspath,
+                    out_data.abspath,
                     "--work-dir",
                     tmp_dir
                 ]
