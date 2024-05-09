@@ -6,6 +6,7 @@ general:
 execute:
 - FileStructureImporter
 - NiftiConverter
+- Registration
 - Resampler
 - NNUnetPETCTRunner
 - TotalSegmentatorMLRunner
@@ -28,8 +29,7 @@ modules:
   NNUnetPETCTRunner:
     nnunet_task: Task762_PET_CT_Breast
     nnunet_model: 3d_fullres
-    roi: NEOPLASM_MALIGNANT_PRIMARY
-    folds: 0
+    roi: FDG_AVID_TUMOR
 
   TotalSegmentatorMLRunner:
     use_fast_mode: true

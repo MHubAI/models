@@ -15,7 +15,7 @@ import os, subprocess, shutil
 import SimpleITK as sitk
 
 @IO.ConfigInput('in_datas', 'nifti:mod=pt', the="list of input files to resample")
-@IO.ConfigInput('target_dicom', 'nifti:mod=ct', the="nifti data all image align to")
+@IO.ConfigInput('in_target', 'nifti:mod=ct:registered=true', the="nifti reference data all must align to")
 @IO.Config('bundle_name', str, None, the="bundle name converted data will be added to")
 class Resampler(Module):
 
@@ -34,21 +34,21 @@ class Resampler(Module):
         filt.SetInterpolator(interpolator)
         converted = filt.Execute(actual)
         return converted
-    
+
     @IO.Instance()
     @IO.Inputs('in_datas', the="list of input files to resample")
-    @IO.Input('target_dicom', the="nifti data all image align to")
+    @IO.Input('in_target', the="nifti reference data all must align to")
     @IO.Outputs('out_datas', path='u_[basename]', dtype='nifti:converted=true', data='in_datas', bundle=IO.C('bundle_name'), auto_increment=True, the="converted data")
-    def task(self, instance: Instance, in_datas: InstanceDataCollection, target_dicom: InstanceData, out_datas: InstanceDataCollection) -> None:
-        
+    def task(self, instance: Instance, in_datas: InstanceDataCollection, in_target: InstanceData, out_datas: InstanceDataCollection) -> None:
+
         assert isinstance(in_datas, InstanceDataCollection)
         assert isinstance(out_datas, InstanceDataCollection)
         assert len(in_datas) == len(out_datas)
 
-        self.v(">> started: DsegConverter ")
-        
+        self.v(">> started: Resampling ")
+
         out_dir = self.config.data.requestTempDir(label="resampler-model-inp")
-        ref_image = sitk.ReadImage(target_dicom.abspath)
+        ref_image = sitk.ReadImage(in_target.abspath)
 
         for i, in_data in enumerate(in_datas):
             out_data = out_datas.get(i)
@@ -62,8 +62,6 @@ class Resampler(Module):
             out_file = f'VOLUME_001_res.nii.gz'
             out_path = os.path.join(out_dir, out_file)
             conv_image = self.resample_like(source_image, ref_image, interpolator=sitk.sitkLinear)
-            sitk.WriteImage(conv_image, out_path)    
+            sitk.WriteImage(conv_image, out_path)
             # copy output data to instance
             shutil.copyfile(out_path, out_data.abspath)
-
-        return
