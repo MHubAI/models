@@ -13,7 +13,7 @@ RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
 # Create a working directory and set it as the working directory
 # Also create directories for input and output data (mounting points) in the same RUN to avoid creating intermediate layers
-RUN mkdir /app /app/data /app/data/input_data /app/data/output_data
+RUN mkdir /app /app/data /app/data/input_data /app/data/output_data /app/models
 WORKDIR /app
 
 # Install system utilities and useful packages
@@ -53,18 +53,20 @@ RUN pip3 install --upgrade pip && pip3 install --no-cache-dir \
   pyplastimatch \
   SimpleITK==2.2.1 \
   thedicomsort \
-  colorspacious
+  colorspacious \
+  jsonschema==4.21.1
 
 # Install mhubio framework from git, pulls the utils scripts from GitHub
 RUN pip3 install git+https://github.com/MHubAI/mhubio.git \
   && pip3 install git+https://github.com/MHubAI/segdb.git \
   && git init \
-  && git sparse-checkout set "base/buildutils" "base/bin" \
+  && git sparse-checkout set "base/buildutils" "base/bin" "base/configs" \
   && git fetch https://github.com/MHubAI/models.git main \
   && git merge FETCH_HEAD \
   && mv base/buildutils . \
   && chmod +x base/bin/* \
   && cp base/bin/* /usr/bin/ \
+  && cp -r base/configs /app/models/utility \
   && rm -r base \
   && rm -r .git
 
