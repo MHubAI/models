@@ -1,7 +1,7 @@
 {
   "id": "aed5a82e-2188-4d50-83f9-45bce09f9daa",
   "name": "gc_spider_baseline",
-  "title": "SPIDER Baseline algorithm: Iterative Instance Segmentation of the spine",
+  "title": "Spine Seg (SPIDER Baseline)",
   "summary": {
     "description": "This model segments three anatomical structures in lumbar spine MRI: vertebrae, intervertebral discs (IVDs), and spinal canal. Each vertebrae and IVD is labeled according to standard naming convention.",
     "inputs": [
@@ -153,20 +153,18 @@
       "tables": [
         {
           "label": "Dice score.",
-          "entries":
-          {
-            "Vertebrae": "0.93 ± 0.05",
-            "Intervertebral discs": "0.84 ± 0.10",
-            "Spinal canal": "0.92 ± 0.04"
+          "entries": {
+            "Vertebrae": "0.93 \u00b1 0.05",
+            "Intervertebral discs": "0.84 \u00b1 0.10",
+            "Spinal canal": "0.92 \u00b1 0.04"
           }
         },
         {
           "label": "ASD (mm).",
-          "entries":
-          {
-            "Vertebrae": "0.48 ± 0.95",
-            "Intervertebral discs": "0.54 ± 0.45",
-            "Spinal canal": "0.39 ± 0.45"
+          "entries": {
+            "Vertebrae": "0.48 \u00b1 0.95",
+            "Intervertebral discs": "0.54 \u00b1 0.45",
+            "Spinal canal": "0.39 \u00b1 0.45"
           }
         }
       ]
@@ -197,8 +195,7 @@
       "tables": [
         {
           "label": "Number of patient data provided by the various hospitals",
-          "entries":
-          {
+          "entries": {
             "University Medical Center (UMC)": "41",
             "Regional Hospital 1": "43",
             "Regional Hospital 2": "44",
