@@ -61,12 +61,13 @@ RUN pip3 install git+https://github.com/MHubAI/mhubio.git \
   && pip3 install git+https://github.com/MHubAI/segdb.git \
   && git init \
   && git sparse-checkout set "base/buildutils" "base/bin" "base/configs" \
-  && git fetch https://github.com/MHubAI/models.git main \
+  && git fetch https://github.com/MHubAI/models.git base-utility-configs \
   && git merge FETCH_HEAD \
   && mv base/buildutils . \
   && chmod +x base/bin/* \
   && cp base/bin/* /usr/bin/ \
-  && cp -r base/configs /app/models/utility \
+  && mkdir -p /app/utility/config \
+  && cp -r base/configs/* /app/utility/config \
   && rm -r base \
   && rm -r .git
 
