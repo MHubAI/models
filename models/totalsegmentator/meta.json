@@ -10,7 +10,7 @@
         "description": "The CT scan of a patient (any part of the body).",
         "format": "DICOM",
         "modality": "CT",
-        "bodypartexamined": "Whole",
+        "bodypartexamined": "WHOLEBODY",
         "slicethickness": "1.5 mm",
         "non-contrast": true,
         "contrast": true
