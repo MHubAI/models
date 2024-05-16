@@ -3,7 +3,7 @@
   "name": "gc_wsi_bgseg",
   "title": "Tissue-Background segmentation in histopathological whole-slide images",
   "summary": {
-    "description": "This algorithm segments the background in histopathological whole-slide images.",
+    "description": "This algorithm segments the background and tissue in histopathological whole-slide images.",
     "inputs": [
       {
         "label": "Whole-slide image",
@@ -20,38 +20,38 @@
       {
         "type": "Prediction",
         "valueType": "Segmentation mask",
-        "label": "WSI Tumor and stroma segmentation mask",
-        "description": "WSI tumor and stroma segmentation mask (MHA) used as first step in the pipeline. This segmentation mask was not validated, use it at your own risk! The labels are: 1-tumor, 2-stroma, 3-rest.",
+        "label": "WSI background and tissue segmentation mask",
+        "description": "WSI background and tissue segmentation mask (MHA). The labels are: 0-background 1-tissue.",
         "classes": []
       }
     ],
     "model": {
-      "architecture": "NatureNet architecture",
+      "architecture": "Fully convolutional network with 7 layers, ReLU activation functions in the first 6 convolutional layers and softmax in the last one. Max pooling was inserted after each of the first 3 convolutional layers.",
       "training": "supervised",
       "cmpapproach": "2D"
     },
     "data": {
       "training": {
-        "vol_samples": 11111
+        "vol_samples": 100
       },
       "evaluation": {
-        "vol_samples": 11111
+        "vol_samples": 8
       },
       "public": false,
       "external": false
     }
   },
   "details": {
-    "name": "?????",
-    "version": "0.1.0",
-    "devteam": "?????",
+    "name": "Tissue-Background Segmentation in Histopathological Whole-Slide Images",
+    "version": "1.0.0",
+    "devteam": "Peter Bándi",
     "type": "Segmentation",
     "date": {
-      "weights": "2023-07-06<---modify",
-      "code": "2023-07-06<---modify",
-      "pub": "2022-08-26<---modify"
+      "weights": "2019-12-13",
+      "code": "2024-05-16",
+      "pub": "2019-12-17"
     },
-    "cite": ">>>TODO<<<",
+    "cite": "Bándi P, Balkenhol M, van Ginneken B, van der Laak J, Litjens G. 2019. Resolution-agnostic tissue segmentation in whole-slide histopathology images with convolutional neural networks. PeerJ 7:e8242",
     "license": {
       "code": "AGPL v3.0",
       "weights": "AGPL v3.0"
