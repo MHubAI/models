@@ -108,10 +108,10 @@ class BreastPostProcessor(Module):
         return op_img
 
     @IO.Instance()
-    @IO.Input('in_ct_data', 'nifti:mod=ct', the='input ct data')
+    @IO.Input('in_ct_data', 'nifti:mod=ct:registered=true', the='input ct data')
     @IO.Input('in_tumor_data', 'nifti:mod=seg:model=nnunet', the='input tumor segmentation')
     @IO.Input('in_total_seg_data', 'nifti:mod=seg:model=TotalSegmentator', the='input total segmentation')
-    @IO.Output('out_data', 'bamf_processed.nrrd', 'nrrd:mod=seg:processor=bamf', data='in_tumor_data',
+    @IO.Output('out_data', 'bamf_processed.nii.gz', 'nifti:mod=seg:processor=bamf:roi=FDG_AVID_TUMOR', data='in_tumor_data',
                the="keep the two largest connected components of the segmentation and remove all other ones")
     def task(self, instance: Instance, in_ct_data: InstanceData, in_tumor_data: InstanceData,
              in_total_seg_data: InstanceData, out_data: InstanceData):

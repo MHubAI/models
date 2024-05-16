@@ -1,13 +1,3 @@
-"""
--------------------------------------------------
-MHub - Registration Module
--------------------------------------------------
-
--------------------------------------------------
-Author: Jithendra Kumar
-Email:  jithendra.kumar@bamfhealth.com
--------------------------------------------------
-"""
 import os
 import shutil
 import SimpleITK as sitk
@@ -19,15 +9,15 @@ from mhubio.core import Module, Instance, InstanceData
 class Registration(Module):
 
     @IO.Instance()
-    @IO.Input('in_ct_data', 'nifti:mod=ct', the='input ct data')
-    @IO.Input('in_pt_data', 'nifti:mod=pt', the='input pt data')
-    @IO.Output('out_data', 'VOL001_registered.nii.gz', 'nifti:mod=ct:registered=true', the="registered ct data")
-    def task(self, instance: Instance, in_ct_data: InstanceData, in_pt_data: InstanceData, out_data: InstanceData):
+    @IO.Input('in_fixed_data', 'nifti:mod=pt', the='input pt data')
+    @IO.Input('in_moving_data', 'nifti:mod=ct', the='input ct data')
+    @IO.Output('out_data', 'VOL000_registered.nii.gz', 'nifti:mod=ct:registered=true', the="registered ct data")
+    def task(self, instance: Instance, in_moving_data: InstanceData, in_fixed_data: InstanceData, out_data: InstanceData):
         """
         Perform registration
         """
-        fixed = sitk.ReadImage(in_pt_data.abspath, sitk.sitkFloat32)
-        moving = sitk.ReadImage(in_ct_data.abspath, sitk.sitkFloat32)
+        fixed = sitk.ReadImage(in_fixed_data.abspath, sitk.sitkFloat32)
+        moving = sitk.ReadImage(in_moving_data.abspath, sitk.sitkFloat32)
         numberOfBins = 24
         samplingPercentage = 0.10
         R = sitk.ImageRegistrationMethod()
@@ -50,7 +40,7 @@ class Registration(Module):
         resampler.SetDefaultPixelValue(int(np.min(sitk.GetArrayFromImage(moving))))
         resampler.SetTransform(outTx)
         out = resampler.Execute(moving)
-        tmp_dir = self.config.data.requestTempDir(label="registration-pre-processor")
+        tmp_dir = self.config.data.requestTempDir(label="registration-processor")
         output_path = os.path.join(tmp_dir, f'registered.nii.gz')
         out.CopyInformation(fixed)
         sitk.WriteImage(out, output_path)

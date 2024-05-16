@@ -1,13 +1,12 @@
 general:
   data_base_dir: /app/data
   version: 1.0
-  description: default configuration for Bamf NNUnet FDG-Avid Breast Tumor segmentation (dicom to dicom)
+  description: default configuration for Bamf NNUnet Breast Tumor segmentation (dicom to dicom)
 
 execute:
 - FileStructureImporter
 - NiftiConverter
 - Registration
-- Resampler
 - NNUnetPETCTRunner
 - TotalSegmentatorMLRunner
 - BreastPostProcessor
@@ -27,12 +26,18 @@ modules:
     allow_multi_input: true
 
   NNUnetPETCTRunner:
+    in_ct_data: nifti:mod=ct:registered=true
     nnunet_task: Task762_PET_CT_Breast
     nnunet_model: 3d_fullres
     roi: FDG_AVID_TUMOR
+    folds: 0
 
   TotalSegmentatorMLRunner:
+    in_data: nifti:mod=ct:registered=true
     use_fast_mode: true
+
+  BreastPostProcessor:
+    in_ct_data: nifti:mod=ct:registered=true
 
   DsegConverter:
     source_segs: nifti:mod=seg:processor=bamf
