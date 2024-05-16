@@ -78,10 +78,12 @@
     "use": {
       "title": "Intended use",
       "text": "The algorithm processes a CT scan of a suspected COVID-19 patient and produces the probability of a COVID-19 infection and a probability of severe outcome (death or intubation within one month).",
-      "references": [{
+      "references": [
+        {
           "label": "Stoic baseline algorithm on grand-challenge",
           "uri": "https://grand-challenge.org/algorithms/stoic2021-baseline/"
-        }],
+        }
+      ],
       "tables": []
     },
     "analyses": {
@@ -101,8 +103,8 @@
         {
           "label": "Evaluation results on the STOIC testing cohort of 1000 cases.",
           "entries": {
-              "AUC-severity": "0.77",
-              "AUC-COVID-19": "0.82"
+            "AUC-severity": "0.77",
+            "AUC-COVID-19": "0.82"
           }
         }
       ]
@@ -120,7 +122,7 @@
     },
     "training": {
       "title": "Training data",
-      "text": "The STOIC Dataset[1] contains Computed Tomography scans from 10,735 patients, of which one CT scan from each patient was selected. This dataset was divided in a public training set [2] consisting of 2.000 images from this dataset, and a private training set of an additional 7.735 images. For this baseline algorithm, a single I3D model, initialized with publicly available weights trained for RGB video classification, was trained to estimate both COVID-19 presence and severity. The model was trained on all training data for 40 epochs using the AdamW optimizer with a learning rate of 10, momentum parameters β1 = 0.9, β2 = 0.99, and a weight decay of 0.01. Data augmentation was employed in the form of zoom, rotation, translation, and adding gaussian noise. Patient age and sex information were not incorporated as input to the model.",
+      "text": "The STOIC Dataset[1] contains Computed Tomography scans from 10,735 patients, of which one CT scan from each patient was selected. This dataset was divided in a public training set [2] consisting of 2.000 images from this dataset, and a private training set of an additional 7.735 images. For this baseline algorithm, a single I3D model, initialized with publicly available weights trained for RGB video classification, was trained to estimate both COVID-19 presence and severity. The model was trained on all training data for 40 epochs using the AdamW optimizer with a learning rate of 10, momentum parameters \u03b21 = 0.9, \u03b22 = 0.99, and a weight decay of 0.01. Data augmentation was employed in the form of zoom, rotation, translation, and adding gaussian noise. Patient age and sex information were not incorporated as input to the model.",
       "references": [
         {
           "label": "Stoic project",

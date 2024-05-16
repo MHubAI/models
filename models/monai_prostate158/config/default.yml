@@ -28,7 +28,7 @@ modules:
   DsegConverter:
     source_segs: nifti:mod=seg:roi=PROSTATE_TRANSITION_ZONE,PROSTATE_PERIPHERAL_ZONE
     target_dicom: dicom:mod=mr
-    model_name: 'MONAI Prostate158'
+    model_name: MONAI Prostate158
     skip_empty_slices: True
 
   DataOrganizer:
