@@ -17,7 +17,7 @@ from pathlib import Path
 
 class WSIBackgroundSegmentationRunner(Module):
 
-    CLI_SCRIPT_PATH = Path(__file__).parent.parent / "src" / "pathology-tissue-background-segmentation" / "process.py"
+    CLI_SCRIPT_PATH = Path("/app") / "src" / "process.py"
 
     @IO.Instance()
     @IO.Input('in_data', 'tif|tiff:mod=sm', the='input whole slide image Tiff')

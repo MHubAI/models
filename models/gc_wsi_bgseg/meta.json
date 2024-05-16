@@ -1,0 +1,115 @@
+{
+  "id": "bb083d5e-b5ed-481a-8a24-00e95d301067",
+  "name": "gc_wsi_bgseg",
+  "title": "Tissue-Background segmentation in histopathological whole-slide images",
+  "summary": {
+    "description": "This algorithm segments the background in histopathological whole-slide images.",
+    "inputs": [
+      {
+        "label": "Whole-slide image",
+        "description": "Whole-slide histopathology image",
+        "format": "DICOM",
+        "modality": "SM",
+        "bodypartexamined": "????",
+        "slicethickness": "",
+        "non-contrast": false,
+        "contrast": false
+      }
+    ],
+    "outputs": [
+      {
+        "type": "Prediction",
+        "valueType": "Segmentation mask",
+        "label": "WSI Tumor and stroma segmentation mask",
+        "description": "WSI tumor and stroma segmentation mask (MHA) used as first step in the pipeline. This segmentation mask was not validated, use it at your own risk! The labels are: 1-tumor, 2-stroma, 3-rest.",
+        "classes": []
+      }
+    ],
+    "model": {
+      "architecture": "NatureNet architecture",
+      "training": "supervised",
+      "cmpapproach": "2D"
+    },
+    "data": {
+      "training": {
+        "vol_samples": 11111
+      },
+      "evaluation": {
+        "vol_samples": 11111
+      },
+      "public": false,
+      "external": false
+    }
+  },
+  "details": {
+    "name": "?????",
+    "version": "0.1.0",
+    "devteam": "?????",
+    "type": "Segmentation",
+    "date": {
+      "weights": "2023-07-06<---modify",
+      "code": "2023-07-06<---modify",
+      "pub": "2022-08-26<---modify"
+    },
+    "cite": ">>>TODO<<<",
+    "license": {
+      "code": "AGPL v3.0",
+      "weights": "AGPL v3.0"
+    },
+    "publications": [
+      {
+        "uri": "https://peerj.com/articles/8242/",
+        "title": "Resolution-agnostic tissue segmentation in whole-slide histopathology images with convolutional neural networks"
+      }
+    ],
+    "github": "https://github.com/DIAGNijmegen/pathology-tissue-background-segmentation-processor",
+    "zenodo": "",
+    "colab": "",
+    "slicer": false
+  },
+  "info": {
+    "use": {
+      "title": "Intended use",
+      "text": "This algorithm is a segmentation method of the background on whole-slide histopathology images. Ideally it uses a resolution of 2.0mm (TODO Should be verified!!!). The algorithm can also be found on Grand Challenge [1] (access upon request).",
+      "references": [
+        {
+          "label": "Algorithm on Grand Challenge (access upon request)",
+          "uri": "https://grand-challenge.org/algorithms/tissue-background-segmenation"
+        }
+      ],
+      "tables": []
+    },
+    "analyses": {
+      "title": "Evaluation",
+      "text": "",
+      "references": [],
+      "tables": []
+    },
+    "evaluation": {
+      "title": "Evaluation data",
+      "text": "",
+      "references": [
+      ],
+      "tables": []
+    },
+    "training": {
+      "title": "Training data",
+      "text": "",
+      "references": [
+      ],
+      "tables": []
+    },
+    "ethics": {
+      "title": "",
+      "text": "",
+      "references": [],
+      "tables": []
+    },
+    "limitations": {
+      "title": "Limitations",
+      "text": "This algorithm was developed for research purposes only.",
+      "references": [],
+      "tables": []
+    }
+  }
+}

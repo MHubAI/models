@@ -53,8 +53,11 @@ ENV LD_LIBRARY_PATH /app/.venv/lib/python3.8/site-packages/tensorrt:$NVIDIA_DIR/
 ARG MHUB_MODELS_REPO
 RUN buildutils/import_mhub_model.sh gc_wsi_bgseg ${MHUB_MODELS_REPO}
 
+# Install pathology tissue background segmentation processor code and weights
+RUN git clone https://github.com/DIAGNijmegen/pathology-tissue-background-segmentation-processor.git /app/src
+
 # Add model and algorithm code bases to python path
-ENV PYTHONPATH="/app:/app/models/gc_wsi_bgseg/src/pathology-common:/app/models/gc_wsi_bgseg/src/diag-models"
+ENV PYTHONPATH="/app:/app/src"
 
 # Default run script
 ENTRYPOINT ["python3", "-m", "mhubio.run"]
