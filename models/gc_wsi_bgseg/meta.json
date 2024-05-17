@@ -10,7 +10,7 @@
         "description": "Whole-slide histopathology image",
         "format": "DICOM",
         "modality": "SM",
-        "bodypartexamined": "????",
+        "bodypartexamined": "WHOLEBODY",
         "slicethickness": "",
         "non-contrast": false,
         "contrast": false
@@ -21,7 +21,7 @@
         "type": "Prediction",
         "valueType": "Segmentation mask",
         "label": "WSI background and tissue segmentation mask",
-        "description": "WSI background and tissue segmentation mask (MHA). The labels are: 0-background 1-tissue.",
+        "description": "WSI background and tissue segmentation mask (MHA). The labels are: 0-background 1-tissue. The output will have a pixel spacing",
         "classes": []
       }
     ],
@@ -32,10 +32,10 @@
     },
     "data": {
       "training": {
-        "vol_samples": 100
+        "vol_samples": 70
       },
       "evaluation": {
-        "vol_samples": 8
+        "vol_samples": 38
       },
       "public": false,
       "external": false
@@ -70,10 +70,10 @@
   "info": {
     "use": {
       "title": "Intended use",
-      "text": "This algorithm is a segmentation method of the background on whole-slide histopathology images. Ideally it uses a resolution of 2.0mm (TODO Should be verified!!!). The algorithm can also be found on Grand Challenge [1] (access upon request).",
+      "text": "This algorithm is a segmentation method of the background on whole-slide histopathology images. The algorithm will segment WSI with various stains and resolutions. It takes pixel spacing as input parameter (default 2.0μm) and will create a segmentation of that resolution. The input WSI needs to contain at least one layer of that resolution, with a 25% tolerance. The algorithm can also be found on Grand Challenge [1] (access with verified account).",
       "references": [
         {
-          "label": "Algorithm on Grand Challenge (access upon request)",
+          "label": "Algorithm on Grand Challenge (access with verified account)",
           "uri": "https://grand-challenge.org/algorithms/tissue-background-segmenation"
         }
       ],
@@ -81,21 +81,62 @@
     },
     "analyses": {
       "title": "Evaluation",
-      "text": "",
-      "references": [],
-      "tables": []
+      "text": "Evaluation was determined with DICE score, sensitivity, and false-positive count, and compared with three other non-deeplearning methods: Otsu's, FESI, and Thresholding. See the paper for additional details [1].",
+      "references": [
+         {
+          "label": "Resolution-agnostic tissue segmentation in whole-slide histopathology images with convolutional neural networks",
+          "uri": "https://peerj.com/articles/8242/"
+        }
+      ],
+      "tables": [
+        {
+          "label": "Dice scores at 2.0μm pixel spacing.",
+          "entries": {
+            "Thresholding": "0.8627 ±0.1361",
+            "Otsu's": "0.7373 ±0.1596",
+            "FESI": "0.8284 ±0.3288",
+            "This model": "0.9822 ±0.0195"
+          }
+        },
+        {
+          "label": "Sensitivity scores at 2.0μm pixel spacing.",
+          "entries": {
+            "Thresholding": "0.5763 ±0.3631",
+            "Otsu's": "0.2890 ±0.3665",
+            "FESI": "0.6495 ±0.3690",
+            "This model": "0.8953 ±0.1302"
+          }
+        },
+        {
+          "label": "False-positive count at 2.0μm pixel spacing.",
+          "entries": {
+            "Thresholding": "34.50 ±76.49",
+            "Otsu's": "12.63 ±12.09",
+            "FESI": "1.37 ±2.63",
+            "This model": "5.37 ±8.25"
+          }
+        }
+      ]
     },
     "evaluation": {
       "title": "Evaluation data",
-      "text": "",
+      "text": "The evaluation was performed on two datasets. The first dataset consisted of 30 WSI with breast, lymph node, kidney, lung, rectum and tongue tissue, stained with hematoxylin and eosin (H&E), Sirius Red, Periodic Acid-Schiff (PAS), cytokeratin AE1/AE3 (AE1AE3), Ki-67, and a cocktail of cytokeratin 8 and cytokeratin 18 (CK8-18). The second dataset consisted of 8 WSI with mostly different tissue types and all different staining methods, to evaluate generalization of the model. It contained tissue types lung, cornea, aorta, brain, skin, uterus, and kidney. The tissues were stained with Grocott, Alcian Blue, Von Kossa, Perls, and Chromotrope Aniline Blue (CAB) stains. See the paper for additional details [1].",
       "references": [
+        {
+          "label": "Resolution-agnostic tissue segmentation in whole-slide histopathology images with convolutional neural networks",
+          "uri": "https://peerj.com/articles/8242/"
+        }
       ],
       "tables": []
     },
     "training": {
       "title": "Training data",
-      "text": "",
+      "text": "The training dataset consisted of 70 WSI from Breast, Lymph node, Kidney, Lung, Rectum and Tongue tissue, stained with hematoxylin and eosin (H&E), Sirius Red, Periodic Acid-Schiff (PAS), cytokeratin AE1/AE3 (AE1AE3), Ki-67, and a cocktail of cytokeratin 8 and cytokeratin 18 (CK8-18). See the paper for additional details [1].",
       "references": [
+        {
+          "label": "Resolution-agnostic tissue segmentation in whole-slide histopathology images with convolutional neural networks",
+          "uri": "https://peerj.com/articles/8242/"
+        }
       ],
       "tables": []
     },
@@ -107,7 +148,7 @@
     },
     "limitations": {
       "title": "Limitations",
-      "text": "This algorithm was developed for research purposes only.",
+      "text": "This algorithm was developed for research purposes only. The provided input should contain a layer with the selected pixel spacing (default 2.0μm ± 25%).",
       "references": [],
       "tables": []
     }
