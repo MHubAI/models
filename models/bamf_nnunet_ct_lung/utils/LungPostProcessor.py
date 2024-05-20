@@ -48,8 +48,8 @@ class LungPostProcessor(Module):
     @IO.Input('in_rg_data', 'nifti:mod=seg:nnunet_task=Task775_CT_NSCLC_RG', the='input data from custom nnunet module')
     @IO.Input('in_nodules_data', 'nifti:mod=seg:nnunet_task=Task777_CT_Nodules', the='input data nnunet nodule')
     @IO.Input('in_ct_data', 'nifti:mod=ct', the='input ct data')
-    @IO.Output('out_data', 'bamf_processed.nii.gz', 'nifti:mod=seg:processor=bamf', data='in_rg_data',
-               the="keep the two largest connected components of the segmentation and remove all other ones")
+    @IO.Output('out_data', 'bamf_processed.nii.gz', 'nifti:mod=seg:processor=bamf:roi=LUNG,LUNG+NODULE',
+               data='in_rg_data', the="get lung and lung nodule segmentation file")
     def task(self, instance: Instance, in_rg_data: InstanceData, in_nodules_data: InstanceData,
              in_ct_data: InstanceData, out_data: InstanceData):
 
