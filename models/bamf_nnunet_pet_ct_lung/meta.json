@@ -1,0 +1,155 @@
+{
+    "id": "",
+    "name": "bamf_nnunet_pet_ct_lung",
+    "title": "FDG PET/CT Lung and Lung Tumor Annotation",
+    "summary": {
+        "description": "An nnU-Net based model to segment Lung and tumor from FDG PET CT scans",
+        "inputs": [
+            {
+                "label": "Input Image",
+                "description": "The PET scan of a patient.",
+                "format": "DICOM",
+                "modality": "PT",
+                "bodypartexamined": "Lung",
+                "slicethickness": "2.5mm",
+                "non-contrast": true,
+                "contrast": false
+            },
+            {
+                "label": "Input Image",
+                "description": "The CT scan of a patient.",
+                "format": "DICOM",
+                "modality": "CT",
+                "bodypartexamined": "Lung",
+                "slicethickness": "2.5mm",
+                "non-contrast": true,
+                "contrast": false
+            }
+        ],
+        "outputs": [
+            {
+                "label": "Segmentation",
+                "type": "Segmentation",
+                "description": "Segmentation Lung and tumor",
+                "classes": [
+                    "LEFT_LOWER_LUNG_LOBE",
+                    "LEFT_LOWER_LUNG_LOBE+,FDG_AVID_TUMOR"
+                ]
+            }
+        ],
+        "model": {
+            "architecture": "U-net",
+            "training": "supervised",
+            "cmpapproach": "3D"
+        },
+        "data": {
+            "training": {
+                "vol_samples": 736
+            },
+            "evaluation": {
+                "vol_samples": 77
+            },
+            "public": true,
+            "external": true
+        }
+    },
+    "details": {
+        "name": "AIMI CT Kidney",
+        "version": "1.0.0",
+        "devteam": "BAMF Health",
+        "authors": [
+            "Soni, Rahul",
+            "McCrumb, Diana",
+            "Murugesan, Gowtham Krishnan",
+            "Van Oss, Jeff"
+        ],
+        "type": "nnU-Net (U-Net structure, optimized by data-driven heuristics)",
+        "date": {
+            "code": "17.10.2023",
+            "weights": "28.08.2023",
+            "pub": "23.10.2023"
+        },
+        "cite": "Murugesan, Gowtham Krishnan, Diana McCrumb, Mariam Aboian, Tej Verma, Rahul Soni, Fatima Memon, and Jeff Van Oss. The AIMI Initiative: AI-Generated Annotations for Imaging Data Commons Collections. arXiv preprint arXiv:2310.14897 (2023).",
+        "license": {
+            "code": "MIT",
+            "weights": "CC BY-NC 4.0"
+        },
+        "publications": [
+            {
+                "title": "The AIMI Initiative: AI-Generated Annotations in IDC Collections",
+                "uri": "https://arxiv.org/abs/2310.14897"
+            }
+        ],
+        "github": "https://github.com/bamf-health/aimi-kidney-ct"
+    },
+    "info": {
+        "use": {
+            "title": "Intended Use",
+            "text": "This model is intended to perform lung and tumor segmentation in FDG PET CT scans. The model has been trained and tested on scans aquired during clinical care of patients, so it might not be suited for a healthy population. The generalization capabilities of the model on a range of ages, genders, and ethnicities are unknown. For detailed information on the training set design, please refer to reference section in the training section"
+        },
+        "analyses": {
+            "title": "Quantitative Analyses",
+            "text": "Label-wise metrics (mean (standard deviation)) between AI derived and manual corrected FDG PET/CT\nlungs and tumor annotations",
+            "tables": [
+                {
+                    "label": "Label-wise metrics (mean (standard deviation)) between AI derived and manual corrected FDG PET/CT lungs and tumor annotations",
+                    "entries": {
+                        "tumor" : {
+                        "Dice: Radiologist": "0.97 (0.11)",
+                        "NSD: Radiologist": "5.83 (19.42)",
+                        "Dice: Non-expert": "0.92 (0.20)",
+                        "NSD: Non-expert": "10.00 (26.34)"
+                        },
+                        "lung": {
+                            "Dice: Radiologist": "1.00 (0.00)",
+                            "NSD: Radiologist": "0.10 (0.58) ",
+                            "Dice: Non-expert": "0.99 (0.04) ",
+                            "NSD: Non-expert": "1.97 (10.50) "
+                        }
+                }
+            ],
+            "references": [
+                {
+                    "label": "TCGA-KIRC",
+                    "uri": "https://wiki.cancerimagingarchive.net/pages/viewpage.action?pageId=5800386"
+                },
+                {
+                    "label": "The AIMI Initiative: AI-Generated Annotations for Imaging Data Commons Collections",
+                    "uri": "https://arxiv.org/abs/2310.14897"
+                }
+            ]
+        },
+        "evaluation": {
+            "title": "Evaluation Data",
+            "text": " 77 validation cases were rated by a radiologist and non-expert",
+            "references": [
+                {
+                    "label": "Imaging Data Collections (IDC)",
+                    "uri": "https://datacommons.cancer.gov/repository/imaging-data-commons"
+                },
+                {
+                    "label": "TCGA-KIRC",
+                    "uri": "https://wiki.cancerimagingarchive.net/pages/viewpage.action?pageId=5800386"
+                },
+                {
+                    "label": "Image segmentations produced by the AIMI Annotations initiative",
+                    "uri": "https://zenodo.org/records/10009368"
+                }
+            ]
+        },
+        "training": {
+            "title": "Training Data",
+            "text": "A total of 736 paired FDG-PET/CT image. FDG PET/CT datasets taken from The Cancer Genome Atlas (TCGA) program for Lung Adenocarcinoma (LUAD) and Lung Squamous Cell Carcinoma (LUSC)4, the Lung Cancer Diagnosis (LUNG-PET-CT-Dx), AnƟ-PD-1 Immunotherapy Lung, the Reference Image Database to Evaluate Therapy Response PET/CT subgoup (RIDER Lung PET-CT), and the Non-Small Cell Lung Cancer (NSCLC) for Radiogenomics and the American College of Radiology Imaging Network non small cell lung cancer FDG PET (ACRIN-NSCLC-FDG-PET)",
+            "references": [
+                {
+                    "label": "KiTS 2023 dataset",
+                    "uri": "https://github.com/neheller/kits23"
+                },
+                {
+                    "label": "TCGA-KIRC",
+                    "uri": "https://wiki.cancerimagingarchive.net/pages/viewpage.action?pageId=5800386"
+                }
+            ]
+        }
+    }
+}

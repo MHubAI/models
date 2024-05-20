@@ -155,7 +155,7 @@ class LungPostProcessor(Module):
     @IO.Input('in_ct_data', 'nifti:mod=ct:registered=true', the='input ct data')
     @IO.Input('in_tumor_data', 'nifti:mod=seg:model=nnunet', the='input tumor segmentation')
     @IO.Input('in_total_seg_data', 'nifti:mod=seg:model=TotalSegmentator', the='input total segmentation')
-    @IO.Output('out_data', 'bamf_processed.nii.gz', 'nifti:mod=seg:processor=bamf:roi=LEFT_LOWER_LUNG_LOBE,FDG_AVID_TUMOR', data='in_tumor_data', the="get the lung and tumor after post processing")
+    @IO.Output('out_data', 'bamf_processed.nii.gz', 'nifti:mod=seg:processor=bamf:roi=LEFT_LOWER_LUNG_LOBE,LEFT_LOWER_LUNG_LOBE+FDG_AVID_TUMOR', data='in_tumor_data', the="get the lung and tumor after post processing")
     def task(self, instance: Instance, in_ct_data: InstanceData, in_tumor_data: InstanceData, in_total_seg_data: InstanceData, out_data: InstanceData):
         """
         Perform postprocessing and writes simpleITK Image
