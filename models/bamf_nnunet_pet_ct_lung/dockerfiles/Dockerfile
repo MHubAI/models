@@ -9,7 +9,7 @@ ENV SKLEARN_ALLOW_DEPRECATED_SKLEARN_PACKAGE_INSTALL=True
 
 # Install nnunet and platipy
 RUN pip3 install --no-cache-dir \
-  nnunet 
+  nnunet TotalSegmentator==1.5.6
 
 # Clone the main branch of MHubAI/models
 ARG MHUB_MODELS_REPO
