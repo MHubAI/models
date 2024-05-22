@@ -30,4 +30,4 @@ ENV WEIGHTS_FOLDER=$WEIGHTS_DIR
 
 # Default run script
 ENTRYPOINT ["mhub.run"]
-CMD ["--config", "/app/models/bamf_nnunet_pt_ct_lung/config/default.yml"]
+CMD ["--config", "/app/models/bamf_nnunet_pet_ct_lung/config/default.yml"]
