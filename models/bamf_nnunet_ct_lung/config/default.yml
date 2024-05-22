@@ -12,7 +12,6 @@ execute:
 - module: NNUnetRunner
   nnunet_task: Task775_CT_NSCLC_RG
   roi: LUNG,LUNG+FDG_AVID_TUMOR
-- CustomNNUnetRunner
 - LungPostProcessor
 - DsegConverter
 - DataOrganizer
@@ -35,7 +34,7 @@ modules:
     in_nodules_data: nifti:mod=seg:nnunet_task=Task777_CT_Nodules
 
   DsegConverter:
-    model_name: Bamf NNUnet CT Lung  
+    model_name: Bamf NNUnet CT Lung and Nodule
     target_dicom: dicom:mod=ct
     source_segs: nifti:mod=seg:processor=bamf
     skip_empty_slices: True

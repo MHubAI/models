@@ -3,7 +3,7 @@
     "name": "bamf_nnunet_ct_lung",
     "title": "AIMI CT Lung and Nodules",
     "summary": {
-        "description": "An nnU-Net based model to segment lung from CT scans",
+        "description": "An nnU-Net based model to segment Lung and Nodules from CT scans",
         "inputs": [
             {
                 "label": "Input Image",
@@ -37,14 +37,14 @@
                 "vol_samples": 1405
             },
             "evaluation": {
-                "vol_samples": 47
+                "vol_samples": 77
             },
             "public": true,
             "external": true
         }
     },
     "details": {
-        "name": "AIMI CT Lung",
+        "name": "AIMI CT Lung and Nodule",
         "version": "1.0.0",
         "devteam": "BAMF Health",
         "authors": [
