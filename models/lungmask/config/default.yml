@@ -16,7 +16,7 @@ modules:
     import_dir: sorted_data
     sort_data: True
     meta: 
-      mod: ct
+      mod: '%Modality'
 
   LungMaskRunner:
     batchsize: 64

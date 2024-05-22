@@ -21,11 +21,11 @@ modules:
 
   MhaConverter:
     engine: panimg
-    targets: [dicom:mod=ct]
+    targets: dicom:mod=ct
 
   DsegConverter:
-    model_name: 'GC NNUnet Pancreas'
-    source_segs: ['mha:mod=seg:src=cleaned']
+    model_name: GC NNUnet Pancreas
+    source_segs: mha:mod=seg:src=cleaned
     target_dicom: dicom:mod=ct
     skip_empty_slices: True
 

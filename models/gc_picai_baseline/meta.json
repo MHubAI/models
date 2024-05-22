@@ -78,7 +78,7 @@
       "code": "2022-09-05",
       "pub": ""
     },
-    "cite": "J. S. Bosma, A. Saha, M. Hosseinzadeh, I. Slootweg, M. de Rooij, and H. Huisman, \"Semisupervised Learning with Report-guided Pseudo Labels for Deep Learning–based Prostate Cancer Detection Using Biparametric MRI\", Radiology: Artificial Intelligence, 230031, 2023. DOI: 10.1148/ryai.230031",
+    "cite": "J. S. Bosma, A. Saha, M. Hosseinzadeh, I. Slootweg, M. de Rooij, and H. Huisman, \"Semisupervised Learning with Report-guided Pseudo Labels for Deep Learning\u2013based Prostate Cancer Detection Using Biparametric MRI\", Radiology: Artificial Intelligence, 230031, 2023. DOI: 10.1148/ryai.230031",
     "license": {
       "code": "Apache 2.0",
       "weights": "CC-BY-NC-SA-4.0"
@@ -90,7 +90,7 @@
       },
       {
         "uri": "https://pubs.rsna.org/doi/10.1148/ryai.230031",
-        "title": "Semisupervised Learning with Report-guided Pseudo Labels for Deep Learning–based Prostate Cancer Detection Using Biparametric MRI"
+        "title": "Semisupervised Learning with Report-guided Pseudo Labels for Deep Learning\u2013based Prostate Cancer Detection Using Biparametric MRI"
       }
     ],
     "github": "https://github.com/DIAGNijmegen/picai_nnunet_semi_supervised_gc_algorithm",
@@ -101,7 +101,7 @@
   "info": {
     "use": {
       "title": "Intended use",
-      "text": "This algorithm is a deep learning-based detection/diagnosis model, which ensembles 5 independent nnU-Net models (5-fold cross-validation). To predict the likelihood of harboring clinically significant prostate cancer (csPCa), the transversal T2-weighted, apparent diffusion coefficient (ADC) and high b-value diffusion weighted maps are required. The input sequences should be co-registered or aligned reasonably well and the prostate gland should be localized within a volume of 460 cm³ from the centre coordinate. The nnU-Net framework will internally resample all input scans to 0.5 x 0.5 x 3.0 mm. Per case the input data should be put into the following folder structure: `case1/adc`, `case1/hbv`, `case1/t2w`, corresponding respectively with the ADC, high b-value DWI, and the T2 weighted MR inputs for a case called `case1`.",
+      "text": "This algorithm is a deep learning-based detection/diagnosis model, which ensembles 5 independent nnU-Net models (5-fold cross-validation). To predict the likelihood of harboring clinically significant prostate cancer (csPCa), the transversal T2-weighted, apparent diffusion coefficient (ADC) and high b-value diffusion weighted maps are required. The input sequences should be co-registered or aligned reasonably well and the prostate gland should be localized within a volume of 460 cm\u00b3 from the centre coordinate. The nnU-Net framework will internally resample all input scans to 0.5 x 0.5 x 3.0 mm. Per case the input data should be put into the following folder structure: `case1/adc`, `case1/hbv`, `case1/t2w`, corresponding respectively with the ADC, high b-value DWI, and the T2 weighted MR inputs for a case called `case1`.",
       "references": [
         {
           "label": "PI-CAI baseline algorithm on grand-challenge",
@@ -127,8 +127,8 @@
         {
           "label": "Evaluation results on the PI-CAI testing cohort of 1000 cases.",
           "entries": {
-              "AUROC": "0.865",
-              "AP": "0.576"
+            "AUROC": "0.865",
+            "AP": "0.576"
           }
         }
       ]

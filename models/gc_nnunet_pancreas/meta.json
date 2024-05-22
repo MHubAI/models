@@ -106,8 +106,8 @@
         {
           "label": "Evaluation results of the nnUnet_MS model on the external test set of 361 cases.",
           "entries": {
-              "Mean AUC-ROC (95% CI)": "0.991 (0.970-1.0)",
-              "Mean pAUC-FROC (95% CI)": "3.996 (3.027-4.965)"
+            "Mean AUC-ROC (95% CI)": "0.991 (0.970-1.0)",
+            "Mean pAUC-FROC (95% CI)": "3.996 (3.027-4.965)"
           }
         }
       ]

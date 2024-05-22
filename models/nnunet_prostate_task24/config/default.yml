@@ -31,7 +31,7 @@ modules:
   DsegConverter:
     source_segs: nifti:mod=seg
     target_dicom: dicom:mod=mr
-    model_name: 'nnUNet MR Prostate'
+    model_name: nnUNet MR Prostate
     skip_empty_slices: True
 
   DataOrganizer:

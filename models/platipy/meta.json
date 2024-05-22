@@ -1,132 +1,136 @@
 {
-    "id": "15bbdf4d-cd53-4d93-8a0e-8a614ca4ad50",
-    "name": "platipy",
-    "title": "Platipy",
-    "summary": {
-        "description": "Platipy's cardiac substructures segmentation model is a hybrid pipeline (AI- and atlas-based) for the automated segmentation of 16 cardiac substructures in CT scans (with and without contrast).",
-        "inputs": [ {
-            "label": "Input Image",
-            "description": "The chest CT scan of a patient.",
-            "format": "DICOM",
-            "modality": "CT",
-            "bodypartexamined": "Chest",
-            "slicethickness": "2.5 mm",
-            "non-contrast": true,
-            "contrast": true
-            } ],
-        "outputs": [ {
-            "type": "Segmentation",
-            "classes": [
-                "HEART",
-                "AORTA",
-                "LEFT_ATRIUM",
-                "LEFT_VENTRICLE",
-                "RIGHT_ATRIUM",
-                "RIGHT_VENTRICLE",
-                "CORONARY_ARTERY_LAD",
-                "CORONARY_ARTERY_CFLX",
-                "CORONARY_ARTERY_RIGHT",
-                "PULMONARY_ARTERY",
-                "SINOTRIAL_NODE",
-                "TRICUSPID_VALVE",
-                "PULMONARY_VALVE",
-                "MITRAL_VALVE",
-                "SUPERIOR_VENA_CAVA",
-                "AORTIC_VALVE",
-                "ATRIOVENTRICULAR_NODE"
-            ]
-            } ],
-        "model": {
-            "architecture":  "U-net, Atlas",
-            "training": "supervised",
-            "cmpapproach": "3D"
-        },
-        "data": {
-            "training": {
-                "vol_samples": 330
-            },
-            "evaluation": {
-                "vol_samples": 30
-            },
-            "public": true,
-            "external": true
-        }
-    },
-    "details": {
-        "name": "Platipy's Hybrid Cardiac Substructure Segmentation",
-        "version": "1.0.0",
-        "devteam": "Ingham Institute, University of New South Wales, University of Sydney",
-        "type": "Hybrid (nnU-Net, cardiac atlas)",
-        "date": {
-            "weights": "30/05/22",
-            "code": "n/a",
-            "pub": "2023"
-        },
-        "cite": "Finnegan, R.N., Chin, V., Chlap, P. et al. Open-source, fully-automated hybrid cardiac substructure segmentation: development and optimisation. Phys Eng Sci Med 46, 377–393 (2023).",        
-        "license": {
-            "code": "Apache 2.0",
-            "weights": "CC BY-NC 4.0"
-        },
-        "publications": [
-            {
-                "title": "Open-source, fully-automated hybrid cardiac substructure segmentation: development and optimisation",
-                "uri": "https://link.springer.com/article/10.1007/s13246-023-01231-w"
-            }
-        ],
-        "github": "https://github.com/pyplati/platipy",
-        "zenodo": "https://zenodo.org/record/6592437"
-    },
-    "info": {
-        "use": {
-            "title": "Intended Use",
-            "text": "This model is intended to perform the segmentation of several cardiac substructures (whole heart, cardiac chambers, great vessels, heart valves, coronary arteries, and conduction nodes) on non-contrast CT scans. It was developed and validated on breast and lung cancer patients, so it might not be suited for a healthy population. The generalization capabilities of the model on a range of ages, genders, and ethnicities are unknown. The slice thickness should not exceed 2.5mm for best results."
-        },
-        "analyses": {
-            "title": "Quantitative Analyses",
-            "text": "The model's performance was assessed using the Dice Coefficient, the Mean Distance to Agreement, Hausdorff distance, and the Volume Ratio. Similar analyses were carried out for an independent cohort. All the details can be found in [1] and [2].",
-            "references": [
-                {
-                    "label": "Open-source, fully-automated hybrid cardiac substructure segmentation: development and optimisation",
-                    "uri": "https://link.springer.com/article/10.1007/s13246-023-01231-w"
-                },
-                {
-                    "label": "Validation of a Fully Automated Hybrid Deep Learning Cardiac Substructure Segmentation Tool for Contouring and Dose Evaluation in Lung Cancer Radiotherapy",
-                    "uri": "https://www.sciencedirect.com/science/article/abs/pii/S0936655523001127"
-                }
-            ]
-        },
-        "evaluation": {
-            "title": "Evaluation Data",
-            "text": "After a first evaluation was carried out on the development cohort [1], the model was independently evaluated on a cohort consisting of 30 Contrast-Enhanced (CE) and non-CE chest CT scans of lung cancer patients treated with radiotherapy at the Liverpool Macarthur Cancer Therapy Centres between 2008 and 2019. Specifically, the 30-cases cohort was composed by 2 patients with a complete loss of normal heart-lung interface, 4 with a reduced lung volume from partial collapse or prior resection, 19 with tumour abutting the heart, 17 with cardiac or coronary high-density material with at least 6 causing artefact effect, and 10 scans with intravenous contrast [2].",
-            "references": [
-                {
-                    "label": "Open‐source, fully‐automated hybrid cardiac substructure segmentation: development and optimisation",
-                    "uri": "https://link.springer.com/article/10.1007/s13246-023-01231-w"
-                },
-                {
-                    "label": "Validation of a Fully Automated Hybrid Deep Learning Cardiac Substructure Segmentation Tool for Contouring and Dose Evaluation in Lung Cancer Radiotherapy",
-                    "uri": "https://www.sciencedirect.com/science/article/abs/pii/S0936655523001127"
-                }
-            ]
-        },
-        "training": {
-        "title": "Training Data",
-        "text": "The pipeline consists of two steps developed separately: a Whole-Heart (WH) segmentation step (using a nnU-Net model) and an atlas-based cardiac substructure segmentation step. The training dataset for the first step consisted of 300 CT scans and corresponding WH contours, extracted from clinical radiotherapy database at the Ingham Institute for Applied Medical Research (Liverpool, Australia). This first cohort comprised data from 150 breast cancer and 150 lung cancer patients, treated between 2014 and 2018. The WH volume was manually contoured by either a radiation therapist or radiation oncologist using local protocols. A separate cohort of 30 CT scans was used to develop and refine the atlas-based cardiac substructures segmentation model. This dataset, also sourced from a clinical RT database from the Ingham Institute for Applied Medical Research (Liverpool, Australia), included 20 non-contrast scans from breast cancer patients where three independent observers outlined the heart and cardiac substructures - and an additional 10 CT scans from lung cancer patients, where one observer outlined the same volumes. A cardiologist reviewed and approved all contours before they were used in the study. The lung cancer patient scans were specifically chosen due to variations in imaging like image artefacts, contrast agent use, and anatomical differences that influence the efficiency of automatic heart segmentation. The authors reported the following imaging parameters:",
-        "tables": [
-            {
-                "label": "Platipy development dataset",
-                "entries": {
-                    "Slice Thickness": "2-2.5 mm",
-                    "In-Plane Resolution": "0.9766-1.172 mm"
-                }
-            }
-        ],
-        "references": [
-            {
-                    "label": "Open-source, fully-automated hybrid cardiac substructure segmentation: development and optimisation",
-                    "uri": "https://link.springer.com/article/10.1007/s13246-023-01231-w"
-            }
+  "id": "15bbdf4d-cd53-4d93-8a0e-8a614ca4ad50",
+  "name": "platipy",
+  "title": "Platipy",
+  "summary": {
+    "description": "Platipy's cardiac substructures segmentation model is a hybrid pipeline (AI- and atlas-based) for the automated segmentation of 16 cardiac substructures in CT scans (with and without contrast).",
+    "inputs": [
+      {
+        "label": "Input Image",
+        "description": "The chest CT scan of a patient.",
+        "format": "DICOM",
+        "modality": "CT",
+        "bodypartexamined": "Chest",
+        "slicethickness": "2.5 mm",
+        "non-contrast": true,
+        "contrast": true
+      }
+    ],
+    "outputs": [
+      {
+        "type": "Segmentation",
+        "classes": [
+          "HEART",
+          "AORTA",
+          "LEFT_ATRIUM",
+          "LEFT_VENTRICLE",
+          "RIGHT_ATRIUM",
+          "RIGHT_VENTRICLE",
+          "CORONARY_ARTERY_LAD",
+          "CORONARY_ARTERY_CFLX",
+          "CORONARY_ARTERY_RIGHT",
+          "PULMONARY_ARTERY",
+          "SINOTRIAL_NODE",
+          "TRICUSPID_VALVE",
+          "PULMONARY_VALVE",
+          "MITRAL_VALVE",
+          "SUPERIOR_VENA_CAVA",
+          "AORTIC_VALVE",
+          "ATRIOVENTRICULAR_NODE"
         ]
-        }
+      }
+    ],
+    "model": {
+      "architecture": "U-net, Atlas",
+      "training": "supervised",
+      "cmpapproach": "3D"
+    },
+    "data": {
+      "training": {
+        "vol_samples": 330
+      },
+      "evaluation": {
+        "vol_samples": 30
+      },
+      "public": true,
+      "external": true
     }
+  },
+  "details": {
+    "name": "Platipy's Hybrid Cardiac Substructure Segmentation",
+    "version": "1.0.0",
+    "devteam": "Ingham Institute, University of New South Wales, University of Sydney",
+    "type": "Hybrid (nnU-Net, cardiac atlas)",
+    "date": {
+      "weights": "30/05/22",
+      "code": "n/a",
+      "pub": "2023"
+    },
+    "cite": "Finnegan, R.N., Chin, V., Chlap, P. et al. Open-source, fully-automated hybrid cardiac substructure segmentation: development and optimisation. Phys Eng Sci Med 46, 377\u2013393 (2023).",
+    "license": {
+      "code": "Apache 2.0",
+      "weights": "CC BY-NC 4.0"
+    },
+    "publications": [
+      {
+        "title": "Open-source, fully-automated hybrid cardiac substructure segmentation: development and optimisation",
+        "uri": "https://link.springer.com/article/10.1007/s13246-023-01231-w"
+      }
+    ],
+    "github": "https://github.com/pyplati/platipy",
+    "zenodo": "https://zenodo.org/record/6592437"
+  },
+  "info": {
+    "use": {
+      "title": "Intended Use",
+      "text": "This model is intended to perform the segmentation of several cardiac substructures (whole heart, cardiac chambers, great vessels, heart valves, coronary arteries, and conduction nodes) on non-contrast CT scans. It was developed and validated on breast and lung cancer patients, so it might not be suited for a healthy population. The generalization capabilities of the model on a range of ages, genders, and ethnicities are unknown. The slice thickness should not exceed 2.5mm for best results."
+    },
+    "analyses": {
+      "title": "Quantitative Analyses",
+      "text": "The model's performance was assessed using the Dice Coefficient, the Mean Distance to Agreement, Hausdorff distance, and the Volume Ratio. Similar analyses were carried out for an independent cohort. All the details can be found in [1] and [2].",
+      "references": [
+        {
+          "label": "Open-source, fully-automated hybrid cardiac substructure segmentation: development and optimisation",
+          "uri": "https://link.springer.com/article/10.1007/s13246-023-01231-w"
+        },
+        {
+          "label": "Validation of a Fully Automated Hybrid Deep Learning Cardiac Substructure Segmentation Tool for Contouring and Dose Evaluation in Lung Cancer Radiotherapy",
+          "uri": "https://www.sciencedirect.com/science/article/abs/pii/S0936655523001127"
+        }
+      ]
+    },
+    "evaluation": {
+      "title": "Evaluation Data",
+      "text": "After a first evaluation was carried out on the development cohort [1], the model was independently evaluated on a cohort consisting of 30 Contrast-Enhanced (CE) and non-CE chest CT scans of lung cancer patients treated with radiotherapy at the Liverpool Macarthur Cancer Therapy Centres between 2008 and 2019. Specifically, the 30-cases cohort was composed by 2 patients with a complete loss of normal heart-lung interface, 4 with a reduced lung volume from partial collapse or prior resection, 19 with tumour abutting the heart, 17 with cardiac or coronary high-density material with at least 6 causing artefact effect, and 10 scans with intravenous contrast [2].",
+      "references": [
+        {
+          "label": "Open\u2010source, fully\u2010automated hybrid cardiac substructure segmentation: development and optimisation",
+          "uri": "https://link.springer.com/article/10.1007/s13246-023-01231-w"
+        },
+        {
+          "label": "Validation of a Fully Automated Hybrid Deep Learning Cardiac Substructure Segmentation Tool for Contouring and Dose Evaluation in Lung Cancer Radiotherapy",
+          "uri": "https://www.sciencedirect.com/science/article/abs/pii/S0936655523001127"
+        }
+      ]
+    },
+    "training": {
+      "title": "Training Data",
+      "text": "The pipeline consists of two steps developed separately: a Whole-Heart (WH) segmentation step (using a nnU-Net model) and an atlas-based cardiac substructure segmentation step. The training dataset for the first step consisted of 300 CT scans and corresponding WH contours, extracted from clinical radiotherapy database at the Ingham Institute for Applied Medical Research (Liverpool, Australia). This first cohort comprised data from 150 breast cancer and 150 lung cancer patients, treated between 2014 and 2018. The WH volume was manually contoured by either a radiation therapist or radiation oncologist using local protocols. A separate cohort of 30 CT scans was used to develop and refine the atlas-based cardiac substructures segmentation model. This dataset, also sourced from a clinical RT database from the Ingham Institute for Applied Medical Research (Liverpool, Australia), included 20 non-contrast scans from breast cancer patients where three independent observers outlined the heart and cardiac substructures - and an additional 10 CT scans from lung cancer patients, where one observer outlined the same volumes. A cardiologist reviewed and approved all contours before they were used in the study. The lung cancer patient scans were specifically chosen due to variations in imaging like image artefacts, contrast agent use, and anatomical differences that influence the efficiency of automatic heart segmentation. The authors reported the following imaging parameters:",
+      "tables": [
+        {
+          "label": "Platipy development dataset",
+          "entries": {
+            "Slice Thickness": "2-2.5 mm",
+            "In-Plane Resolution": "0.9766-1.172 mm"
+          }
+        }
+      ],
+      "references": [
+        {
+          "label": "Open-source, fully-automated hybrid cardiac substructure segmentation: development and optimisation",
+          "uri": "https://link.springer.com/article/10.1007/s13246-023-01231-w"
+        }
+      ]
+    }
+  }
 }

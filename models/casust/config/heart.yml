@@ -26,7 +26,7 @@ modules:
 
   DsegConverter:
     model_name: Platipy Heart
-    source_segs: [nifti:mod=seg]
+    source_segs: nifti:mod=seg
     skip_empty_slices: True
 
   DataOrganizer:

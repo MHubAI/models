@@ -16,7 +16,7 @@ modules:
     import_dir: sorted_data
     sort_data: true
     meta: 
-      mod: ct
+      mod: '%Modality'
 
   NNUnetRunner:
     input_data_type: nifti:mod=ct
