@@ -1,7 +1,7 @@
 {
   "id": "37ec076c-6cca-4601-a7fc-bdbe7eecbdcf",
   "name": "gc_node21_baseline",
-  "title": "NODE21 challenge baseline",
+  "title": "Chest Radiograph Nodule Locator (NODE21 Baseline)",
   "summary": {
     "description": "This model detects the location of nodules in Chest radiographs, and generates bounding boxes around these nodules.",
     "inputs": [
@@ -71,10 +71,12 @@
     "use": {
       "title": "Intended use",
       "text": "The algorithm processes a frontal radiograph of the chest and predicts the location and likelihood of nodules.",
-      "references": [{
+      "references": [
+        {
           "label": "Node21 baseline algorithm on grand-challenge",
           "uri": "https://grand-challenge.org/algorithms/node21_baseline_detector/"
-        }],
+        }
+      ],
       "tables": []
     },
     "analyses": {

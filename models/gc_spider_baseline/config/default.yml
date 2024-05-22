@@ -24,7 +24,7 @@ modules:
   DsegConverter:
     model_name: GCSpiderBaseline
     target_dicom: dicom:mod=mr|ct
-    source_segs: [mha:mod=seg:seg=remapped]
+    source_segs: mha:mod=seg:seg=remapped
     skip_empty_slices: True
     segment_id_meta_key: roi
     body_part_examined: SPINE

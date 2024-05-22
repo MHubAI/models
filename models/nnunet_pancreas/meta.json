@@ -1,125 +1,129 @@
 {
-    "id": "cf8d46fb-df1a-43bd-ba34-933374da23a9",
-    "name": "nnunet_pancreas",
-    "title": "nnU-Net Pancreas",
-    "summary": {
-        "description": "nnU-Net's pancreas segmentation model is an AI-based pipeline for the automated segmentation of the pancreas and pancreatic cancer in portal venous phase CT scans.",
-        "inputs": [ {
-            "label": "Input Image",
-            "description": "The abdominal CE-CT scan of a patient.",
-            "format": "DICOM",
-            "modality": "CT",
-            "bodypartexamined": "Abdomen",
-            "slicethickness": "2.5 mm",
-            "non-contrast": false,
-            "contrast": true
-            } ],
-        "outputs": [ {
-            "type": "Segmentation",
-            "classes": [
-                "PANCREAS",
-                "PANCREAS+NEOPLASM_MALIGNANT_PRIMARY"
-            ]
-            } ],
-        "model": {
-            "architecture":  "U-net",
-            "training": "supervised",
-            "cmpapproach": "ensemble"
-        },
-        "data": {
-            "training": {
-                "vol_samples": 282
-            },
-            "evaluation": {
-                "vol_samples": 139
-            },
-            "public": true,
-            "external": false
-        }
-    },
-    "details": {
-        "name": "nnU-Net Pancreas Segmentation Model",
-        "version": "1.0.0",
-        "devteam": "MIC-DKFZ (Helmholtz Imaging Applied Computer Vision Lab)",
-        "type": "nnU-Net (U-Net structure, optimized by data-driven heuristics)",
-        "date": {
-            "weights": "01/02/22",
-            "code": "n/a",
-            "pub": "2020"
-        },
-        "cite": "Isensee, F., Jaeger, P. F., Kohl, S. A., Petersen, J., & Maier-Hein, K. H. (2020). nnU-Net: a self-configuring method for deep learning-based biomedical image segmentation. Nature Methods, 1-9.",        
-        "license": {
-            "code": "Apache 2.0",
-            "weights": "CC BY-NC 4.0"
-        },
-        "publications": [
-            {
-                "title": "nnU-Net: a self-configuring method for deep learning-based biomedical image segmentation",
-                "uri": "https://www.nature.com/articles/s41592-020-01008-z"
-            }
-        ],
-        "github": "https://github.com/MIC-DKFZ/nnUNet/tree/nnunetv1",
-        "zenodo": "https://zenodo.org/record/4485926"
-    },
-    "info": {
-        "use": {
-            "title": "Intended Use",
-            "text": "This model is intended to perform pancreas and pancreatic cancer segmentation in abdominal portal venous phase CT scans. The model has been trained and tested on cancer patients, so it might not be suited for a healthy population. The generalization capabilities of the model on a range of ages, genders, and ethnicities are unknown. The slice thickness should not exceed 2.5mm for best results."
-        },
-        "analyses": {
-            "title": "Quantitative Analyses",
-            "text": "The model's performance was assessed using the Dice Coefficient, in the  context of the Medical Segmentation Decathlon challenge. The complete breakdown of the metrics can be consulted on GrandChallenge [1] and is reported in the supplementary material to the publication [2].",
-            "references": [
-                {
-                    "label": "Medical Segmentation Decathlon on GrandChallenge",
-                    "uri": "https://decathlon-10.grand-challenge.org/evaluation/challenge/leaderboard"
-                },
-                {
-                    "label": "nnU-Net: a self-configuring method for deep learning-based biomedical image segmentation",
-                    "uri": "https://www.nature.com/articles/s41592-020-01008-z"
-                }
-            ]
-        },
-        "evaluation": {
-            "title": "Evaluation Data",
-            "text": "The evaluation dataset consists of 139 portal venous phase CT scans from the Medical Segmentation Decathlon [1][2]. This dataset comprised patients undergoing resection of pancreatic masses (intraductal mucinous neoplasms, pancreatic neuroendocrine tumors, or pancreatic ductal adenocarcinoma). Images were provided by Memorial Sloan Kettering Cancer Center (New York, NY, USA). An expert abdominal radiologist manually segmented The pancreatic parenchyma and the mass (cyst or tumor) in each slice.",
-            "references": [
-                {
-                    "label": "Medical Segmentation Decathlon",
-                    "uri": "https://arxiv.org/abs/1902.09063"
-                },
-                {
-                    "label": "Pancreas dataset (direct download)",
-                    "uri": "https://drive.google.com/file/d/1YZQFSonulXuagMIfbJkZeTFJ6qEUuUxL"
-                }
-            ]
-        },
-        "training": {
-        "title": "Training Data",
-        "text": "The training dataset consists of 282 portal venous phase CT scans from the Medical Segmentation Decathlon [1][2]. The training dataset comprised patients undergoing resection of pancreatic masses (intraductal mucinous neoplasms, pancreatic neuroendocrine tumors, or pancreatic ductal adenocarcinoma). Images were provided by Memorial Sloan Kettering Cancer Center (New York, NY, USA). An expert abdominal radiologist manually segmented The pancreatic parenchyma and the mass (cyst or tumor) in each slice. The authors reported the following reconstruction and acquisition parameters for the portal venous phase CT scans in the training datasets:",
-        "tables": [
-            {
-                "label": "Pancreas dataset",
-                "entries": {
-                    "Slice Thickness": "2.5 mm",
-                    "Noise index": "12.5–14; 120 kVp",
-                    "Automatic tube current modulation range": "220–380 mA",
-                    "Pitch/table speed": "0.984–1.375/39.37–27.50 mm",
-                    "Tube rotation speed": "0.7–0.8 ms",
-                    "Scan delay": "80–85 s"
-                }
-            }
-        ],
-        "references": [
-            {
-                "label": "Medical Segmentation Decathlon",
-                "uri": "https://arxiv.org/abs/1902.09063"
-            },
-            {
-                    "label": "Pancreas dataset (direct download)",
-                    "uri": "https://drive.google.com/file/d/1YZQFSonulXuagMIfbJkZeTFJ6qEUuUxL"
-            }
+  "id": "cf8d46fb-df1a-43bd-ba34-933374da23a9",
+  "name": "nnunet_pancreas",
+  "title": "Pancreas Seg (nnU-Net)",
+  "summary": {
+    "description": "nnU-Net's pancreas segmentation model is an AI-based pipeline for the automated segmentation of the pancreas and pancreatic cancer in portal venous phase CT scans.",
+    "inputs": [
+      {
+        "label": "Input Image",
+        "description": "The abdominal CE-CT scan of a patient.",
+        "format": "DICOM",
+        "modality": "CT",
+        "bodypartexamined": "Abdomen",
+        "slicethickness": "2.5 mm",
+        "non-contrast": false,
+        "contrast": true
+      }
+    ],
+    "outputs": [
+      {
+        "type": "Segmentation",
+        "classes": [
+          "PANCREAS",
+          "PANCREAS+NEOPLASM_MALIGNANT_PRIMARY"
         ]
-        }
+      }
+    ],
+    "model": {
+      "architecture": "U-net",
+      "training": "supervised",
+      "cmpapproach": "ensemble"
+    },
+    "data": {
+      "training": {
+        "vol_samples": 282
+      },
+      "evaluation": {
+        "vol_samples": 139
+      },
+      "public": true,
+      "external": false
     }
+  },
+  "details": {
+    "name": "nnU-Net Pancreas Segmentation Model",
+    "version": "1.0.0",
+    "devteam": "MIC-DKFZ (Helmholtz Imaging Applied Computer Vision Lab)",
+    "type": "nnU-Net (U-Net structure, optimized by data-driven heuristics)",
+    "date": {
+      "weights": "01/02/22",
+      "code": "n/a",
+      "pub": "2020"
+    },
+    "cite": "Isensee, F., Jaeger, P. F., Kohl, S. A., Petersen, J., & Maier-Hein, K. H. (2020). nnU-Net: a self-configuring method for deep learning-based biomedical image segmentation. Nature Methods, 1-9.",
+    "license": {
+      "code": "Apache 2.0",
+      "weights": "CC BY-NC 4.0"
+    },
+    "publications": [
+      {
+        "title": "nnU-Net: a self-configuring method for deep learning-based biomedical image segmentation",
+        "uri": "https://www.nature.com/articles/s41592-020-01008-z"
+      }
+    ],
+    "github": "https://github.com/MIC-DKFZ/nnUNet/tree/nnunetv1",
+    "zenodo": "https://zenodo.org/record/4485926"
+  },
+  "info": {
+    "use": {
+      "title": "Intended Use",
+      "text": "This model is intended to perform pancreas and pancreatic cancer segmentation in abdominal portal venous phase CT scans. The model has been trained and tested on cancer patients, so it might not be suited for a healthy population. The generalization capabilities of the model on a range of ages, genders, and ethnicities are unknown. The slice thickness should not exceed 2.5mm for best results."
+    },
+    "analyses": {
+      "title": "Quantitative Analyses",
+      "text": "The model's performance was assessed using the Dice Coefficient, in the  context of the Medical Segmentation Decathlon challenge. The complete breakdown of the metrics can be consulted on GrandChallenge [1] and is reported in the supplementary material to the publication [2].",
+      "references": [
+        {
+          "label": "Medical Segmentation Decathlon on GrandChallenge",
+          "uri": "https://decathlon-10.grand-challenge.org/evaluation/challenge/leaderboard"
+        },
+        {
+          "label": "nnU-Net: a self-configuring method for deep learning-based biomedical image segmentation",
+          "uri": "https://www.nature.com/articles/s41592-020-01008-z"
+        }
+      ]
+    },
+    "evaluation": {
+      "title": "Evaluation Data",
+      "text": "The evaluation dataset consists of 139 portal venous phase CT scans from the Medical Segmentation Decathlon [1][2]. This dataset comprised patients undergoing resection of pancreatic masses (intraductal mucinous neoplasms, pancreatic neuroendocrine tumors, or pancreatic ductal adenocarcinoma). Images were provided by Memorial Sloan Kettering Cancer Center (New York, NY, USA). An expert abdominal radiologist manually segmented The pancreatic parenchyma and the mass (cyst or tumor) in each slice.",
+      "references": [
+        {
+          "label": "Medical Segmentation Decathlon",
+          "uri": "https://arxiv.org/abs/1902.09063"
+        },
+        {
+          "label": "Pancreas dataset (direct download)",
+          "uri": "https://drive.google.com/file/d/1YZQFSonulXuagMIfbJkZeTFJ6qEUuUxL"
+        }
+      ]
+    },
+    "training": {
+      "title": "Training Data",
+      "text": "The training dataset consists of 282 portal venous phase CT scans from the Medical Segmentation Decathlon [1][2]. The training dataset comprised patients undergoing resection of pancreatic masses (intraductal mucinous neoplasms, pancreatic neuroendocrine tumors, or pancreatic ductal adenocarcinoma). Images were provided by Memorial Sloan Kettering Cancer Center (New York, NY, USA). An expert abdominal radiologist manually segmented The pancreatic parenchyma and the mass (cyst or tumor) in each slice. The authors reported the following reconstruction and acquisition parameters for the portal venous phase CT scans in the training datasets:",
+      "tables": [
+        {
+          "label": "Pancreas dataset",
+          "entries": {
+            "Slice Thickness": "2.5 mm",
+            "Noise index": "12.5\u201314; 120 kVp",
+            "Automatic tube current modulation range": "220\u2013380 mA",
+            "Pitch/table speed": "0.984\u20131.375/39.37\u201327.50 mm",
+            "Tube rotation speed": "0.7\u20130.8 ms",
+            "Scan delay": "80\u201385 s"
+          }
+        }
+      ],
+      "references": [
+        {
+          "label": "Medical Segmentation Decathlon",
+          "uri": "https://arxiv.org/abs/1902.09063"
+        },
+        {
+          "label": "Pancreas dataset (direct download)",
+          "uri": "https://drive.google.com/file/d/1YZQFSonulXuagMIfbJkZeTFJ6qEUuUxL"
+        }
+      ]
+    }
+  }
 }
