@@ -1,7 +1,7 @@
 general:
   data_base_dir: /app/data
   version: 1.0
-  description: default configuration for Bamf NNUnet Lung and Tumor segmentation (dicom to dicom)
+  description: default configuration for Bamf NNUnet Lung and FDG-avid lesions in the lung from FDG PET/CT scans (dicom to dicom)
 
 execute:
 - FileStructureImporter

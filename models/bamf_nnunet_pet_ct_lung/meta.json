@@ -33,7 +33,7 @@
                 "description": "Segmentation Lung and tumor",
                 "classes": [
                     "LUNG",
-                    "LUNG+,FDG_AVID_TUMOR"
+                    "LUNG+FDG_AVID_TUMOR"
                 ]
             }
         ],
@@ -54,7 +54,7 @@
         }
     },
     "details": {
-        "name": "AIMI CT Kidney",
+        "name": "AIMI PET CT Lung",
         "version": "1.0.0",
         "devteam": "BAMF Health",
         "authors": [
@@ -85,21 +85,39 @@
     "info": {
         "use": {
             "title": "Intended Use",
-            "text": "This model is intended to perform lung and tumor segmentation in FDG PET CT scans. The model has been trained and tested on scans aquired during clinical care of patients, so it might not be suited for a healthy population. The generalization capabilities of the model on a range of ages, genders, and ethnicities are unknown. For detailed information on the training set design, please refer to reference section in the training section"
+            "text": "This model is intended to perform lung and tumor segmentation in FDG PET CT scans. The model has been trained and tested on scans acquired during clinical care of patients, so it might not be suited for a healthy population. The generalization capabilities of the model on a range of ages, genders, and ethnicities are unknown. For detailed information on the training set design, please refer to reference section in the training section"
         },
         "analyses": {
             "title": "Quantitative Analyses",
-            "text": "Detection Accuracy",
+            "text": "Label-wise metrics (mean (standard deviation)) between AI derived and manual corrected FDG PET/CT lungs and tumor annotations.",
             "tables": [
                 {
+                  "label": "Segmentation Metric Expert",
+                  "entries": {
+                    "Lung DSC": "1.00 (0.00) ",
+                    "Tumor DSC": "0.97 (0.11) ",
+                    "Lung 95% Hausdorff (mm)": "0.10 (0.58)",
+                    "Tumor 95% Hausdorff (mm)": "5.83 (19.42) "
+                  }
+                },
+                {
+                  "label": "Segmentation Metric Tumor - Non-Expert",
+                  "entries": {
+                    "Lung DSC": "0.99 (0.04)",
+                    "Tumor DSC": "0.92 (0.20)",
+                    "Lung 95% Hausdorff (mm)": "1.97 (10.50)",
+                    "Tumor 95% Hausdorff (mm)": "10.00 (26.34)"
+                  }
+                },
+                {
                   "label": "Detection Accuracy",
-                  "entries":
-                  {
+                  "entries": {
                     "Sensitivity": "0.91",
                     "False negative rate": "0.09",
                     "F1 score": "0.94"
                   }
-            }],
+                }
+            ],
             "references": [
                 {
                     "label": "The AIMI Initiative: AI-Generated Annotations for Imaging Data Commons Collections",
@@ -111,6 +129,10 @@
             "title": "Evaluation Data",
             "text": "77 validation cases were rated by a radiologist and non-expert",
             "references": [
+                {
+                    "label": "AutoPET Challenge 2023 dataset",
+                    "uri": "https://doi.org/10.7937/gkr0-xv29"
+                },
                 {
                     "label": "Imaging Data Collections (IDC)",
                     "uri": "https://datacommons.cancer.gov/repository/imaging-data-commons"
@@ -130,32 +152,8 @@
                     "uri": "https://doi.org/10.7937/gkr0-xv29"
                 },
                 {
-                    "label": "ACRIN-NSCLC-FDG-PET",
-                    "uri": "https://doi.org/10.7937/tcia.2019.30ilqfcl"
-                },
-                {
-                    "label": "Anti-PD-1-Lung",
-                    "uri": "https://doi.org/10.7937/tcia.2019.zjjwb9ip"
-                },
-                {
-                    "label": "LUNG-PET-CT-Dx",
-                    "uri": "hƩps://doi.org/10.7937/TCIA.2020.NNC2-0461"
-                },
-                {
-                    "label": "NSCLC Radiogenomics",
-                    "uri": "https://doi.org/10.7937/K9/TCIA.2017.7hs46erv"
-                },
-                {
-                    "label": "RIDER Lung PET-CT",
-                    "uri": "https://doi.org/10.7937/K9/TCIA.2017.7hs46erv"
-                },
-                {
-                    "label": "TCGA-LUAD",
-                    "uri": "https://doi.org/10.7937/K9/TCIA.2016.JGNIHEP5"
-                },
-                {
-                    "label": "TCGA-LUSC",
-                    "uri": "https://doi.org/10.7937/K9/TCIA.2016.TYGKKFMQ"
+                    "label": "Total Segmentator",
+                    "uri": "https://doi.org/10.48550/arXiv.2208.05868"
                 }
             ]
         }
