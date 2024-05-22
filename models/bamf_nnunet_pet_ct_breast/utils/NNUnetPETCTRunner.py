@@ -2,7 +2,7 @@
 -------------------------------------------------
 MHub - NNU-Net Runner
        This is a base runner for pre-trained 
-       nnunet models.
+       nnunet models using PET-CT Modalities
 -------------------------------------------------
 
 -------------------------------------------------

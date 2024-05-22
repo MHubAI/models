@@ -78,46 +78,32 @@
     "info": {
         "use": {
             "title": "Intended Use",
-            "text": "This model is intended to perform segmentations of Breast FDG-avid Tumor region in PET, CT scans. The model has been trained and tested on scans aquired during clinical care of patients, so it might not be suited for a healthy population. The generalization capabilities of the model on a range of ages, genders, and ethnicities are unknown."
+            "text": "This model is intended to perform segmentations of Breast FDG-avid Tumor region in PET, CT scans. The model has been trained and tested on scans acquired during clinical care of patients, so it might not be suited for a healthy population. The generalization capabilities of the model on a range of ages, genders, and ethnicities are unknown."
         },
         "analyses": {
             "title": "Quantitative Analyses",
-            "text": "Label-wise metrics (mean (standard deviation)) between AI derived and manual corrected FDG PET/CT lungs and tumor annotations.",
+            "text": "Label-wise metrics (mean (standard deviation)) between AI derived and expert corrected FDG PET/CT breast lesion annotations.",
             "tables": [
                 {
-                  "label": "Segmentation Metric Lung - Expert",
+                  "label": "Segmentation Metric Expert",
                   "entries": {
-                    "DSC": "1.00 (0.00) ",
-                    "95% Hausdorff (mm)": "0.10 (0.58)"
+                    "Tumor DSC": "0.80 (0.33)",
+                    "Tumor 95% Hausdorff (mm)": "29.70 (33.43)"
                   }
                 },
                 {
-                  "label": "Segmentation Metric Tumor - Expert",
+                  "label": "Segmentation Metric Tumor - Non-Expert",
                   "entries": {
-                    "DSC": "0.97 (0.11)",
-                    "95% Hausdorff (mm)": "5.83 (19.42)"
-                  }
-                },
-                {
-                  "label": "Segmentation Metric Lung - Non Expert",
-                  "entries": {
-                    "DSC": "0.99 (0.04)",
-                    "95% Hausdorff (mm)": "1.97 (10.50)"
-                  }
-                },
-                {
-                  "label": "Segmentation Metric Tumor - Non Expert",
-                  "entries": {
-                    "DSC": "0.92 (0.20)",
-                    "95% Hausdorff (mm)": "10.00 (26.34)"
+                    "Tumor DSC": "0.94 (0.10)",
+                    "Tumor 95% Hausdorff (mm)": "13.53 (20.00)"
                   }
                 },
                 {
                   "label": "Detection Accuracy",
                   "entries": {
-                    "Sensitivity": "0.91",
-                    "False negative rate": "0.09",
-                    "F1 score": "0.94"
+                    "Sensitivity": "0.43",
+                    "False negative rate": "0.57",
+                    "F1 score": "0.52"
                   }
                 }
             ],
