@@ -3,26 +3,26 @@
     "name": "bamf_nnunet_pet_ct_lung",
     "title": "FDG PET/CT Lung and Lung Tumor Annotation",
     "summary": {
-        "description": "An nnU-Net based model to segment Lung and tumor from FDG PET CT scans",
+        "description": "An nnU-Net based model to segment Lung and FDG-avid lesions in the lung from FDG PET/CT scans",
         "inputs": [
-            {
-                "label": "Input Image",
-                "description": "The PET scan of a patient.",
-                "format": "DICOM",
-                "modality": "PT",
-                "bodypartexamined": "Lung",
-                "slicethickness": "2.5mm",
-                "non-contrast": true,
-                "contrast": false
-            },
             {
                 "label": "Input Image",
                 "description": "The CT scan of a patient.",
                 "format": "DICOM",
                 "modality": "CT",
                 "bodypartexamined": "Lung",
-                "slicethickness": "2.5mm",
+                "slicethickness": "5mm",
                 "non-contrast": true,
+                "contrast": false
+            },
+            {
+                "label": "Input Image",
+                "description": "The PET scan of a patient.",
+                "format": "DICOM",
+                "modality": "CT",
+                "bodypartexamined": "Lung",
+                "slicethickness": "3.38mm",
+                "non-contrast": false,
                 "contrast": false
             }
         ],
@@ -32,8 +32,8 @@
                 "type": "Segmentation",
                 "description": "Segmentation Lung and tumor",
                 "classes": [
-                    "LEFT_LOWER_LUNG_LOBE",
-                    "LEFT_LOWER_LUNG_LOBE+,FDG_AVID_TUMOR"
+                    "LUNG",
+                    "LUNG+,FDG_AVID_TUMOR"
                 ]
             }
         ],
@@ -44,7 +44,7 @@
         },
         "data": {
             "training": {
-                "vol_samples": 736
+                "vol_samples": 1014
             },
             "evaluation": {
                 "vol_samples": 77
@@ -80,7 +80,7 @@
                 "uri": "https://arxiv.org/abs/2310.14897"
             }
         ],
-        "github": "https://github.com/bamf-health/aimi-kidney-ct"
+        "github": "https://github.com/bamf-health/aimi-lung-pet-ct"
     },
     "info": {
         "use": {
@@ -89,30 +89,18 @@
         },
         "analyses": {
             "title": "Quantitative Analyses",
-            "text": "Label-wise metrics (mean (standard deviation)) between AI derived and manual corrected FDG PET/CT\nlungs and tumor annotations",
+            "text": "Detection Accuracy",
             "tables": [
                 {
-                    "label": "Label-wise metrics (mean (standard deviation)) between AI derived and manual corrected FDG PET/CT lungs and tumor annotations",
-                    "entries": {
-                        "tumor" : {
-                        "Dice: Radiologist": "0.97 (0.11)",
-                        "NSD: Radiologist": "5.83 (19.42)",
-                        "Dice: Non-expert": "0.92 (0.20)",
-                        "NSD: Non-expert": "10.00 (26.34)"
-                        },
-                        "lung": {
-                            "Dice: Radiologist": "1.00 (0.00)",
-                            "NSD: Radiologist": "0.10 (0.58) ",
-                            "Dice: Non-expert": "0.99 (0.04) ",
-                            "NSD: Non-expert": "1.97 (10.50) "
-                        }
-                }
-            ],
+                  "label": "Detection Accuracy",
+                  "entries":
+                  {
+                    "Sensitivity": "0.91",
+                    "False negative rate": "0.09",
+                    "F1 score": "0.94"
+                  }
+            }],
             "references": [
-                {
-                    "label": "TCGA-KIRC",
-                    "uri": "https://wiki.cancerimagingarchive.net/pages/viewpage.action?pageId=5800386"
-                },
                 {
                     "label": "The AIMI Initiative: AI-Generated Annotations for Imaging Data Commons Collections",
                     "uri": "https://arxiv.org/abs/2310.14897"
@@ -121,15 +109,11 @@
         },
         "evaluation": {
             "title": "Evaluation Data",
-            "text": " 77 validation cases were rated by a radiologist and non-expert",
+            "text": "77 validation cases were rated by a radiologist and non-expert",
             "references": [
                 {
                     "label": "Imaging Data Collections (IDC)",
                     "uri": "https://datacommons.cancer.gov/repository/imaging-data-commons"
-                },
-                {
-                    "label": "TCGA-KIRC",
-                    "uri": "https://wiki.cancerimagingarchive.net/pages/viewpage.action?pageId=5800386"
                 },
                 {
                     "label": "Image segmentations produced by the AIMI Annotations initiative",
@@ -139,15 +123,39 @@
         },
         "training": {
             "title": "Training Data",
-            "text": "A total of 736 paired FDG-PET/CT image. FDG PET/CT datasets taken from The Cancer Genome Atlas (TCGA) program for Lung Adenocarcinoma (LUAD) and Lung Squamous Cell Carcinoma (LUSC)4, the Lung Cancer Diagnosis (LUNG-PET-CT-Dx), AnƟ-PD-1 Immunotherapy Lung, the Reference Image Database to Evaluate Therapy Response PET/CT subgoup (RIDER Lung PET-CT), and the Non-Small Cell Lung Cancer (NSCLC) for Radiogenomics and the American College of Radiology Imaging Network non small cell lung cancer FDG PET (ACRIN-NSCLC-FDG-PET)",
+            "text": "The AutoPET Challenge 2023 dataset is comprised of whole-body FDG-PET/CT data from 900 patients, encompassing 1014 studies with tumor annotations. This dataset was augmented by adding labels for the brain, bladder, kidneys, liver, stomach, spleen, lungs, and heart generated by the TotalSegmentator model. A multi-task AI model was trained using the augmented datasets",
             "references": [
                 {
-                    "label": "KiTS 2023 dataset",
-                    "uri": "https://github.com/neheller/kits23"
+                    "label": "AutoPET Challenge 2023 dataset",
+                    "uri": "https://doi.org/10.7937/gkr0-xv29"
                 },
                 {
-                    "label": "TCGA-KIRC",
-                    "uri": "https://wiki.cancerimagingarchive.net/pages/viewpage.action?pageId=5800386"
+                    "label": "ACRIN-NSCLC-FDG-PET",
+                    "uri": "https://doi.org/10.7937/tcia.2019.30ilqfcl"
+                },
+                {
+                    "label": "Anti-PD-1-Lung",
+                    "uri": "https://doi.org/10.7937/tcia.2019.zjjwb9ip"
+                },
+                {
+                    "label": "LUNG-PET-CT-Dx",
+                    "uri": "hƩps://doi.org/10.7937/TCIA.2020.NNC2-0461"
+                },
+                {
+                    "label": "NSCLC Radiogenomics",
+                    "uri": "https://doi.org/10.7937/K9/TCIA.2017.7hs46erv"
+                },
+                {
+                    "label": "RIDER Lung PET-CT",
+                    "uri": "https://doi.org/10.7937/K9/TCIA.2017.7hs46erv"
+                },
+                {
+                    "label": "TCGA-LUAD",
+                    "uri": "https://doi.org/10.7937/K9/TCIA.2016.JGNIHEP5"
+                },
+                {
+                    "label": "TCGA-LUSC",
+                    "uri": "https://doi.org/10.7937/K9/TCIA.2016.TYGKKFMQ"
                 }
             ]
         }
