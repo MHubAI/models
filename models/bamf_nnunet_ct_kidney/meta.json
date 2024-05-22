@@ -1,139 +1,139 @@
 {
-    "id": "",
-    "name": "bamf_nnunet_ct_kidney",
-    "title": "AIMI CT Kidney",
-    "summary": {
-        "description": "An nnU-Net based model to segment kidney from CT scans",
-        "inputs": [
-            {
-                "label": "Input Image",
-                "description": "The CT scan of a patient.",
-                "format": "DICOM",
-                "modality": "CT",
-                "bodypartexamined": "Kidney",
-                "slicethickness": "2.5mm",
-                "non-contrast": true,
-                "contrast": false
-            }
-        ],
-        "outputs": [
-            {
-                "label": "Segmentation",
-                "type": "Segmentation",
-                "description": "Segmentation kidney",
-                "classes": [
-                    "KIDNEY",
-                    "KIDNEY+NEOPLASM_MALIGNANT_PRIMARY",
-                    "KIDNEY+CYST"
-                ]
-            }
-        ],
-        "model": {
-            "architecture": "U-net",
-            "training": "supervised",
-            "cmpapproach": "3D"
-        },
-        "data": {
-            "training": {
-                "vol_samples": 534
-            },
-            "evaluation": {
-                "vol_samples": 156
-            },
-            "public": true,
-            "external": true
-        }
+  "id": "425fb7bb-49c5-4f6e-9168-40dc8bece3dc",
+  "name": "bamf_nnunet_ct_kidney",
+  "title": "BAMF CT Kidney Seg (nnU-Net)",
+  "summary": {
+    "description": "An nnU-Net based model to segment kidney from CT scans",
+    "inputs": [
+      {
+        "label": "Input Image",
+        "description": "The CT scan of a patient.",
+        "format": "DICOM",
+        "modality": "CT",
+        "bodypartexamined": "Kidney",
+        "slicethickness": "2.5mm",
+        "non-contrast": true,
+        "contrast": false
+      }
+    ],
+    "outputs": [
+      {
+        "label": "Segmentation",
+        "type": "Segmentation",
+        "description": "Segmentation kidney",
+        "classes": [
+          "KIDNEY",
+          "KIDNEY+NEOPLASM_MALIGNANT_PRIMARY",
+          "KIDNEY+CYST"
+        ]
+      }
+    ],
+    "model": {
+      "architecture": "U-net",
+      "training": "supervised",
+      "cmpapproach": "3D"
     },
-    "details": {
-        "name": "AIMI CT Kidney",
-        "version": "1.0.0",
-        "devteam": "BAMF Health",
-        "authors": [
-            "Soni, Rahul",
-            "McCrumb, Diana",
-            "Murugesan, Gowtham Krishnan",
-            "Van Oss, Jeff"
-        ],
-        "type": "nnU-Net (U-Net structure, optimized by data-driven heuristics)",
-        "date": {
-            "code": "17.10.2023",
-            "weights": "28.08.2023",
-            "pub": "23.10.2023"
-        },
-        "cite": "Murugesan, Gowtham Krishnan, Diana McCrumb, Mariam Aboian, Tej Verma, Rahul Soni, Fatima Memon, and Jeff Van Oss. The AIMI Initiative: AI-Generated Annotations for Imaging Data Commons Collections. arXiv preprint arXiv:2310.14897 (2023).",
-        "license": {
-            "code": "MIT",
-            "weights": "CC BY-NC 4.0"
-        },
-        "publications": [
-            {
-                "title": "The AIMI Initiative: AI-Generated Annotations in IDC Collections",
-                "uri": "https://arxiv.org/abs/2310.14897"
-            }
-        ],
-        "github": "https://github.com/bamf-health/aimi-kidney-ct"
-    },
-    "info": {
-        "use": {
-            "title": "Intended Use",
-            "text": "This model is intended to perform kidney segmentation in CT scans. The model has been trained and tested on scans aquired during clinical care of patients, so it might not be suited for a healthy population. The generalization capabilities of the model on a range of ages, genders, and ethnicities are unknown. For detailed information on the training set design, please refer to reference section in the training section"
-        },
-        "analyses": {
-            "title": "Quantitative Analyses",
-            "text": "The model's performance was assessed using the Dice Coefficient and Normalized Surface Distance (NSD) with tolerance 7mm, as specified in the CT Kidney segmentation task in the Medical Segmentation Decathlon challenge. The model was used to segment cases from the IDC collection TCGA-KIRC [1]. Seven of those cases were reviewed and corrected by a board-certified radiologist and a non-expert. The analysis is published here [2]",
-            "tables": [
-                {
-                    "label": "Label-wise metrics (mean (standard deviation)) between AI derived and manually corrected CT kidney annotations",
-                    "entries": {
-                        "Dice: Radiologist": "0.93 (0.22)",
-                        "NSD: Radiologist": "0.91 (0.23)",
-                        "Dice: Non-expert": "0.99 (0.06)",
-                        "NSD: Non-expert": "0.98 (0.09)"
-                    }
-                }
-            ],
-            "references": [
-                {
-                    "label": "TCGA-KIRC",
-                    "uri": "https://wiki.cancerimagingarchive.net/pages/viewpage.action?pageId=5800386"
-                },
-                {
-                    "label": "The AIMI Initiative: AI-Generated Annotations for Imaging Data Commons Collections",
-                    "uri": "https://arxiv.org/abs/2310.14897"
-                }
-            ]
-        },
-        "evaluation": {
-            "title": "Evaluation Data",
-            "text": "The model was used to segment cases from the IDC [1] collection TCGA-KIRC [1]. Approximately 20% of those cases were randomly selected to be reviewed and corrected by a board-certified radiologist. The model predictions, and radiologist corrections are published on zenodo [3]",
-            "references": [
-                {
-                    "label": "Imaging Data Collections (IDC)",
-                    "uri": "https://datacommons.cancer.gov/repository/imaging-data-commons"
-                },
-                {
-                    "label": "TCGA-KIRC",
-                    "uri": "https://wiki.cancerimagingarchive.net/pages/viewpage.action?pageId=5800386"
-                },
-                {
-                    "label": "Image segmentations produced by the AIMI Annotations initiative",
-                    "uri": "https://zenodo.org/records/10009368"
-                }
-            ]
-        },
-        "training": {
-            "title": "Training Data",
-            "text": "The training dataset consists of  489 CT kidney annotations taken from KiTS 2023 dataset [1] (N=489) and TCGA-KIRC Dataset [2] (N=45). Dataset was collected by reviewing patients who underwent partial or radical nephrectomy for suspicion of renal cancer by a physician in the urology service of University of Minnesota Health between 2010 and mid-2018. 544 patients met this initial criteria. Patients for whom imaging in the late arterial phase was not available where excluded from the training set. Patients with tumor thrombus where also excluded since in these cases the tumor extends out beyond what was considered to be the primary site",
-            "references": [
-                {
-                    "label": "KiTS 2023 dataset",
-                    "uri": "https://github.com/neheller/kits23"
-                },
-                {
-                    "label": "TCGA-KIRC",
-                    "uri": "https://wiki.cancerimagingarchive.net/pages/viewpage.action?pageId=5800386"
-                }
-            ]
-        }
+    "data": {
+      "training": {
+        "vol_samples": 534
+      },
+      "evaluation": {
+        "vol_samples": 156
+      },
+      "public": true,
+      "external": true
     }
+  },
+  "details": {
+    "name": "AIMI CT Kidney",
+    "version": "1.0.0",
+    "devteam": "BAMF Health",
+    "authors": [
+      "Soni, Rahul",
+      "McCrumb, Diana",
+      "Murugesan, Gowtham Krishnan",
+      "Van Oss, Jeff"
+    ],
+    "type": "nnU-Net (U-Net structure, optimized by data-driven heuristics)",
+    "date": {
+      "code": "17.10.2023",
+      "weights": "28.08.2023",
+      "pub": "23.10.2023"
+    },
+    "cite": "Murugesan, Gowtham Krishnan, Diana McCrumb, Mariam Aboian, Tej Verma, Rahul Soni, Fatima Memon, and Jeff Van Oss. The AIMI Initiative: AI-Generated Annotations for Imaging Data Commons Collections. arXiv preprint arXiv:2310.14897 (2023).",
+    "license": {
+      "code": "MIT",
+      "weights": "CC BY-NC 4.0"
+    },
+    "publications": [
+      {
+        "title": "The AIMI Initiative: AI-Generated Annotations in IDC Collections",
+        "uri": "https://arxiv.org/abs/2310.14897"
+      }
+    ],
+    "github": "https://github.com/bamf-health/aimi-kidney-ct"
+  },
+  "info": {
+    "use": {
+      "title": "Intended Use",
+      "text": "This model is intended to perform kidney segmentation in CT scans. The model has been trained and tested on scans aquired during clinical care of patients, so it might not be suited for a healthy population. The generalization capabilities of the model on a range of ages, genders, and ethnicities are unknown. For detailed information on the training set design, please refer to reference section in the training section"
+    },
+    "analyses": {
+      "title": "Quantitative Analyses",
+      "text": "The model's performance was assessed using the Dice Coefficient and Normalized Surface Distance (NSD) with tolerance 7mm, as specified in the CT Kidney segmentation task in the Medical Segmentation Decathlon challenge. The model was used to segment cases from the IDC collection TCGA-KIRC [1]. Seven of those cases were reviewed and corrected by a board-certified radiologist and a non-expert. The analysis is published here [2]",
+      "tables": [
+        {
+          "label": "Label-wise metrics (mean (standard deviation)) between AI derived and manually corrected CT kidney annotations",
+          "entries": {
+            "Dice: Radiologist": "0.93 (0.22)",
+            "NSD: Radiologist": "0.91 (0.23)",
+            "Dice: Non-expert": "0.99 (0.06)",
+            "NSD: Non-expert": "0.98 (0.09)"
+          }
+        }
+      ],
+      "references": [
+        {
+          "label": "TCGA-KIRC",
+          "uri": "https://wiki.cancerimagingarchive.net/pages/viewpage.action?pageId=5800386"
+        },
+        {
+          "label": "The AIMI Initiative: AI-Generated Annotations for Imaging Data Commons Collections",
+          "uri": "https://arxiv.org/abs/2310.14897"
+        }
+      ]
+    },
+    "evaluation": {
+      "title": "Evaluation Data",
+      "text": "The model was used to segment cases from the IDC [1] collection TCGA-KIRC [1]. Approximately 20% of those cases were randomly selected to be reviewed and corrected by a board-certified radiologist. The model predictions, and radiologist corrections are published on zenodo [3]",
+      "references": [
+        {
+          "label": "Imaging Data Collections (IDC)",
+          "uri": "https://datacommons.cancer.gov/repository/imaging-data-commons"
+        },
+        {
+          "label": "TCGA-KIRC",
+          "uri": "https://wiki.cancerimagingarchive.net/pages/viewpage.action?pageId=5800386"
+        },
+        {
+          "label": "Image segmentations produced by the AIMI Annotations initiative",
+          "uri": "https://zenodo.org/records/10009368"
+        }
+      ]
+    },
+    "training": {
+      "title": "Training Data",
+      "text": "The training dataset consists of  489 CT kidney annotations taken from KiTS 2023 dataset [1] (N=489) and TCGA-KIRC Dataset [2] (N=45). Dataset was collected by reviewing patients who underwent partial or radical nephrectomy for suspicion of renal cancer by a physician in the urology service of University of Minnesota Health between 2010 and mid-2018. 544 patients met this initial criteria. Patients for whom imaging in the late arterial phase was not available where excluded from the training set. Patients with tumor thrombus where also excluded since in these cases the tumor extends out beyond what was considered to be the primary site",
+      "references": [
+        {
+          "label": "KiTS 2023 dataset",
+          "uri": "https://github.com/neheller/kits23"
+        },
+        {
+          "label": "TCGA-KIRC",
+          "uri": "https://wiki.cancerimagingarchive.net/pages/viewpage.action?pageId=5800386"
+        }
+      ]
+    }
+  }
 }

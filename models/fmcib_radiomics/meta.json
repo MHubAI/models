@@ -11,17 +11,17 @@
         "format": "DICOM",
         "modality": "CT",
         "slicethickness": "5mm",
-        "bodypartexamined": "Whole",
+        "bodypartexamined": "WHOLEBODY",
         "non-contrast": true,
         "contrast": true
       },
       {
-        "label": "Center of mass",        
+        "label": "Center of mass",
         "description": "Center of mass of the lesion in the CT image",
         "format": "JSON",
         "modality": "JSON",
         "slicethickness": "5mm",
-        "bodypartexamined": "Whole",
+        "bodypartexamined": "WHOLEBODY",
         "non-contrast": true,
         "contrast": true
       }
@@ -56,11 +56,11 @@
     "type": "Feature extractor",
     "devteam": "Researchers from the Artificial Intelligence in Medicine (AIM) Program, Mass General Brigham, Harvard Medical School and other institutions",
     "date": {
-      "pub": "2023 (preprint)",
+      "pub": "2024",
       "code": "n/a",
       "weights": "18.01.2024"
     },
-    "cite": "Pai, S., Bontempi, D., Hadzic, I., Prudente, V., et al. Foundation Model for Cancer Imaging Biomarkers. 2023.",
+    "cite": "Pai, S., Bontempi, D., Hadzic, I. et al. Foundation model for cancer imaging biomarkers. Nat Mach Intell (2024). https://doi.org/10.1038/s42256-024-00807-9",
     "license": {
       "code": "MIT",
       "weights": "CC BY-NC 4.0"
@@ -68,13 +68,13 @@
     "publications": [
       {
         "title": "Foundation Model for Cancer Imaging Biomarkers",
-        "uri": "https://www.medrxiv.org/content/10.1101/2023.09.04.23294952v1"
+        "uri": "https://www.nature.com/articles/s42256-024-00807-9"
       }
     ],
     "github": "https://github.com/AIM-Harvard/foundation-cancer-image-biomarker",
     "zenodo": "https://zenodo.org/records/10528450",
     "colab": "https://colab.research.google.com/drive/1JMtj_4W0uNPzrVnM9EpN1_xpaB-5KC1H?usp=sharing",
-    "slicer": false    
+    "slicer": false
   },
   "info": {
     "use": {
@@ -85,53 +85,53 @@
       "title": "Quantitative Analyses",
       "text": "The model's performance was assessed using three different downstream tasks, including malignancy prediction and lung cancer risk prediction. Refer to the publication for more details [1].",
       "references": [
-          {
-              "label": "Foundation model for cancer image biomarkers",
-              "uri": "https://www.medrxiv.org/content/10.1101/2023.09.04.23294952v1"
-          }
-        ]
+        {
+          "label": "Foundation model for cancer image biomarkers",
+          "uri": "https://www.nature.com/articles/s42256-024-00807-9"
+        }
+      ]
     },
     "evaluation": {
-        "title": "Evaluation Data",
-        "text": "The evaluation dataset consists of 1,944 lesions, including 1,221 lesions for anatomical site classification, 170 nodules for malignancy prediction, and 553 tumors (420 LUNG1 + 133 RADIO) for prognostication. The dataset was held out from the training data and gathered from several different sources [1, 2, 3, 4].",
-        "tables": [
-            {
-                "label": "Evaluation Tasks & Datasets",
-                "entries": {
-                    "Lesion Anatomical Site Prediction": "DeepLesion (n=1221)",
-                    "Nodule Malignancy Prediction": "LUNA16 (n=170)",
-                    "Tumor Prognostication": "NSCLC-Radiomics (n=420) + NSCLC-Radiogenomics (n=133)"
-                }
-            }
-        ],
-        "references": [
-                {
-                "label": "DeepLesion: automated mining of large-scale lesion annotations and universal lesion detection with deep learning.",
-                "uri": "https://pubmed.ncbi.nlm.nih.gov/30035154/"
-            },
-            {
-                "label": "LUNA16",
-                "uri": "https://www.cancerimagingarchive.net/collection/lidc-idri/"
-            },
-            {
-              "label": "NSCLC-Radiomics",
-              "uri": "https://www.cancerimagingarchive.net/collection/nsclc-radiomics/"
-          },
-          {
-            "label": "NSCLC-Radiogenomics",
-            "uri": "https://www.cancerimagingarchive.net/analysis-result/nsclc-radiogenomics-stanford/"
+      "title": "Evaluation Data",
+      "text": "The evaluation dataset consists of 1,944 lesions, including 1,221 lesions for anatomical site classification, 170 nodules for malignancy prediction, and 553 tumors (420 LUNG1 + 133 RADIO) for prognostication. The dataset was held out from the training data and gathered from several different sources [1, 2, 3, 4].",
+      "tables": [
+        {
+          "label": "Evaluation Tasks & Datasets",
+          "entries": {
+            "Lesion Anatomical Site Prediction": "DeepLesion (n=1221)",
+            "Nodule Malignancy Prediction": "LUNA16 (n=170)",
+            "Tumor Prognostication": "NSCLC-Radiomics (n=420) + NSCLC-Radiogenomics (n=133)"
           }
-        ]
+        }
+      ],
+      "references": [
+        {
+          "label": "DeepLesion: automated mining of large-scale lesion annotations and universal lesion detection with deep learning.",
+          "uri": "https://pubmed.ncbi.nlm.nih.gov/30035154/"
+        },
+        {
+          "label": "LUNA16",
+          "uri": "https://www.cancerimagingarchive.net/collection/lidc-idri/"
+        },
+        {
+          "label": "NSCLC-Radiomics",
+          "uri": "https://www.cancerimagingarchive.net/collection/nsclc-radiomics/"
+        },
+        {
+          "label": "NSCLC-Radiogenomics",
+          "uri": "https://www.cancerimagingarchive.net/analysis-result/nsclc-radiogenomics-stanford/"
+        }
+      ]
     },
     "training": {
-    "title": "Training Data",
-    "text": "The training dataset consists of 11467 lesions sourced from 5,513 unique CT scans across 2,312 different patients. This was curated from the DeepLesion dataset [1] following two steps - 1) Lesions that did not contain anatomical labels were selected, 2) Scans with spacing 5mm or more were removed.",
-    "references": [
-      {
-        "label": "DeepLesion: automated mining of large-scale lesion annotations and universal lesion detection with deep learning.",
-        "uri": "https://pubmed.ncbi.nlm.nih.gov/30035154/"
-    }
-    ]
+      "title": "Training Data",
+      "text": "The training dataset consists of 11467 lesions sourced from 5,513 unique CT scans across 2,312 different patients. This was curated from the DeepLesion dataset [1] following two steps - 1) Lesions that did not contain anatomical labels were selected, 2) Scans with spacing 5mm or more were removed.",
+      "references": [
+        {
+          "label": "DeepLesion: automated mining of large-scale lesion annotations and universal lesion detection with deep learning.",
+          "uri": "https://pubmed.ncbi.nlm.nih.gov/30035154/"
+        }
+      ]
     }
   }
 }

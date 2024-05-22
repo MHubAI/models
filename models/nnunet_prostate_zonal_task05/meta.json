@@ -1,178 +1,180 @@
 {
-    "id": "f2eb536b-448a-4e9a-8981-3efc51301f62",
-    "name": "nnunet_prostate_zonal_task05",
-    "title": "nnU-Net (Prostate transitional zone and peripheral zone segmentation)",
-    "summary": {
-        "description": "nnU-Net's zonal prostate segmentation model is a multi-modality input AI-based pipeline for the automated segmentation of the peripheral and transition zone of the prostate on MRI scans.",
-        "inputs": [
-            {
-                "label": "T2 input image",
-                "description": "The T2 axial sequence being one of the two input image",
-                "format": "DICOM",
-                "modality": "MR",
-                "bodypartexamined": "Prostate",
-                "slicethickness": "3.6 mm",
-                "non-contrast": true,
-                "contrast": false
-            },
-            {
-                "label": "ADC Input Image",
-                "description": "The ADC axial sequence being one of the two input image",
-                "format": "DICOM",
-                "modality": "MR",
-                "bodypartexamined": "Prostate",
-                "slicethickness": "3.6 mm",
-                "non-contrast": true,
-                "contrast": false
-            }
-        ],
-        "outputs": [
-            {
-                "type": "Segmentation",
-                "classes": [
-                    "PROSTATE_PERIPHERAL_ZONE",
-                    "PROSTATE_TRANSITION_ZONE"
-                ]
-            }
-        ],
-        "model": {
-            "architecture": "U-net",
-            "training": "supervised",
-            "cmpapproach": "3D"
-        },
-        "data": {
-            "training": {
-                "vol_samples": 32
-            },
-            "evaluation": {
-                "vol_samples": 16
-            },
-            "public": true,
-            "external": false
-        }
+  "id": "f2eb536b-448a-4e9a-8981-3efc51301f62",
+  "name": "nnunet_prostate_zonal_task05",
+  "title": "Prostate Transitional and Peripheral Zone Seg (nnU-Net)",
+  "summary": {
+    "description": "nnU-Net's zonal prostate segmentation model is a multi-modality input AI-based pipeline for the automated segmentation of the peripheral and transition zone of the prostate on MRI scans.",
+    "inputs": [
+      {
+        "label": "T2 input image",
+        "description": "The T2 axial sequence being one of the two input image",
+        "format": "DICOM",
+        "modality": "MR",
+        "bodypartexamined": "Prostate",
+        "slicethickness": "3.6 mm",
+        "non-contrast": true,
+        "contrast": false
+      },
+      {
+        "label": "ADC Input Image",
+        "description": "The ADC axial sequence being one of the two input image",
+        "format": "DICOM",
+        "modality": "MR",
+        "bodypartexamined": "Prostate",
+        "slicethickness": "3.6 mm",
+        "non-contrast": true,
+        "contrast": false
+      }
+    ],
+    "outputs": [
+      {
+        "type": "Segmentation",
+        "classes": [
+          "PROSTATE_PERIPHERAL_ZONE",
+          "PROSTATE_TRANSITION_ZONE"
+        ]
+      }
+    ],
+    "model": {
+      "architecture": "U-net",
+      "training": "supervised",
+      "cmpapproach": "3D"
     },
-    "details": {
-        "name": "nnU-Net Zonal prostate regions Segmentation Model",
-        "version": "1.0.0",
-        "devteam": "MIC-DKFZ (Helmholtz Imaging Applied Computer Vision Lab)",
-        "type": "nnU-Net (U-Net structure, optimized by data-driven heuristics)",
-        "date": {
-            "weights": "2020",
-            "code": "2020",
-            "pub": "2020"
-        },
-        "cite": "Isensee, F., Jaeger, P. F., Kohl, S. A., Petersen, J., & Maier-Hein, K. H. (2020). nnU-Net: a self-configuring method for deep learning-based biomedical image segmentation. Nature Methods, 1-9.",
-        "license": {
-            "code": "Apache 2.0",
-            "weights": "CC BY-NC 4.0"
-        },
-        "publications": [
-            {
-                "title": "nnU-Net: a self-configuring method for deep learning-based biomedical image segmentation",
-                "uri": "https://www.nature.com/articles/s41592-020-01008-z"
-            }
-        ],
-        "github": "https://github.com/MIC-DKFZ/nnUNet/tree/nnunetv1",
-        "zenodo": "https://zenodo.org/record/4485926"
-    },
-    "info": {
-        "use": {
-            "title": "Intended Use",
-            "text": "This model is intended to perform prostate regions anatomy segmentation in MR ADC and T2 scans. The slice thickness of the training data is 3.6mm. Input ADC and T2 modalities are co-registered during training. No endorectal coil was present during training."
-        },
-        "analyses": {
-            "title": "Quantitative Analyses",
-            "text": "The model's performance was assessed using the Dice Coefficient, in the context of the Medical Segmentation Decathlon challenge. The complete breakdown of the metrics can be consulted on GrandChallenge [1] and is reported in the supplementary material to the publication [2].",
-            "references": [
-                {
-                    "label": "Medical Segmentation Decathlon on GrandChallenge",
-                    "uri": "https://decathlon-10.grand-challenge.org/evaluation/challenge/leaderboard"
-                },
-                {
-                    "label": "nnU-Net: a self-configuring method for deep learning-based biomedical image segmentation",
-                    "uri": "https://www.nature.com/articles/s41592-020-01008-z"
-                }
-            ]
-        },
-        "evaluation": {
-            "title": "Evaluation Data",
-            "text": "The evaluation dataset consists of 16 validation samples coming from the Medical Decathlon collection.",
-            "tables": [{
-                "label": "mean DSC peripheral zone results on internal training data, using five fold cross-validation",
-                "entries": {
-                    "2D": "0.6285",
-                    "3D_fullres": "0.6663",
-                    "Best ensemble (2D + 3D_fullres)": "0.6611",
-                    "Postprocessed": "0.6611"
-                }
-            },
-            {
-                "label": "mean DSC transition zone results on internal training data, using five fold cross-validation",
-                "entries": {
-                    "2D": "0.8380",
-                    "3D_fullres": "0.8410",
-                    "Best ensemble (2D + 3D_fullres)": "0.8575",
-                    "Postprocessed": "0.8577"
-                }
-            },
-            {
-                "label": "mean DSC prostate zonal regions results on internal test data",
-                "entries": {
-                    "mean DSC for PZ": "0.77",
-                    "mean DSC for TZ": "0.90"
-                }
-            }],
-            "references": [
-                {
-                    "label": "Medical Segmentation Decathlon",
-                    "uri": "https://www.nature.com/articles/s41467-022-30695-9"
-                },
-                {
-                    "label": "Medical Decathlon Prostate dataset (direct download)",
-                    "uri": "https://drive.google.com/drive/folders/1HqEgzS8BV2c7xYNrZdEAnrHk7osJJ--2"
-                }
-            ]
-        },
-        "training": {
-            "title": "Training Data",
-            "text": "The training dataset consists of 32 MRI cases containing the prostate, from the Medical Segmentation Decathlon. The authors report the following characteristics for the portal venous phase CT scans of the training dataset:",
-            "tables": [
-                {
-                    "label": "Medical Image Decathlon dataset (training)",
-                    "entries": {
-                        "Slice Thickness": "3.6 mm",
-                        "In-Plane Resolution": "0.62 mm"
-                    }
-                }
-            ],
-            "references": [
-                {
-                    "label": "Medical Segmentation Decathlon",
-                    "uri": "https://www.nature.com/articles/s41467-022-30695-9"
-                },
-                {
-                    "label": "Medical Decathlon Prostate dataset (direct download)",
-                    "uri": "https://drive.google.com/drive/folders/1HqEgzS8BV2c7xYNrZdEAnrHk7osJJ--2"
-                }
-            ]
-        },
-        "limitations":{
-            "title": "Dealing with multi-modality input",
-            "text": "Authors recommend co-registration of ADC and T2 input sequences, as applied during training. At the very least, the ADC and T2 sequence need to have identical geometry for nnUNet to run. Since evaluated ADC and T2 sequences during evaluation might more often that not fail this requirement, we apply resampling of the ADC sequence to the T2 sequence, since T2 tends to have a higher resolution. Below are some references regarding nnUnet recommendations for multi-modality input, alongside the paper describing the registration process of Medical Image Decathlon dataset for the ADC and T2 sequences.",
-            "references": [
-                {
-                    "label": "Litjens et al., A pattern recognition approach to zonal segmentation of the prostate on MRI",
-                    "uri": "https://pubmed.ncbi.nlm.nih.gov/23286075/"
-                },
-                {
-                    "label": "Alignment of multi channel inputs for nnunet #502",
-                    "uri": "https://github.com/MIC-DKFZ/nnUNet/issues/502"
-                },
-                {
-                    "label": "Multi-modality dataset conversion issue #306",
-                    "uri": "https://github.com/MIC-DKFZ/nnUNet/issues/306"
-                }
-            ]
-        }
+    "data": {
+      "training": {
+        "vol_samples": 32
+      },
+      "evaluation": {
+        "vol_samples": 16
+      },
+      "public": true,
+      "external": false
     }
+  },
+  "details": {
+    "name": "nnU-Net Zonal prostate regions Segmentation Model",
+    "version": "1.0.0",
+    "devteam": "MIC-DKFZ (Helmholtz Imaging Applied Computer Vision Lab)",
+    "type": "nnU-Net (U-Net structure, optimized by data-driven heuristics)",
+    "date": {
+      "weights": "2020",
+      "code": "2020",
+      "pub": "2020"
+    },
+    "cite": "Isensee, F., Jaeger, P. F., Kohl, S. A., Petersen, J., & Maier-Hein, K. H. (2020). nnU-Net: a self-configuring method for deep learning-based biomedical image segmentation. Nature Methods, 1-9.",
+    "license": {
+      "code": "Apache 2.0",
+      "weights": "CC BY-NC 4.0"
+    },
+    "publications": [
+      {
+        "title": "nnU-Net: a self-configuring method for deep learning-based biomedical image segmentation",
+        "uri": "https://www.nature.com/articles/s41592-020-01008-z"
+      }
+    ],
+    "github": "https://github.com/MIC-DKFZ/nnUNet/tree/nnunetv1",
+    "zenodo": "https://zenodo.org/record/4485926"
+  },
+  "info": {
+    "use": {
+      "title": "Intended Use",
+      "text": "This model is intended to perform prostate regions anatomy segmentation in MR ADC and T2 scans. The slice thickness of the training data is 3.6mm. Input ADC and T2 modalities are co-registered during training. No endorectal coil was present during training."
+    },
+    "analyses": {
+      "title": "Quantitative Analyses",
+      "text": "The model's performance was assessed using the Dice Coefficient, in the context of the Medical Segmentation Decathlon challenge. The complete breakdown of the metrics can be consulted on GrandChallenge [1] and is reported in the supplementary material to the publication [2].",
+      "references": [
+        {
+          "label": "Medical Segmentation Decathlon on GrandChallenge",
+          "uri": "https://decathlon-10.grand-challenge.org/evaluation/challenge/leaderboard"
+        },
+        {
+          "label": "nnU-Net: a self-configuring method for deep learning-based biomedical image segmentation",
+          "uri": "https://www.nature.com/articles/s41592-020-01008-z"
+        }
+      ]
+    },
+    "evaluation": {
+      "title": "Evaluation Data",
+      "text": "The evaluation dataset consists of 16 validation samples coming from the Medical Decathlon collection.",
+      "tables": [
+        {
+          "label": "mean DSC peripheral zone results on internal training data, using five fold cross-validation",
+          "entries": {
+            "2D": "0.6285",
+            "3D_fullres": "0.6663",
+            "Best ensemble (2D + 3D_fullres)": "0.6611",
+            "Postprocessed": "0.6611"
+          }
+        },
+        {
+          "label": "mean DSC transition zone results on internal training data, using five fold cross-validation",
+          "entries": {
+            "2D": "0.8380",
+            "3D_fullres": "0.8410",
+            "Best ensemble (2D + 3D_fullres)": "0.8575",
+            "Postprocessed": "0.8577"
+          }
+        },
+        {
+          "label": "mean DSC prostate zonal regions results on internal test data",
+          "entries": {
+            "mean DSC for PZ": "0.77",
+            "mean DSC for TZ": "0.90"
+          }
+        }
+      ],
+      "references": [
+        {
+          "label": "Medical Segmentation Decathlon",
+          "uri": "https://www.nature.com/articles/s41467-022-30695-9"
+        },
+        {
+          "label": "Medical Decathlon Prostate dataset (direct download)",
+          "uri": "https://drive.google.com/drive/folders/1HqEgzS8BV2c7xYNrZdEAnrHk7osJJ--2"
+        }
+      ]
+    },
+    "training": {
+      "title": "Training Data",
+      "text": "The training dataset consists of 32 MRI cases containing the prostate, from the Medical Segmentation Decathlon. The authors report the following characteristics for the portal venous phase CT scans of the training dataset:",
+      "tables": [
+        {
+          "label": "Medical Image Decathlon dataset (training)",
+          "entries": {
+            "Slice Thickness": "3.6 mm",
+            "In-Plane Resolution": "0.62 mm"
+          }
+        }
+      ],
+      "references": [
+        {
+          "label": "Medical Segmentation Decathlon",
+          "uri": "https://www.nature.com/articles/s41467-022-30695-9"
+        },
+        {
+          "label": "Medical Decathlon Prostate dataset (direct download)",
+          "uri": "https://drive.google.com/drive/folders/1HqEgzS8BV2c7xYNrZdEAnrHk7osJJ--2"
+        }
+      ]
+    },
+    "limitations": {
+      "title": "Dealing with multi-modality input",
+      "text": "Authors recommend co-registration of ADC and T2 input sequences, as applied during training. At the very least, the ADC and T2 sequence need to have identical geometry for nnUNet to run. Since evaluated ADC and T2 sequences during evaluation might more often that not fail this requirement, we apply resampling of the ADC sequence to the T2 sequence, since T2 tends to have a higher resolution. Below are some references regarding nnUnet recommendations for multi-modality input, alongside the paper describing the registration process of Medical Image Decathlon dataset for the ADC and T2 sequences.",
+      "references": [
+        {
+          "label": "Litjens et al., A pattern recognition approach to zonal segmentation of the prostate on MRI",
+          "uri": "https://pubmed.ncbi.nlm.nih.gov/23286075/"
+        },
+        {
+          "label": "Alignment of multi channel inputs for nnunet #502",
+          "uri": "https://github.com/MIC-DKFZ/nnUNet/issues/502"
+        },
+        {
+          "label": "Multi-modality dataset conversion issue #306",
+          "uri": "https://github.com/MIC-DKFZ/nnUNet/issues/306"
+        }
+      ]
+    }
+  }
 }
