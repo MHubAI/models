@@ -1,7 +1,7 @@
 general:
   data_base_dir: /app/data
   version: 1.0
-  description: default configuration for Bamf NNUnet Breast Tumor segmentation (dicom to dicom)
+  description: default configuration for Bamf NNUnet Breast FDG-avid lesions segmentation (dicom to dicom)
 
 execute:
 - FileStructureImporter
@@ -29,7 +29,7 @@ modules:
     in_ct_data: nifti:mod=ct:registered=true
     nnunet_task: Task762_PET_CT_Breast
     nnunet_model: 3d_fullres
-    roi: LIVER,RIGHT_KIDNEY,URINARY_BLADDER,SPLEEN,LEFT_LOWER_LUNG_LOBE,BRAIN,LEFT_ATRIUM,SMALL_INTESTINE,NEOPLASM_MALIGNANT_PRIMARY
+    roi: LIVER,RIGHT_KIDNEY,URINARY_BLADDER,SPLEEN,LEFT_LOWER_LUNG_LOBE,BRAIN,LEFT_ATRIUM,SMALL_INTESTINE,FDG_AVID_TUMOR
 
   TotalSegmentatorMLRunner:
     in_data: nifti:mod=ct:registered=true
