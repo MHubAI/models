@@ -20,11 +20,10 @@
             {
                 "label": "Segmentation",
                 "type": "Segmentation",
-                "description": "Segmentation lung",
+                "description": "Lung and Nodules (3mm-30mm) from CT scans",
                 "classes": [
                     "LUNG",
-                    "LUNG+NODULES",
-                    "LUNG+NEOPLASM_MALIGNANT_PRIMARY"
+                    "LUNG+NODULE"
                 ]
             }
         ],
@@ -35,7 +34,7 @@
         },
         "data": {
             "training": {
-                "vol_samples": 833
+                "vol_samples": 1405
             },
             "evaluation": {
                 "vol_samples": 47
@@ -71,32 +70,47 @@
                 "uri": "https://arxiv.org/abs/2310.14897"
             }
         ],
-        "github": "https://github.com/bamf-health/aimi-ct-lung"
+        "github": "https://github.com/bamf-health/aimi-lung-ct"
     },
     "info": {
         "use": {
             "title": "Intended Use",
-            "text": "This model is intended to perform lung, nodules and tumor segmentation in CT scans. The model has been trained and tested on scans aquired during clinical care of patients, so it might not be suited for a healthy population. The generalization capabilities of the model on a range of ages, genders, and ethnicities are unknown."
+            "text": "This model is intended to perform lung and nodules segmentation in CT scans. The model has been trained and tested on scans acquired during clinical care of patients, so it might not be suited for a healthy population. The generalization capabilities of the model on a range of ages, genders, and ethnicities are unknown."
         },
         "analyses": {
             "title": "Quantitative Analyses",
-            "text": "The model's performance was assessed using the Dice Coefficient and Normalized Surface Distance (NSD) with tolerance 7mm, as specified in the CT Liver segmentation task in the Medical Segmentation Decathlon challenge. The model was used to segment cases from the IDC collection TCGA-LIHC [1]. Nine of those cases were reviewed and corrected by a board-certified radiologist and a non-expert. The analysis is published here [2]",
+            "text": "The model's performance was assessed using the Dice Coefficient and 95% Hausdorff (mm). ",
             "tables": [
                 {
-                    "label": "Label-wise metrics (mean (standard deviation)) between AI derived and manually corrected CT lung annotations",
+                    "label": "Segmentation Metric - Lung - Expert 1",
                     "entries": {
-                        "Dice: Radiologist": "0.97 (0.07)",
-                        "NSD: Radiologist": "0.96 (0.09)",
-                        "Dice: Non-expert": "0.97 (0.08)",
-                        "NSD: Non-expert": "0.95 (0.11)"
+                        "DSC": "0.99 (0.02)",
+                        "95% Hausdorff (mm)": "2.34 (5.89)"
+                    }
+                },
+                {
+                    "label": "Segmentation Metric - Nodule - Expert 1",
+                    "entries": {
+                        "DSC": "0.60 (0.42)",
+                        "95% Hausdorff (mm)": "56.72 (64.36)"
+                    }
+                },
+                {
+                    "label": "Segmentation Metric - Lung - Expert 2",
+                    "entries": {
+                        "DSC": "1.00 (0.00)",
+                        "95% Hausdorff (mm)": "0.30 (1.70)"
+                    }
+                },
+                {
+                    "label": "Segmentation Metric - Nodule - Expert 2",
+                    "entries": {
+                        "DSC": "0.78 (0.34)",
+                        "95% Hausdorff (mm)": "26.06 (48.63)"
                     }
                 }
             ],
             "references": [
-                {
-                    "label": "DICOM-LIDC-IDRI-Nodules",
-                    "uri": "https://wiki.cancerimagingarchive.net/pages/viewpage.action?pageId=6885436"
-                },
                 {
                     "label": "The AIMI Initiative: AI-Generated Annotations for Imaging Data Commons Collections",
                     "uri": "https://arxiv.org/abs/2310.14897"
@@ -105,15 +119,19 @@
         },
         "evaluation": {
             "title": "Evaluation Data",
-            "text": "The model was used to segment cases 89 from the IDC [1] collection TCGA-LIHC [1]. Nine of those cases were randomly selected to be reviewed and corrected by a board-certified radiologist. The model predictions, and radiologist corrections are published on zenodo [3]",
+            "text": "A validation set of 47 cases were reviewed by two radiologists",
             "references": [
                 {
                     "label": "Imaging Data Collections (IDC)",
                     "uri": "https://datacommons.cancer.gov/repository/imaging-data-commons"
                 },
                 {
-                    "label": "TCGA-LIHC",
-                    "uri": "https://wiki.cancerimagingarchive.net/pages/viewpage.action?pageId=6885436"
+                    "label": "DICOM-LIDC-IDRI-Nodule",
+                    "uri": "https://doi.org/10.7937/TCIA.2018.h7umfurq"
+                },
+                {
+                    "label": "NSCLC Radiomics",
+                    "uri": "https://doi.org/10.7937/K9/TCIA.2017.7hs46erv"
                 },
                 {
                     "label": "Image segmentations produced by the AIMI Annotations initiative",
@@ -123,15 +141,15 @@
         },
         "training": {
             "title": "Training Data",
-            "text": "The training dataset consists of  1565 CT liver annotations taken from TotalSegmentator [1] (N=1204) and Flare21 Liver Dataset [2] (N=361).",
+            "text": "The DICOM-LIDC-IDRI-Nodules dataset was used to train an AI model to annotate lung nodules. This dataset included 883 studies with annotated nodules from 875 patients. Within the dataset only nodules that were identified by all four of their radiologists (size condition: 3mm ≤ diameter ≤ 30mm), were considered for AI model training for this task. The lung annotations AI model was trained on 411 and 111 lung CT data from NSCLC Radiomics and NSCLC Radiogenomics respectively.",
             "references": [
                 {
-                    "label": "TotalSegmentator Dataset",
-                    "uri": "https://zenodo.org/records/10047292"
+                    "label": "DICOM-LIDC-IDRI-Nodule",
+                    "uri": "https://doi.org/10.7937/TCIA.2018.h7umfurq"
                 },
                 {
-                    "label": "Flare21 Dataset",
-                    "uri": "https://zenodo.org/records/5903672"
+                    "label": "NSCLC Radiomics",
+                    "uri": "https://doi.org/10.7937/K9/TCIA.2017.7hs46erv"
                 }
             ]
         }

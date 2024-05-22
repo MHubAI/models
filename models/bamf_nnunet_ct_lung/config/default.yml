@@ -1,7 +1,7 @@
 general:
   data_base_dir: /app/data
   version: 1.0
-  description: default configuration for Bamf NNUnet Lung, Nodules and Tumor segmentation (dicom to dicom)
+  description: default configuration for Bamf NNUnet Lung and Nodules segmentation (dicom to dicom)
 
 execute:
 - DicomImporter
@@ -11,7 +11,7 @@ execute:
   roi: LUNG+NODULE
 - module: NNUnetRunner
   nnunet_task: Task775_CT_NSCLC_RG
-  roi: LUNG,LUNG+NEOPLASM_MALIGNANT_PRIMARY
+  roi: LUNG,LUNG+FDG_AVID_TUMOR
 - CustomNNUnetRunner
 - LungPostProcessor
 - DsegConverter
