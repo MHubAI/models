@@ -81,7 +81,7 @@
     },
     "analyses": {
       "title": "Evaluation",
-      "text": "Evaluation was determined with DICE score, sensitivity, and false-positive count, and compared with three other non-deeplearning methods: Otsu's, FESI, and Thresholding. See the paper for additional details [1].",
+      "text": "Evaluation was determined with DICE score, sensitivity, and false-positive count, and compared with three other non-deeplearning methods: Otsu's, FESI, and Thresholding. See the paper (Methods, pages 12-13, section on Measurements, and Results, pages 13-15) for additional details [1].",
       "references": [
          {
           "label": "Resolution-agnostic tissue segmentation in whole-slide histopathology images with convolutional neural networks",
@@ -120,7 +120,7 @@
     },
     "evaluation": {
       "title": "Evaluation data",
-      "text": "The evaluation was performed on two datasets. The first dataset consisted of 30 WSI with breast, lymph node, kidney, lung, rectum and tongue tissue, stained with hematoxylin and eosin (H&E), Sirius Red, Periodic Acid-Schiff (PAS), cytokeratin AE1/AE3 (AE1AE3), Ki-67, and a cocktail of cytokeratin 8 and cytokeratin 18 (CK8-18). The second dataset consisted of 8 WSI with mostly different tissue types and all different staining methods, to evaluate generalization of the model. It contained tissue types lung, cornea, aorta, brain, skin, uterus, and kidney. The tissues were stained with Grocott, Alcian Blue, Von Kossa, Perls, and Chromotrope Aniline Blue (CAB) stains. See the paper for additional details [1].",
+      "text": "The evaluation was performed on two private datasets. The first dataset consisted of 30 WSI with breast, lymph node, kidney, lung, rectum and tongue tissue, stained with hematoxylin and eosin (H&E), Sirius Red, Periodic Acid-Schiff (PAS), cytokeratin AE1/AE3 (AE1AE3), Ki-67, and a cocktail of cytokeratin 8 and cytokeratin 18 (CK8-18). The second dataset consisted of 8 WSI with mostly different tissue types and all different staining methods, to evaluate generalization of the model. It contained tissue types lung, cornea, aorta, brain, skin, uterus, and kidney. The tissues were stained with Grocott, Alcian Blue, Von Kossa, Perls, and Chromotrope Aniline Blue (CAB) stains. See the paper (Materials, pages 4-6, sections on the development and the dissimilar datasets) for additional details [1].",
       "references": [
         {
           "label": "Resolution-agnostic tissue segmentation in whole-slide histopathology images with convolutional neural networks",
@@ -131,7 +131,7 @@
     },
     "training": {
       "title": "Training data",
-      "text": "The training dataset consisted of 70 WSI from Breast, Lymph node, Kidney, Lung, Rectum and Tongue tissue, stained with hematoxylin and eosin (H&E), Sirius Red, Periodic Acid-Schiff (PAS), cytokeratin AE1/AE3 (AE1AE3), Ki-67, and a cocktail of cytokeratin 8 and cytokeratin 18 (CK8-18). See the paper for additional details [1].",
+      "text": "The training dataset consisted of 70 WSI from Breast, Lymph node, Kidney, Lung, Rectum and Tongue tissue, stained with hematoxylin and eosin (H&E), Sirius Red, Periodic Acid-Schiff (PAS), cytokeratin AE1/AE3 (AE1AE3), Ki-67, and a cocktail of cytokeratin 8 and cytokeratin 18 (CK8-18). See the paper (Materials, pages 4-5, development dataset section) for additional details [1].",
       "references": [
         {
           "label": "Resolution-agnostic tissue segmentation in whole-slide histopathology images with convolutional neural networks",

@@ -21,4 +21,4 @@ modules:
     target_dir: output_data
     require_data_confirmation: true
     targets:
-      - tiff:mod=seg-->[i:sid]/wsi_background_segmentation.tiff
+      - tiff:mod=seg-->[i:sid]/gc_wsi_bgseg.tiff
