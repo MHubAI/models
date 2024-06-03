@@ -10,7 +10,6 @@ from mhubio.core import Module, Instance, InstanceData, InstanceDataCollection
      
 class LungPostProcessor(Module):
 
-
     def get_ensemble(self, save_path, organ_name_prefix, label, num_folds=5, th=0.6):
         """
         Perform ensemble segmentation on medical image data.
@@ -54,8 +53,6 @@ class LungPostProcessor(Module):
         for lbl in labels:
             lung[ts == lbl] = 1
         return lung
-
-
 
     def n_connected(self, img_data):
         """
@@ -155,8 +152,11 @@ class LungPostProcessor(Module):
     @IO.Input('in_ct_data', 'nifti:mod=ct:registered=true', the='input ct data')
     @IO.Input('in_tumor_data', 'nifti:mod=seg:model=nnunet', the='input tumor segmentation')
     @IO.Input('in_total_seg_data', 'nifti:mod=seg:model=TotalSegmentator', the='input total segmentation')
-    @IO.Output('out_data', 'bamf_processed.nii.gz', 'nifti:mod=seg:processor=bamf:roi=LUNG,LUNG+FDG_AVID_TUMOR', data='in_tumor_data', the="get the lung and tumor after post processing")
-    def task(self, instance: Instance, in_ct_data: InstanceData, in_tumor_data: InstanceData, in_total_seg_data: InstanceData, out_data: InstanceData):
+    @IO.Output('out_data', 'bamf_processed.nii.gz', 'nifti:mod=seg:processor=bamf:roi=LUNG,LUNG+FDG_AVID_TUMOR',
+               data='in_tumor_data',
+               the="get the lung and tumor after post processing")
+    def task(self, instance: Instance, in_ct_data: InstanceData, in_tumor_data: InstanceData,
+             in_total_seg_data: InstanceData, out_data: InstanceData):
         """
         Perform postprocessing and writes simpleITK Image
         """
@@ -167,30 +167,26 @@ class LungPostProcessor(Module):
         total_seg_path = in_total_seg_data.abspath
 
         right, left, lung, heart = self.get_lung_ts(str(total_seg_path))
-        # lesions = self.get_ensemble(save_path, organ_name_prefix, label=int(lung_label), th=0.6)
         tumor_label = 9
         lesions = sitk.GetArrayFromImage(sitk.ReadImage(tumor_seg_path))
         lesions[lesions != tumor_label] = 0
 
-        op_data = np.zeros(lung.shape)            
+        op_data = np.zeros(lung.shape)
         ref = sitk.ReadImage(in_ct_data.abspath)
         ct_data = sitk.GetArrayFromImage(ref)
         op_data[lung == 1] = 1
-        op_data[lesions == 1] = 2
+        op_data[lesions > 0] = 2
         th = np.min(ct_data)
         op_data[ct_data == th] = 0  # removing predicitons where CT not available
         mets_right = self.get_mets(left, np.copy(op_data))
         mets_left = self.get_mets(right, np.copy(op_data))
         mets = np.logical_and(mets_right, mets_left).astype("int")
-        op_data[mets == 1] = 3
-        # heart_voxels = self.get_heart(np.copy(op_data), heart)
-        op_data[op_data == 3] = 0
-        op_img = self.arr_2_sitk_img(op_data, ref)
+        op_data[mets == 1] = 0
+        op_img = sitk.GetImageFromArray(op_data)
+        op_img.CopyInformation(ref)
 
         tmp_dir = self.config.data.requestTempDir(label="lung-post-processor")
         tmp_file = os.path.join(tmp_dir, f'final.nii.gz')
         sitk.WriteImage(op_img, tmp_file)
 
         shutil.copyfile(tmp_file, out_data.abspath)
-
-

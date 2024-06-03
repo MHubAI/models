@@ -29,7 +29,7 @@ modules:
     in_ct_data: nifti:mod=ct:registered=true
     nnunet_task: Task762_PET_CT_Breast
     nnunet_model: 3d_fullres
-    roi: LIVER,RIGHT_KIDNEY,URINARY_BLADDER,SPLEEN,LUNG,BRAIN,LEFT_ATRIUM,SMALL_INTESTINE,FDG_AVID_TUMOR
+    roi: LIVER,KIDNEY,URINARY_BLADDER,SPLEEN,LUNG,BRAIN,HEART,STOMACH,FDG_AVID_TUMOR
 
   TotalSegmentatorMLRunner:
     in_data: nifti:mod=ct:registered=true
