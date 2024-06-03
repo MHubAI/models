@@ -7,6 +7,7 @@ MHub - Run Module for TotalSegmentator.
 Author: Leonard Nürnberg
 Email:  leonard.nuernberg@maastrichtuniversity.nl
 -------------------------------------------------
+This was taken from models/totalsegmentator folder
 """
 
 from mhubio.core import Module, Instance, InstanceData, DataType, FileType, CT, SEG, IO, DataTypeQuery

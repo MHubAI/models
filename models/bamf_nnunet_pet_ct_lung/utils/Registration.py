@@ -14,7 +14,7 @@ class Registration(Module):
     @IO.Output('out_data', 'VOL000_registered.nii.gz', 'nifti:mod=ct:registered=true', the="registered ct data")
     def task(self, instance: Instance, in_moving_data: InstanceData, in_fixed_data: InstanceData, out_data: InstanceData):
         """
-        Perform registration 
+        Perform registration and resampling
         """
         fixed = sitk.ReadImage(in_fixed_data.abspath, sitk.sitkFloat32)
         moving = sitk.ReadImage(in_moving_data.abspath, sitk.sitkFloat32)
