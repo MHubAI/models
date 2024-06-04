@@ -10,33 +10,6 @@ from mhubio.core import Module, Instance, InstanceData, InstanceDataCollection
 
 class BreastPostProcessor(Module):
 
-    def get_ensemble(self, save_path, organ_name_prefix, label, num_folds=5, th=0.6):
-        """
-        Perform ensemble segmentation on medical image data.
-
-        Args:
-            save_path (str): Path to the directory where segmentation results will be saved.
-            label (int): Label value for the segmentation.
-            num_folds (int, optional): Number of folds for ensemble. Default is 5.
-            th (float, optional): Threshold value. Default is 0.6.
-
-        Returns:
-            np.ndarray: Segmentation results.
-        """
-        for fold in range(num_folds):
-            inp_seg_file = f"{organ_name_prefix}_{fold}.nii.gz"
-            inp_seg_path = os.path.join(save_path, inp_seg_file)
-            seg_data = sitk.GetArrayFromImage(sitk.ReadImage(inp_seg_path))
-            seg_data[seg_data != label] = 0
-            seg_data[seg_data == label] = 1
-            if fold == 0:
-                segs = np.zeros(seg_data.shape)
-            segs += seg_data
-        segs = segs / 5
-        segs[segs < th] = 0
-        segs[segs >= th] = 1
-        return segs
-
     def mask_labels(self, labels, ts):
         """
         Create a mask based on given labels.
@@ -111,16 +84,13 @@ class BreastPostProcessor(Module):
     @IO.Input('in_ct_data', 'nifti:mod=ct:registered=true', the='input ct data')
     @IO.Input('in_tumor_data', 'nifti:mod=seg:model=nnunet', the='input tumor segmentation')
     @IO.Input('in_total_seg_data', 'nifti:mod=seg:model=TotalSegmentator', the='input total segmentation')
-    @IO.Output('out_data', 'bamf_processed.nii.gz', 'nifti:mod=seg:processor=bamf:roi=FDG_AVID_TUMOR', data='in_tumor_data',
-               the="keep the two largest connected components of the segmentation and remove all other ones")
+    @IO.Output('out_data', 'bamf_processed.nii.gz', 'nifti:mod=seg:processor=bamf:roi=BREAST+FDG_AVID_TUMOR', data='in_tumor_data',
+               the="FDG-avid lesions in breast")
     def task(self, instance: Instance, in_ct_data: InstanceData, in_tumor_data: InstanceData,
              in_total_seg_data: InstanceData, out_data: InstanceData):
         """
         Perform postprocessing and writes simpleITK Image
         """
-        print('input in_tumor_data data: ' + in_tumor_data.abspath)
-
-        out_file_path = out_data.abspath
         tumor_seg_path = in_tumor_data.abspath
         total_seg_path = in_total_seg_data.abspath
 
@@ -128,10 +98,14 @@ class BreastPostProcessor(Module):
         ts_abdominal = sitk.GetArrayFromImage(sitk.ReadImage(total_seg_path))
         ts_data[ts_data > 1] = 1
         lesions = sitk.GetArrayFromImage(sitk.ReadImage(tumor_seg_path))
+        tumor_label = 9
+        lesions[lesions != tumor_label] = 0
+        lesions[lesions == tumor_label] = 1
 
         op_data = np.zeros(ts_data.shape)
         ref = sitk.ReadImage(in_ct_data.abspath)
         ct_data = sitk.GetArrayFromImage(ref)
+
         op_data[lesions == 1] = 1
         th = np.min(ct_data)
         op_data[ct_data == th] = 0  # removing predicitons where CT not available
@@ -151,8 +125,8 @@ class BreastPostProcessor(Module):
             op_data[x1:x2, y1:, :] = 0
         op_data[0:3, :, :] = 0
         op_data = self.n_connected(op_data)
-        op_img = self.arr_2_sitk_img(op_data, ref)
-
+        op_img = sitk.GetImageFromArray(op_data)
+        op_img.CopyInformation(ref)
         tmp_dir = self.config.data.requestTempDir(label="breast-post-processor")
         tmp_file = os.path.join(tmp_dir, f'final.nii.gz')
         sitk.WriteImage(op_img, tmp_file)

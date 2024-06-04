@@ -6,6 +6,7 @@ MHub - Run Module for TotalSegmentator.
 -------------------------------------------------
 Author: Leonard Nürnberg
 Email:  leonard.nuernberg@maastrichtuniversity.nl
+Comments: Reused the file from model/totalsegmentator
 -------------------------------------------------
 """
 
