@@ -1,0 +1,44 @@
+general:
+  data_base_dir: /app/data
+  version: 1.0
+  description: Default configuration for Bamf NNUnet Breast and tumor segmentation on MR scans (dicom to dicom)
+
+execute:
+- DicomImporter
+- NiftiConverter
+- module: NNUnetRunner
+  nnunet_task: Dataset009_Breast
+  roi: BREAST,BREAST+FGT
+- module: NNUnetRunner
+  nnunet_task: Dataset011_Breast
+  roi: BREAST_TUMOR
+- BreastPostProcessor
+- DsegConverter
+- DataOrganizer
+
+modules:
+  DicomImporter:
+    source_dir: input_data
+    import_dir: sorted_data
+    sort_data: true
+    meta: 
+      mod: '%Modality'
+
+  NNUnetRunner:
+    in_data: nifti:mod=mr
+    nnunet_model: 3d_fullres
+    export_prob_maps: False
+
+  BreastPostProcessor:
+    in_breast_data: nifti:mod=seg:nnunet_task=Dataset009_Breast
+    in_tumor_data: nifti:mod=seg:nnunet_task=Dataset011_Breast
+
+  DsegConverter:
+    model_name: Bamf NNUnet MR Breast and tumor
+    target_dicom: dicom:mod=mr
+    source_segs: nifti:mod=seg:processor=bamf
+    skip_empty_slices: True
+
+  DataOrganizer:
+    targets:
+    - dicomseg-->[i:sid]/bamf_nnunet_mr_breast.seg.dcm
