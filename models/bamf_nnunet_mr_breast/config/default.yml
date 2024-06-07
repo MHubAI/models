@@ -8,7 +8,7 @@ execute:
 - NiftiConverter
 - module: NNUnetRunner
   nnunet_task: Dataset009_Breast
-  roi: BREAST,BREAST+FGT
+  roi: BREAST,FGT
 - module: NNUnetRunner
   nnunet_task: Dataset011_Breast
   roi: BREAST_TUMOR
