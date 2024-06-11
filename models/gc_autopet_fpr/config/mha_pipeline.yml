@@ -1,0 +1,21 @@
+general:
+  data_base_dir: /app/data
+  version: 1.0
+  description: AutoPET False Positive Reduction nnUNet algorithm (mha to mha)
+
+execute:
+- FileStructureImporter
+- AutoPETRunner
+- DataOrganizer
+
+modules:
+  FileStructureImporter:
+    input_dir: 'input_data'
+    structures:
+      - '$sid@instance/images/ct/ct.mha@mha:mod=ct:resampled=true'
+      - '$sid/images/pet/pet.mha@mha:mod=pt'
+    import_id: sid
+
+  DataOrganizer:
+    targets:
+      - mha:mod=seg-->[i:sid]/gc_autopet_fpr.seg.mha
