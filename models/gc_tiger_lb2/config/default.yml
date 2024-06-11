@@ -1,0 +1,32 @@
+general:
+  data_base_dir: /app/data
+  version: 1.0
+  description: Tiger challenge winner LB2 (dicom:sm to json with TIL score)
+
+execute:
+- DicomImporter
+- TiffConverter
+- TigerLB2Runner
+- ReportExporter
+- DataOrganizer
+
+modules:
+  DicomImporter:
+    source_dir: input_data
+    import_dir: sorted_data
+    sort_data: True
+    meta: 
+      mod: "%Modality"
+
+  ReportExporter:
+    includes:
+    - data: til_score
+      label: TIL score
+      value: value
+
+  DataOrganizer:
+    target_dir: output_data
+    require_data_confirmation: true
+    targets:
+      - json-->[i:sid]/gc_tiger_lb2_til_score.json
+      - mha:mod=seg-->[i:sid]/gc_tiger_lb2_segmentation.mha

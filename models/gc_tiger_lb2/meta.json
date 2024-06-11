@@ -1,0 +1,146 @@
+{
+  "id": "c5397909-0397-489f-8744-6bf3952e9a1c",
+  "name": "gc_tiger_lb2",
+  "title": "TIGER challenge winner: Team VUNO",
+  "summary": {
+    "description": "This algorithm predicts the percentage of stromal area covered by tumour infiltrating lymphocytes (TIL) on H&E-stained whole-slide images of breast cancer histopathology. This algorithm first segments invasive tumor and tumor-associated stroma and subsequently detects lymphocytes and plasma cells, which are finally combined to estimate the relevant regions for TIL estimation. This model algorithm was the challenge winner of the TIGER challenge hosted on Grand Challenge.",
+    "inputs": [
+      {
+        "label": "Whole-slide image",
+        "description": "H&E-stained whole-slide image of breast cancer histopathology",
+        "format": "DICOM",
+        "modality": "SM",
+        "bodypartexamined": "Breast",
+        "slicethickness": "",
+        "non-contrast": false,
+        "contrast": false
+      }
+    ],
+    "outputs": [
+      {
+        "type": "Prediction",
+        "valueType": "Probability",
+        "label": "TIL score",
+        "description": "Percentage of stromal area covered by tumour infiltrating lymphocytes. Values between 0 (percent) to 100 (percent).",
+        "classes": []
+      },
+      {
+        "type": "Prediction",
+        "valueType": "Segmentation mask",
+        "label": "WSI Tumor and stroma segmentation mask",
+        "description": "WSI tumor and stroma segmentation mask (MHA) used as first step in the pipeline. This segmentation mask was not validated, use it at your own risk! The labels are: 1-tumor, 2-stroma, 3-rest.",
+        "classes": []
+      }
+    ],
+    "model": {
+      "architecture": "Combination of multiple U-Nets with EfficientNet B2/B0 encoders, and YOLOv5 networks for detection.",
+      "training": "supervised",
+      "cmpapproach": "2D"
+    },
+    "data": {
+      "training": {
+        "vol_samples": 277
+      },
+      "evaluation": {
+        "vol_samples": 707
+      },
+      "public": false,
+      "external": false
+    }
+  },
+  "details": {
+    "name": "LB2",
+    "version": "0.1.0",
+    "devteam": "VUNO",
+    "type": "Segmentation/Prediction hybrid",
+    "date": {
+      "weights": "2023-07-06",
+      "code": "2023-07-06",
+      "pub": "2022-08-26"
+    },
+    "cite": "",
+    "license": {
+      "code": "Apache 2.0",
+      "weights": "CC BY-NC 4.0"
+    },
+    "publications": [
+      {
+        "uri": "https://github.com/vuno/tiger_challenge/blob/720f8dfca4624792c8e57915c4222efec5a0c2d4/figure/method_description.pdf",
+        "title": "TIGER Challenge - Description of the Developed Algorithm - Team VUNO"
+      }
+    ],
+    "github": "https://github.com/vuno/tiger_challenge",
+    "zenodo": "https://doi.org/10.5281/zenodo.8112147",
+    "colab": "",
+    "slicer": false
+  },
+  "info": {
+    "use": {
+      "title": "Intended use",
+      "text": "This algorithm is a classification method using a variety of deep-learning techniques to predict the percentage of stromal area covered by tumour infiltrating lymphocytes on H&E-stained whole-slide image of breast cancer histopathology. The algorithm can also be found on Grand Challenge [1] (access upon request), where it participated and won the TIGER challenge.",
+      "references": [
+        {
+          "label": "TIGER challenge winner algorithm on Grand Challenge (access upon request)",
+          "uri": "https://grand-challenge.org/algorithms/tiger-algorithm-lb2"
+        }
+      ],
+      "tables": []
+    },
+    "analyses": {
+      "title": "Evaluation",
+      "text": "Patient-level diagnosis performance is evaluated using the \"TIL score\". The diagnostic performance of the algorithms were estimated using a multivariate Cox regression model trained with predefined clinical variables and the produced TIL scores. Based on this regression model the concordance index (Uno’s C-index) was computed to rank this algorithm.",
+      "references": [
+        {
+          "label": "TIGER challenge details",
+          "uri": "https://tiger.grand-challenge.org"
+        },
+        {
+          "label": "TIGER team VUNO algorithm final evaluation results on Grand Challenge.",
+          "uri": "https://tiger.grand-challenge.org/evaluation/survival-final-evaluation/leaderboard/"
+        }
+      ],
+      "tables": [
+        {
+          "label": "Evaluation results on the TIGER testing cohort of 707 WSI cases.",
+          "entries": {
+              "Uno's Concordance-index": "0.6388"
+          }
+        }
+      ]
+    },
+    "evaluation": {
+      "title": "Evaluation data",
+      "text": "The test set consists of a separate hidden dataset of n=707 H&E-stained whole-slide breast cancer histopathology images.",
+      "references": [
+        {
+          "label": "TIGER data section",
+          "uri": "https://tiger.grand-challenge.org/Data/"
+        }
+      ],
+      "tables": []
+    },
+    "training": {
+      "title": "Training data",
+      "text": "This algorithm was trained using two public training datasets: 1. WSIROIS: Whole-slide images with manual annotations in regions of interest. 2. WSITILS: Whole-slide images with visual estimation of the TILs at slide level.",
+      "references": [
+        {
+          "label": "WSIROIS, WSITILS on AWS Open Data",
+          "uri": "https://registry.opendata.aws/tiger/"
+        }
+      ],
+      "tables": []
+    },
+    "ethics": {
+      "title": "",
+      "text": "",
+      "references": [],
+      "tables": []
+    },
+    "limitations": {
+      "title": "Limitations",
+      "text": "This algorithm was developed for research purposes only.",
+      "references": [],
+      "tables": []
+    }
+  }
+}
