@@ -10,7 +10,7 @@
         "description": "Positron Emission Tomography (PET) image with fluorodeoxyglucose (FDG) tracer",
         "format": "DICOM",
         "modality": "PT",
-        "bodypartexamined": "Whole Body",
+        "bodypartexamined": "WHOLEBODY",
         "slicethickness": "3mm",
         "non-contrast": false,
         "contrast": false
@@ -20,7 +20,7 @@
         "description": "Computed Tomography (CT) image after contrast administration",
         "format": "DICOM",
         "modality": "CT",
-        "bodypartexamined": "Whole Body",
+        "bodypartexamined": "WHOLEBODY",
         "slicethickness": "3mm",
         "non-contrast": false,
         "contrast": true
