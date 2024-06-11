@@ -13,7 +13,7 @@ RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
 # Create a working directory and set it as the working directory
 # Also create directories for input and output data (mounting points) in the same RUN to avoid creating intermediate layers
-RUN mkdir /app /app/data /app/data/input_data /app/data/output_data /app/models
+RUN mkdir -p /app /app/data /app/data/input_data /app/data/output_data /app/models /app/utility/config /app/xmodules
 WORKDIR /app
 
 # Install system utilities and useful packages
@@ -54,7 +54,8 @@ RUN pip3 install --upgrade pip && pip3 install --no-cache-dir \
   SimpleITK==2.2.1 \
   thedicomsort \
   colorspacious \
-  jsonschema==4.21.1
+  jsonschema==4.21.1 \
+  dcmqi==0.2.0
 
 # Install mhubio framework from git, pulls the utils scripts from GitHub
 RUN pip3 install git+https://github.com/MHubAI/mhubio.git \
@@ -66,23 +67,9 @@ RUN pip3 install git+https://github.com/MHubAI/mhubio.git \
   && mv base/buildutils . \
   && chmod +x base/bin/* \
   && cp base/bin/* /usr/bin/ \
-  && mkdir -p /app/utility/config \
   && cp -r base/configs/* /app/utility/config \
   && rm -r base \
   && rm -r .git
-
-# Install DCMQI by pulling the latest release from GitHub (via GitHub API)
-# Run everything in a single RUN command to avoid creating intermediate layers (and allowing environment variables to be used)
-RUN export DCMQI_RELEASE_URL=$(curl -s "https://api.github.com/repos/QIICR/dcmqi/releases/latest" | jq -r '.assets[] | select(.browser_download_url | contains("linux")) | .browser_download_url') \
-  && export DCMQI_TAR_FN=$(echo $DCMQI_RELEASE_URL | rev | cut -d "/" -f 1 | rev) \
-  && export DCMQI_FN=$(basename $DCMQI_TAR_FN .tar.gz) \
-  && export DCMQI_DOWNLOAD_PATH="/app/${DCMQI_TAR_FN}" \
-  && export DCMQI_PATH="/app/${DCMQI_FN}" \
-  && wget -O $DCMQI_DOWNLOAD_PATH $DCMQI_RELEASE_URL --no-check-certificate \
-  && tar -xvf $DCMQI_DOWNLOAD_PATH \
-  && sudo mv ${DCMQI_PATH}/bin/* /bin \
-  && rm $DCMQI_DOWNLOAD_PATH  \
-  && rm -r $DCMQI_PATH
 
 # Set PYTHONPATH to the /app folder
 ENV PYTHONPATH="/app"
