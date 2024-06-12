@@ -6,12 +6,12 @@ general:
 execute:
 - DicomImporter
 - NiftiConverter
-- module: NNUnetRunner
-  nnunet_task: Dataset009_Breast
+- module: NNUnetRunnerV2
+  nnunet_dataset: Dataset009_Breast
   roi: BREAST,FGT
-- module: NNUnetRunner
-  nnunet_task: Dataset011_Breast
-  roi: BREAST_TUMOR
+- module: NNUnetRunnerV2
+  nnunet_dataset: Dataset011_Breast
+  roi: BREAST+TUMOR
 - BreastPostProcessor
 - DsegConverter
 - DataOrganizer
@@ -24,9 +24,9 @@ modules:
     meta: 
       mod: '%Modality'
 
-  NNUnetRunner:
+  NNUnetRunnerV2:
     in_data: nifti:mod=mr
-    nnunet_model: 3d_fullres
+    nnunet_config: 3d_fullres
     export_prob_maps: False
 
   BreastPostProcessor:
