@@ -1,0 +1,157 @@
+{
+    "id": "",
+    "name": "bamf_nnunet_ct_lung",
+    "title": "AIMI CT Lung and Nodules",
+    "summary": {
+        "description": "An nnU-Net based model to segment Lung and Nodules from CT scans",
+        "inputs": [
+            {
+                "label": "Input Image",
+                "description": "The CT scan of a patient.",
+                "format": "DICOM",
+                "modality": "CT",
+                "bodypartexamined": "LUNG",
+                "slicethickness": "2.5mm",
+                "non-contrast": true,
+                "contrast": false
+            }
+        ],
+        "outputs": [
+            {
+                "label": "Segmentation",
+                "type": "Segmentation",
+                "description": "Lung and Nodules (3mm-30mm) from CT scans",
+                "classes": [
+                    "LUNG",
+                    "LUNG+NODULE"
+                ]
+            }
+        ],
+        "model": {
+            "architecture": "U-net",
+            "training": "supervised",
+            "cmpapproach": "3D"
+        },
+        "data": {
+            "training": {
+                "vol_samples": 1405
+            },
+            "evaluation": {
+                "vol_samples": 77
+            },
+            "public": true,
+            "external": true
+        }
+    },
+    "details": {
+        "name": "AIMI CT Lung and Nodule",
+        "version": "1.0.0",
+        "devteam": "BAMF Health",
+        "authors": [
+            "Soni, Rahul",
+            "McCrumb, Diana",
+            "Murugesan, Gowtham Krishnan",
+            "Van Oss, Jeff"
+        ],
+        "type": "nnU-Net (U-Net structure, optimized by data-driven heuristics)",
+        "date": {
+            "code": "17.10.2023",
+            "weights": "28.08.2023",
+            "pub": "23.10.2023"
+        },
+        "cite": "Murugesan, Gowtham Krishnan, Diana McCrumb, Mariam Aboian, Tej Verma, Rahul Soni, Fatima Memon, and Jeff Van Oss. The AIMI Initiative: AI-Generated Annotations for Imaging Data Commons Collections. arXiv preprint arXiv:2310.14897 (2023).",
+        "license": {
+            "code": "MIT",
+            "weights": "CC BY-NC 4.0"
+        },
+        "publications": [
+            {
+                "title": "The AIMI Initiative: AI-Generated Annotations in IDC Collections",
+                "uri": "https://arxiv.org/abs/2310.14897"
+            }
+        ],
+        "github": "https://github.com/bamf-health/aimi-lung-ct"
+    },
+    "info": {
+        "use": {
+            "title": "Intended Use",
+            "text": "This model is intended to perform lung and nodules segmentation in CT scans. The model has been trained and tested on scans acquired during clinical care of patients, so it might not be suited for a healthy population. The generalization capabilities of the model on a range of ages, genders, and ethnicities are unknown."
+        },
+        "analyses": {
+            "title": "Quantitative Analyses",
+            "text": "The model's performance was assessed using the Dice Coefficient and 95% Hausdorff (mm). ",
+            "tables": [
+                {
+                    "label": "Segmentation Metric - Lung - Expert 1",
+                    "entries": {
+                        "DSC": "0.99 (0.02)",
+                        "95% Hausdorff (mm)": "2.34 (5.89)"
+                    }
+                },
+                {
+                    "label": "Segmentation Metric - Nodule - Expert 1",
+                    "entries": {
+                        "DSC": "0.60 (0.42)",
+                        "95% Hausdorff (mm)": "56.72 (64.36)"
+                    }
+                },
+                {
+                    "label": "Segmentation Metric - Lung - Expert 2",
+                    "entries": {
+                        "DSC": "1.00 (0.00)",
+                        "95% Hausdorff (mm)": "0.30 (1.70)"
+                    }
+                },
+                {
+                    "label": "Segmentation Metric - Nodule - Expert 2",
+                    "entries": {
+                        "DSC": "0.78 (0.34)",
+                        "95% Hausdorff (mm)": "26.06 (48.63)"
+                    }
+                }
+            ],
+            "references": [
+                {
+                    "label": "The AIMI Initiative: AI-Generated Annotations for Imaging Data Commons Collections",
+                    "uri": "https://arxiv.org/abs/2310.14897"
+                }
+            ]
+        },
+        "evaluation": {
+            "title": "Evaluation Data",
+            "text": "A validation set of 47 cases were reviewed by two radiologists",
+            "references": [
+                {
+                    "label": "Imaging Data Collections (IDC)",
+                    "uri": "https://datacommons.cancer.gov/repository/imaging-data-commons"
+                },
+                {
+                    "label": "DICOM-LIDC-IDRI-Nodule",
+                    "uri": "https://doi.org/10.7937/TCIA.2018.h7umfurq"
+                },
+                {
+                    "label": "NSCLC Radiomics",
+                    "uri": "https://doi.org/10.7937/K9/TCIA.2017.7hs46erv"
+                },
+                {
+                    "label": "Image segmentations produced by the AIMI Annotations initiative",
+                    "uri": "https://zenodo.org/records/10009368"
+                }
+            ]
+        },
+        "training": {
+            "title": "Training Data",
+            "text": "The DICOM-LIDC-IDRI-Nodules dataset was used to train an AI model to annotate lung nodules. This dataset included 883 studies with annotated nodules from 875 patients. Within the dataset only nodules that were identified by all four of their radiologists (size condition: 3mm ≤ diameter ≤ 30mm), were considered for AI model training for this task. The lung annotations AI model was trained on 411 and 111 lung CT data from NSCLC Radiomics and NSCLC Radiogenomics respectively.",
+            "references": [
+                {
+                    "label": "DICOM-LIDC-IDRI-Nodule",
+                    "uri": "https://doi.org/10.7937/TCIA.2018.h7umfurq"
+                },
+                {
+                    "label": "NSCLC Radiomics",
+                    "uri": "https://doi.org/10.7937/K9/TCIA.2017.7hs46erv"
+                }
+            ]
+        }
+    }
+}
