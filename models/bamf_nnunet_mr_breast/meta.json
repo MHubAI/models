@@ -80,7 +80,7 @@
       },
       "analyses": {
         "title": "Quantitative Analyses",
-        "text": "The model's performance was assessed using the Dice Coefficient with tolerance 7mm, as specified in the Duke-Breast-Cancer-MRI. The model was used to segment cases from the IDC collection ACRIN-Contralateral-Breast-MR [1]. Nine of those cases were reviewed and corrected by a board-certified radiologist. The analysis is published here [2]",
+        "text": "The model's performance was assessed using the Dice Coefficient with tolerance 7mm, as specified in the Duke-Breast-Cancer-MRI. The model was used to segment cases from the IDC collection ACRIN-Contralateral-Breast-MR [1]. All validation cases (=92) were reviewed and corrected by board-certified radiologists. The analysis is published here [2]",
         "tables": [
           {
             "label": "Label-wise metrics (mean) between AI derived and manually corrected MR Breast annotations",
