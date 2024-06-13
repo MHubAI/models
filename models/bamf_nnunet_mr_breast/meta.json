@@ -10,7 +10,7 @@
           "description": "The MR scan of a patient.",
           "format": "DICOM",
           "modality": "MR",
-          "bodypartexamined": "BREAST,FGT,BREAST_TUMOR",
+          "bodypartexamined": "BREAST,FGT,BREAST+TUMOR",
           "slicethickness": "2.5mm",
           "non-contrast": true,
           "contrast": false
@@ -20,11 +20,11 @@
         {
           "label": "Segmentation",
           "type": "Segmentation",
-          "description": "Segmentation breast, fgt, and tumor",
+          "description": "Segmentation for breast, fgt, and tumor",
           "classes": [
             "BREAST",
             "FGT",
-            "BREAST_TUMOR"
+            "BREAST+TUMOR"
           ]
         }
       ],
@@ -35,10 +35,10 @@
       },
       "data": {
         "training": {
-          "vol_samples": "TODO. Checked the training dataset and there were 98 + 489 = 587 samples"
+          "vol_samples": 587
         },
         "evaluation": {
-          "vol_samples": "TODO"
+          "vol_samples": 92
         },
         "public": true,
         "external": true
@@ -80,15 +80,14 @@
       },
       "analyses": {
         "title": "Quantitative Analyses",
-        "text": "The model's performance was assessed using the Dice Coefficient and Normalized Surface Distance (NSD) with tolerance 7mm, as specified in the Duke-Breast-Cancer-MRI. The model was used to segment cases from the IDC collection ACRIN-Contralateral-Breast-MR [1]. Nine of those cases were reviewed and corrected by a board-certified radiologist and a non-expert. The analysis is published here [2]",
+        "text": "The model's performance was assessed using the Dice Coefficient with tolerance 7mm, as specified in the Duke-Breast-Cancer-MRI. The model was used to segment cases from the IDC collection ACRIN-Contralateral-Breast-MR [1]. Nine of those cases were reviewed and corrected by a board-certified radiologist. The analysis is published here [2]",
         "tables": [
           {
-            "label": "Label-wise metrics (mean (standard deviation)) between AI derived and manually corrected MR Breast annotations",
+            "label": "Label-wise metrics (mean) between AI derived and manually corrected MR Breast annotations",
             "entries": {
-              "Dice: Radiologist": "0.97 (0.07)",
-              "NSD: Radiologist": "0.96 (0.09)",
-              "Dice: Non-expert": "0.97 (0.08)",
-              "NSD: Non-expert": "0.95 (0.11)"
+              "Dice: BREAST": "0.98",
+              "Dice: FGT": "0.80",
+              "Dice: BREAST+TUMOR": "0.56"
             }
           }
         ],
@@ -105,7 +104,7 @@
       },
       "evaluation": {
         "title": "Evaluation Data",
-        "text": "The model was used to segment cases 89 from the ACRIN-Contralateral-Breast-MR [1]. Nine of those cases were randomly selected to be reviewed and corrected by a board-certified radiologist. The model predictions, and radiologist corrections are published on zenodo [3]",
+        "text": "The model was used to segment 92 cases from the ACRIN-Contralateral-Breast-MR [1]. All of those cases were reviewed and corrected by a board-certified radiologist. The model predictions, and radiologist corrections would be published on zenodo soon",
         "references": [
           {
             "label": "ACRIN-Contralateral-Breast-MR",
