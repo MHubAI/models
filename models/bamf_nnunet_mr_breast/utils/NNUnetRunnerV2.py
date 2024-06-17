@@ -153,7 +153,7 @@ class NNUnetRunnerV2(Module):
 
         # define output folder (temp dir) and also override environment variable for nnunet
         out_dir = self.config.data.requestTempDir(label="nnunet-model-out")
-        os.environ['nnUNet_results'] = out_dir
+        os.environ['nnUNet_results'] = os.environ['WEIGHTS_FOLDER'] # set model weights path
 
         # symlink nnunet input folder to the input data with python
         # create symlink in python
