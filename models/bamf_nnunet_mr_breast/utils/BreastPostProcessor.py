@@ -64,10 +64,10 @@ class BreastPostProcessor(Module):
         return seg_img
 
     @IO.Instance()
-    @IO.Input('in_breast_and_fgt_data', 'nifti:mod=seg:nnunet_task=Dataset009_Breast', the='input data from breast and fgt segmentation')
-    @IO.Input('in_breast_tumor_data', 'nifti:mod=seg:nnunet_task=Dataset011_Breast', the='input data from breast tumor segmentation')
+    @IO.Input('in_breast_and_fgt_data', 'nifti:mod=seg:nnunet_dataset=Dataset009_Breast', the='input data from breast and fgt segmentation')
+    @IO.Input('in_breast_tumor_data', 'nifti:mod=seg:nnunet_dataset=Dataset011_Breast', the='input data from breast tumor segmentation')
     @IO.Input('in_mr_data', 'nifti:mod=mr', the='input mr data')
-    @IO.Output('out_data', 'bamf_processed.nii.gz', 'nifti:mod=seg:processor=bamf:roi=BREAST,BREAST+FGT,BREAST_TUMOR',
+    @IO.Output('out_data', 'bamf_processed.nii.gz', 'nifti:mod=seg:processor=bamf:roi=BREAST,FGT,BREAST+TUMOR',
                the="get breast_fgt and breast segmentation file")
     def task(self, instance: Instance, in_breast_and_fgt_data: InstanceData, in_breast_tumor_data: InstanceData,
              in_mr_data: InstanceData, out_data: InstanceData):
@@ -86,8 +86,8 @@ class BreastPostProcessor(Module):
 
         # Merged segmentation masks
         output_seg = self.merge_segmentations(
-            breast_and_fgt = np.copy(breast_and_fgt_seg),
-            breast_tumor = np.copy(tumor_seg),
+            breast_and_fgt_seg = np.copy(breast_and_fgt_seg),
+            tumor_seg = np.copy(tumor_seg),
             mr_path = in_mr_data.abspath
             )
         process_dir = self.config.data.requestTempDir(label="nnunet-breast-processor")
