@@ -1,0 +1,103 @@
+{
+  "id": "",
+  "name": "bamf_ct_liver_tumor",
+  "title": "BAMF CT Liver and Tumor Seg (nnU-Net)",
+  "summary": {
+    "description": "An nnU-Net based model to segment liver and tumor from CT scans",
+    "inputs": [
+      {
+        "label": "Input Image",
+        "description": "The CT scan of a patient.",
+        "format": "DICOM",
+        "modality": "CT",
+        "bodypartexamined": "LIVER",
+        "slicethickness": "2.5mm",
+        "non-contrast": false,
+        "contrast": true
+      }
+    ],
+    "outputs": [
+      {
+        "label": "Segmentation",
+        "type": "Segmentation",
+        "description": "Segmentation liver",
+        "classes": [
+          "LIVER",
+          "LIVER+TUMOR"
+        ]
+      }
+    ],
+    "model": {
+      "architecture": "U-net",
+      "training": "supervised",
+      "cmpapproach": "3D"
+    },
+    "data": {
+      "training": {
+        "vol_samples": 262
+      },
+      "evaluation": {
+        "vol_samples": 52
+      },
+      "public": true,
+      "external": true
+    }
+  },
+  "details": {
+    "name": "AIMI CT Liver",
+    "version": "1.0.0",
+    "devteam": "BAMF Health",
+    "authors": [
+      "Soni, Rahul",
+      "McCrumb, Diana",
+      "Murugesan, Gowtham Krishnan",
+      "Van Oss, Jeff"
+    ],
+    "type": "nnU-Net (U-Net structure, optimized by data-driven heuristics)",
+    "date": {
+      "code": "17.10.2023",
+      "weights": "28.08.2023",
+      "pub": "23.10.2023"
+    },
+    "cite": "Murugesan, Gowtham Krishnan, Diana McCrumb, Mariam Aboian, Tej Verma, Rahul Soni, Fatima Memon, and Jeff Van Oss. The AIMI Initiative: AI-Generated Annotations for Imaging Data Commons Collections. arXiv preprint arXiv:2310.14897 (2023).",
+    "license": {
+      "code": "MIT",
+      "weights": "CC BY-NC 4.0"
+    },
+    "github": "https://github.com/MHubAI/models/blob/main/models/bamf_ct_liver_tumor"
+  },
+  "info": {
+    "use": {
+      "title": "Intended Use",
+      "text": "This model is intended to perform liver and tumor segmentation in CT scans. The liver is a common site of primary (i.e. originating in the liver like hepatocellular carcinoma, HCC) or secondary (i.e. spreading to the liver like colorectal cancer) tumor development.The model has been trained and tested on scans aquired during clinical care of patients, so it might not be suited for a healthy population. The generalization capabilities of the model on a range of ages, genders, and ethnicities are unknown."
+    },
+    "evaluation": {
+      "title": "Evaluation Data",
+      "text": "The model was used to segment cases 509 from the Colorectal-Liver-Metastases [1] collection HCC-TACE-Seg [2]. 52 of those cases were randomly selected to be reviewed and corrected by a board-certified radiologist.",
+      "references": [
+        {
+          "label": "Colorectal-Liver-Metastases",
+          "uri": "https://doi.org/10.7937/QXK2-QG03"
+        },
+        {
+          "label": "HCC-TACE-Seg",
+          "uri": "https://doi.org/10.7937/TCIA.5FNA-0924"
+        },
+      ]
+    },
+    "training": {
+      "title": "Training Data",
+      "text": "The training dataset consists of 210 CT liver and tumor annotations taken from LiTS dataset and additional organ annotation generated using TotalSegmentator",
+      "references": [
+        {
+          "label": "LiTS - Liver Tumor Segmentation Challenge",
+          "uri": "https://competitions.codalab.org/competitions/17094"
+        },
+        {
+          "label": "TotalSegmentator",
+          "uri": "https://zenodo.org/records/10047292"
+        }
+      ]
+    }
+  }
+}
