@@ -11,7 +11,7 @@ ENV SKLEARN_ALLOW_DEPRECATED_SKLEARN_PACKAGE_INSTALL=True
 RUN pip3 install --no-cache-dir nnunetv2==2.0
 
 # Install updated segdb entries
-RUN pip uninstall segdb
+RUN pip uninstall segdb -y
 RUN pip install git+https://github.com/MHubAI/segdb.git
 
 # Clone the main branch of MHubAI/models
