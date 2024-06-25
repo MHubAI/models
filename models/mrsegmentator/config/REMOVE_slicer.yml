@@ -1,0 +1,29 @@
+general:
+  data_base_dir: /app/data
+  version: 1.0.0
+  description: TotalSegmentator workflow for 3D Slicer (nrrd to nrrd)
+
+execute:
+- NrrdImporter
+- NiftiConverter
+- TotalSegmentatorMLRunner
+- JsonSegExporter
+- DataOrganizer
+
+modules:
+  NrrdImporter:
+    input_dir: input_data
+    input_file_name: image.nrrd
+
+  TotalSegmentatorMLRunner:
+    use_fast_mode: true
+
+  JsonSegExporter:
+    segment_id_meta_key: roi
+    targets:
+    - nifti:mod=seg-->[basename]
+
+  DataOrganizer:
+    targets:
+    - nifti:mod=seg-->[basename]
+    - json:mod=seg-->segdef.json

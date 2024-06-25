@@ -1,0 +1,216 @@
+{
+  "id": "1a7ff9ac-dea4-45c3-9ec3-502decca3e0c",
+  "name": "totalsegmentator",
+  "title": "TotalSegmentator",
+  "summary": {
+    "description": "TotalSegmentator is an AI-based pipeline for the segmentation of 104 anatomical structures in CT images (with and without contrast).",
+    "inputs": [
+      {
+        "label": "Input Image",
+        "description": "The CT scan of a patient (any part of the body).",
+        "format": "DICOM",
+        "modality": "CT",
+        "bodypartexamined": "WHOLEBODY",
+        "slicethickness": "1.5 mm",
+        "non-contrast": true,
+        "contrast": true
+      }
+    ],
+    "outputs": [
+      {
+        "type": "Segmentation",
+        "classes": [
+          "SPLEEN",
+          "RIGHT_KIDNEY",
+          "LEFT_KIDNEY",
+          "GALLBLADDER",
+          "LIVER",
+          "STOMACH",
+          "AORTA",
+          "INFERIOR_VENA_CAVA",
+          "PORTAL_AND_SPLENIC_VEIN",
+          "PANCREAS",
+          "RIGHT_ADRENAL_GLAND",
+          "LEFT_ADRENAL_GLAND",
+          "LEFT_UPPER_LUNG_LOBE",
+          "LEFT_LOWER_LUNG_LOBE",
+          "RIGHT_UPPER_LUNG_LOBE",
+          "RIGHT_MIDDLE_LUNG_LOBE",
+          "RIGHT_LOWER_LUNG_LOBE",
+          "VERTEBRAE_L5",
+          "VERTEBRAE_L4",
+          "VERTEBRAE_L3",
+          "VERTEBRAE_L2",
+          "VERTEBRAE_L1",
+          "VERTEBRAE_T12",
+          "VERTEBRAE_T11",
+          "VERTEBRAE_T10",
+          "VERTEBRAE_T9",
+          "VERTEBRAE_T8",
+          "VERTEBRAE_T7",
+          "VERTEBRAE_T6",
+          "VERTEBRAE_T5",
+          "VERTEBRAE_T4",
+          "VERTEBRAE_T3",
+          "VERTEBRAE_T2",
+          "VERTEBRAE_T1",
+          "VERTEBRAE_C7",
+          "VERTEBRAE_C6",
+          "VERTEBRAE_C5",
+          "VERTEBRAE_C4",
+          "VERTEBRAE_C3",
+          "VERTEBRAE_C2",
+          "VERTEBRAE_C1",
+          "ESOPHAGUS",
+          "TRACHEA",
+          "MYOCARDIUM",
+          "LEFT_ATRIUM",
+          "LEFT_VENTRICLE",
+          "RIGHT_ATRIUM",
+          "RIGHT_VENTRICLE",
+          "PULMONARY_ARTERY",
+          "BRAIN",
+          "LEFT_ILIAC_ARTERY",
+          "RIGHT_ILIAC_ARTERY",
+          "LEFT_ILIAC_VEIN",
+          "RIGHT_ILIAC_VEIN",
+          "SMALL_INTESTINE",
+          "DUODENUM",
+          "COLON",
+          "LEFT_RIB_1",
+          "LEFT_RIB_2",
+          "LEFT_RIB_3",
+          "LEFT_RIB_4",
+          "LEFT_RIB_5",
+          "LEFT_RIB_6",
+          "LEFT_RIB_7",
+          "LEFT_RIB_8",
+          "LEFT_RIB_9",
+          "LEFT_RIB_10",
+          "LEFT_RIB_11",
+          "LEFT_RIB_12",
+          "RIGHT_RIB_1",
+          "RIGHT_RIB_2",
+          "RIGHT_RIB_3",
+          "RIGHT_RIB_4",
+          "RIGHT_RIB_5",
+          "RIGHT_RIB_6",
+          "RIGHT_RIB_7",
+          "RIGHT_RIB_8",
+          "RIGHT_RIB_9",
+          "RIGHT_RIB_10",
+          "RIGHT_RIB_11",
+          "RIGHT_RIB_12",
+          "LEFT_HUMERUS",
+          "RIGHT_HUMERUS",
+          "LEFT_SCAPULA",
+          "RIGHT_SCAPULA",
+          "LEFT_CLAVICLE",
+          "RIGHT_CLAVICLE",
+          "LEFT_FEMUR",
+          "RIGHT_FEMUR",
+          "LEFT_HIP",
+          "RIGHT_HIP",
+          "SACRUM",
+          "FACE",
+          "LEFT_GLUTEUS_MAXIMUS",
+          "RIGHT_GLUTEUS_MAXIMUS",
+          "LEFT_GLUTEUS_MEDIUS",
+          "RIGHT_GLUTEUS_MEDIUS",
+          "LEFT_GLUTEUS_MINIMUS",
+          "RIGHT_GLUTEUS_MINIMUS",
+          "LEFT_AUTOCHTHONOUS_BACK_MUSCLE",
+          "RIGHT_AUTOCHTHONOUS_BACK_MUSCLE",
+          "LEFT_ILIOPSOAS",
+          "RIGHT_ILIOPSOAS",
+          "URINARY_BLADDER"
+        ]
+      }
+    ],
+    "model": {
+      "architecture": "U-net",
+      "training": "supervised",
+      "cmpapproach": "ensemble"
+    },
+    "data": {
+      "training": {
+        "vol_samples": 1082
+      },
+      "evaluation": {
+        "vol_samples": 65
+      },
+      "public": true,
+      "external": false
+    }
+  },
+  "details": {
+    "name": "TotalSegmentator",
+    "version": "1.0.0",
+    "devteam": "Department of Research and Analysis at University Hospital Basel",
+    "type": "nnU-Net (U-Net structure, optimized by data-driven heuristics)",
+    "date": {
+      "weights": "06/07/22",
+      "code": "n/a",
+      "pub": "2023"
+    },
+    "cite": "Jakob Wasserthal, Hanns-Christian Breit, Manfred T. Meyer, Maurice Pradella, Daniel Hinck, Alexander W. Sauter, Tobias Heye, Daniel T. Boll, Joshy Cyriac, Shan Yang, Michael Bach, and Martin Segeroth (2023). TotalSegmentator: Robust Segmentation of 104 Anatomic Structures in CT Images. Radiology Artificial Intelligence, 5:5",
+    "license": {
+      "code": "Apache 2.0",
+      "weights": "CC BY-NC 4.0"
+    },
+    "publications": [
+      {
+        "title": "TotalSegmentator: Robust Segmentation of 104 Anatomic Structures in CT Images",
+        "uri": "https://pubs.rsna.org/doi/10.1148/ryai.230024"
+      }
+    ],
+    "github": "https://github.com/wasserth/TotalSegmentator",
+    "zenodo": "https://zenodo.org/record/6802342",
+    "colab": "https://colab.research.google.com/github/MHubAI/models/blob/colab/models/totalsegmentator/notebooks/totalsegmentator_mwe.ipynb",
+    "slicer": true
+  },
+  "info": {
+    "use": {
+      "title": "Intended Use",
+      "text": "This model is intended to perform segmentations of 104 anatomic structures (27 organs, 59 bones, 10 muscles, 8 vessels) that are relevant for use cases such as organ volumetry, disease characterization, and surgical or radiation therapy planning. The CT images were randomly sampled from routine clinical studies, such that the dataset contains scans of patients with different ages, pathologies, of different body parts, acquired with different scanners, and sequences. The slice thickness should not exceed 1.5mm for best results."
+    },
+    "analyses": {
+      "title": "Quantitative Analyses",
+      "text": "The model's performance was assessed using the Dice Coefficient on a held-out portion of the in-house dataset (public). For more information, please refer to the model's publication [1].",
+      "references": [
+        {
+          "label": "TotalSegmentator: Robust Segmentation of 104 Anatomic Structures in CT Images",
+          "uri": "https://pubs.rsna.org/doi/10.1148/ryai.230024"
+        }
+      ]
+    },
+    "evaluation": {
+      "title": "Evaluation Data",
+      "text": "The evaluation dataset consists of 65 CT scans of patients with different ages, presenting various pathologies, and acquired with various imaging protocols. The Nora Imaging Platform was used for manual segmentation or further refinement of generated segmentations, starting from data uniformely resampled to 1.5mm isotropic. Segmentation was supervised by two physicians with three and six years of experience in body imaging. If an existing model for a given structure was publicly available, that model was used to create a first segmentation, which was then validated and refined manually. Furthermore, the authors used an iterative learning approach to speed up the segmentation process [1][2]. The evaluation process was conducted on images resampled to 1.5mm isotropic.",
+      "references": [
+        {
+          "label": "TotalSegmentator: Robust Segmentation of 104 Anatomic Structures in CT Images",
+          "uri": "https://pubs.rsna.org/doi/10.1148/ryai.230024"
+        },
+        {
+          "label": "TotalSegmentator dataset",
+          "uri": "https://doi.org/10.5281/zenodo.6802613"
+        }
+      ]
+    },
+    "training": {
+      "title": "Training Data",
+      "text": "The training dataset consists of 1082 CT scans of patients with different ages, presenting various pathologies, and acquired with various imaging protocols [1][2]. All of the CT images were resampled to a common resolution of 1.5mm isotropic before training. For details regarding the labels the model was trained with, see the section above.",
+      "references": [
+        {
+          "label": "TotalSegmentator: Robust Segmentation of 104 Anatomic Structures in CT Images",
+          "uri": "https://pubs.rsna.org/doi/10.1148/ryai.230024"
+        },
+        {
+          "label": "TotalSegmentator dataset",
+          "uri": "https://doi.org/10.5281/zenodo.6802613"
+        }
+      ]
+    }
+  }
+}
