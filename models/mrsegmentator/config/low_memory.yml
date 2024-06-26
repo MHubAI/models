@@ -1,7 +1,7 @@
 general:
   data_base_dir: /app/data
   version: 1.0.0
-  description: MRSegmentator default config (dicom to dicom)
+  description: MRSegmentator default lower memory footprint config (dicom to dicom)
 
 execute:
 - DicomImporter
@@ -19,7 +19,7 @@ modules:
       mod: '%Modality'
 
   MRSegmentatorMLRunner:
-    use_fast_mode: false
+    use_fast_mode: true
 
   DsegConverter:
     model_name: MRSegmentator
