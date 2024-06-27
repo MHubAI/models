@@ -1,150 +1,140 @@
 {
-  "id": "1a7ff9ac-dea4-45c3-9ec3-502decca3e0c", 
-  "name": "mrsegmentator",
-  "title": "MRSegmentator",
-  "summary": {
-    "description": "MRSegmentator is an AI-based pipeline for the segmentation of 40 anatomical structures in MR images (with and without contrast).",
-    "inputs": [
-      {
-        "label": "Input Image",
-        "description": "The MR scan of a patient (Thorax, Abdomen and Pelvis).",
-        "format": "DICOM",
-        "modality": "MRI",
-        "bodypartexamined": "WHOLEBODY",
-        "slicethickness": "1.5 mm",
-        "non-contrast": true,
-        "contrast": true
+    "id": "3b8e2f1d-4c5a-4b2a-8f3e-6a7d9e2c1b0d", 
+    "name": "mrsegmentator",
+    "title": "MRSegmentator",
+    "summary": {
+      "description": "MRSegmentator is an AI-based pipeline for the segmentation of 40 anatomical structures in MR images (with and without contrast).",
+      "inputs": [
+        {
+          "label": "Input Image",
+          "description": "The MR or CT scan of a patient (Thorax, Abdomen and Pelvis).",
+          "format": "DICOM",
+          "modality": "MRI|CT",
+          "bodypartexamined": "WHOLEBODY",
+          "slicethickness": "1.5 mm",
+          "non-contrast": true,
+          "contrast": true
+        }
+      ],
+      "outputs": [
+        {
+          "type": "Segmentation",
+          "classes": [
+            "SPLEEN",
+            "RIGHT_KIDNEY",
+            "LEFT_KIDNEY",
+            "GALLBLADDER",
+            "LIVER",
+            "STOMACH",
+            "PANCREAS",
+            "RIGHT_ADRENAL_GLAND",
+            "LEFT_ADRENAL_GLAND",
+            "LEFT_LUNG",
+            "RIGHT_LUNG",
+            "HEART",
+            "AORTA",
+            "INFERIOR_VENA_CAVA",
+            "PORTAL_AND_SPLENIC_VEIN",
+            "LEFT_ILIAC_ARTERY",
+            "RIGHT_ILIAC_ARTERY",
+            "ESOPHAGUS",
+            "SMALL_INTESTINE",
+            "DUODENUM",
+            "COLON",
+            "URINARY_BLADDER",
+            "SPINE",
+            "SACRUM",
+            "LEFT_HIP",
+            "RIGHT_HIP",
+            "LEFT_FEMUR",
+            "RIGHT_FEMUR",
+            "LEFT_AUTOCHTHONOUS_BACK_MUSCLE",
+            "RIGHT_AUTOCHTHONOUS_BACK_MUSCLE",
+            "LEFT_ILIOPSOAS",
+            "RIGHT_ILIOPSOAS",
+            "LEFT_GLUTEUS_MAXIMUS",
+            "RIGHT_GLUTEUS_MAXIMUS",
+            "LEFT_GLUTEUS_MEDIUS",
+            "RIGHT_GLUTEUS_MEDIUS",
+            "LEFT_GLUTEUS_MINIMUS",
+            "RIGHT_GLUTEUS_MINIMUS"
+          ]
+        }
+      ],
+      "model": {
+        "architecture": "U-net",
+        "training": "supervised",
+        "cmpapproach": "ensemble"
+      },
+      "data": {
+        "training": {
+          "vol_samples": 2649
+        },
+        "evaluation": {
+          "vol_samples": 960
+        },
+        "public": true,
+        "external": true
       }
-    ],
-    "outputs": [
-      {
-        "type": "Segmentation",
-        "classes": [
-          "SPLEEN",
-          "RIGHT_KIDNEY",
-          "LEFT_KIDNEY",
-          "GALLBLADDER",
-          "LIVER",
-          "STOMACH",
-          "PANCREAS",
-          "RIGHT_ADRENAL_GLAND",
-          "LEFT_ADRENAL_GLAND",
-          "LEFT_LUNG",
-          "RIGHT_LUNG",
-          "HEART",
-          "AORTA",
-          "INFERIOR_VENA_CAVA",
-          "PORTAL_AND_SPLENIC_VEIN",
-          "LEFT_ILIAC_ARTERY",
-          "RIGHT_ILIAC_ARTERY",
-          "ESOPHAGUS",
-          "SMALL_INTESTINE",
-          "DUODENUM",
-          "COLON",
-          "URINARY_BLADDER",
-          "SPINE",
-          "SACRUM",
-          "LEFT_HIP",
-          "RIGHT_HIP",
-          "LEFT_FEMUR",
-          "RIGHT_FEMUR",
-          "LEFT_AUTOCHTHONOUS_BACK_MUSCLE",
-          "RIGHT_AUTOCHTHONOUS_BACK_MUSCLE",
-          "LEFT_ILIOPSOAS",
-          "RIGHT_ILIOPSOAS",
-          "LEFT_GLUTEUS_MAXIMUS",
-          "RIGHT_GLUTEUS_MAXIMUS",
-          "LEFT_GLUTEUS_MEDIUS",
-          "RIGHT_GLUTEUS_MEDIUS",
-          "LEFT_GLUTEUS_MINIMUS",
-          "RIGHT_GLUTEUS_MINIMUS"
-        ]
-      }
-    ],
-    "model": {
-      "architecture": "U-net",
-      "training": "supervised",
-      "cmpapproach": "ensemble"
     },
-    "data": {
-      "training": {
-        "vol_samples": 1082
+    "details": {
+      "name": "MRSegmentator",
+      "version": "1.1.0",
+      "devteam": "AI-Assisted Healthcare Lab at Technical University Munich",
+      "type": "nnU-Net (U-Net structure, optimized by data-driven heuristics)",
+      "date": {
+        "weights": "05/18/24",
+        "code": "n/a",
+        "pub": "2024"
+      },
+      "cite": "Hartmut Häntze, Lina Xu, Felix J. Dorfner, Leonhard Donle, Daniel Truhn, Hugo Aerts, Mathias Prokop, Bram van Ginneken, Alessa Hering, Lisa C. Adams, and Keno K. Bressem. MRSegmentator: Robust multi-modality segmentation of 40 classes in MRI and CT sequences. arXiv, 2024.",
+      "license": {
+        "code": "Apache 2.0",
+        "weights": "Apache 2.0"
+      },
+      "publications": [
+        {
+          "title": "MRSegmentator: Robust multi-modality segmentation of 40 classes in MRI and CT sequences",
+          "uri": "https://arxiv.org/pdf/2405.06463"
+        }
+      ],
+      "github": "https://github.com/hhaentze/MRSegmentator",
+      "slicer": false
+    },
+    "info": {
+      "use": {
+        "title": "Intended Use",
+        "text": "Contrary to CT scans, where tools for automatic multi-structure segmentation are quite mature, segmentation tasks in MRI scans are often either focused on the brain region or on a subset of few organs in other body regions. MRSegmentator aims to extend this and accurately segment 40 organs and structures in human MRI scans of the abdominal, pelvic and thorax regions. The segmentation works well on different sequence types, including T1- and T2-weighted, Dixon sequences and even CT images."
+      },
+      "analyses": {
+        "title": "Quantitative Analyses",
+        "text": "The model's performance was assessed using the Dice Coefficient on three different external datasets. For more information, please refer to the model's publication [1].",
+        "references": [
+          {
+            "label": "MRSegmentator: Robust multi-modality segmentation of 40 classes in MRI and CT sequences",
+            "uri": "https://arxiv.org/pdf/2405.06463"
+          }
+        ]
       },
       "evaluation": {
-        "vol_samples": 65
+        "title": "Evaluation Data",
+        "text": "MISSING, fill this out!!!! and acquired with various imaging protocols. The Nora Imaging Platform was used for manual segmentation or further refinement of generated segmentations, starting from data uniformely resampled to 1.5mm isotropic. Segmentation was supervised by two physicians with three and six years of experience in body imaging. If an existing model for a given structure was publicly available, that model was used to create a first segmentation, which was then validated and refined manually. Furthermore, the authors used an iterative learning approach to speed up the segmentation process [1][2]. The evaluation process was conducted on images resampled to 1.5mm isotropic.",
+        "references": [
+          {
+            "label": "MRSegmentator: Robust multi-modality segmentation of 40 classes in MRI and CT sequences",
+            "uri": "https://arxiv.org/pdf/2405.06463"
+          }
+        ]
       },
-      "public": true,
-      "external": false
-    }
-  },
-  "details": {
-    "name": "MRSegmentator",
-    "version": "1.0.0",
-    "devteam": "Department of Research and Analysis at University Hospital Basel",
-    "type": "nnU-Net (U-Net structure, optimized by data-driven heuristics)",
-    "date": {
-      "weights": "06/07/22",
-      "code": "n/a",
-      "pub": "2023"
-    },
-    "cite": "Jakob Wasserthal, Hanns-Christian Breit, Manfred T. Meyer, Maurice Pradella, Daniel Hinck, Alexander W. Sauter, Tobias Heye, Daniel T. Boll, Joshy Cyriac, Shan Yang, Michael Bach, and Martin Segeroth (2023). TotalSegmentator: Robust Segmentation of 104 Anatomic Structures in CT Images. Radiology Artificial Intelligence, 5:5",
-    "license": {
-      "code": "Apache 2.0",
-      "weights": "CC BY-NC 4.0"
-    },
-    "publications": [
-      {
-        "title": "TotalSegmentator: Robust Segmentation of 104 Anatomic Structures in CT Images",
-        "uri": "https://pubs.rsna.org/doi/10.1148/ryai.230024"
+      "training": {
+        "title": "Training Data",
+        "text": "Three different datasets were used for training. The in-house dataset included 221 MRI scans with T1, T2 and T1fs post contrast sequences. The UK Biobank dataset used consisted of 1200 MRI examinations acquired using IN, OPP, W, F sequences. Furthermore 1228 CT examinations from the TotalSegmentator dataset were used. For details regarding the labels the model was trained with, see the section above.",
+        "references": [
+          {
+            "label": "MRSegmentator: Robust multi-modality segmentation of 40 classes in MRI and CT sequences",
+            "uri": "https://arxiv.org/pdf/2405.06463"
+          }
+        ]
       }
-    ],
-    "github": "https://github.com/wasserth/TotalSegmentator",
-    "zenodo": "https://zenodo.org/record/6802342",
-    "colab": "https://colab.research.google.com/github/MHubAI/models/blob/colab/models/totalsegmentator/notebooks/totalsegmentator_mwe.ipynb",
-    "slicer": true
-  },
-  "info": {
-    "use": {
-      "title": "Intended Use",
-      "text": "This model is intended to perform segmentations of 104 anatomic structures (27 organs, 59 bones, 10 muscles, 8 vessels) that are relevant for use cases such as organ volumetry, disease characterization, and surgical or radiation therapy planning. The CT images were randomly sampled from routine clinical studies, such that the dataset contains scans of patients with different ages, pathologies, of different body parts, acquired with different scanners, and sequences. The slice thickness should not exceed 1.5mm for best results."
-    },
-    "analyses": {
-      "title": "Quantitative Analyses",
-      "text": "The model's performance was assessed using the Dice Coefficient on a held-out portion of the in-house dataset (public). For more information, please refer to the model's publication [1].",
-      "references": [
-        {
-          "label": "TotalSegmentator: Robust Segmentation of 104 Anatomic Structures in CT Images",
-          "uri": "https://pubs.rsna.org/doi/10.1148/ryai.230024"
-        }
-      ]
-    },
-    "evaluation": {
-      "title": "Evaluation Data",
-      "text": "The evaluation dataset consists of 65 CT scans of patients with different ages, presenting various pathologies, and acquired with various imaging protocols. The Nora Imaging Platform was used for manual segmentation or further refinement of generated segmentations, starting from data uniformely resampled to 1.5mm isotropic. Segmentation was supervised by two physicians with three and six years of experience in body imaging. If an existing model for a given structure was publicly available, that model was used to create a first segmentation, which was then validated and refined manually. Furthermore, the authors used an iterative learning approach to speed up the segmentation process [1][2]. The evaluation process was conducted on images resampled to 1.5mm isotropic.",
-      "references": [
-        {
-          "label": "TotalSegmentator: Robust Segmentation of 104 Anatomic Structures in CT Images",
-          "uri": "https://pubs.rsna.org/doi/10.1148/ryai.230024"
-        },
-        {
-          "label": "TotalSegmentator dataset",
-          "uri": "https://doi.org/10.5281/zenodo.6802613"
-        }
-      ]
-    },
-    "training": {
-      "title": "Training Data",
-      "text": "The training dataset consists of 1082 CT scans of patients with different ages, presenting various pathologies, and acquired with various imaging protocols [1][2]. All of the CT images were resampled to a common resolution of 1.5mm isotropic before training. For details regarding the labels the model was trained with, see the section above.",
-      "references": [
-        {
-          "label": "TotalSegmentator: Robust Segmentation of 104 Anatomic Structures in CT Images",
-          "uri": "https://pubs.rsna.org/doi/10.1148/ryai.230024"
-        },
-        {
-          "label": "TotalSegmentator dataset",
-          "uri": "https://doi.org/10.5281/zenodo.6802613"
-        }
-      ]
     }
   }
-}
