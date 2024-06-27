@@ -1,0 +1,110 @@
+{
+  "id": "",
+  "name": "bpreg",
+  "title": "CT Utility Models [Body Part Regression]",
+  "summary": {
+    "description": "The Body Part Regression (BPR) model translates the anatomy in a radiologic volume into a machine-interpretable form. Each axial slice maps to a slice score. The slice scores monotonously increase with patient height. The BPR model can be used for sorting and labeling radiologic images by body parts. Moreover, it is useful for cropping specific body parts as a pre-processing or post-processing step of medical algorithms.",
+    "inputs": [
+      {
+        "label": "Input CT Image",
+        "description": "Input CT",
+        "format": "DICOM",
+        "modality": "CT",
+        "slicethickness": "5mm",
+        "bodypartexamined": "WHOLEBODY",
+        "non-contrast": true,
+        "contrast": true
+      }
+    ],
+    "outputs": [
+      {
+        "type": "Prediction",
+        "valueType": "Data structure",
+        "description": "A set of values extracted from the input CT image for utility",
+        "label": "Utility"
+      }
+    ],
+    "model": {
+      "architecture": "VGG-16",
+      "training": "unsupervised",
+      "cmpapproach": "2D"
+    },
+    "data": {
+      "training": {
+        "vol_samples": 800,
+        "subjects": 420
+      },
+      "evaluation": {
+        "vol_samples": 260,
+        "subjects": 140
+      },
+      "public": false,
+      "external": true
+    }
+  },
+  "details": {
+    "name": "Unsupervised Body Part Regression",
+    "version": "0.0.1",
+    "type": "Prediction of anatomical region",
+    "devteam": "Researchers from the Imaging Biomarkers and Computer-Aided Diagnosis Lab, Clinical Image Processing Service, Radiology and Imaging Sciences, National Institutes of Health Clinical Center",
+    "date": {
+      "pub": "2024",
+      "code": "n/a",
+      "weights": "18.01.2024"
+    },
+    "cite": "Yan, K., Lu, L., Summers, R.M. Unsupervised Body Part Regression via Spatially Self-Ordering Convolutional Neural Networks. arXiv:1707.03891v2",
+    "license": {
+      "code": "Apache 2.0",
+      "weights": "CC BY-SA 4.0"
+    },
+    "publications": [
+      {
+        "title": "Unsupervised Body Part Regression via Spatially Self-Ordering Convolutional Neural Networks",
+        "uri": "https://arxiv.org/abs/1707.03891"
+      }
+    ],
+    "github": "https://github.com/MIC-DKFZ/BodyPartRegression",
+    "zenodo": "https://zenodo.org/records/5113483#.YPaBkNaxWEA",
+    "slicer": false
+  },
+  "info": {
+    "use": {
+      "title": "Intended Use",
+      "text": "The BPR model can be used for sorting and labeling radiologic images by body parts. Moreover, it is useful for cropping specific body parts as a pre-processing or post-processing step of medical algorithms."
+    },
+    "analyses": {
+      "title": "Quantitative Analyses",
+      "text": "The model's performance was assessed using three different downstream tasks, including network initialization and anomaly detection. Refer to the publication for more details [1].",
+      "references": [
+        {
+          "label": "Unsupervised Body Part Regression via Spatially Self-Ordering Convolutional Neural Networks",
+          "uri": "https://arxiv.org/abs/1707.03891"
+        }
+      ]
+    },
+    "evaluation": {
+      "title": "Evaluation Data",
+      "text": "The evaluation dataset consists of 18,195 CT slices randomly sampled from 260 CT volumes of 140 subjects, manually labeled as one of the 3 common classes: chest, abdomen, or pelvis. The dataset was held out from the training data and gathered from several different sources [1, 2, 3, 4].",
+      "tables": [
+        {
+          "label": "Evaluation Tasks & Datasets",
+          "entries": {
+            "Chest": "5903 slices",
+            "Abdomen": "6744 slices",
+            "Pelvis": "5548 slices"
+          }
+        }
+      ],
+      "references": [
+
+      ]
+    },
+    "training": {
+      "title": "Training Data",
+      "text": "The training dataset consists of 800 random unlabeled CT volumes of 420 subjects from hospital PACS. Volumes are in the range of 30-700 slices each, mostly chest-abdomen-pelvis scans. The data have various pixel spacings (0.6–1.0 mm), reconstruction kernels, and pathological conditions.",
+      "references": [
+       
+      ]
+    }
+  }
+}
