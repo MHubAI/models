@@ -26,6 +26,7 @@ modules:
     body_part_examined: WHOLEBODY
     source_segs: nifti:mod=seg
     skip_empty_slices: True
+    target_dicom: dicom:mod=ct|mr
   
   DataOrganizer:
    targets:

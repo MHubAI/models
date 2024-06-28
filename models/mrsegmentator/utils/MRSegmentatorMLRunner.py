@@ -25,7 +25,7 @@ class MRSegmentatorMLRunner(Module):
     use_fast_mode: bool
 
     @IO.Instance()
-    @IO.Input('in_data', 'nifti:mod=ct', the="input whole body ct scan")
+    @IO.Input('in_data', 'nifti:mod=ct|mr', the="input whole body mr/ct scan")
     @IO.Output('out_data', 'segmentations.nii.gz', 'nifti:mod=seg:model=MRSegmentator:roi=SPLEEN,RIGHT_KIDNEY,LEFT_KIDNEY,GALLBLADDER,LIVER,STOMACH,PANCREAS,RIGHT_ADRENAL_GLAND,LEFT_ADRENAL_GLAND,LEFT_LUNG,RIGHT_LUNG,HEART,AORTA,INFERIOR_VENA_CAVA,PORTAL_AND_SPLENIC_VEIN,LEFT_ILIAC_ARTERY,RIGHT_ILIAC_ARTERY,ESOPHAGUS,SMALL_INTESTINE,DUODENUM,COLON,URINARY_BLADDER,SPINE,SACRUM,LEFT_HIP,RIGHT_HIP,LEFT_FEMUR,RIGHT_FEMUR,LEFT_AUTOCHTHONOUS_BACK_MUSCLE,RIGHT_AUTOCHTHONOUS_BACK_MUSCLE,LEFT_ILIOPSOAS,RIGHT_ILIOPSOAS,LEFT_GLUTEUS_MAXIMUS,RIGHT_GLUTEUS_MAXIMUS,LEFT_GLUTEUS_MEDIUS,RIGHT_GLUTEUS_MEDIUS,LEFT_GLUTEUS_MINIMUS,RIGHT_GLUTEUS_MINIMUS', data='in_data', the="output segmentation mask containing all labels")
     def task(self, instance: Instance, in_data: InstanceData, out_data: InstanceData) -> None:
         
