@@ -1,3 +1,14 @@
+"""
+---------------------------------------------------------
+Post processing Module on segmentation output
+---------------------------------------------------------
+
+-------------------------------------------------
+Author: Jithendra Kumar
+Email:  Jithendra.kumar@bamfhealth.com
+-------------------------------------------------
+
+"""
 import os
 import shutil
 import SimpleITK as sitk

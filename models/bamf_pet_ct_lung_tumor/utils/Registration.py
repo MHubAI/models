@@ -1,3 +1,14 @@
+"""
+---------------------------------------------------------
+Registration Module using SimpleITK
+---------------------------------------------------------
+
+-------------------------------------------------
+Author: Jithendra Kumar
+Email:  Jithendra.kumar@bamfhealth.com
+-------------------------------------------------
+
+"""
 import os
 import shutil
 import SimpleITK as sitk

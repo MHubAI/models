@@ -1,8 +1,8 @@
 """
 -------------------------------------------------
-MHub - NNU-Net Runner
+MHub - NNU-Net MultiModality Runner
        This is a base runner for pre-trained 
-       nnunet models.
+       nnunet models
 -------------------------------------------------
 
 -------------------------------------------------
@@ -129,7 +129,7 @@ class NNUnetPETCTRunner(Module):
 
     @IO.Instance()
     @IO.Input('in_ct_data', the="input ct data to run nnunet on")
-    @IO.Input('in_pt_data', the="input pt resampled data to run nnunet on")
+    @IO.Input('in_pt_data', the="input pt data to run nnunet on")
     @IO.Output("out_data", 'VOLUME_001.nii.gz', 'nifti:mod=seg:model=nnunet', the="output data from nnunet")
     def task(self, instance: Instance, in_ct_data: InstanceData,in_pt_data: InstanceData, out_data: InstanceData) -> None:
         

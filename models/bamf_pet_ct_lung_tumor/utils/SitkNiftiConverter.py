@@ -13,15 +13,15 @@ Email:  Jithendra.kumar@bamfhealth.com
 from enum import Enum
 from typing import List, Dict, Any
 
-from mhubio.core import Module, Instance, InstanceDataCollection, InstanceData, DataType, FileType
-from mhubio.core.IO import IO
-
 import pydicom
 import shutil
 import os, subprocess
 import pyplastimatch as pypla # type: ignore
 import SimpleITK as sitk
 from pathlib import Path
+
+from mhubio.core import Module, Instance, InstanceDataCollection, InstanceData, DataType, FileType
+from mhubio.core.IO import IO
 
 
 @IO.ConfigInput('in_datas', 'dicom:mod=ct|pt', the="target data that will be converted to nifti")
