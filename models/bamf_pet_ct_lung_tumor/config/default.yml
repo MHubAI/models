@@ -44,4 +44,4 @@ modules:
 
   DataOrganizer:
     targets:
-    - dicomseg-->[i:patientID]/bamf_nnunet_pet_ct_lung.seg.dcm
+    - dicomseg-->[i:patientID]/bamf_pet_ct_lung_tumor.seg.dcm

@@ -1,6 +1,6 @@
 {
     "id": "",
-    "name": "bamf_nnunet_pet_ct_lung",
+    "name": "bamf_pet_ct_lung_tumor",
     "title": "FDG PET/CT Lung and Lung Tumor Annotation",
     "summary": {
         "description": "An nnU-Net based model to segment Lung and FDG-avid lesions in the lung from FDG PET/CT scans",
