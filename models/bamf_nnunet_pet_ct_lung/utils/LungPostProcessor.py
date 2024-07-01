@@ -1,42 +1,13 @@
 import os
+import shutil
 import SimpleITK as sitk
 import numpy as np
-import os, shutil
-import cv2
 from skimage import measure
 from mhubio.core import IO
 from mhubio.core import Module, Instance, InstanceData, InstanceDataCollection
 
      
 class LungPostProcessor(Module):
-
-    def get_ensemble(self, save_path, organ_name_prefix, label, num_folds=5, th=0.6):
-        """
-        Perform ensemble segmentation on medical image data.
-
-        Args:
-            save_path (str): Path to the directory where segmentation results will be saved.
-            label (int): Label value for the segmentation.
-            num_folds (int, optional): Number of folds for ensemble. Default is 5.
-            th (float, optional): Threshold value. Default is 0.6.
-
-        Returns:
-            np.ndarray: Segmentation results.
-        """
-        for fold in range(num_folds):
-            inp_seg_file = f"{organ_name_prefix}_{fold}.nii.gz"
-            inp_seg_path = os.path.join(save_path, inp_seg_file)
-            seg_data = sitk.GetArrayFromImage(sitk.ReadImage(inp_seg_path))
-            seg_data[seg_data != label] = 0
-            seg_data[seg_data == label] = 1
-            if fold == 0:
-                segs = np.zeros(seg_data.shape)
-            segs += seg_data
-        segs = segs / 5
-        segs[segs < th] = 0
-        segs[segs >= th] = 1
-        return segs
-
     
     def mask_labels(self, labels, ts):
         """
@@ -64,8 +35,10 @@ class LungPostProcessor(Module):
         Returns:
             np.ndarray: Processed image with the largest connected component.
         """
-        img_filtered = np.zeros(img_data.shape)
-        blobs_labels = measure.label(img_data, background=0)
+        img_data_mask = np.zeros(img_data.shape)
+        img_data_mask[img_data >= 1] = 1
+        img_filtered = np.zeros(img_data_mask.shape)
+        blobs_labels = measure.label(img_data_mask, background=0)
         lbl, counts = np.unique(blobs_labels, return_counts=True)
         lbl_dict = {}
         for i, j in zip(lbl, counts):
@@ -74,7 +47,7 @@ class LungPostProcessor(Module):
         count = 0
 
         for key, value in sorted_dict.items():
-            if count >= 1 and count <= 2 and value > 20:
+            if count == 1:
                 print(key, value)
                 img_filtered[blobs_labels == key] = 1
             count += 1
@@ -97,20 +70,6 @@ class LungPostProcessor(Module):
         op_img.CopyInformation(ref)
         return op_img
 
-    def get_heart(self, op_data, heart):
-        """
-        Perform heart segmentation.
-
-        Args:
-            op_data (np.ndarray): Image data for segmented regions.
-            heart (np.ndarray): Image data for heart segmentation.
-
-        Returns:
-            int: Total number of heart voxels.
-        """
-        op_data[heart != 1] = 0
-        return np.sum(heart)
-    
     def get_mets(self, left, op_data):
         """
         Perform metastasis segmentation.
@@ -160,33 +119,32 @@ class LungPostProcessor(Module):
         """
         Perform postprocessing and writes simpleITK Image
         """
-        print('input in_tumor_data data: ' + in_tumor_data.abspath)
-        
-        out_file_path = out_data.abspath
+        self.v("Running LungPostprocessor.")
         tumor_seg_path = in_tumor_data.abspath
         total_seg_path = in_total_seg_data.abspath
 
         right, left, lung, heart = self.get_lung_ts(str(total_seg_path))
         tumor_label = 9
-        lesions = sitk.GetArrayFromImage(sitk.ReadImage(tumor_seg_path))
-        lesions[lesions != tumor_label] = 0
+        tumor_arr = sitk.GetArrayFromImage(sitk.ReadImage(tumor_seg_path))
+        tumor_arr[tumor_arr != tumor_label] = 0
 
         op_data = np.zeros(lung.shape)
         ref = sitk.ReadImage(in_ct_data.abspath)
         ct_data = sitk.GetArrayFromImage(ref)
         op_data[lung == 1] = 1
-        op_data[lesions > 0] = 2
+        op_data[tumor_arr > 0] = 2
         th = np.min(ct_data)
-        op_data[ct_data == th] = 0  # removing predicitons where CT not available
+        op_data[ct_data == th] = 0  # removing predictions where CT not available
         mets_right = self.get_mets(left, np.copy(op_data))
         mets_left = self.get_mets(right, np.copy(op_data))
         mets = np.logical_and(mets_right, mets_left).astype("int")
-        op_data[mets == 1] = 0
+        op_data[mets == 1] = 3
+        op_data[op_data == 3] = 0
+
         op_img = sitk.GetImageFromArray(op_data)
         op_img.CopyInformation(ref)
 
         tmp_dir = self.config.data.requestTempDir(label="lung-post-processor")
         tmp_file = os.path.join(tmp_dir, f'final.nii.gz')
         sitk.WriteImage(op_img, tmp_file)
-
         shutil.copyfile(tmp_file, out_data.abspath)

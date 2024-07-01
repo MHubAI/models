@@ -5,7 +5,7 @@ general:
 
 execute:
 - FileStructureImporter
-- NiftiConverter
+- SitkNiftiConverter
 - Registration
 - NNUnetPETCTRunner
 - TotalSegmentatorMLRunner
@@ -17,31 +17,29 @@ modules:
   FileStructureImporter:
     input_dir: 'input_data'
     structures:
-      - $patientID@instance/CT@dicom:mod=ct
-      - $patientID/PT@dicom:mod=pt
+      - $patientID@instance/ct@dicom:mod=ct
+      - $patientID/pt@dicom:mod=pt
     import_id: patientID
 
-  NiftiConverter:
+  SitkNiftiConverter:    
     in_datas: dicom:mod=pt|ct
     allow_multi_input: true
 
   NNUnetPETCTRunner:
     in_ct_data: nifti:mod=ct:registered=true
+    in_pt_data: nifti:mod=pt:converter=sitk
     nnunet_task: Task762_PET_CT_Breast
     nnunet_model: 3d_fullres
-    roi: LIVER,KIDNEY,URINARY_BLADDER,SPLEEN,LUNG,BRAIN,HEART,STOMACH,LIVER+FDG_AVID_TUMOR
+    roi: LIVER,KIDNEY,URINARY_BLADDER,SPLEEN,LUNG,BRAIN,HEART,SMALL_INTESTINE,FDG_AVID_TUMOR
 
   TotalSegmentatorMLRunner:
     in_data: nifti:mod=ct:registered=true
-    use_fast_mode: true
-
-  LungPostProcessor:
-    in_ct_data: nifti:mod=ct:registered=true
+    use_fast_mode: False
 
   DsegConverter:
     source_segs: nifti:mod=seg:processor=bamf
-    model_name: BAMF Lung FDG PET CT
-    target_dicom: dicom:mod=ct
+    model_name: BAMF Lung and FDG Tumor Segmentation
+    target_dicom: dicom:mod=pt
     skip_empty_slices: True
 
   DataOrganizer:
