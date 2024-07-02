@@ -34,7 +34,7 @@ modules:
     in_nodules_data: nifti:mod=seg:nnunet_task=Task777_CT_Nodules
 
   DsegConverter:
-    model_name: Bamf NNUnet CT Lung and Nodule
+    model_name: Bamf CT Lung and Nodule Segmentation
     target_dicom: dicom:mod=ct
     source_segs: nifti:mod=seg:processor=bamf
     skip_empty_slices: True

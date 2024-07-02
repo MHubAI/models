@@ -3,7 +3,7 @@
     "name": "bamf_nnunet_ct_lung",
     "title": "AIMI CT Lung and Nodules",
     "summary": {
-        "description": "An nnU-Net based model to segment Lung and Nodules from CT scans",
+        "description": "An nnU-Net based model to segment Lung and Nodules (3mm-30mm) from CT scans",
         "inputs": [
             {
                 "label": "Input Image",
@@ -11,7 +11,7 @@
                 "format": "DICOM",
                 "modality": "CT",
                 "bodypartexamined": "LUNG",
-                "slicethickness": "2.5mm",
+                "slicethickness": "10mm",
                 "non-contrast": true,
                 "contrast": false
             }
@@ -37,7 +37,7 @@
                 "vol_samples": 1405
             },
             "evaluation": {
-                "vol_samples": 77
+                "vol_samples": 47
             },
             "public": true,
             "external": true
@@ -119,19 +119,39 @@
         },
         "evaluation": {
             "title": "Evaluation Data",
-            "text": "A validation set of 47 cases were reviewed by two radiologists",
+            "text": "The model was used to segment cases from the IDC [1] collection of ACRIN-NSCLC-FDG-PET [2], Anti-PD-1-Lung [3], LUNG-PET-CT-Dx[4], NSCLC Radiogenomics[5], RIDER Lung PET-CT[6], TCGA-LUAD[7], TCGA-LUSC[8] . Approximately 47 of those cases were randomly selected to be reviewed and corrected by a board-certified radiologist. The model predictions, and radiologist corrections are published on zenodo [9]",
             "references": [
                 {
                     "label": "Imaging Data Collections (IDC)",
                     "uri": "https://datacommons.cancer.gov/repository/imaging-data-commons"
                 },
                 {
-                    "label": "DICOM-LIDC-IDRI-Nodule",
-                    "uri": "https://doi.org/10.7937/TCIA.2018.h7umfurq"
+                    "label": "ACRIN-NSCLC-FDG-PET",
+                    "uri": "https://www.cancerimagingarchive.net/collection/acrin-nsclc-fdg-pet/"
                 },
                 {
-                    "label": "NSCLC Radiomics",
-                    "uri": "https://doi.org/10.7937/K9/TCIA.2017.7hs46erv"
+                    "label": "Anti-PD-1-Lung",
+                    "uri": "https://www.cancerimagingarchive.net/collection/anti-pd-1_lung/"
+                },
+                {
+                    "label": "LUNG-PET-CT-Dx",
+                    "uri": "https://www.cancerimagingarchive.net/collection/lung-pet-ct-dx/"
+                },
+                {
+                    "label": "NSCLC Radiogenomics",
+                    "uri": "https://www.cancerimagingarchive.net/collection/nsclc-radiogenomics/"
+                },
+                {
+                    "label": "RIDER Lung PET-CT",
+                    "uri": "https://wiki.cancerimagingarchive.net/display/Public/RIDER+Collections"
+                },
+                {
+                    "label": "TCGA-LUAD",
+                    "uri": "https://www.cancerimagingarchive.net/collection/tcga-luad/"
+                },
+                {
+                    "label": "TCGA-LUSC",
+                    "uri": "https://www.cancerimagingarchive.net/collection/tcga-lusc/"
                 },
                 {
                     "label": "Image segmentations produced by the AIMI Annotations initiative",
@@ -141,7 +161,7 @@
         },
         "training": {
             "title": "Training Data",
-            "text": "The DICOM-LIDC-IDRI-Nodules dataset was used to train an AI model to annotate lung nodules. This dataset included 883 studies with annotated nodules from 875 patients. Within the dataset only nodules that were identified by all four of their radiologists (size condition: 3mm ≤ diameter ≤ 30mm), were considered for AI model training for this task. The lung annotations AI model was trained on 411 and 111 lung CT data from NSCLC Radiomics and NSCLC Radiogenomics respectively.",
+            "text": "The DICOM-LIDC-IDRI-Nodules[1] dataset was used to train an AI model to annotate lung nodules. This dataset included 883 studies with annotated nodules from 875 patients. Within the dataset only nodules that were identified by all four of their radiologists (size condition: 3mm ≤ diameter ≤ 30mm), were considered for AI model training for this task. The lung annotations AI model was trained on 411 and 111 lung CT data from NSCLC Radiomics and NSCLC Radiogenomics respectively[2].",
             "references": [
                 {
                     "label": "DICOM-LIDC-IDRI-Nodule",

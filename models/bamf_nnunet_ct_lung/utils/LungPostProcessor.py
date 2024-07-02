@@ -1,3 +1,12 @@
+"""
+-------------------------------------------------
+MHub - Run Module for perform postprocessing logic on segmentations.
+-------------------------------------------------
+-------------------------------------------------
+Author: Jithendra Kumar
+Email:  jithendra.kumar@bamfhealth.com
+-------------------------------------------------
+"""
 from mhubio.core import IO
 from mhubio.core import Module, Instance, InstanceData
 import os, shutil
@@ -45,7 +54,7 @@ class LungPostProcessor(Module):
         return seg_img
 
     @IO.Instance()
-    @IO.Input('in_rg_data', 'nifti:mod=seg:nnunet_task=Task775_CT_NSCLC_RG', the='input data from rg nnunet module')
+    @IO.Input('in_rg_data', 'nifti:mod=seg:nnunet_task=Task775_CT_NSCLC_RG', the='input data from lung nnunet module')
     @IO.Input('in_nodules_data', 'nifti:mod=seg:nnunet_task=Task777_CT_Nodules', the='input data from nodules nnunet nodule')
     @IO.Input('in_ct_data', 'nifti:mod=ct', the='input ct data')
     @IO.Output('out_data', 'bamf_processed.nii.gz', 'nifti:mod=seg:processor=bamf:roi=LUNG,LUNG+NODULE',
