@@ -7,16 +7,13 @@ FROM mhubai/base:latest
 # https://github.com/MIC-DKFZ/nnUNet/pull/1209
 ENV SKLEARN_ALLOW_DEPRECATED_SKLEARN_PACKAGE_INSTALL=True
 
-# Install nnunet and platipy
-RUN pip3 install --no-cache-dir \
-  nnunet 
-
+# Install nnunet
 # Install TotalSegmentator
-RUN pip3 install --no-cache-dir totalsegmentator==1.5.6
+RUN pip3 install TotalSegmentator==1.5.7 nnunet==1.6.6
 
 # Clone the main branch of MHubAI/models
 ARG MHUB_MODELS_REPO
-RUN buildutils/import_mhub_model.sh bamf_nnunet_pet_ct_breast ${MHUB_MODELS_REPO}
+RUN buildutils/import_mhub_model.sh bamf_pet_ct_breast_tumor ${MHUB_MODELS_REPO}
 
 # Pull nnUNet model weights into the container for Task777_CT_Nodules
 ENV WEIGHTS_DIR=/root/.nnunet/nnUNet_models/nnUNet/
@@ -33,4 +30,4 @@ ENV WEIGHTS_FOLDER=$WEIGHTS_DIR
 
 # Default run script
 ENTRYPOINT ["mhub.run"]
-CMD ["--config", "/app/models/bamf_nnunet_pet_ct_breast/config/default.yml"]
+CMD ["--config", "/app/models/bamf_pet_ct_breast_tumor/config/default.yml"]

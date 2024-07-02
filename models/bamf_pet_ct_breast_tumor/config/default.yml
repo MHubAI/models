@@ -5,7 +5,7 @@ general:
 
 execute:
 - FileStructureImporter
-- NiftiConverter
+- SitkNiftiConverter
 - Registration
 - NNUnetPETCTRunner
 - TotalSegmentatorMLRunner
@@ -17,11 +17,11 @@ modules:
   FileStructureImporter:
     input_dir: 'input_data'
     structures:
-      - $patientID@instance/CT@dicom:mod=ct
-      - $patientID/PT@dicom:mod=pt
+      - $patientID@instance/ct@dicom:mod=ct
+      - $patientID/pt@dicom:mod=pt
     import_id: patientID
 
-  NiftiConverter:
+  SitkNiftiConverter:    
     in_datas: dicom:mod=pt|ct
     allow_multi_input: true
 
@@ -33,17 +33,17 @@ modules:
 
   TotalSegmentatorMLRunner:
     in_data: nifti:mod=ct:registered=true
-    use_fast_mode: true
+    use_fast_mode: false
 
   BreastPostProcessor:
     in_ct_data: nifti:mod=ct:registered=true
 
   DsegConverter:
     source_segs: nifti:mod=seg:processor=bamf
-    model_name: BAMF Breast FDG PET CT
-    target_dicom: dicom:mod=ct
+    model_name: BAMF Breast FDG Tumor Segmentation
+    target_dicom: dicom:mod=pt
     skip_empty_slices: True
 
   DataOrganizer:
     targets:
-    - dicomseg-->[i:patientID]/bamf_nnunet_pet_ct_breast.seg.dcm
+    - dicomseg-->[i:patientID]/bamf_pet_ct_breast_tumor.seg.dcm

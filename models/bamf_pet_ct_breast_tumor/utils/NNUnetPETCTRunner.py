@@ -1,8 +1,8 @@
 """
 -------------------------------------------------
-MHub - NNU-Net Runner
+MHub - NNU-Net MultiModality Runner
        This is a base runner for pre-trained 
-       nnunet models using PET-CT Modalities
+       nnunet models
 -------------------------------------------------
 
 -------------------------------------------------
@@ -21,7 +21,7 @@ from mhubio.core import Module, Instance, InstanceData, DataType, FileType, IO, 
 nnunet_task_name_regex = r"Task[0-9]{3}_[a-zA-Z0-9_]+"
 
 @IO.ConfigInput('in_ct_data', 'nifti:mod=ct', the="input ct data to run nnunet on")
-@IO.ConfigInput('in_pt_data', 'nifti:mod=pt', the="input pt resampled data to run nnunet on")
+@IO.ConfigInput('in_pt_data', 'nifti:mod=pt', the="input pt data to run nnunet on")
 @IO.Config('nnunet_task', str, None, the='nnunet task name')
 @IO.Config('nnunet_model', str, None, the='nnunet model name (2d, 3d_lowres, 3d_fullres, 3d_cascade_fullres)')
 #@IO.Config('input_data_type', DataType, 'nifti:mod=ct', factory=DataType.fromString, the='input data type')
@@ -129,7 +129,7 @@ class NNUnetPETCTRunner(Module):
 
     @IO.Instance()
     @IO.Input('in_ct_data', the="input ct data to run nnunet on")
-    @IO.Input('in_pt_data', the="input pt resampled data to run nnunet on")
+    @IO.Input('in_pt_data', the="input pt data to run nnunet on")
     @IO.Output("out_data", 'VOLUME_001.nii.gz', 'nifti:mod=seg:model=nnunet', the="output data from nnunet")
     def task(self, instance: Instance, in_ct_data: InstanceData,in_pt_data: InstanceData, out_data: InstanceData) -> None:
         

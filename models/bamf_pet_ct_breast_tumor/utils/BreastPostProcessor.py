@@ -1,3 +1,14 @@
+"""
+---------------------------------------------------------
+Post processing Module on segmentation output
+---------------------------------------------------------
+
+-------------------------------------------------
+Author: Jithendra Kumar
+Email:  Jithendra.kumar@bamfhealth.com
+-------------------------------------------------
+
+"""
 import os
 import SimpleITK as sitk
 import numpy as np
@@ -9,22 +20,6 @@ from mhubio.core import Module, Instance, InstanceData, InstanceDataCollection
 
 
 class BreastPostProcessor(Module):
-
-    def mask_labels(self, labels, ts):
-        """
-        Create a mask based on given labels.
-
-        Args:
-            labels (list): List of labels to be masked.
-            ts (np.ndarray): Image data.
-
-        Returns:
-            np.ndarray: Masked image data.
-        """
-        lung = np.zeros(ts.shape)
-        for lbl in labels:
-            lung[ts == lbl] = 1
-        return lung
 
     def bbox2_3D(self, img):
         r = np.any(img, axis=(1, 2))
@@ -64,21 +59,6 @@ class BreastPostProcessor(Module):
 
         img_data[img_filtered != 1] = 0
         return img_data
-
-    def arr_2_sitk_img(self, arr, ref):
-        """
-        Convert numpy array to SimpleITK image.
-
-        Args:
-            arr (np.ndarray): Input image data as a numpy array.
-            ref: Reference image for copying information.
-
-        Returns:
-            sitk.Image: Converted SimpleITK image.
-        """
-        op_img = sitk.GetImageFromArray(arr)
-        op_img.CopyInformation(ref)
-        return op_img
 
     @IO.Instance()
     @IO.Input('in_ct_data', 'nifti:mod=ct:registered=true', the='input ct data')

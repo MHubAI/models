@@ -1,3 +1,14 @@
+"""
+---------------------------------------------------------
+Registration Module using SimpleITK
+---------------------------------------------------------
+
+-------------------------------------------------
+Author: Jithendra Kumar
+Email:  Jithendra.kumar@bamfhealth.com
+-------------------------------------------------
+
+"""
 import os
 import shutil
 import SimpleITK as sitk
@@ -5,16 +16,16 @@ import numpy as np
 from mhubio.core import IO
 from mhubio.core import Module, Instance, InstanceData
 
-
+     
 class Registration(Module):
 
     @IO.Instance()
-    @IO.Input('in_fixed_data', 'nifti:mod=pt', the='input pt data')
-    @IO.Input('in_moving_data', 'nifti:mod=ct', the='input ct data')
+    @IO.Input('in_fixed_data', 'nifti:mod=pt', the='input fixed data')
+    @IO.Input('in_moving_data', 'nifti:mod=ct', the='input moving data')    
     @IO.Output('out_data', 'VOL000_registered.nii.gz', 'nifti:mod=ct:registered=true', the="registered ct data")
     def task(self, instance: Instance, in_moving_data: InstanceData, in_fixed_data: InstanceData, out_data: InstanceData):
         """
-        Perform registration
+        Perform registration and resampling
         """
         fixed = sitk.ReadImage(in_fixed_data.abspath, sitk.sitkFloat32)
         moving = sitk.ReadImage(in_moving_data.abspath, sitk.sitkFloat32)
@@ -27,7 +38,7 @@ class Registration(Module):
         R.SetOptimizerAsRegularStepGradientDescent(1.0, 0.001, 200)
         R.SetInitialTransform(sitk.TranslationTransform(fixed.GetDimension()))
         R.SetInterpolator(sitk.sitkLinear)
-
+        
         def command_iteration(method):
             print(f"{method.GetOptimizerIteration():3} = {method.GetMetricValue():10.5f}")
 
