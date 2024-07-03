@@ -86,7 +86,7 @@
         {
           "label": "HCC-TACE-Seg",
           "uri": "https://doi.org/10.7937/TCIA.5FNA-0924"
-        },
+        }
       ]
     },
     "training": {
