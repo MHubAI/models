@@ -64,6 +64,12 @@
       "code": "MIT",
       "weights": "CC BY-NC 4.0"
     },
+    "publications": [
+      {
+        "title": "The AIMI Initiative: AI-Generated Annotations in IDC Collections",
+        "uri": "https://arxiv.org/abs/2310.14897"
+      }
+    ],
     "github": "https://github.com/MHubAI/models"
   },
   "info": {
