@@ -5,9 +5,7 @@ LABEL authors="bspai@bwh.harvard.edu,lnuernberg@bwh.harvard.edu"
 # # clone mhub implementation
 ARG MHUB_MODELS_REPO
 
-# Change later!
-RUN mkdir /app/models
-# RUN buildutils/import_mhub_model.sh fmcib_radiomics ${MHUB_MODELS_REPO}
+RUN buildutils/import_mhub_model.sh bpreg ${MHUB_MODELS_REPO}
 
 # Install additional pip packages
 RUN pip3 install --upgrade pip
