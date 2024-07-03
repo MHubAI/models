@@ -64,12 +64,16 @@
       "code": "MIT",
       "weights": "CC BY-NC 4.0"
     },
-    "github": "https://github.com/MHubAI/models/blob/main/models/bamf_ct_liver_tumor"
+    "github": "https://github.com/MHubAI/models"
   },
   "info": {
     "use": {
       "title": "Intended Use",
       "text": "This model is intended to perform liver and tumor segmentation in CT scans. The liver is a common site of primary (i.e. originating in the liver like hepatocellular carcinoma, HCC) or secondary (i.e. spreading to the liver like colorectal cancer) tumor development.The model has been trained and tested on scans aquired during clinical care of patients, so it might not be suited for a healthy population. The generalization capabilities of the model on a range of ages, genders, and ethnicities are unknown."
+    },
+    "analyses": {
+      "title": "Quantitative Analyses",
+      "text": "The model's performance to be assessed using the Dice Coefficient"
     },
     "evaluation": {
       "title": "Evaluation Data",
