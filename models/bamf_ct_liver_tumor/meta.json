@@ -71,6 +71,10 @@
       "title": "Intended Use",
       "text": "This model is intended to perform liver and tumor segmentation in CT scans. The liver is a common site of primary (i.e. originating in the liver like hepatocellular carcinoma, HCC) or secondary (i.e. spreading to the liver like colorectal cancer) tumor development.The model has been trained and tested on scans aquired during clinical care of patients, so it might not be suited for a healthy population. The generalization capabilities of the model on a range of ages, genders, and ethnicities are unknown."
     },
+    "analyses": {
+      "title": "Quantitative Analyses",
+      "text": "The model's performance was assessed using the Dice Coefficient"
+    },
     "evaluation": {
       "title": "Evaluation Data",
       "text": "The model was used to segment cases 509 from the Colorectal-Liver-Metastases [1] collection HCC-TACE-Seg [2]. 52 of those cases were randomly selected to be reviewed and corrected by a board-certified radiologist.",
