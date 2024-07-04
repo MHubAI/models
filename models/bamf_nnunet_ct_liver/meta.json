@@ -121,7 +121,7 @@
     },
     "training": {
       "title": "Training Data",
-      "text": "The training dataset consists of  1565 CT liver annotations taken from TotalSegmentator [1] (N=1204) and Flare21 Liver Dataset [2] (N=361).",
+      "text": "The training dataset consists of 1565 CT liver annotations taken from TotalSegmentator [1] (N=1204) and Flare21 Liver Dataset [2] (N=361).",
       "references": [
         {
           "label": "TotalSegmentator Dataset",
