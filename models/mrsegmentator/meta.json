@@ -11,6 +11,7 @@
           "format": "DICOM",
           "modality": "MRI|CT",
           "bodypartexamined": "WHOLEBODY",
+          "slicethickness": "n/a",
           "non-contrast": true,
           "contrast": true
         }
