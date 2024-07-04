@@ -4,6 +4,10 @@ FROM mhubai/base:latest
 RUN apt-get update && apt-get install -y \
     python3.9 \
     python3-pip
+    
+# clone mhub implementation
+ARG MHUB_MODELS_REPO
+RUN buildutils/import_mhub_model.sh mrsegmentator ${MHUB_MODELS_REPO}
 
 # Install MRSegmentator
 RUN python3.9 -m pip install --no-cache-dir mrsegmentator
