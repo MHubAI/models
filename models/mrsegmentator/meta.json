@@ -11,7 +11,6 @@
           "format": "DICOM",
           "modality": "MRI|CT",
           "bodypartexamined": "WHOLEBODY",
-          "slicethickness": "1.5 mm",
           "non-contrast": true,
           "contrast": true
         }
@@ -80,7 +79,7 @@
     "details": {
       "name": "MRSegmentator",
       "version": "1.1.0",
-      "devteam": "AI-Assisted Healthcare Lab at Technical University Munich",
+      "devteam": "AI-Assisted Healthcare Lab at Technical University Munich and Charité Universitätsmedizin Berlin",
       "type": "nnU-Net (U-Net structure, optimized by data-driven heuristics)",
       "date": {
         "weights": "05/18/24",
@@ -118,7 +117,7 @@
       },
       "evaluation": {
         "title": "Evaluation Data",
-        "text": "MISSING, fill this out!!!! and acquired with various imaging protocols. The Nora Imaging Platform was used for manual segmentation or further refinement of generated segmentations, starting from data uniformely resampled to 1.5mm isotropic. Segmentation was supervised by two physicians with three and six years of experience in body imaging. If an existing model for a given structure was publicly available, that model was used to create a first segmentation, which was then validated and refined manually. Furthermore, the authors used an iterative learning approach to speed up the segmentation process [1][2]. The evaluation process was conducted on images resampled to 1.5mm isotropic.",
+        "text": "The model was evaluated on test data from three different dataset. The NAKO dataset included 600 MRI examinationsm, the AMOS MRI dataset included 60 MRI examinations and the AMOS CT dataset which included a total of 300 CT examinations.",
         "references": [
           {
             "label": "MRSegmentator: Robust multi-modality segmentation of 40 classes in MRI and CT sequences",
@@ -128,7 +127,7 @@
       },
       "training": {
         "title": "Training Data",
-        "text": "Three different datasets were used for training. The in-house dataset included 221 MRI scans with T1, T2 and T1fs post contrast sequences. The UK Biobank dataset used consisted of 1200 MRI examinations acquired using IN, OPP, W, F sequences. Furthermore 1228 CT examinations from the TotalSegmentator dataset were used. For details regarding the labels the model was trained with, see the section above.",
+        "text": "Three different datasets were used for training. The in-house dataset included 221 MRI scans with T1, T2 and T1fs post contrast sequences. The UK Biobank dataset used consisted of 1200 MRI examinations acquired using IN, OPP, W, F sequences. Furthermore 1228 CT examinations from the TotalSegmentator dataset were used. All segmentations were performed by a radiologist, using a human-in-the-loop annotation approach to efficiently create high-quality segmentations for the training data.",
         "references": [
           {
             "label": "MRSegmentator: Robust multi-modality segmentation of 40 classes in MRI and CT sequences",
