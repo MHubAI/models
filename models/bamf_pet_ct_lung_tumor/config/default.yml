@@ -5,7 +5,11 @@ general:
 
 execute:
 - FileStructureImporter
-- SitkNiftiConverter
+- module: NiftiConverter
+  in_datas: dicom:mod=ct
+- module: NiftiConverter
+  in_datas: dicom:mod=pt
+  engine: dcm2niix
 - Registration
 - NNUnetPETCTRunner
 - TotalSegmentatorMLRunner
@@ -21,16 +25,12 @@ modules:
       - $patientID/pt@dicom:mod=pt
     import_id: patientID
 
-  SitkNiftiConverter:    
-    in_datas: dicom:mod=pt|ct
-    allow_multi_input: true
-
   NNUnetPETCTRunner:
     in_ct_data: nifti:mod=ct:registered=true
-    in_pt_data: nifti:mod=pt:converter=sitk
+    in_pt_data: nifti:mod=pt
     nnunet_task: Task762_PET_CT_Breast
     nnunet_model: 3d_fullres
-    roi: LIVER,KIDNEY,URINARY_BLADDER,SPLEEN,LUNG,BRAIN,HEART,SMALL_INTESTINE,FDG_AVID_TUMOR
+    roi: LIVER,KIDNEY,URINARY_BLADDER,SPLEEN,LUNG,BRAIN,HEART,SMALL_INTESTINE,LUNG+FDG_AVID_TUMOR
 
   TotalSegmentatorMLRunner:
     in_data: nifti:mod=ct:registered=true
