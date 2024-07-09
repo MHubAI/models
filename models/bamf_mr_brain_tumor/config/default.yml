@@ -1,0 +1,45 @@
+general:
+  data_base_dir: /app/data
+  version: 1.0
+  description: Default configuration for Bamf Brain tumor segmentation on MR scans (dicom to dicom)
+
+execute:
+- FileStructureImporter
+- NiftiConverter
+- BrainProcessor
+- DsegConverter
+- module: DsegConverter
+  target_dicom: dicom:mod=mr:type=t1
+  source_segs: nifti:mod=seg:type=t1
+- module: DsegConverter
+  target_dicom: dicom:mod=mr:type=t1ce
+  source_segs: nifti:mod=seg:type=t1ce
+- module: DsegConverter
+  target_dicom: dicom:mod=mr:type=t2
+  source_segs: nifti:mod=seg:type=t2
+- module: DsegConverter
+  target_dicom: dicom:mod=mr:type=flair
+  source_segs: nifti:mod=seg:type=flair
+- DataOrganizer
+
+
+modules:
+  FileStructureImporter:
+    input_dir: 'input_data'
+    structures:
+      - $patientID@instance/t1@dicom:mod=mr:type=t1
+      - $patientID/t1ce@dicom:mod=mr:type=t1ce
+      - $patientID/$type@dicom:mod=mr:type=t2
+      - $patientID/flair@dicom:mod=mr:type=flair
+    import_id: patientID
+
+  NiftiConverter:
+    allow_multi_input: True
+
+  DsegConverter:
+    model_name: Bamf Brain tumor segmentation
+    skip_empty_slices: True
+
+  DataOrganizer:
+    targets:
+    - dicomseg-->[i:sid]/bamf_nnunet_mr_brain.seg.dcm
