@@ -3,6 +3,28 @@ general:
   version: 1.0
   description: Default configuration for Bamf NNUnet Breast and tumor segmentation on MR scans (dicom to dicom)
 
+segdb:
+  triplets:
+    BREAST_FGT_TRIPLET:
+      code: 12
+      meaning: breast and fgt triplets
+  segmentations:
+    FGT_SEGMENTATION:
+      name: breast and fgt segmentation
+      category: C_BODY_STRUCTURE
+      type: BREAST_FGT_TRIPLET
+      color: [255, 255, 255]
+    BREAST:
+      name: custom label and color for breast
+      category: C_BODY_STRUCTURE
+      type: T_BREAST
+      color: [255, 0, 0]
+    FGT:
+      name: custom label and color for fibrograndular tissue
+      category: C_BODY_STRUCTURE
+      type: T_FGT
+      color: [0, 255, 0]
+
 execute:
 - DicomImporter
 - NiftiConverter
