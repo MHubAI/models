@@ -1,0 +1,114 @@
+{
+  "id": "",
+  "name": "bamf_nnunet_ct_lung",
+  "title": "AIMI CT Lung and Nodules",
+  "summary": {
+    "description": "An nnU-Net based model to segment Lung and Nodules (3mm-30mm) from CT scans",
+    "inputs": [
+      {
+        "label": "Input Image",
+        "description": "The CT scan of a patient.",
+        "format": "DICOM",
+        "modality": "CT",
+        "bodypartexamined": "LUNG",
+        "slicethickness": "10mm",
+        "non-contrast": true,
+        "contrast": false
+      }
+    ],
+    "outputs": [
+      {
+        "label": "Segmentation",
+        "type": "Segmentation",
+        "description": "Lung and Nodules (3mm-30mm) from CT scans",
+        "classes": [
+          "LUNG",
+          "LUNG+NODULE"
+        ]
+      }
+    ],
+    "model": {
+      "architecture": "U-net",
+      "training": "supervised",
+      "cmpapproach": "3D"
+    },
+    "data": {
+      "training": {
+        "vol_samples": 1299
+      },
+      "evaluation": {
+        "vol_samples": 9
+      },
+      "public": true,
+      "external": true
+    }
+  },
+  "details": {
+    "name": "AIMI CT Lung and Nodule",
+    "version": "2.0.0",
+    "devteam": "BAMF Health",
+    "authors": [
+      "Soni, Rahul",
+      "McCrumb, Diana",
+      "Murugesan, Gowtham Krishnan",
+      "Van Oss, Jeff"
+    ],
+    "type": "nnU-Net (U-Net structure, optimized by data-driven heuristics)",
+    "date": {
+      "code": "17.10.2023",
+      "weights": "28.08.2023",
+      "pub": "23.10.2023"
+    },
+    "cite": "Murugesan, Gowtham Krishnan, Diana McCrumb, Mariam Aboian, Tej Verma, Rahul Soni, Fatima Memon, and Jeff Van Oss. The AIMI Initiative: AI-Generated Annotations for Imaging Data Commons Collections. arXiv preprint arXiv:2310.14897 (2023).",
+    "license": {
+      "code": "MIT",
+      "weights": "CC BY-NC 4.0"
+    },
+    "publications": [
+        {
+            "title": "The AIMI Initiative: AI-Generated Annotations in IDC Collections",
+            "uri": "https://arxiv.org/abs/2310.14897"
+        }
+    ],
+    "github": "https://github.com/MHubAI/models/tree/main/models/bamf_nnunet_ct_lung"
+  },
+  "info": {
+    "use": {
+      "title": "Intended Use",
+      "text": "This model is intended to perform lung and nodule segmentation in CT scans. The model has been trained and tested on scans aquired during clinical care of patients, so it might not be suited for a healthy population. The generalization capabilities of the model on a range of ages, genders, and ethnicities are unknown."
+    },
+    "evaluation": {
+      "title": "Evaluation Data",
+      "text": "The model was used to segment cases 1157 from the QIN LUNG CT [1], SPIE-AAPM Lung CT Challenge [2] and NLST [3] collection. 112 of those cases were randomly selected to be reviewed and corrected by a board-certified radiologist.",
+      "references": [
+        {
+          "label": "QIN LUNG CT",
+          "uri": "https://www.cancerimagingarchive.net/collection/qin-lung-ct/"
+        },
+        {
+          "label": "SPIE-AAPM Lung CT Challenge",
+          "uri": "https://www.cancerimagingarchive.net/collection/spie-aapm-lung-ct-challenge/"
+        },
+        {
+          "label": "NLST",
+          "uri": "https://www.cancerimagingarchive.net/collection/nlst/"
+        }
+
+      ]
+    },
+    "training": {
+      "title": "Training Data",
+      "text": "",
+      "references": [
+        {
+          "label": "DICOM-LIDC-IDRI-Nodules",
+          "uri": "https://wiki.cancerimagingarchive.net/pages/viewpage.action?pageId=44499647"
+        },
+        {
+          "label": "NSCLC-Radiomics",
+          "uri": "https://www.cancerimagingarchive.net/collection/nsclc-radiomics/"
+        }
+      ]
+    }
+  }
+}
