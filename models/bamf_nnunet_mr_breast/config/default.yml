@@ -6,23 +6,18 @@ general:
 segdb:
   triplets:
     BREAST_FGT_TRIPLET:
-      code: 12
+      code: 123
       meaning: breast and fgt triplets
   segmentations:
-    FGT_SEGMENTATION:
-      name: breast and fgt segmentation
-      category: C_BODY_STRUCTURE
-      type: BREAST_FGT_TRIPLET
-      color: [255, 255, 255]
     BREAST:
-      name: custom label and color for breast
+      name: custom label and color for breast segmentation
       category: C_BODY_STRUCTURE
-      type: T_BREAST
+      type: T_BREAST_STRUCTURE
       color: [255, 0, 0]
     FGT:
-      name: custom label and color for fibrograndular tissue
+      name: custom label and color for fibrograndular tissue segmentation
       category: C_BODY_STRUCTURE
-      type: T_FGT
+      type: T_BREAST_STRUCTURE
       color: [0, 255, 0]
 
 execute:
