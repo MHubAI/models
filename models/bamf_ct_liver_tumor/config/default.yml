@@ -23,7 +23,7 @@ modules:
     in_data: nifti:mod=ct
     nnunet_dataset: Dataset006_Liver
     nnunet_config: 3d_fullres
-    roi: SPLEEN,KIDNEY,GALLBLADDER,DUODENUM,PANCREAS,SMALL_INTESTINE,LUNG,LIVER,LIVER+NEOPLASM_MALIGNANT_PRIMARY
+    roi: SPLEEN,KIDNEY,GALLBLADDER,DUODENUM,PANCREAS,SMALL_INTESTINE,LUNG,LIVER,LIVER+HCC_CLRM_TUMOR
     export_prob_maps: False
 
   DsegConverter:

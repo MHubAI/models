@@ -17,6 +17,38 @@ from typing import Union
 from pathlib import Path
 
 
+#TODO remove this code once the segdb is updated with the below code
+import yaml
+import segdb
+custom_seg_config = """
+segdb:
+    triplets:
+        T_LIVER_LESION:
+            code: C159516
+            meaning: structural change, damage, deformity, or discontinuity of the liver
+            scheme_designator: NCIt
+    segments:
+        HCC_CLRM_TUMOR:
+            name: Hepatocellular Carcinoma and colorectal liver metastasis
+            category: C_RADIOLOGIC_FINDING
+            type: T_LIVER_LESION
+            color: [255, 0, 0]
+"""
+parsed_config = yaml.safe_load(custom_seg_config)
+
+if 'segdb' in parsed_config:
+    if 'segments' in parsed_config['segdb'] and isinstance(parsed_config['segdb']['segments'], dict):
+        from segdb.classes.Segment import Segment
+        for seg_id, seg_data in parsed_config['segdb']['segments'].items():
+            print("added segment", seg_id, seg_data )
+            Segment.register(seg_id, **seg_data)
+
+    if 'triplets' in parsed_config['segdb'] and isinstance(parsed_config['segdb']['triplets'], dict):
+        from segdb.classes.Triplet import Triplet
+        for trp_id, trp_data in parsed_config['segdb']['triplets'].items():
+            print("added triplet", trp_id, trp_data )
+            Triplet.register(trp_id, overwrite=True, **trp_data)
+
 class PostProcessor(Module):
 
     def n_connected(self, img_data: np.ndarray) -> np.ndarray:
@@ -51,7 +83,7 @@ class PostProcessor(Module):
 
     @IO.Instance()
     @IO.Input('in_data', 'nifti:mod=seg:model=nnunet', the='input segmentations')
-    @IO.Output('out_data', 'bamf_processed..nii.gz', 'nifti:mod=seg:processor=bamf:roi=LIVER,LIVER+NEOPLASM_MALIGNANT_PRIMARY', data='in_data', the="filtered Liver and tumor segmentation")
+    @IO.Output('out_data', 'bamf_processed..nii.gz', 'nifti:mod=seg:processor=bamf:roi=LIVER,LIVER+HCC_CLRM_TUMOR', data='in_data', the="filtered Liver and tumor segmentation")
     def task(self, instance: Instance, in_data: InstanceData, out_data: InstanceData) -> None:
 
         # Log bamf runner info
