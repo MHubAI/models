@@ -16,6 +16,49 @@ import numpy as np
 from skimage import measure, filters
 from typing import Union
 from pathlib import Path
+import yaml
+import segdb
+from segdb.classes import Segment
+from segdb.classes.Triplet import Triplet
+
+
+custom_seg_config = """
+segdb:
+    triplets:
+        T_BREAST_FGT_STRUCTURE:
+            code: C114467
+            meaning: Breast Fibroglandular Tissue
+            scheme_designator: NCIt
+        T_BREAST_CARCINOMA_MASS:
+            code: 4147007
+            meaning: Mass
+            scheme_designator: SCT
+    segmentations:
+        FGT:
+            name: FGT
+            category: C_RADIOLOGIC_FINDING
+            type: T_BREAST_FGT_STRUCTURE
+            color: [128, 174, 128]
+        BREAST_CARCINOMA:
+            name: Breast_Carcinoma
+            category: C_MORPHOLOGICALLY_ABNORMAL_STRUCTURE
+            type: T_BREAST_CARCINOMA_MASS
+            modifier: M_RIGHT_AND_LEFT
+            color: [144, 238, 144]
+"""
+parsed_config = yaml.safe_load(custom_seg_config)
+
+if 'segdb' in parsed_config:
+    if 'segmentations' in parsed_config['segdb'] and isinstance(parsed_config['segdb']['segmentations'], dict):
+        from segdb.classes.Segment import Segment
+        for seg_id, seg_data in parsed_config['segdb']['segmentations'].items():
+            print("added segment", seg_id, seg_data )
+            Segment.register(seg_id, **seg_data)
+    if 'triplets' in parsed_config['segdb'] and isinstance(parsed_config['segdb']['triplets'], dict):
+        from segdb.classes.Triplet import Triplet
+        for trp_id, trp_data in parsed_config['segdb']['triplets'].items():
+            print("added triplet", trp_id, trp_data )
+            Triplet.register(trp_id, overwrite=True, **trp_data)
 
 
 class BreastPostProcessor(Module):
@@ -67,8 +110,8 @@ class BreastPostProcessor(Module):
     @IO.Input('in_breast_and_fgt_data', 'nifti:mod=seg:nnunet_dataset=Dataset009_Breast', the='input data from breast and fgt segmentation')
     @IO.Input('in_breast_tumor_data', 'nifti:mod=seg:nnunet_dataset=Dataset011_Breast', the='input data from breast tumor segmentation')
     @IO.Input('in_mr_data', 'nifti:mod=mr', the='input mr data')
-    @IO.Output('out_data', 'bamf_processed.nii.gz', 'nifti:mod=seg:processor=bamf:roi=BREAST,FGT,BREAST+TUMOR',
-               the="get breast,fgt, and tumor segmentation masks")
+    @IO.Output('out_data', 'bamf_processed.nii.gz', 'nifti:mod=seg:processor=bamf:roi=BREAST,FGT,BREAST+BREAST_CARCINOMA',
+               the="get breast, fgt, and breast-tumor segmentation masks")
     def task(self, instance: Instance, in_breast_and_fgt_data: InstanceData, in_breast_tumor_data: InstanceData,
              in_mr_data: InstanceData, out_data: InstanceData):
 
