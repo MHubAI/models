@@ -6,6 +6,56 @@ from pathlib import Path
 import tempfile
 import subprocess
 
+#TODO remove this code once the segdb is updated with the below code
+import yaml
+import segdb
+custom_seg_config = """
+segdb:
+    triplets:
+        T_EDEMA_MABNORMALITY:
+            code: 79654002
+            meaning: Edema
+            scheme_designator: SCT
+        T_NECROSIS_MABNORMALITY:
+            code: 6574001
+            meaning: Necrosis
+            scheme_designator: SCT
+        T_ENHANCING_MABNORMALITY:
+            code: C113842
+            meaning: Enhancing Lesion
+            scheme_designator: NCIt
+    segments:
+        EDEMA:
+            name: Edema
+            category: C_MORPHOLOGICALLY_ABNORMAL_STRUCTURE
+            type: T_EDEMA_MABNORMALITY
+            color: [140, 224, 228]
+        NECROSIS:
+            name: Necrosis
+            category: C_MORPHOLOGICALLY_ABNORMAL_STRUCTURE
+            type: T_EDEMA_MABNORMALITY
+            color: [216, 191, 216]
+        ENHANCING:
+            name: Enhancing Lesion
+            category: C_MORPHOLOGICALLY_ABNORMAL_STRUCTURE
+            type: T_ENHANCING_MABNORMALITY
+            color: [128, 174, 128]                        
+"""
+parsed_config = yaml.safe_load(custom_seg_config)
+
+if 'segdb' in parsed_config:
+    if 'segments' in parsed_config['segdb'] and isinstance(parsed_config['segdb']['segments'], dict):
+        from segdb.classes.Segment import Segment
+        for seg_id, seg_data in parsed_config['segdb']['segments'].items():
+            print("added segment", seg_id, seg_data )
+            Segment.register(seg_id, **seg_data)
+
+    if 'triplets' in parsed_config['segdb'] and isinstance(parsed_config['segdb']['triplets'], dict):
+        from segdb.classes.Triplet import Triplet
+        for trp_id, trp_data in parsed_config['segdb']['triplets'].items():
+            print("added triplet", trp_id, trp_data )
+            Triplet.register(trp_id, overwrite=True, **trp_data)
+
 class BrainProcessor(Module):
 
     def _setup(self, t1: str, t1c: str, t2: str, flair: str, seg_dir: str):
@@ -197,10 +247,10 @@ class BrainProcessor(Module):
                 )
         print("predicting....",predict)
         if True:
-            cmd=f"nnUNetv2_predict -i {str(row_folder)} -o {self.output_dir } -d 002 -c {config}"            
-            print("running nnUNet inference....",cmd) 
+            cmd=f"nnUNetv2_predict -i {str(row_folder)} -o {self.output_dir } -d 002 -c {config}"
+            print("running nnUNet inference....",cmd)
             os.system(cmd)
-            print("prediction done....")            
+            print("prediction done....")
         # shutil.rmtree(row_folder)
         self.segmentation = self.output_dir / str(f"{self.sub_id}.nii.gz")
         print(self.segmentation)
@@ -347,16 +397,16 @@ class BrainProcessor(Module):
             )
         ]
         print(self.reverse_2)
-    #NCR_TUMOR,ED_TUMOR,ENHANCING_TUMOR
+    #NCR_TUMOR,ED_TUMOR,FDG_AVID_TUMOR,ENHANCING_TUMOR
     @IO.Instance()
     @IO.Input('in_t1_data', 'nifti:mod=mr:type=t1', the='MR T1 image')
     @IO.Input('in_t1ce_data', 'nifti:mod=mr:type=t1ce', the='MR T1ce image')
     @IO.Input('in_t2_data', 'nifti:mod=mr:type=t2', the='MR T2 image')
     @IO.Input('in_flair_data', 'nifti:mod=mr:type=flair', the='MR FLAIR image')
-    @IO.Output('out_t1_data', 't1_seg.nii.gz', 'nifti:mod=seg:type=t1:roi=NCR_TUMOR,ED_TUMOR,BACKGROUND,ENHANCING_TUMOR', the='t1 seg image')
-    @IO.Output('out_t1ce_data', 't1ce_seg.nii.gz', 'nifti:mod=seg:type=t1ce:roi=NCR_TUMOR,ED_TUMOR,BACKGROUND,ENHANCING_TUMOR', the='t1ce seg image')
-    @IO.Output('out_t2_data', 't2_seg.nii.gz', 'nifti:mod=seg:type=t2:roi=NCR_TUMOR,ED_TUMOR,BACKGROUND,ENHANCING_TUMOR', the='t2 seg image')
-    @IO.Output('out_flair_data', 'flair_seg.nii.gz', 'nifti:mod=seg:type=flair:roi=NCR_TUMOR,ED_TUMOR,BACKGROUND,ENHANCING_TUMOR', the='FLAIR seg image')
+    @IO.Output('out_t1_data', 't1_seg.nii.gz', 'nifti:mod=seg:type=t1:roi=NECROSIS,EDEMA,BRAIN,ENHANCING', the='t1 seg image')
+    @IO.Output('out_t1ce_data', 't1ce_seg.nii.gz', 'nifti:mod=seg:type=t1ce:roi=NECROSIS,EDEMA,BRAIN,ENHANCING', the='t1ce seg image')
+    @IO.Output('out_t2_data', 't2_seg.nii.gz', 'nifti:mod=seg:type=t2:roi=NECROSIS,EDEMA,BRAIN,ENHANCING', the='t2 seg image')
+    @IO.Output('out_flair_data', 'flair_seg.nii.gz', 'nifti:mod=seg:type=flair:roi=NECROSIS,EDEMA,BRAIN,ENHANCING', the='FLAIR seg image')
     def task(self, instance: Instance, in_t1_data: InstanceData, in_t1ce_data: InstanceData,
              in_t2_data: InstanceData, in_flair_data: InstanceData, out_t1_data: InstanceData,
              out_t1ce_data: InstanceData, out_t2_data: InstanceData, out_flair_data: InstanceData):
@@ -367,16 +417,15 @@ class BrainProcessor(Module):
         flair = in_flair_data.abspath
 
         output_dir = tempfile.mkdtemp()
-        self._setup(t1, t1c, t2, flair, output_dir)    
+        self._setup(t1, t1c,  t2, flair, output_dir)
         print("running forward preprocessing....")
         os.environ['nnUNet_results'] = os.environ['WEIGHTS_FOLDER']
-        self.forward_preprocess(predict=True)    
+        self.forward_preprocess(predict=True)
         print("running reverse preprocessing....")
-        self.reverse_preprocess()    
+        self.reverse_preprocess()
         print(self.reverse_2)
         if len(self.reverse_2) > 0:
-            shutil.copyfile(self.reverse_2[0], out_t1_data.abspath)
-            shutil.copyfile(self.reverse_2[1], out_t1ce_data.abspath)
+            shutil.copyfile(self.reverse_2[0], out_t1ce_data.abspath)
+            shutil.copyfile(self.reverse_2[1], out_t1_data.abspath)
             shutil.copyfile(self.reverse_2[2], out_t2_data.abspath)
             shutil.copyfile(self.reverse_2[3], out_flair_data.abspath)
-

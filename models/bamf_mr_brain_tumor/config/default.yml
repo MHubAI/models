@@ -1,7 +1,7 @@
 general:
   data_base_dir: /app/data
   version: 1.0
-  description: Default configuration for Bamf Brain tumor segmentation on MR scans (dicom to dicom)
+  description: Default configuration for Bamf NNUnet Brain tumor segmentation on MR scans (dicom to dicom)
 
 execute:
 - FileStructureImporter
@@ -37,9 +37,12 @@ modules:
     allow_multi_input: True
 
   DsegConverter:
-    model_name: Bamf Brain tumor segmentation
+    model_name: BAMF Brain tumor segmentation
     skip_empty_slices: True
 
   DataOrganizer:
     targets:
-    - dicomseg-->[i:sid]/bamf_nnunet_mr_brain.seg.dcm
+    - dicomseg:type=t1ce-->[i:patientID]/t1ce.seg.dcm
+    - dicomseg:type=t1-->[i:patientID]/t1.seg.dcm
+    - dicomseg:type=t2-->[i:patientID]/t2.seg.dcm
+    - dicomseg:type=flair-->[i:patientID]/flair.seg.dcm
