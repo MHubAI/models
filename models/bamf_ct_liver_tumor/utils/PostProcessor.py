@@ -25,11 +25,11 @@ segdb:
     triplets:
         T_LIVER_LESION:
             code: C159516
-            meaning: structural change, damage, deformity, or discontinuity of the liver
+            meaning: Liver lesion
             scheme_designator: NCIt
     segments:
-        HCC_CLRM_TUMOR:
-            name: Hepatocellular Carcinoma and colorectal liver metastasis
+        NEOPLASM_MALIGNANT:
+            name: Neoplasm Malignant
             category: C_RADIOLOGIC_FINDING
             type: T_LIVER_LESION
             color: [255, 0, 0]
@@ -83,7 +83,7 @@ class PostProcessor(Module):
 
     @IO.Instance()
     @IO.Input('in_data', 'nifti:mod=seg:model=nnunet', the='input segmentations')
-    @IO.Output('out_data', 'bamf_processed..nii.gz', 'nifti:mod=seg:processor=bamf:roi=LIVER,LIVER+HCC_CLRM_TUMOR', data='in_data', the="filtered Liver and tumor segmentation")
+    @IO.Output('out_data', 'bamf_processed..nii.gz', 'nifti:mod=seg:processor=bamf:roi=LIVER,LIVER+NEOPLASM_MALIGNANT', data='in_data', the="filtered Liver and tumor segmentation")
     def task(self, instance: Instance, in_data: InstanceData, out_data: InstanceData) -> None:
 
         # Log bamf runner info
