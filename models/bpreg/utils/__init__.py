@@ -1,1 +1,1 @@
-from .BpRegRunner import BpRegRunner
+from .BPRRunner import BPRRunner

@@ -5,10 +5,10 @@ general:
 execute:
 - DicomImporter
 - NiftiConverter
-- BpRegRunner
+- BPRRunner
 - DataOrganizer
 
 modules:
   DataOrganizer:
     targets:
-      - json:type=utility-->[i:sid]/utility.json
+      - json:type=bpreg-->[i:sid]/bpreg.json

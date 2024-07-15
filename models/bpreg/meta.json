@@ -1,7 +1,7 @@
 {
   "id": "",
   "name": "bpreg",
-  "title": "CT Utility Models [Body Part Regression]",
+  "title": "Body Part Regression [CT Utility Models]",
   "summary": {
     "description": "The Body Part Regression (BPR) model translates the anatomy in a radiologic volume into a machine-interpretable form. Each axial slice maps to a slice score. The slice scores monotonously increase with patient height. The BPR model can be used for sorting and labeling radiologic images by body parts. Moreover, it is useful for cropping specific body parts as a pre-processing or post-processing step of medical algorithms.",
     "inputs": [
@@ -20,8 +20,8 @@
       {
         "type": "Prediction",
         "valueType": "Data structure",
-        "description": "A set of values extracted from the input CT image for utility",
-        "label": "Utility"
+        "description": "A set of values extracted from the input CT image for utility purposes",
+        "label": "bpreg"
       }
     ],
     "model": {
@@ -43,14 +43,14 @@
     }
   },
   "details": {
-    "name": "Unsupervised Body Part Regression",
+    "name": "Body Part Regression",
     "version": "0.0.1",
     "type": "Prediction of anatomical region",
     "devteam": "Researchers from the Imaging Biomarkers and Computer-Aided Diagnosis Lab, Clinical Image Processing Service, Radiology and Imaging Sciences, National Institutes of Health Clinical Center",
     "date": {
-      "pub": "2024",
-      "code": "n/a",
-      "weights": "18.01.2024"
+      "pub": "07.03.2018",
+      "code": "13.08.2021",
+      "weights": "19.07.2021"
     },
     "cite": "Yan, K., Lu, L., Summers, R.M. Unsupervised Body Part Regression via Spatially Self-Ordering Convolutional Neural Networks. arXiv:1707.03891v2",
     "license": {
@@ -84,7 +84,7 @@
     },
     "evaluation": {
       "title": "Evaluation Data",
-      "text": "The evaluation dataset consists of 18,195 CT slices randomly sampled from 260 CT volumes of 140 subjects, manually labeled as one of the 3 common classes: chest, abdomen, or pelvis. The dataset was held out from the training data and gathered from several different sources [1, 2, 3, 4].",
+      "text": "The evaluation dataset consists of 18,195 CT slices randomly sampled from 260 CT volumes of 140 subjects, manually labeled as one of the 3 common classes: chest, abdomen, or pelvis.",
       "tables": [
         {
           "label": "Evaluation Tasks & Datasets",
@@ -101,7 +101,7 @@
     },
     "training": {
       "title": "Training Data",
-      "text": "The training dataset consists of 800 random unlabeled CT volumes of 420 subjects from hospital PACS. Volumes are in the range of 30-700 slices each, mostly chest-abdomen-pelvis scans. The data have various pixel spacings (0.6–1.0 mm), reconstruction kernels, and pathological conditions.",
+      "text": "The training dataset consists of 800 random unlabeled CT volumes of 420 subjects from NIH CC hospital PACS. Volumes are in the range of 30-700 slices each, mostly chest-abdomen-pelvis scans. The data have various pixel spacings (0.6–1.0 mm), reconstruction kernels, and pathological conditions.",
       "references": [
        
       ]
