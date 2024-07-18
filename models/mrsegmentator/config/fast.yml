@@ -31,4 +31,3 @@ modules:
   DataOrganizer:
    targets:
    - dicomseg:mod=seg-->[i:sid]//MRSegmentator.seg.dcm
-   - log-->[i:sid]/logs/[d:module]/[filename]
