@@ -30,18 +30,10 @@ class MRSegmentatorMLRunner(Module):
     def task(self, instance: Instance, in_data: InstanceData, out_data: InstanceData) -> None:
         
         tmp_dir = self.config.data.requestTempDir("mr_segmentator")
-
-        raw_filename = os.path.basename(in_data.abspath)
-        name_part = raw_filename.split('.nii')[0]
-        extension = '.nii.gz'
-
-        new_filename = f"{name_part}_seg{extension}"
-
+        
         bash_command  = ["mrsegmentator"]
         bash_command += ["-i", in_data.abspath]
-    
         bash_command += ["--outdir", tmp_dir]
-
 
         if self.use_fast_mode:
             self.v("Running MRSegmentator in lower memory footprint mode ('--split_level', 1)")
@@ -50,11 +42,20 @@ class MRSegmentatorMLRunner(Module):
         else:
             self.v("Running MRSegmentator in default mode.")
 
-
         self.v(">> run: ", " ".join(bash_command))
 
         # run the model
         self.subprocess(bash_command, text=True)
 
+        # Find the output file in the temporary directory 
+        output_file = None
+        for filename in os.listdir(tmp_dir):
+            if filename.endswith('.nii.gz'):
+                output_file = filename
+                break
+        
+        if output_file is None:
+            raise FileNotFoundError("No output segmentation files found in the temporary directory.")
+    
         # copy data 
-        shutil.copy(os.path.join(tmp_dir, new_filename), out_data.abspath)
+        shutil.copy(os.path.join(tmp_dir, output_file), out_data.abspath)
