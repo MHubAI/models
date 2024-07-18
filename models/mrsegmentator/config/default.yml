@@ -30,4 +30,4 @@ modules:
   
   DataOrganizer:
    targets:
-   - dicomseg:mod=seg-->[i:sid]//MRSegmentator.seg.dcm
+   - dicomseg:mod=seg-->[i:sid]/MRSegmentator.seg.dcm
