@@ -84,7 +84,7 @@
       "type": "nnU-Net (U-Net structure, optimized by data-driven heuristics)",
       "date": {
         "weights": "05/18/24",
-        "code": "n/a",
+        "code": "05/18/24",
         "pub": "2024"
       },
       "cite": "Hartmut Häntze, Lina Xu, Felix J. Dorfner, Leonhard Donle, Daniel Truhn, Hugo Aerts, Mathias Prokop, Bram van Ginneken, Alessa Hering, Lisa C. Adams, and Keno K. Bressem. MRSegmentator: Robust multi-modality segmentation of 40 classes in MRI and CT sequences. arXiv, 2024.",
