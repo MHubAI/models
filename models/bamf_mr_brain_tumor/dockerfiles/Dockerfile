@@ -55,6 +55,8 @@ ENV SKLEARN_ALLOW_DEPRECATED_SKLEARN_PACKAGE_INSTALL=True
 # Install nnunetv2 and surfa
 RUN pip3 install --no-cache-dir nnunetv2==2.0 surfa==0.6
 
+WORKDIR /app
+
 # Clone the main branch of MHubAI/models
 ARG MHUB_MODELS_REPO
 RUN buildutils/import_mhub_model.sh bamf_mr_brain_tumor ${MHUB_MODELS_REPO}
@@ -71,7 +73,6 @@ RUN rm ${WEIGHTS_DIR}${WEIGHTS_FN}
 # specify nnunet specific environment variables
 ENV WEIGHTS_FOLDER=$WEIGHTS_DIR
 
-WORKDIR /app
 # Default run script
 ENTRYPOINT ["mhub.run"]
 CMD ["--config", "/app/models/bamf_mr_brain_tumor/config/default.yml"]
