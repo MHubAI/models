@@ -4,9 +4,8 @@ FROM base AS builder
 ENV DEBIAN_FRONTEND "noninteractive"
 ENV LANG            "en_GB.UTF-8"
 
-# 1 Build and Install ants using g++11.4 into builder
 WORKDIR /tmp
-RUN apt-get update && apt-get install -y cmake make ninja-build git bzip2 flex manpages-dev g++ wget unzip file build-essential
+RUN apt-get update && apt-get install -y cmake make ninja-build git bzip2 flex manpages-dev g++ wget unzip file
 RUN wget https://github.com/gcc-mirror/gcc/archive/refs/tags/releases/gcc-11.4.0.zip \
     && unzip gcc-11.4.0.zip && cd gcc-releases-gcc-11.4.0 && ./contrib/download_prerequisites \
     && mkdir /tmp/gcc-build
@@ -34,30 +33,17 @@ WORKDIR /tmp/build/ANTS-build
 RUN cmake --build . --target test
 RUN cmake --install .
 
-# 2. Install fsl into builder
-RUN wget https://fsl.fmrib.ox.ac.uk/fsldownloads/fslconda/releases/fslinstaller.py && \
-    python3 ./fslinstaller.py -V 6.0.7.11 -d /usr/local/fsl/
 
-# 3. Copy only specific binaries from the builder to reduce memory footprint
-FROM base AS final
-
-# Copy fsl binaries and libraries
-COPY --from=builder /usr/local/fsl/bin /usr/local/fsl/bin
-COPY --from=builder /usr/local/fsl/lib /usr/local/fsl/lib
-COPY --from=builder /usr/local/fsl/data /usr/local/fsl/data
-
-# Copy ANTs binary N4BiasFieldCorrection and libraries
-COPY --from=builder /opt/ants/bin/N4BiasFieldCorrection /opt/ants/bin/N4BiasFieldCorrection
-COPY --from=builder /usr/local/gcc-11.4.0 /usr/local/gcc-11.4.0
-
-# Copy freesurfer for synthstrip
+# Install freesurfer for synthstrip and mri_convert
 COPY --from=freesurfer/synthstrip:1.5 /freesurfer/env/bin /freesurfer/env/bin
 COPY --from=freesurfer/synthstrip:1.5 /freesurfer/models /freesurfer/models
 
+# Install fsl
+RUN wget https://fsl.fmrib.ox.ac.uk/fsldownloads/fslconda/releases/fslinstaller.py && \
+    python3 ./fslinstaller.py -V 6.0.7.11 -d /usr/local/fsl/
+
 ENV PATH="/opt/ants/bin:$PATH:/freesurfer/env/bin:/usr/local/fsl/bin" \
-    LD_LIBRARY_PATH="/usr/local/gcc-11.4.0/lib64:/opt/ants/lib:$LD_LIBRARY_PATH" \
-    FREESURFER_HOME="/freesurfer" \
-    FSLDIR="/usr/local/fsl"
+LD_LIBRARY_PATH="/opt/ants/lib:$LD_LIBRARY_PATH" FREESURFER_HOME="/freesurfer"
 
 # FIXME: set this environment variable as a shortcut to avoid nnunet crashing the build
 # by pulling sklearn instead of scikit-learn
@@ -66,7 +52,7 @@ ENV PATH="/opt/ants/bin:$PATH:/freesurfer/env/bin:/usr/local/fsl/bin" \
 # https://github.com/MIC-DKFZ/nnUNet/pull/1209
 ENV SKLEARN_ALLOW_DEPRECATED_SKLEARN_PACKAGE_INSTALL=True
 
-RUN apt-get update && apt-get install -y bc
+# Install nnunetv2 and surfa
 RUN pip3 install --no-cache-dir nnunetv2==2.0 surfa==0.6
 
 # Clone the main branch of MHubAI/models

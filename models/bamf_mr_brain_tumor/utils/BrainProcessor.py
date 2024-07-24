@@ -1,4 +1,3 @@
-
 from mhubio.core import IO
 from mhubio.core import Module, Instance, InstanceData
 import os, shutil
@@ -6,9 +5,10 @@ from pathlib import Path
 import tempfile
 import subprocess
 
-#TODO remove this code once the segdb is updated with the below code
+# TODO remove this code once the segdb is updated with the below code
 import yaml
 import segdb
+
 custom_seg_config = """
 segdb:
     triplets:
@@ -46,15 +46,18 @@ parsed_config = yaml.safe_load(custom_seg_config)
 if 'segdb' in parsed_config:
     if 'segments' in parsed_config['segdb'] and isinstance(parsed_config['segdb']['segments'], dict):
         from segdb.classes.Segment import Segment
+
         for seg_id, seg_data in parsed_config['segdb']['segments'].items():
-            print("added segment", seg_id, seg_data )
+            print("added segment", seg_id, seg_data)
             Segment.register(seg_id, **seg_data)
 
     if 'triplets' in parsed_config['segdb'] and isinstance(parsed_config['segdb']['triplets'], dict):
         from segdb.classes.Triplet import Triplet
+
         for trp_id, trp_data in parsed_config['segdb']['triplets'].items():
-            print("added triplet", trp_id, trp_data )
+            print("added triplet", trp_id, trp_data)
             Triplet.register(trp_id, overwrite=True, **trp_data)
+
 
 class BrainProcessor(Module):
 
@@ -71,7 +74,7 @@ class BrainProcessor(Module):
         self.find_fsl()
 
         self.atlas: list[tuple[Path, Path]] = []
-        self.sri_24_atlas = Path(__file__).parent/"templates/T1_brain.nii"
+        self.sri_24_atlas = Path(__file__).parent / "templates/T1_brain.nii"
 
     def _find_ants(self, default_path="/usr/local/ants/"):
         cmd = shutil.which("N4BiasFieldCorrection")
@@ -88,15 +91,15 @@ class BrainProcessor(Module):
 
     def find_fsl(self, default_path="/usr/local/fsl/"):
         if "FSLDIR" not in os.environ:
-            os.environ["FSLDIR"]="/usr/local/fsl"
+            os.environ["FSLDIR"] = "/usr/local/fsl"
         # The fsl.sh shell setup script adds the FSL binaries to the PATH
         self.fsl_path = Path(os.environ["FSLDIR"])
-        os.environ["FSLOUTPUTTYPE"]="NIFTI_GZ"
-        os.environ["FSLTCLSH"]=f"{self.fsl_path}/bin/fsltclsh"
-        os.environ["FSLWISH"]=f"${self.fsl_path}/bin/fslwish"
-        os.environ["FSL_SKIP_GLOBA"]="0"
-        os.environ["FSLMULTIFILEQUIT"]="TRUE"
-        assert Path(self.fsl_path/"bin/flirt").exists(), "FSL installation not found"
+        os.environ["FSLOUTPUTTYPE"] = "NIFTI_GZ"
+        os.environ["FSLTCLSH"] = f"{self.fsl_path}/bin/fsltclsh"
+        os.environ["FSLWISH"] = f"${self.fsl_path}/bin/fslwish"
+        os.environ["FSL_SKIP_GLOBA"] = "0"
+        os.environ["FSLMULTIFILEQUIT"] = "TRUE"
+        assert Path(self.fsl_path / "bin/flirt").exists(), "FSL installation not found"
 
     # step 1: Reorient images to RAI (RIGHT, ANTERIOR, POSTERIOR)
     def reorient(self, input_image: Path) -> Path:
@@ -104,7 +107,7 @@ class BrainProcessor(Module):
         # step 1 : reorient
         # Reorient to RAI
         output_image = (
-            self.output_dir / f"{input_image.name.replace('.nii.gz','')}_rai.nii.gz"
+                self.output_dir / f"{input_image.name.replace('.nii.gz', '')}_rai.nii.gz"
         )
         reorient_command = [
             str(self.fsl_path / "bin" / "fslreorient2std"),
@@ -112,6 +115,7 @@ class BrainProcessor(Module):
             str(output_image),
             "-s",
         ]
+        self.v("reorienting....", reorient_command)
         subprocess.run(reorient_command, check=True)
         return output_image
 
@@ -119,7 +123,7 @@ class BrainProcessor(Module):
     def n4bias_correction(self, input_image: Path) -> Path:
         assert input_image.exists(), f"{input_image} not found"
         output_image = (
-            self.output_dir / f"{input_image.name.replace('.nii.gz','')}_n4.nii.gz"
+                self.output_dir / f"{input_image.name.replace('.nii.gz', '')}_n4.nii.gz"
         )
         # N4 Bias Field Correction command
         n4_correction_command = [
@@ -131,7 +135,7 @@ class BrainProcessor(Module):
             "-o",
             str(output_image),
         ]
-
+        self.v("running N4BiasFieldCorrection....", n4_correction_command)
         # Run the N4 Bias Field Correction
         subprocess.run(n4_correction_command, check=True, capture_output=True)
         return output_image
@@ -144,11 +148,11 @@ class BrainProcessor(Module):
         # if input_image == reference_image:
         #     return input_image, input_image
         output_image = (
-            self.output_dir
-            / f"{input_image.name.replace('.nii.gz','')}{ref_code}.nii.gz"
+                self.output_dir
+                / f"{input_image.name.replace('.nii.gz', '')}{ref_code}.nii.gz"
         )
         transformation_matrix = (
-            self.output_dir / f"{input_image.name.replace('.nii.gz','')}{ref_code}.mat"
+                self.output_dir / f"{input_image.name.replace('.nii.gz', '')}{ref_code}.mat"
         )
         cmd = [
             "flirt",
@@ -163,6 +167,7 @@ class BrainProcessor(Module):
             "-dof",
             "6",  # 6 degrees of freedom for rigid registration
         ]
+        self.v("running FLIRT....", cmd)
         subprocess.run(cmd, check=True)
         return output_image, transformation_matrix
 
@@ -173,10 +178,10 @@ class BrainProcessor(Module):
 
         t1 = input_image_list[1]
         output_image = (
-            self.output_dir / f"{input_image.name.replace('.nii.gz','')}_warpped.nii.gz"
+                self.output_dir / f"{input_image.name.replace('.nii.gz', '')}_warpped.nii.gz"
         )
         transformation_matrix = (
-            self.output_dir / f"{input_image.name.replace('.nii.gz','')}_warpped.mat"
+                self.output_dir / f"{input_image.name.replace('.nii.gz', '')}_warpped.mat"
         )
 
         cmd = [
@@ -192,6 +197,7 @@ class BrainProcessor(Module):
             "-dof",
             "12",  # 6 degrees of freedom for rigid registration
         ]
+        self.v("running FLIRT spr....", cmd)
         subprocess.run(cmd, check=True)
         # for image, tmat in self.registered:
         #     output_image =self.output_dir / str(Path(input_image.stem).stem+f"_warpped_nl.nii.gz")
@@ -206,8 +212,8 @@ class BrainProcessor(Module):
     def skullstripping(self, input_image: Path, mask=False) -> Path:
         assert input_image.exists(), f"{input_image} not found"
         output_image = (
-            self.output_dir
-            / f"{input_image.name.replace('.nii.gz','')}_skull_stripped.nii.gz"
+                self.output_dir
+                / f"{input_image.name.replace('.nii.gz', '')}_skull_stripped.nii.gz"
         )
         # synthstrip_docker = Path("synthstrip-docker")
         # assert synthstrip_docker.exists(), "synthstrip-docker not found"
@@ -245,19 +251,18 @@ class BrainProcessor(Module):
                         row_folder / str(f"{self.sub_id}_{str(cindex).zfill(4)}.nii.gz")
                     ),
                 )
-        print("predicting....",predict)
+        self.v("predicting....", predict)
         if True:
-            cmd=f"nnUNetv2_predict -i {str(row_folder)} -o {self.output_dir } -d 002 -c {config}"
-            print("running nnUNet inference....",cmd)
+            cmd = f"nnUNetv2_predict -i {str(row_folder)} -o {self.output_dir} -d 002 -c {config}"
+            self.v("running nnUNet inference....", cmd)
             os.system(cmd)
-            print("prediction done....")
-        # shutil.rmtree(row_folder)
+            self.v("prediction done....")
+            # shutil.rmtree(row_folder)
         self.segmentation = self.output_dir / str(f"{self.sub_id}.nii.gz")
-        print(self.segmentation)
         return studyid
 
     def forward_preprocess(self, predict=True):
-        self.mr_contrasts = [self.t1c, self.t1, self.t2, self.flair]
+        self.mr_contrasts = [self.t1, self.t1c, self.t2, self.flair]
         self.reoriented = [
             self.reorient(input_image) for input_image in self.mr_contrasts
         ]
@@ -273,21 +278,21 @@ class BrainProcessor(Module):
         self.atlas = [
             self.standard_space_registration(image) for image in self.skull_stripped
         ]
-        print("running brain tumor segmentation....")
+        self.v("running brain tumor segmentation....", self.atlas)
         self.studyuids = self.infer_brain_tumor(config="3d_fullres", predict=predict)
         if predict:
             seg_copy = self.seg_dir / "std_space/"
             seg_copy.mkdir(parents=True, exist_ok=True)
             shutil.copy(self.segmentation, seg_copy)
-            print(f"copied to {seg_copy}")
+            self.v(f"copied to {seg_copy}")
 
     def inverse_registration_with_transformation(
-        self,
-        input_image: Path,
-        transformation_matrix: Path,
-        ref_image: Path,
-        study,
-        appendix="_back_to_patient.nii.gz",
+            self,
+            input_image: Path,
+            transformation_matrix: Path,
+            ref_image: Path,
+            study,
+            appendix="_back_to_patient.nii.gz",
     ) -> Path:
         # Output image path in patient space
         output_image = self.output_dir / str(study + appendix)
@@ -302,10 +307,11 @@ class BrainProcessor(Module):
         ]
 
         try:
+            self.v("Converting transformation matrices...", convert_command)
             subprocess.run(convert_command, check=True)
-            print("Transformation matrices converted successfully.")
+            self.v("Transformation matrices converted successfully.")
         except subprocess.CalledProcessError as e:
-            print("Error converting transformation matrices:", e)
+            self.v("Error converting transformation matrices:", e)
         # Inverse registration using FLIRT with the saved transformation matrix
         cmd = [
             "flirt",
@@ -327,6 +333,7 @@ class BrainProcessor(Module):
             "nearestneighbour",  # Interpolation method (adjust as needed)
             "-applyxfm",
         ]
+        self.v("inverse transformation flirt...", cmd)
         subprocess.run(cmd, check=True)
         return output_image
 
@@ -356,9 +363,9 @@ class BrainProcessor(Module):
         try:
             # Use shutil.move to move the file
             shutil.move(src_path, dest_path)
-            print(f"Moved {file_name} from {src_dir} to {dest_dir}")
+            self.v(f"Moved {file_name} from {src_dir} to {dest_dir}")
         except FileNotFoundError as e:
-            print(f"Error: {e}")
+            self.v(f"Error: {e}")
 
     def copy_file(self, src_dir: Path, dest_dir: Path, file_name: str):
         # Construct the source and destination paths
@@ -369,9 +376,9 @@ class BrainProcessor(Module):
         try:
             # Use shutil.copy to move the file
             shutil.copy(src_path, dest_path)
-            print(f"Copy {file_name} from {src_dir} to {dest_dir}")
+            self.v(f"Copy {file_name} from {src_dir} to {dest_dir}")
         except FileNotFoundError as e:
-            print(f"Error: {e}")
+            self.v(f"Error: {e}")
 
     def reverse_preprocess(self, segmentation: Path = None):
         if segmentation is None and self.segmentation is not None:
@@ -386,7 +393,6 @@ class BrainProcessor(Module):
                 self.skull_stripped, self.atlas, self.registered, self.studyuids
             )
         ]
-        print(self.reverse_1)
 
         self.reverse_2 = [
             self.inverse_registration_with_transformation(
@@ -396,17 +402,20 @@ class BrainProcessor(Module):
                 self.reverse_1, self.registered, self.mr_contrasts, self.studyuids
             )
         ]
-        print(self.reverse_2)
-    #NCR_TUMOR,ED_TUMOR,FDG_AVID_TUMOR,ENHANCING_TUMOR
+
     @IO.Instance()
     @IO.Input('in_t1_data', 'nifti:mod=mr:type=t1', the='MR T1 image')
     @IO.Input('in_t1ce_data', 'nifti:mod=mr:type=t1ce', the='MR T1ce image')
     @IO.Input('in_t2_data', 'nifti:mod=mr:type=t2', the='MR T2 image')
     @IO.Input('in_flair_data', 'nifti:mod=mr:type=flair', the='MR FLAIR image')
-    @IO.Output('out_t1_data', 't1_seg.nii.gz', 'nifti:mod=seg:type=t1:roi=NECROSIS,EDEMA,BRAIN,ENHANCING', the='t1 seg image')
-    @IO.Output('out_t1ce_data', 't1ce_seg.nii.gz', 'nifti:mod=seg:type=t1ce:roi=NECROSIS,EDEMA,BRAIN,ENHANCING', the='t1ce seg image')
-    @IO.Output('out_t2_data', 't2_seg.nii.gz', 'nifti:mod=seg:type=t2:roi=NECROSIS,EDEMA,BRAIN,ENHANCING', the='t2 seg image')
-    @IO.Output('out_flair_data', 'flair_seg.nii.gz', 'nifti:mod=seg:type=flair:roi=NECROSIS,EDEMA,BRAIN,ENHANCING', the='FLAIR seg image')
+    @IO.Output('out_t1_data', 't1_seg.nii.gz', 'nifti:mod=seg:type=t1:roi=NECROSIS,EDEMA,BRAIN,ENHANCING',
+               the='t1 seg image')
+    @IO.Output('out_t1ce_data', 't1ce_seg.nii.gz', 'nifti:mod=seg:type=t1ce:roi=NECROSIS,EDEMA,BRAIN,ENHANCING',
+               the='t1ce seg image')
+    @IO.Output('out_t2_data', 't2_seg.nii.gz', 'nifti:mod=seg:type=t2:roi=NECROSIS,EDEMA,BRAIN,ENHANCING',
+               the='t2 seg image')
+    @IO.Output('out_flair_data', 'flair_seg.nii.gz', 'nifti:mod=seg:type=flair:roi=NECROSIS,EDEMA,BRAIN,ENHANCING',
+               the='FLAIR seg image')
     def task(self, instance: Instance, in_t1_data: InstanceData, in_t1ce_data: InstanceData,
              in_t2_data: InstanceData, in_flair_data: InstanceData, out_t1_data: InstanceData,
              out_t1ce_data: InstanceData, out_t2_data: InstanceData, out_flair_data: InstanceData):
@@ -417,15 +426,15 @@ class BrainProcessor(Module):
         flair = in_flair_data.abspath
 
         output_dir = tempfile.mkdtemp()
-        self._setup(t1, t1c,  t2, flair, output_dir)
-        print("running forward preprocessing....")
+        self._setup(t1, t1c, t2, flair, output_dir)
+        self.v("running forward preprocessing....")
         os.environ['nnUNet_results'] = os.environ['WEIGHTS_FOLDER']
         self.forward_preprocess(predict=True)
-        print("running reverse preprocessing....")
+        self.v("running reverse preprocessing....")
         self.reverse_preprocess()
-        print(self.reverse_2)
+        self.v(self.reverse_2)
         if len(self.reverse_2) > 0:
-            shutil.copyfile(self.reverse_2[0], out_t1ce_data.abspath)
-            shutil.copyfile(self.reverse_2[1], out_t1_data.abspath)
+            shutil.copyfile(self.reverse_2[0], out_t1_data.abspath)
+            shutil.copyfile(self.reverse_2[1], out_t1ce_data.abspath)
             shutil.copyfile(self.reverse_2[2], out_t2_data.abspath)
             shutil.copyfile(self.reverse_2[3], out_flair_data.abspath)
