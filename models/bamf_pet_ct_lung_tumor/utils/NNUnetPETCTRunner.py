@@ -24,11 +24,8 @@ nnunet_task_name_regex = r"Task[0-9]{3}_[a-zA-Z0-9_]+"
 @IO.ConfigInput('in_pt_data', 'nifti:mod=pt', the="input pt data to run nnunet on")
 @IO.Config('nnunet_task', str, None, the='nnunet task name')
 @IO.Config('nnunet_model', str, None, the='nnunet model name (2d, 3d_lowres, 3d_fullres, 3d_cascade_fullres)')
-#@IO.Config('input_data_type', DataType, 'nifti:mod=ct', factory=DataType.fromString, the='input data type')
 @IO.Config('folds', int, None, the='number of folds to run nnunet on')
 @IO.Config('use_tta', bool, True, the='flag to enable test time augmentation')
-@IO.Config('export_prob_maps', bool, False, the='flag to export probability maps')
-@IO.Config('prob_map_segments', list, [], the='segment labels for probability maps')
 @IO.Config('roi', str, None, the='roi or comma separated list of roi the nnunet segments')
 class NNUnetPETCTRunner(Module):
 
@@ -37,102 +34,14 @@ class NNUnetPETCTRunner(Module):
     input_data_type: DataType
     folds: int                          # TODO: support optional config attributes
     use_tta: bool
-    export_prob_maps: bool
-    prob_map_segments: list
     roi: str
-
-    def export_prob_mask(self, nnunet_out_dir: str, ref_file: InstanceData, output_dtype: str = 'float32', structure_list: Optional[List[str]] = None):
-        """
-        Convert softmax probability maps to NRRD. For simplicity, the probability maps
-        are converted by default to UInt8
-        Arguments:
-            model_output_folder : required - path to the folder where the inferred segmentation masks should be stored.
-            ref_file            : required - InstanceData object of the generated segmentation mask used as reference file.
-            output_dtype        : optional - output data type. Data type float16 is not supported by the NRRD standard,
-                                            so the choice should be between uint8, uint16 or float32. 
-            structure_list      : optional - list of the structures whose probability maps are stored in the 
-                                            first channel of the `.npz` file (output from the nnU-Net pipeline
-                                            when `export_prob_maps` is set to True). 
-        Outputs:
-            This function [...]
-        """
-
-        # initialize structure list
-        if structure_list is None:
-            if self.roi is not None:
-                structure_list = self.roi.split(',')
-            else:
-                structure_list = []
-
-        # sanity check user inputs
-        assert(output_dtype in ["uint8", "uint16", "float32"])      
-
-        # input file containing the raw information
-        pred_softmax_fn = 'VOLUME_001.npz'
-        pred_softmax_path = os.path.join(nnunet_out_dir, pred_softmax_fn)
-
-        # parse NRRD file - we will make use of if to populate the header of the
-        # NRRD mask we are going to get from the inferred segmentation mask
-        sitk_ct = sitk.ReadImage(ref_file.abspath)
-
-        # generate bundle for prob masks
-        # TODO: we really have to create folders (or add this as an option that defaults to true) automatically
-        prob_masks_bundle = ref_file.getDataBundle('prob_masks')
-        if not os.path.isdir(prob_masks_bundle.abspath):
-            os.mkdir(prob_masks_bundle.abspath)
-
-        # load softmax probability maps
-        pred_softmax_all = np.load(pred_softmax_path)["softmax"]
-
-        # iterate all channels
-        for channel in range(0, len(pred_softmax_all)):
-
-            structure = structure_list[channel] if channel < len(structure_list) else f"structure_{channel}"
-            pred_softmax_segmask = pred_softmax_all[channel].astype(dtype = np.float32)
-
-            if output_dtype == "float32":
-                # no rescale needed - the values will be between 0 and 1
-                # set SITK image dtype to Float32
-                sitk_dtype = sitk.sitkFloat32
-
-            elif output_dtype == "uint8":
-                # rescale between 0 and 255, quantize
-                pred_softmax_segmask = (255*pred_softmax_segmask).astype(np.int32)
-                # set SITK image dtype to UInt8
-                sitk_dtype = sitk.sitkUInt8
-
-            elif output_dtype == "uint16":
-                # rescale between 0 and 65536
-                pred_softmax_segmask = (65536*pred_softmax_segmask).astype(np.int32)
-                # set SITK image dtype to UInt16
-                sitk_dtype = sitk.sitkUInt16
-            else:
-                raise ValueError("Invalid output data type. Please choose between uint8, uint16 or float32.")
-                
-            pred_softmax_segmask_sitk = sitk.GetImageFromArray(pred_softmax_segmask)
-            pred_softmax_segmask_sitk.CopyInformation(sitk_ct)
-            pred_softmax_segmask_sitk = sitk.Cast(pred_softmax_segmask_sitk, sitk_dtype)
-
-            # generate data
-            prob_mask = InstanceData(f'{structure}.nrrd', DataType(FileType.NRRD, {'mod': 'prob_mask', 'structure': structure}), bundle=prob_masks_bundle)
-
-            # export file
-            writer = sitk.ImageFileWriter()
-            writer.UseCompressionOn()
-            writer.SetFileName(prob_mask.abspath)
-            writer.Execute(pred_softmax_segmask_sitk)
-
-            # check if the file was written
-            if os.path.isfile(prob_mask.abspath):
-                self.v(f" > prob mask for {structure} saved to {prob_mask.abspath}")
-                prob_mask.confirm()
 
     @IO.Instance()
     @IO.Input('in_ct_data', the="input ct data to run nnunet on")
     @IO.Input('in_pt_data', the="input pt data to run nnunet on")
     @IO.Output("out_data", 'VOLUME_001.nii.gz', 'nifti:mod=seg:model=nnunet', the="output data from nnunet")
     def task(self, instance: Instance, in_ct_data: InstanceData,in_pt_data: InstanceData, out_data: InstanceData) -> None:
-        
+
         # get the nnunet model to run
         self.v("Running nnUNet_predict.")
         self.v(f" > task:        {self.nnunet_task}")
@@ -165,7 +74,7 @@ class NNUnetPETCTRunner(Module):
         #       structure. This is not the case for the mhub data structure. So we create a symlink to the input data
         #       in the nnunet input folder structure.
         os.symlink(os.environ['WEIGHTS_FOLDER'], os.path.join(out_dir, 'nnUNet'))
-        
+
         # NOTE: instead of running from commandline this could also be done in a pythonic way:
         #       `nnUNet/nnunet/inference/predict.py` - but it would require
         #       to set manually all the arguments that the user is not intended
@@ -177,16 +86,13 @@ class NNUnetPETCTRunner(Module):
         bash_command += ["--output_folder", str(out_dir)]
         bash_command += ["--task_name", self.nnunet_task]
         bash_command += ["--model", self.nnunet_model]
-        
+
         # add optional arguments
         if self.folds is not None:
             bash_command += ["--folds", str(self.folds)]
 
         if not self.use_tta:
             bash_command += ["--disable_tta"]
-        
-        if self.export_prob_maps:
-            bash_command += ["--save_npz"]
 
         self.v(f" > command 1:  {bash_command}")
         # run command
@@ -206,10 +112,6 @@ class NNUnetPETCTRunner(Module):
 
         # copy output data to instance
         shutil.copyfile(out_path, out_data.abspath)
-
-        # export probabiliy maps if requested as dynamic data
-        if self.export_prob_maps:
-            self.export_prob_mask(str(out_dir), out_data, 'float32', self.prob_map_segments)
 
         # update meta dynamically
         out_data.type.meta += meta

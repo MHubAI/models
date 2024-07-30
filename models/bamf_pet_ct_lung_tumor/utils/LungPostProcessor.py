@@ -19,22 +19,6 @@ from mhubio.core import Module, Instance, InstanceData, InstanceDataCollection
 
      
 class LungPostProcessor(Module):
-    
-    def mask_labels(self, labels, ts):
-        """
-        Create a mask based on given labels.
-
-        Args:
-            labels (list): List of labels to be masked.
-            ts (np.ndarray): Image data.
-
-        Returns:
-            np.ndarray: Masked image data.
-        """
-        lung = np.zeros(ts.shape)
-        for lbl in labels:
-            lung[ts == lbl] = 1
-        return lung
 
     def n_connected(self, img_data):
         """
@@ -98,8 +82,8 @@ class LungPostProcessor(Module):
         mets[op_data > 0] = 1
         mets[op_primary > 0] = 0
         return mets
-    
-    def get_lung_ts(self, img_path):
+
+    def get_lung_segments(self, img_path):
         """
         Perform lung tissue segmentation.
 
@@ -110,31 +94,29 @@ class LungPostProcessor(Module):
             tuple: A tuple containing lung segmentation results.
         """
         img_data = sitk.GetArrayFromImage(sitk.ReadImage(img_path))
-        left_labels = [13, 14]  # defined in totalsegmentator
-        right_labels = [15, 16, 17]  # defined in totalsegmentator
-        heart_labels = [44, 45, 46, 47, 48]  # defined in totalsegmentator
-        lung_left = self.n_connected(self.mask_labels(left_labels, img_data))
-        lung_right = self.n_connected(self.mask_labels(right_labels, img_data))
-        heart = self.n_connected(self.mask_labels(heart_labels, img_data))
-        return lung_left, lung_right, lung_right + lung_left, heart
-    
+        lung_left = np.zeros(img_data.shape)
+        lung_left[img_data==1] = 1
+        lung_right = np.zeros(img_data.shape)
+        lung_right[img_data==2] = 1
+        return lung_left, lung_right, lung_right + lung_left
+
     @IO.Instance()
     @IO.Input('in_ct_data', 'nifti:mod=ct:registered=true', the='input ct data')
     @IO.Input('in_tumor_data', 'nifti:mod=seg:model=nnunet', the='input tumor segmentation')
-    @IO.Input('in_total_seg_data', 'nifti:mod=seg:model=TotalSegmentator', the='input total segmentation')
+    @IO.Input('in_lung_seg_data', 'nifti:mod=seg:model=LungSegmentator', the='input lung segmentation')
     @IO.Output('out_data', 'bamf_processed.nii.gz', 'nifti:mod=seg:processor=bamf:roi=LUNG,LUNG+FDG_AVID_TUMOR',
                data='in_tumor_data',
                the="get the lung and tumor after post processing")
     def task(self, instance: Instance, in_ct_data: InstanceData, in_tumor_data: InstanceData,
-             in_total_seg_data: InstanceData, out_data: InstanceData):
+             in_lung_seg_data: InstanceData, out_data: InstanceData):
         """
         Perform postprocessing and writes simpleITK Image
         """
         self.v("Running LungPostprocessor.")
         tumor_seg_path = in_tumor_data.abspath
-        total_seg_path = in_total_seg_data.abspath
+        lung_seg_path = in_lung_seg_data.abspath
 
-        right, left, lung, heart = self.get_lung_ts(str(total_seg_path))
+        right, left, lung = self.get_lung_segments(str(lung_seg_path))
         tumor_label = 9
         tumor_arr = sitk.GetArrayFromImage(sitk.ReadImage(tumor_seg_path))
         tumor_arr[tumor_arr != tumor_label] = 0
@@ -155,7 +137,4 @@ class LungPostProcessor(Module):
         op_img = sitk.GetImageFromArray(op_data)
         op_img.CopyInformation(ref)
 
-        tmp_dir = self.config.data.requestTempDir(label="lung-post-processor")
-        tmp_file = os.path.join(tmp_dir, f'final.nii.gz')
-        sitk.WriteImage(op_img, tmp_file)
-        shutil.copyfile(tmp_file, out_data.abspath)
+        sitk.WriteImage(op_img, out_data.abspath)

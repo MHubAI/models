@@ -12,7 +12,7 @@ execute:
   engine: dcm2niix
 - Registration
 - NNUnetPETCTRunner
-- TotalSegmentatorMLRunner
+- LungSegmentatorRunner
 - LungPostProcessor
 - DsegConverter
 - DataOrganizer
@@ -32,9 +32,8 @@ modules:
     nnunet_model: 3d_fullres
     roi: LIVER,KIDNEY,URINARY_BLADDER,SPLEEN,LUNG,BRAIN,HEART,SMALL_INTESTINE,LUNG+FDG_AVID_TUMOR
 
-  TotalSegmentatorMLRunner:
+  LungSegmentatorRunner:
     in_data: nifti:mod=ct:registered=true
-    use_fast_mode: False
 
   DsegConverter:
     source_segs: nifti:mod=seg:processor=bamf
