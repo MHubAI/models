@@ -262,7 +262,7 @@ class BrainProcessor(Module):
         return studyid
 
     def forward_preprocess(self, predict=True):
-        self.mr_contrasts = [self.t1, self.t1c, self.t2, self.flair]
+        self.mr_contrasts = [self.t1c, self.t1, self.t2, self.flair]
         self.reoriented = [
             self.reorient(input_image) for input_image in self.mr_contrasts
         ]
@@ -426,7 +426,7 @@ class BrainProcessor(Module):
         flair = in_flair_data.abspath
 
         output_dir = tempfile.mkdtemp()
-        self._setup(t1, t1c, t2, flair, output_dir)
+        self._setup(t1c, t1, t2, flair, output_dir)
         self.v("running forward preprocessing....")
         os.environ['nnUNet_results'] = os.environ['WEIGHTS_FOLDER']
         self.forward_preprocess(predict=True)
@@ -434,7 +434,8 @@ class BrainProcessor(Module):
         self.reverse_preprocess()
         self.v(self.reverse_2)
         if len(self.reverse_2) > 0:
-            shutil.copyfile(self.reverse_2[0], out_t1_data.abspath)
-            shutil.copyfile(self.reverse_2[1], out_t1ce_data.abspath)
+            # shutil.copyfile(self.reverse_2[0], out_t1ce_data.abspath)
+            shutil.copyfile(self.reverse_2[0], out_t1ce_data.abspath)
+            shutil.copyfile(self.reverse_2[1], out_t1_data.abspath)
             shutil.copyfile(self.reverse_2[2], out_t2_data.abspath)
             shutil.copyfile(self.reverse_2[3], out_flair_data.abspath)
