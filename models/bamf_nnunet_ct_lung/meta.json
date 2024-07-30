@@ -79,7 +79,30 @@
     },
     "evaluation": {
       "title": "Evaluation Data",
-      "text": "The model was used to segment cases 1157 from the QIN LUNG CT [1], SPIE-AAPM Lung CT Challenge [2] and NLST [3] collection. 112 of those cases were randomly selected to be reviewed and corrected by a board-certified radiologist.",
+      "text": "Quantitative metrics between AI and Radiologists annotations. The model was used to segment cases 1157 from the QIN LUNG CT [1], SPIE-AAPM Lung CT Challenge [2] and NLST [3] collection. 112 of those cases were randomly selected to be reviewed and corrected by a board-certified radiologist.",
+      "tables": [
+        {
+          "label": "Dice Score",
+          "entries": {
+            "Lung": "1.0±0.0",
+            "Nodules": "0.78±0.28"
+          }
+        },
+        {
+          "label": "95% Hausdorff Distance",
+          "entries": {
+            "Lung": "0.00±0.00",
+            "Nodules": "62.07±10.54"
+          }
+        },
+        {
+          "label": "Normalized surface distance ",
+          "entries": {
+            "Lung": "0.02±0.11",
+            "Nodules": "10.54±14.43"
+          }
+        }
+      ],
       "references": [
         {
           "label": "QIN LUNG CT",
