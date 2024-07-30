@@ -79,11 +79,34 @@
     },
     "analyses": {
       "title": "Quantitative Analyses",
-      "text": "The model's performance was assessed using the Dice Coefficient"
+      "text": "The model's performance was assessed using the Dice Coefficient, Hausdorff distance and NSD"
     },
     "evaluation": {
       "title": "Evaluation Data",
       "text": "The model was used to segment cases 509 from the Colorectal-Liver-Metastases [1] collection HCC-TACE-Seg [2]. 52 of those cases were randomly selected to be reviewed and corrected by a board-certified radiologist.",
+      "tables": [
+        {
+          "label": "Dice Score",
+          "entries": {
+            "Liver": "0.99±0.02",
+            "Tumor": "0.80±0.35"
+          }
+        },
+        {
+          "label": "95% Hausdorff Distance",
+          "entries": {
+            "Liver": "2.33±7.70",
+            "Tumor": "19.73±38.35"
+          }
+        },
+        {
+          "label": "Normalized surface distance ",
+          "entries": {
+            "Liver": "0.29±0.95",
+            "Tumor": "4.38±8.70"
+          }
+        }
+      ],
       "references": [
         {
           "label": "Colorectal-Liver-Metastases",
