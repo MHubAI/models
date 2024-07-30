@@ -5,11 +5,7 @@ general:
 
 execute:
 - FileStructureImporter
-- module: NiftiConverter
-  in_datas: dicom:mod=ct
-- module: NiftiConverter
-  in_datas: dicom:mod=pt
-  engine: dcm2niix
+- NiftiConverter
 - Registration
 - NNUnetPETCTRunner
 - LungSegmentatorRunner
@@ -25,6 +21,11 @@ modules:
       - $patientID/pt@dicom:mod=pt
     import_id: patientID
 
+  NiftiConverter:
+    in_datas: dicom:mod=pt|ct
+    engine: dcm2niix
+    allow_multi_input: true
+
   NNUnetPETCTRunner:
     in_ct_data: nifti:mod=ct:registered=true
     in_pt_data: nifti:mod=pt
@@ -34,6 +35,7 @@ modules:
 
   LungSegmentatorRunner:
     in_data: nifti:mod=ct:registered=true
+    use_fast_mode: True
 
   DsegConverter:
     source_segs: nifti:mod=seg:processor=bamf

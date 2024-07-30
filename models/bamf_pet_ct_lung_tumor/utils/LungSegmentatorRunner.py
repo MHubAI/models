@@ -18,9 +18,11 @@ from mhubio.core import IO
 
 from totalsegmentator.map_to_binary import class_map
 
-
 @IO.ConfigInput('in_data', 'nifti:mod=ct', the="input data to run Lung Segmentator on")
+@IO.Config('use_fast_mode', bool, True, the="flag to set to run TotalSegmentator in fast mode")
 class LungSegmentatorRunner(Module):
+
+    use_fast_mode: bool
 
     def mask_labels(self, labels, ts):
         """
@@ -37,6 +39,26 @@ class LungSegmentatorRunner(Module):
         for lbl in labels:
             lung[ts == lbl] = 1
         return lung
+
+    def combine_labels(self, file_paths):
+        """
+        Create a combined segment from list of segment files.
+
+        Args:
+            file_paths (list): List of segment files.
+
+        Returns:
+            np.ndarray: Combined segment.
+        """
+        images = [sitk.ReadImage(file_path) for file_path in file_paths if os.path.exists(file_path)]
+        result_image = sitk.GetArrayFromImage(images[0])
+        # Combine segments by summing
+        for img in images[1:]:
+            img_arr = sitk.GetArrayFromImage(img)
+            result_image = result_image + img_arr
+        segment = np.zeros(result_image.shape)
+        segment[result_image > 0] = 1
+        return segment
 
     def n_connected(self, img_data):
         """
@@ -68,38 +90,45 @@ class LungSegmentatorRunner(Module):
         img_data[img_filtered != 1] = 0
         return img_data
 
+
     @IO.Instance()
     @IO.Input('in_data', the="input whole body ct scan")
-    @IO.Output('out_data', 'lung_segmentations.nii.gz', 'nifti:mod=seg:model=LungSegmentator:roi=LEFT_LUNG,RIGHT_LUNG',
-               data='in_data', the="output segmentation mask containing lung labels")
+    @IO.Output('out_data', 'lung_segmentations.nii.gz', 'nifti:mod=seg:model=LungSegmentator:roi=LEFT_LUNG,RIGHT_LUNG', data='in_data', the="output segmentation mask containing lung labels")
     def task(self, instance: Instance, in_data: InstanceData, out_data: InstanceData) -> None:
-        # use total segmentator to extract lung segmentation
-        bash_command = ["TotalSegmentator"]
+        # use total segmentator to extract lung labels
+        bash_command  = ["TotalSegmentator"]
         bash_command += ["-i", in_data.abspath]
 
         tmp_dir = self.config.data.requestTempDir(label="lung-segment-processor")
-        segments_file = os.path.join(tmp_dir, f'segmentations.nii.gz')
-
-        # multi-label output (one nifti file containing all labels instead of one nifti file per label)
-        self.v("Generating multi-label output ('--ml')")
-        bash_command += ["-o", segments_file]
-        bash_command += ["--ml"]
+        bash_command += ["-o", tmp_dir]
 
         # fast mode
-        self.v("Running TotalSegmentator in default mode (1.5mm)")
-        self.v(">> run: ", " ".join(bash_command))
-
-        # run the model
-        self.subprocess(bash_command, text=True)
+        if self.use_fast_mode:
+            self.v("Running TotalSegmentator in fast mode ('--fast', 3mm)")
+            bash_command += ["--fast"]
+        else:
+            self.v("Running TotalSegmentator in default mode (1.5mm)")
 
         # Extract labels for left lung and right lung from total segmentator v1 output
-        left_lung_labels = [label for label, name in class_map["total"].items() if "left" in name and "lung" in name]
-        right_lung_labels = [label for label, name in class_map["total"].items() if "right" in name and "lung" in name]
+        left_lung_labels = [name for _, name in class_map["total"].items() if "left" in name and "lung" in name]
+        right_lung_labels = [name for _, name in class_map["total"].items() if "right" in name and "lung" in name]
 
-        segments_arr = sitk.GetArrayFromImage(sitk.ReadImage(segments_file))
-        lung_left = self.n_connected(self.mask_labels(left_lung_labels, segments_arr))
-        lung_right = self.n_connected(self.mask_labels(right_lung_labels, segments_arr))
-        op_data = np.zeros(segments_arr.shape)
+        if left_lung_labels or right_lung_labels:
+            self.v(f"Left lung labels: {left_lung_labels}")
+            self.v(f"Right lung labels: {right_lung_labels}")
+            bash_command += ["--roi_subset"]
+            bash_command.extend(left_lung_labels + right_lung_labels)
+
+        # run the model
+        self.v("Running",bash_command)
+        self.subprocess(bash_command, text=True)
+
+        left_label_files = [os.path.join(tmp_dir, f'{i}.nii.gz') for i in left_lung_labels]
+        right_label_files = [os.path.join(tmp_dir, f'{i}.nii.gz') for i in right_lung_labels]
+        lung_left = self.n_connected(self.combine_labels(left_label_files))
+        lung_right = self.n_connected(self.combine_labels(right_label_files))
+
+        op_data = np.zeros(lung_left.shape)
         op_data[lung_left > 0] = 1
         op_data[lung_right > 0] = 2
         ref = sitk.ReadImage(in_data.abspath)
