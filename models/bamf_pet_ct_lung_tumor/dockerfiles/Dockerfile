@@ -8,7 +8,8 @@ FROM mhubai/base:latest
 ENV SKLEARN_ALLOW_DEPRECATED_SKLEARN_PACKAGE_INSTALL=True
 
 # Install nnunet and totalsegmentator
-RUN pip3 install TotalSegmentator==1.5.7 nnunet==1.6.6
+RUN pip3 install TotalSegmentator==1.5.7 nnunet==1.6.6 \
+        dcm2niix==1.0.20220715
 
 # Clone the main branch of MHubAI/models
 ARG MHUB_MODELS_REPO
