@@ -19,6 +19,9 @@ modules:
     meta: 
       mod: '%Modality'
 
+  NiftiConverter:
+    engine: dcm2niix
+
   NNUnetRunnerV2:
     in_data: nifti:mod=ct
     nnunet_dataset: Dataset006_Liver

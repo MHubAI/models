@@ -13,8 +13,6 @@ from mhubio.core import Module, Instance, InstanceData
 import SimpleITK as sitk
 import numpy as np
 from skimage import measure
-from typing import Union
-from pathlib import Path
 
 
 #TODO remove this code once the segdb is updated with the below code
