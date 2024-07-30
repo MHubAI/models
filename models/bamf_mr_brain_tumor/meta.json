@@ -1,0 +1,206 @@
+{
+  "id": "",
+  "name": "bamf_mr_brain_tumor",
+  "title": "BAMF MR Brain Tumor",
+  "summary": {
+    "description": "An nnU-Net based model to segment brain tumors from CT scans",
+    "inputs": [
+      {
+        "label": "Input Image",
+        "description": "native (T1) MRI scan of a patient.",
+        "format": "DICOM",
+        "modality": "MRI",
+        "bodypartexamined": "Brain",
+        "slicethickness": "1mm",
+        "non-contrast": true,
+        "contrast": false
+      },
+      {
+        "label": "Input Image",
+        "description": "post-contrast T1-weighted MRI scan of a patient.",
+        "format": "DICOM",
+        "modality": "MRI",
+        "bodypartexamined": "Brain",
+        "slicethickness": "1mm",
+        "non-contrast": false,
+        "contrast": true
+      },
+      {
+        "label": "Input Image",
+        "description": "T2-weighted MRI scan of a patient.",
+        "format": "DICOM",
+        "modality": "MRI",
+        "bodypartexamined": "Brain",
+        "slicethickness": "1mm",
+        "non-contrast": true,
+        "contrast": false
+      },
+      {
+        "label": "Input Image",
+        "description": "T2 Fluid Attenuated Inversion Recovery (T2-FLAIR) MRI scan of a patient.",
+        "format": "DICOM",
+        "modality": "MRI",
+        "bodypartexamined": "Brain",
+        "slicethickness": "3mm",
+        "non-contrast": true,
+        "contrast": false
+      }
+    ],
+    "outputs": [
+      {
+        "label": "T1 Segmentation",
+        "type": "Segmentation",
+        "description": "Tumor Segmentation of T1 MRI scan",
+        "classes": [
+          "NECROSIS",
+          "EDEMA",
+          "ENHANCING"
+        ]
+      },
+      {
+        "label": "T1ce Segmentation",
+        "type": "Segmentation",
+        "description": "Tumor Segmentation of T1ce MRI scan",
+        "classes": [
+          "NECROSIS",
+          "EDEMA",
+          "ENHANCING"
+        ]
+      },
+      {
+        "label": "T2 Segmentation",
+        "type": "Segmentation",
+        "description": "Tumor Segmentation of T2 MRI scan",
+        "classes": [
+          "NECROSIS",
+          "EDEMA",
+          "ENHANCING"
+        ]
+      },
+      {
+        "label": "FLAIR Segmentation",
+        "type": "Segmentation",
+        "description": "Tumor Segmentation of FLAIR MRI scan",
+        "classes": [
+          "NECROSIS",
+          "EDEMA",
+          "ENHANCING"
+        ]
+      }
+    ],
+    "model": {
+      "architecture": "U-net",
+      "training": "supervised",
+      "cmpapproach": "3D"
+    },
+    "data": {
+      "training": {
+        "vol_samples": 1251
+      },
+      "evaluation": {
+        "vol_samples": 55
+      },
+      "public": true,
+      "external": true
+    }
+  },
+  "details": {
+    "name": "AIMI MR Brain Tumor",
+    "version": "1.0.0",
+    "devteam": "BAMF Health",
+    "authors": [
+      "Soni, Rahul",
+      "McCrumb, Diana",
+      "Murugesan, Gowtham Krishnan",
+      "Van Oss, Jeff"
+    ],
+    "type": "nnU-Net (U-Net structure, optimized by data-driven heuristics)",
+    "date": {
+      "code": "17.10.2023",
+      "weights": "28.08.2023",
+      "pub": "23.10.2023"
+    },
+    "cite": "Murugesan, Gowtham Krishnan, Diana McCrumb, Mariam Aboian, Tej Verma, Rahul Soni, Fatima Memon, and Jeff Van Oss. The AIMI Initiative: AI-Generated Annotations for Imaging Data Commons Collections. arXiv preprint arXiv:2310.14897 (2023).",
+    "license": {
+      "code": "MIT",
+      "weights": "CC BY-NC 4.0"
+    },
+    "publications": [
+      {
+        "title": "The AIMI Initiative: AI-Generated Annotations in IDC Collections",
+        "uri": "https://arxiv.org/abs/2310.14897"
+      }
+    ],
+    "github": "https://github.com/bamf-health/mhub-models/tree/bamf_mr_brain_tumor"
+  },
+  "info": {
+    "use": {
+      "title": "Intended Use",
+      "text": "This model is intended to perform tumor segmentation in Brain MRI scans. The model has been trained and tested on scans aquired during clinical care of patients, so it might not be suited for a healthy population. The generalization capabilities of the model on a range of ages, genders, and ethnicities are unknown. For detailed information on the training set design, please refer to reference section in the training section"
+    },
+    "analyses": {
+      "title": "Quantitative Analyses",
+      "text": "The model's performance was assessed using the Dice Coefficient and Normalized Surface Distance (NSD) with tolerance 7mm. The model was used to segment cases from the IDC collection UPENN-GBM [1]. Seven of those cases were reviewed and corrected by a board-certified radiologist and a non-expert. The analysis is published here [2]",
+      "tables": [
+        {
+          "label": "Label-wise metrics Dice score between AI derived and manually corrected annotations",
+          "entries": {
+            "Whole Tumor": "0.98±0.07",
+            "Enhancing Tumor": "0.95±0.13",
+            "Non enhancing Tumor": "0.97±0.08"
+          }
+        },
+        {
+          "label": "Label-wise metrics 95% Hausdorff Distance between AI derived and manually corrected annotations",
+          "entries": {
+            "Whole Tumor": "6.88±0.34",
+            "Enhancing Tumor": "6.57±0.24",
+            "Non enhancing Tumor": "0.42±1.05"
+          }
+        },
+        {
+          "label": "Label-wise metrics NSD score between AI derived and manually corrected annotations",
+          "entries": {
+            "Whole Tumor": "0.98±0.04",
+            "Enhancing Tumor": "0.99±0.03",
+            "Non enhancing Tumor": "0.97±0.09"
+          }
+        }
+      ],
+      "references": [
+        {
+          "label": "UPENN-GBM",
+          "uri": "https://www.cancerimagingarchive.net/collection/upenn-gbm/"
+        },
+        {
+          "label": "The AIMI Initiative: AI-Generated Annotations for Imaging Data Commons Collections",
+          "uri": "https://arxiv.org/abs/2310.14897"
+        }
+      ]
+    },
+    "evaluation": {
+      "title": "Evaluation Data",
+      "text": "The model was used to segment cases from the IDC [1] collection UPENN-GBM [1]. Approximately 55 cases were randomly selected to be reviewed and corrected by a board-certified radiologist. The model predictions, and radiologist corrections are published",
+      "references": [
+        {
+          "label": "Imaging Data Collections (IDC)",
+          "uri": "https://datacommons.cancer.gov/repository/imaging-data-commons"
+        },
+        {
+          "label": "UPENN-GBM",
+          "uri": "https://www.cancerimagingarchive.net/collection/upenn-gbm/"
+        }
+      ]
+    },
+    "training": {
+      "title": "Training Data",
+      "text": "The training dataset used from the BraTS21 challenge consists of 1,251 brain mpMRI scans along with segmentation annotations of tumorous regions. The 3D volumes were skull-stripped and resampled to 1 mm isotropic resolution, with dimensions of (240, 240, 155) voxels. For each example, four modalities were given: Fluid Attenuated Inversion Recovery (FLAIR), native (T1), post-contrast T1-weighted (T1Gd), and T2-weighted (T2). Annotations consisted of four classes: 1 for necrotic tumor core (NCR), 2 for peritumoral edematous tissue (ED), 4 for enhancing tumor (ET), and 0 for background (voxels that are not part of the tumor).",
+      "references": [
+        {
+          "label": "Brain Tumor Segmentation (BraTS)",
+          "uri": "http://braintumorsegmentation.org"
+        }
+      ]
+    }
+  }
+}

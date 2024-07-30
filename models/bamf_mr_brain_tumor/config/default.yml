@@ -35,6 +35,7 @@ modules:
 
   NiftiConverter:
     allow_multi_input: True
+    engine: dcm2niix
 
   DsegConverter:
     model_name: BAMF Brain tumor segmentation
