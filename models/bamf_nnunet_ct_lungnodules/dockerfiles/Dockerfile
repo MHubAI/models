@@ -12,7 +12,7 @@ RUN pip3 install --no-cache-dir nnunetv2==2.0
 
 # Clone the main branch of MHubAI/models
 ARG MHUB_MODELS_REPO
-RUN buildutils/import_mhub_model.sh bamf_ct_lung_nodule ${MHUB_MODELS_REPO}
+RUN buildutils/import_mhub_model.sh bamf_nnunet_ct_lungnodules ${MHUB_MODELS_REPO}
 
 # Pull weights into the container
 ENV WEIGHTS_DIR=/root/.nnunet/nnUNet_models/nnUNet/
@@ -28,4 +28,4 @@ ENV WEIGHTS_FOLDER=$WEIGHTS_DIR
 
 # Default run script
 ENTRYPOINT ["mhub.run"]
-CMD ["--config", "/app/models/bamf_ct_lung_nodule/config/default.yml"]
+CMD ["--config", "/app/models/bamf_nnunet_ct_lungnodules/config/default.yml"]

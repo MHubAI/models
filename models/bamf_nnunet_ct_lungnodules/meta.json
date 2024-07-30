@@ -1,6 +1,6 @@
 {
   "id": "",
-  "name": "bamf_nnunet_ct_lung",
+  "name": "bamf_nnunet_ct_lungnodules",
   "title": "AIMI CT Lung and Nodules",
   "summary": {
     "description": "An nnU-Net based model to segment Lung and Nodules (3mm-30mm) from CT scans",

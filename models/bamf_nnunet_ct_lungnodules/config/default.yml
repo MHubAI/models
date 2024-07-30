@@ -33,4 +33,4 @@ modules:
 
   DataOrganizer:
     targets:
-    - dicomseg-->[i:sid]/bamf_ct_lung_nodule.seg.dcm
+    - dicomseg-->[i:sid]/bamf_nnunet_ct_lungnodules.seg.dcm
