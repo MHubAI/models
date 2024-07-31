@@ -3,47 +3,43 @@ FROM mhubai/base:latest
 ENV DEBIAN_FRONTEND "noninteractive"
 ENV LANG            "en_GB.UTF-8"
 
-WORKDIR /tmp
+WORKDIR /app
+# 1. Install gcc-14 and build ants
 RUN apt-get update && apt-get install -y cmake make ninja-build git bzip2 flex manpages-dev g++ wget unzip file
 RUN wget https://github.com/gcc-mirror/gcc/archive/refs/tags/releases/gcc-11.4.0.zip \
     && unzip gcc-11.4.0.zip && cd gcc-releases-gcc-11.4.0 && ./contrib/download_prerequisites \
-    && mkdir /tmp/gcc-build
-WORKDIR /tmp/gcc-build
-RUN ../gcc-releases-gcc-11.4.0/configure -v --target=x86_64-linux-gnu --prefix=/usr/local/gcc-11.4.0 --enable-checking=release --enable-languages=c,c++ --disable-multilib --program-suffix=-11.4 \
+    && mkdir /app/gcc-build && cd /app/gcc-build \
+    && ../gcc-releases-gcc-11.4.0/configure -v --target=x86_64-linux-gnu --prefix=/usr/local/gcc-11.4.0 --enable-checking=release --enable-languages=c,c++ --disable-multilib --program-suffix=-11.4 \
     && make -j$(nproc) && make install-strip \
     && update-alternatives --install /usr/bin/gcc gcc /usr/local/gcc-11.4.0/bin/gcc-11.4 11 --slave /usr/bin/g++ g++ /usr/local/gcc-11.4.0/bin/g++-11.4 \
-    && rm -rf /tmp/gcc-*
+    && rm -rf /app/gcc-*
 
 ENV PATH=/usr/local/gcc-11.4.0/bin:$PATH
 ENV LD_LIBRARY_PATH="/usr/local/gcc-11.4.0/lib64:$LD_LIBRARY_PATH"
 
-RUN git clone https://github.com/ANTsX/ANTs.git /usr/local/src/ants
-
-WORKDIR /tmp/build
-RUN cmake \
-    -DBUILD_TESTING=ON \
+RUN git clone https://github.com/ANTsX/ANTs.git /usr/local/src/ants \
+    && mkdir /app/build && cd /app/build && cmake -DBUILD_TESTING=ON \
     -DRUN_LONG_TESTS=OFF \
     -DRUN_SHORT_TESTS=ON \
     -DBUILD_SHARED_LIBS=OFF \
     -DCMAKE_INSTALL_PREFIX=/opt/ants \
-    /usr/local/src/ants
-RUN cmake --build . --parallel
-WORKDIR /tmp/build/ANTS-build
-RUN cmake --build . --target test
-RUN cmake --install .
+    /usr/local/src/ants \
+    && cmake --build . --parallel \
+    && cd /app/build/ANTS-build && cmake --build . --target test \
+    && cmake --install . && rm -rf /app/build
 
-
-# Install freesurfer for synthstrip and mri_convert
+# 2. Install freesurfer for synthstrip and mri_convert
 COPY --from=freesurfer/synthstrip:1.5 /freesurfer/env/bin /freesurfer/env/bin
 COPY --from=freesurfer/synthstrip:1.5 /freesurfer/models /freesurfer/models
 
-# Install fsl
+# 3. Install fsl
 RUN wget https://fsl.fmrib.ox.ac.uk/fsldownloads/fslconda/releases/fslinstaller.py && \
     python3 ./fslinstaller.py -V 6.0.7.11 -d /usr/local/fsl/
 
 ENV PATH="/opt/ants/bin:$PATH:/freesurfer/env/bin:/usr/local/fsl/bin" \
 LD_LIBRARY_PATH="/opt/ants/lib:$LD_LIBRARY_PATH" FREESURFER_HOME="/freesurfer"
 
+# 3. Install nnunet
 # FIXME: set this environment variable as a shortcut to avoid nnunet crashing the build
 # by pulling sklearn instead of scikit-learn
 # N.B. this is a known issue:
@@ -51,17 +47,17 @@ LD_LIBRARY_PATH="/opt/ants/lib:$LD_LIBRARY_PATH" FREESURFER_HOME="/freesurfer"
 # https://github.com/MIC-DKFZ/nnUNet/pull/1209
 ENV SKLEARN_ALLOW_DEPRECATED_SKLEARN_PACKAGE_INSTALL=True
 
-# Install nnunet and surfa
-RUN pip3 install --no-cache-dir surfa==0.6
+# 4. Install nnunet and surfa
+RUN pip3 install --no-cache-dir torch surfa==0.6
 RUN apt-get update && apt-get install -y python3.9 python3-pip && apt-get clean  && rm -rf /var/lib/apt/lists/*
 RUN python3.9 -m pip install nnunetv2==2.4.1
 RUN apt-get update && apt-get install -y bc
 
 # Clone the main branch of MHubAI/models
-# ARG MHUB_MODELS_REPO
-# RUN buildutils/import_mhub_model.sh bamf_nnunet_mr_brain ${MHUB_MODELS_REPO}
+ARG MHUB_MODELS_REPO
+RUN buildutils/import_mhub_model.sh bamf_mr_brain_tumor ${MHUB_MODELS_REPO}
 
-# Pull nnUNet model weights into the container for Dataset009_Breast
+# Pull nnUNet model weights into the container
 ENV WEIGHTS_DIR=/root/.nnunet/nnUNet_models/
 RUN mkdir -p $WEIGHTS_DIR
 ENV WEIGHTS_FN=Dataset002_BRATS19.zip
@@ -73,7 +69,6 @@ RUN rm ${WEIGHTS_DIR}${WEIGHTS_FN}
 # specify nnunet specific environment variables
 ENV WEIGHTS_FOLDER=$WEIGHTS_DIR
 
-WORKDIR /app
 # Default run script
 ENTRYPOINT ["mhub.run"]
 CMD ["--config", "/app/models/bamf_mr_brain_tumor/config/default.yml"]
