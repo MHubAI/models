@@ -3,7 +3,6 @@ FROM mhubai/base:latest
 ENV DEBIAN_FRONTEND "noninteractive"
 ENV LANG            "en_GB.UTF-8"
 
-WORKDIR /app
 # 1. Install gcc-14 and build ants
 RUN apt-get update && apt-get install -y cmake make ninja-build git bzip2 flex manpages-dev g++ wget unzip file
 RUN wget https://github.com/gcc-mirror/gcc/archive/refs/tags/releases/gcc-11.4.0.zip \
