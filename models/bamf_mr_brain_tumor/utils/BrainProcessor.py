@@ -426,7 +426,7 @@ class BrainProcessor(Module):
         flair = in_flair_data.abspath
 
         output_dir = tempfile.mkdtemp()
-        self._setup(t1c, t1, t2, flair, output_dir)
+        self._setup(t1, t1c, t2, flair, output_dir)
         self.v("running forward preprocessing....")
         os.environ['nnUNet_results'] = os.environ['WEIGHTS_FOLDER']
         self.forward_preprocess(predict=True)
@@ -439,3 +439,4 @@ class BrainProcessor(Module):
             shutil.copyfile(self.reverse_2[1], out_t1_data.abspath)
             shutil.copyfile(self.reverse_2[2], out_t2_data.abspath)
             shutil.copyfile(self.reverse_2[3], out_flair_data.abspath)
+

@@ -1,5 +1,4 @@
-FROM mhubai/base:latest AS base
-FROM base AS builder
+FROM mhubai/base:latest
 
 ENV DEBIAN_FRONTEND "noninteractive"
 ENV LANG            "en_GB.UTF-8"
@@ -52,14 +51,15 @@ LD_LIBRARY_PATH="/opt/ants/lib:$LD_LIBRARY_PATH" FREESURFER_HOME="/freesurfer"
 # https://github.com/MIC-DKFZ/nnUNet/pull/1209
 ENV SKLEARN_ALLOW_DEPRECATED_SKLEARN_PACKAGE_INSTALL=True
 
-# Install nnunetv2 and surfa
-RUN pip3 install --no-cache-dir nnunetv2==2.0 surfa==0.6
-
-WORKDIR /app
+# Install nnunet and surfa
+RUN pip3 install --no-cache-dir surfa==0.6
+RUN apt-get update && apt-get install -y python3.9 python3-pip && apt-get clean  && rm -rf /var/lib/apt/lists/*
+RUN python3.9 -m pip install nnunetv2==2.4.1
+RUN apt-get update && apt-get install -y bc
 
 # Clone the main branch of MHubAI/models
-ARG MHUB_MODELS_REPO
-RUN buildutils/import_mhub_model.sh bamf_mr_brain_tumor ${MHUB_MODELS_REPO}
+# ARG MHUB_MODELS_REPO
+# RUN buildutils/import_mhub_model.sh bamf_nnunet_mr_brain ${MHUB_MODELS_REPO}
 
 # Pull nnUNet model weights into the container for Dataset009_Breast
 ENV WEIGHTS_DIR=/root/.nnunet/nnUNet_models/
@@ -73,6 +73,7 @@ RUN rm ${WEIGHTS_DIR}${WEIGHTS_FN}
 # specify nnunet specific environment variables
 ENV WEIGHTS_FOLDER=$WEIGHTS_DIR
 
+WORKDIR /app
 # Default run script
 ENTRYPOINT ["mhub.run"]
 CMD ["--config", "/app/models/bamf_mr_brain_tumor/config/default.yml"]
