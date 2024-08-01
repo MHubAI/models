@@ -27,16 +27,23 @@ RUN git clone https://github.com/ANTsX/ANTs.git /usr/local/src/ants \
     && cd /app/build/ANTS-build && cmake --build . --target test \
     && cmake --install . && rm -rf /app/build
 
-# 2. Install freesurfer for synthstrip and mri_convert
-COPY --from=freesurfer/synthstrip:1.5 /freesurfer/env/bin /freesurfer/env/bin
-COPY --from=freesurfer/synthstrip:1.5 /freesurfer/models /freesurfer/models
+# 2. Install mri_convert
+ENV FREESURFER_HOME="/freesurfer"
+RUN git clone https://github.com/freesurfer/freesurfer.git && cd freesurfer/mri_synthstrip \
+    git+https://github.com/freesurfer/surfa.git@0d83332351083b33c4da221e9d10a63a93ae7f52 \
+    && mkdir -p $FREESURFER_HOME/models/ \
+    && git remote add datasrc https://surfer.nmr.mgh.harvard.edu/pub/dist/freesurfer/repo/annex.git \
+    && apt-get update -y && apt-get install -y git-annex \
+    && git fetch datasrc && git-annex get . \
+    && cp mri_synthstrip $FREESURFER_HOME \
+    && cp synthstrip.*.pt $FREESURFER_HOME/models/
 
 # 3. Install fsl
 RUN wget https://fsl.fmrib.ox.ac.uk/fsldownloads/fslconda/releases/fslinstaller.py && \
-    python3 ./fslinstaller.py -V 6.0.7.11 -d /usr/local/fsl/
+    python3 ./fslinstaller.py -V 6.0.7.11 -d /usr/local/fsl/ && rm fslinstaller.py
 
-ENV PATH="/opt/ants/bin:$PATH:/freesurfer/env/bin:/usr/local/fsl/bin" \
-LD_LIBRARY_PATH="/opt/ants/lib:$LD_LIBRARY_PATH" FREESURFER_HOME="/freesurfer"
+ENV PATH="/opt/ants/bin:$PATH:/$FREESURFER_HOME:/usr/local/fsl/bin" \
+LD_LIBRARY_PATH="/opt/ants/lib:$LD_LIBRARY_PATH"
 
 # 3. Install nnunet
 # FIXME: set this environment variable as a shortcut to avoid nnunet crashing the build
