@@ -14,6 +14,7 @@ from typing import List, Dict, Any
 from pathlib import Path
 from mhubio.core import Module, Instance, InstanceDataCollection, InstanceData, DataType, FileType
 from mhubio.core.IO import IO
+import SimpleITK as sitk
 
 import os, subprocess, uuid
 
@@ -36,7 +37,7 @@ class InverseRegistrationRunner(Module):
     @IO.Inputs('in_seg_datas', the="data to be converted")
     @IO.Inputs('in_mat_datas', the="transformation matrix data")
     @IO.Inputs('in_registration_datas', the="registered data")
-    @IO.Outputs('out_datas', path=IO.C('converted_file_name'), dtype='nifti:task=inverse', data='in_registration_datas', bundle=IO.C('bundle_name'), auto_increment=True, the="converted data")
+    @IO.Outputs('out_datas', path=IO.C('converted_file_name'), dtype='nifti:task=inverse:roi=NECROSIS,EDEMA,ENHANCING', data='in_registration_datas', bundle=IO.C('bundle_name'), auto_increment=True, the="converted data")
     def task(self, instance: Instance, in_seg_datas : InstanceDataCollection, in_mat_datas: InstanceDataCollection, in_registration_datas: InstanceDataCollection,  out_datas: InstanceDataCollection, **kwargs) -> None:
 
         # some sanity checks
@@ -44,9 +45,6 @@ class InverseRegistrationRunner(Module):
         assert isinstance(out_datas, InstanceDataCollection)
         assert len(in_registration_datas) == len(out_datas)
 
-        self.v("InverseRegistrationRunner 1 len(in_registration_datas)",len(in_registration_datas))
-        self.v("InverseRegistrationRunner 2 len(in_mat_datas)",len(in_mat_datas))
-        self.v("InverseRegistrationRunner 3 len(in_seg_datas)",len(in_seg_datas))
         # filtered collection must not be empty
         if len(in_registration_datas) == 0:
             self.v(f"CONVERT ERROR: no data found in instance {str(instance)}.")
@@ -62,7 +60,8 @@ class InverseRegistrationRunner(Module):
 
             # check datatype 
             if in_data.type.ftype == FileType.NIFTI:                
-                reverse_transformation_matrix = os.path.join(process_dir, f'{str(uuid.uuid4())}_reverse.mat') 
+                reverse_transformation_matrix = os.path.join(process_dir, f'{str(uuid.uuid4())}_reverse.mat')
+                reverse_transformation_file = os.path.join(process_dir, f'{str(uuid.uuid4())}.nii.gz')
                 # Command to convert the transformation matrices
                 convert_command = [
                     "convert_xfm",
@@ -86,7 +85,7 @@ class InverseRegistrationRunner(Module):
                     "-ref",
                     str(in_data.abspath),
                     "-out",
-                    str(out_data.abspath),
+                    str(reverse_transformation_file),
                     "-init",
                     str(
                         reverse_transformation_matrix
@@ -100,6 +99,15 @@ class InverseRegistrationRunner(Module):
                     "-applyxfm",
                 ]
                 self.v("inverse transformation flirt...",cmd)
-                subprocess.run(cmd, check=True)                
+                subprocess.run(cmd, check=True)
+                # Load your image
+                image = sitk.ReadImage(reverse_transformation_file)
+
+                # Change the label from 4 to 3
+                label_map = {4: 3}
+                changed_image = sitk.ChangeLabel(image, changeMap=label_map)
+
+                # Add the converted data to the output collection
+                sitk.WriteImage(changed_image, out_data.abspath)
             else:
                 raise ValueError(f"CONVERT ERROR: unsupported file type {in_data.type.ftype}.")
