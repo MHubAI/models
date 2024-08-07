@@ -3,25 +3,61 @@ general:
   version: 1.0
   description: Default configuration for Bamf NNUnet Brain tumor segmentation on MR scans (dicom to dicom)
 
+segdb:
+    triplets:
+        T_EDEMA_MABNORMALITY:
+            code: 79654002
+            meaning: Edema
+            scheme_designator: SCT
+        T_NECROSIS_MABNORMALITY:
+            code: 6574001
+            meaning: Necrosis
+            scheme_designator: SCT
+        T_ENHANCING_MABNORMALITY:
+            code: C113842
+            meaning: Enhancing Lesion
+            scheme_designator: NCIt
+    segments:
+        EDEMA:
+            name: Edema
+            category: C_MORPHOLOGICALLY_ABNORMAL_STRUCTURE
+            type: T_EDEMA_MABNORMALITY
+            color: [140, 224, 228]
+        NECROSIS:
+            name: Necrosis
+            category: C_MORPHOLOGICALLY_ABNORMAL_STRUCTURE
+            type: T_EDEMA_MABNORMALITY
+            color: [216, 191, 216]
+        ENHANCING:
+            name: Enhancing Lesion
+            category: C_MORPHOLOGICALLY_ABNORMAL_STRUCTURE
+            type: T_ENHANCING_MABNORMALITY
+            color: [128, 174, 128]
+
 execute:
 - FileStructureImporter
 - NiftiConverter
-- BrainProcessor
-- DsegConverter
+- ReOrientationRunner
+- BiasCorrectionRunner
+- FLIRTRegistrationRunner
+- SkullStripRunner
+- StdRegistrationRunner
+- NNUnetRunnerV2
+- InverseStdRegistrationRunner
+- InverseRegistrationRunner
 - module: DsegConverter
   target_dicom: dicom:mod=mr:type=t1
-  source_segs: nifti:mod=seg:type=t1
+  source_segs: nifti:mod=mr:type=t1:task=inverse
 - module: DsegConverter
   target_dicom: dicom:mod=mr:type=t1ce
-  source_segs: nifti:mod=seg:type=t1ce
+  source_segs: nifti:mod=mr:type=t1ce:task=inverse
 - module: DsegConverter
   target_dicom: dicom:mod=mr:type=t2
-  source_segs: nifti:mod=seg:type=t2
+  source_segs: nifti:mod=mr:type=t2:task=inverse
 - module: DsegConverter
   target_dicom: dicom:mod=mr:type=flair
-  source_segs: nifti:mod=seg:type=flair
+  source_segs: nifti:mod=mr:type=flair:task=inverse
 - DataOrganizer
-
 
 modules:
   FileStructureImporter:
@@ -35,10 +71,45 @@ modules:
 
   NiftiConverter:
     allow_multi_input: True
+    out_datas: nifti:mod=mr:task=conversion
     engine: dcm2niix
 
+  ReOrientationRunner:
+    in_datas: nifti:mod=mr
+
+  BiasCorrectionRunner:
+    in_datas: nifti:mod=mr:task=reorientation
+
+  FLIRTRegistrationRunner:
+    in_datas: nifti:mod=mr:task=bias_corrected
+    reference_data: nifti:mod=mr:task=bias_corrected:type=t1ce
+
+  SkullStripRunner:
+    in_datas: nifti:mod=mr:task=registration
+
+  StdRegistrationRunner:
+    in_datas: nifti:mod=mr:task=skull_stripped
+
+  NNUnetRunnerV2:
+    in_t1_data: nifti:mod=mr:task=std_registration:type=t1
+    in_t1ce_data: nifti:mod=mr:task=std_registration:type=t1ce
+    in_t2_data: nifti:mod=mr:task=std_registration:type=t2
+    in_flair_data: nifti:mod=mr:task=std_registration:type=flair
+    nnunet_dataset: Dataset002_BRATS19
+    nnunet_config: 3d_fullres
+
+  InverseStdRegistrationRunner:
+    in_seg_data: nifti:mod=seg:model=nnunet:nnunet_dataset=Dataset002_BRATS19
+    in_mat_datas: txt:task=std_registration_transform_mat
+    in_registration_datas: nifti:mod=mr:task=registration
+
+  InverseRegistrationRunner:
+    in_seg_datas: nifti:mod=mr:task=std_inverse
+    in_mat_datas: txt:task=registration_transform_mat
+    in_registration_datas: nifti:mod=mr:task=bias_corrected
+
   DsegConverter:
-    model_name: BAMF Brain tumor segmentation
+    model_name: Bamf NNUnet Brain segmentation
     skip_empty_slices: True
 
   DataOrganizer:
