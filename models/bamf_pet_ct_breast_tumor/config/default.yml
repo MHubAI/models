@@ -5,7 +5,7 @@ general:
 
 execute:
 - FileStructureImporter
-- SitkNiftiConverter
+- NiftiConverter
 - Registration
 - NNUnetPETCTRunner
 - TotalSegmentatorMLRunner
@@ -21,9 +21,10 @@ modules:
       - $patientID/pt@dicom:mod=pt
     import_id: patientID
 
-  SitkNiftiConverter:    
+  NiftiConverter:
     in_datas: dicom:mod=pt|ct
     allow_multi_input: true
+    engine: dcm2niix
 
   NNUnetPETCTRunner:
     in_ct_data: nifti:mod=ct:registered=true

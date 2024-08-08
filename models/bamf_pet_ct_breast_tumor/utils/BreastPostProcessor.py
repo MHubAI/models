@@ -107,8 +107,8 @@ class BreastPostProcessor(Module):
         op_data = self.n_connected(op_data)
         op_img = sitk.GetImageFromArray(op_data)
         op_img.CopyInformation(ref)
-        tmp_dir = self.config.data.requestTempDir(label="breast-post-processor")
-        tmp_file = os.path.join(tmp_dir, f'final.nii.gz')
-        sitk.WriteImage(op_img, tmp_file)
+        # tmp_dir = self.config.data.requestTempDir(label="breast-post-processor")
+        # tmp_file = os.path.join(tmp_dir, f'final.nii.gz')
+        sitk.WriteImage(op_img, out_data.abspath)
 
-        shutil.copyfile(tmp_file, out_data.abspath)
+        # shutil.copyfile(tmp_file, out_data.abspath)
