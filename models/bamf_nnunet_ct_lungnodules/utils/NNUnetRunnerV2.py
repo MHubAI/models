@@ -90,9 +90,6 @@ class NNUnetRunnerV2(Module):
 
         if not self.use_tta:
             bash_command += ["--disable_tta"]
-        
-        if self.export_prob_maps:
-            bash_command += ["--save_probabilities"]
 
         self.v(f" > bash_command:     {bash_command}")
         # run command
