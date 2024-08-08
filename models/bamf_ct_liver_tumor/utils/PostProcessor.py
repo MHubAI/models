@@ -14,39 +14,6 @@ import SimpleITK as sitk
 import numpy as np
 from skimage import measure
 
-
-#TODO remove this code once the segdb is updated with the below code
-import yaml
-import segdb
-custom_seg_config = """
-segdb:
-    triplets:
-        T_LIVER_LESION:
-            code: C159516
-            meaning: Liver lesion
-            scheme_designator: NCIt
-    segments:
-        NEOPLASM_MALIGNANT:
-            name: Neoplasm Malignant
-            category: C_RADIOLOGIC_FINDING
-            type: T_LIVER_LESION
-            color: [255, 0, 0]
-"""
-parsed_config = yaml.safe_load(custom_seg_config)
-
-if 'segdb' in parsed_config:
-    if 'segments' in parsed_config['segdb'] and isinstance(parsed_config['segdb']['segments'], dict):
-        from segdb.classes.Segment import Segment
-        for seg_id, seg_data in parsed_config['segdb']['segments'].items():
-            print("added segment", seg_id, seg_data )
-            Segment.register(seg_id, **seg_data)
-
-    if 'triplets' in parsed_config['segdb'] and isinstance(parsed_config['segdb']['triplets'], dict):
-        from segdb.classes.Triplet import Triplet
-        for trp_id, trp_data in parsed_config['segdb']['triplets'].items():
-            print("added triplet", trp_id, trp_data )
-            Triplet.register(trp_id, overwrite=True, **trp_data)
-
 class PostProcessor(Module):
 
     def n_connected(self, img_data: np.ndarray) -> np.ndarray:

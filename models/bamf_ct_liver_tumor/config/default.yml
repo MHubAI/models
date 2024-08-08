@@ -37,4 +37,17 @@ modules:
 
   DataOrganizer:
     targets:
-    - dicomseg-->[i:sid]/bamf_ct_liver_tumor.seg.dcm    
+    - dicomseg-->[i:sid]/bamf_ct_liver_tumor.seg.dcm
+
+segdb:
+    triplets:
+        T_LIVER_LESION:
+            code: C159516
+            meaning: Liver lesion
+            scheme_designator: NCIt
+    segments:
+        NEOPLASM_MALIGNANT:
+            name: Neoplasm Malignant
+            category: C_RADIOLOGIC_FINDING
+            type: T_LIVER_LESION
+            color: [255, 0, 0]
