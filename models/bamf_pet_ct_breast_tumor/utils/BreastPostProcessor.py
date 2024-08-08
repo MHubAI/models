@@ -22,6 +22,21 @@ from mhubio.core import Module, Instance, InstanceData, InstanceDataCollection
 class BreastPostProcessor(Module):
 
     def bbox2_3D(self, img):
+        """
+        Compute the bounding box of a 3D binary image.
+
+        Args:
+            img (np.ndarray): A 3D binary image (numpy array) where the region of interest
+                              is non-zero (typically 1), and the background is 0.
+
+        Returns:
+            tuple: A tuple containing the minimum and maximum indices for each dimension (r, c, z)
+                   that define the bounding box:
+                   (rmin, rmax, cmin, cmax, zmin, zmax).
+                   r: rows (axis 0)
+                   c: columns (axis 1)
+                   z: depth/slices (axis 2)
+        """
         r = np.any(img, axis=(1, 2))
         c = np.any(img, axis=(0, 2))
         z = np.any(img, axis=(0, 1))
@@ -70,6 +85,8 @@ class BreastPostProcessor(Module):
              in_total_seg_data: InstanceData, out_data: InstanceData):
         """
         Perform postprocessing and writes simpleITK Image
+            1. Removes CT voxels where the value is zero.
+            2. Removes abdominal organs overlaying on tumor prediction.
         """
         tumor_seg_path = in_tumor_data.abspath
         total_seg_path = in_total_seg_data.abspath
@@ -107,8 +124,4 @@ class BreastPostProcessor(Module):
         op_data = self.n_connected(op_data)
         op_img = sitk.GetImageFromArray(op_data)
         op_img.CopyInformation(ref)
-        # tmp_dir = self.config.data.requestTempDir(label="breast-post-processor")
-        # tmp_file = os.path.join(tmp_dir, f'final.nii.gz')
         sitk.WriteImage(op_img, out_data.abspath)
-
-        # shutil.copyfile(tmp_file, out_data.abspath)
