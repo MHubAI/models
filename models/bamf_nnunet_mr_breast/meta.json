@@ -67,8 +67,8 @@
       },
       "publications": [
         {
-          "title": "The AIMI Initiative: AI-Generated Annotations in IDC Collections",
-          "uri": "https://arxiv.org/abs/2310.14897"
+          "title": "",
+          "uri": ""
         }
       ],
       "github": "https://github.com/bamf-health/aimi-breast-mr"
@@ -112,7 +112,7 @@
           },
           {
             "label": "Image segmentations produced by the AIMI Annotations initiative",
-            "uri": "https://zenodo.org/records/10009368"
+            "uri": "https://zenodo.org/records/13244892"
           }
         ]
       },
