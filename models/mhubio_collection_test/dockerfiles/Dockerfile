@@ -5,7 +5,7 @@ ARG MHUB_MODELS_REPO
 RUN buildutils/import_mhub_model.sh mhubio_collection_test ${MHUB_MODELS_REPO}
 
 # Setup additional mhubio collections
-RUN buildutils/import_mhubio_collection test_collection
+RUN buildutils/import_mhubio_collection.sh test_collection
 
 # Default run script
 ENTRYPOINT ["mhub.run"]
