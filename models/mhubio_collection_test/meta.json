@@ -1,0 +1,83 @@
+{
+  "id": "bfde04a6-99f3-4513-990d-294ad2eb67d9",
+  "name": "mhubio_collection_test",
+  "title": "MHUBIO Collection Test",
+  "summary": {
+      "description": "Testing some new MHub-IO features.",
+      "inputs": [
+          {
+              "label": "T2 input image",
+              "description": "The T2 axial sequence being one of the two input image",
+              "format": "DICOM",
+              "modality": "MR",
+              "bodypartexamined": "Prostate",
+              "slicethickness": "3 mm",
+              "non-contrast": true,
+              "contrast": false
+          }
+      ],
+      "outputs": [
+          {
+              "type": "Segmentation",
+              "classes": [
+                  "PROSTATE_TRANSITION_ZONE",
+                  "PROSTATE_PERIPHERAL_ZONE"
+              ]
+          }
+      ],
+      "model": {
+          "architecture": "U-net",
+          "training": "supervised",
+          "cmpapproach": "3D"
+      },
+      "data": {
+          "training": {
+              "vol_samples": 0
+          },
+          "evaluation": {
+              "vol_samples": 0
+          },
+          "public": false,
+          "external": false
+      }
+  },
+  "details": {
+      "name": "MHUBIO Collection Test",
+      "version": "1.0.0",
+      "devteam": "Leonard Nuernberg",
+      "type": "Python",
+      "date": {
+          "weights": "March 2022",
+          "code": "April 2022",
+          "pub": "September 2022"
+      },
+      "cite": "Leonard Nuernberg, MHUBIO Collection Test",
+      "license": {
+          "code": "MIT",
+          "weights": "CC BY-NC 4.0"
+      },
+      "publications": [
+      ],
+      "github": "https://github.com/LennyN95/mhubio-pathology",
+      "zenodo": "https://zenodo.org/"
+  },
+  "info": {
+      "use": {
+          "title": "Intended Use",
+          "text": "Test only."
+      },
+      "analyses": {
+          "title": "Quantitative Analyses",
+          "text": "Test only."
+      },
+      "evaluation": {
+          "title": "External Evaluation Data",
+          "text": "Test only."
+      },
+      "training": {
+          "title": "Training Data",
+          "text": "Test only."
+      }
+  },
+  "workflow": {}
+}

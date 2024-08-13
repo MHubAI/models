@@ -1,0 +1,19 @@
+general:
+  data_base_dir: /app/data
+  version: 1.0
+  description: testing an external mhubio collection
+
+execute:
+- DicomImporter
+- CollectionTestModule
+
+modules:
+  DicomImporter:
+    source_dir: input_data
+    import_dir: sorted_data
+    sort_data: true
+    meta: 
+      mod: '%Modality'
+
+  CollectionTestModule:
+    in_datas: dicom:mod=ct|mr|sm
