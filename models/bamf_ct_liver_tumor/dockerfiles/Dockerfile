@@ -8,7 +8,8 @@ FROM mhubai/base:latest
 ENV SKLEARN_ALLOW_DEPRECATED_SKLEARN_PACKAGE_INSTALL=True
 
 # Install nnunet and platipy
-RUN pip3 install --no-cache-dir nnunetv2==2.0
+RUN pip3 install --no-cache-dir nnunetv2==2.0 \
+        dcm2niix==1.0.20220715
 
 # Install updated segdb entries
 RUN pip uninstall segdb -y
