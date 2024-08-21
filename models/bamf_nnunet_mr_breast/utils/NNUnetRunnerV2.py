@@ -21,13 +21,11 @@ nnunet_dataset_name_regex = r"Dataset[0-9]{3}_[a-zA-Z0-9_]+"
 
 @IO.ConfigInput('in_data', 'nifti:mod=mr', the="input data to run nnunet on")
 @IO.Config('nnunet_dataset', str, None, the='nnunet dataset name')
-@IO.Config('nnunet_config', str, None, the='nnunet model name (2d, 3d_lowres, 3d_fullres, 3d_cascade_fullres)')
 @IO.Config('folds', int, None, the='number of folds to run nnunet on')
 @IO.Config('roi', str, None, the='roi or comma separated list of roi the nnunet segments')
 class NNUnetRunnerV2(Module):
 
     nnunet_dataset: str
-    nnunet_config: str
     input_data_type: DataType
     folds: int                          # TODO: support optional config attributes
     roi: str
@@ -40,7 +38,6 @@ class NNUnetRunnerV2(Module):
         # get the nnunet model to run
         self.v("Running nnUNet_predict.")
         self.v(f" > dataset:     {self.nnunet_dataset}")
-        self.v(f" > config:      {self.nnunet_config}")
         self.v(f" > input data:  {in_data.abspath}")
         self.v(f" > output data: {out_data.abspath}")
 
@@ -80,7 +77,7 @@ class NNUnetRunnerV2(Module):
         bash_command += ["-i", str(inp_dir)]
         bash_command += ["-o", str(out_dir)]
         bash_command += ["-d", self.nnunet_dataset]
-        bash_command += ["-c", self.nnunet_config]
+        bash_command += ["-c", "3d_fullres"]
         
         # add optional arguments
         if self.folds is not None:
@@ -91,9 +88,9 @@ class NNUnetRunnerV2(Module):
 
         # output meta
         meta = {
-            "model": "nnunet",
+            "model": "nnunet-v2",
             "nnunet_dataset": self.nnunet_dataset,
-            "nnunet_config": self.nnunet_config,
+            "nnunet_config": "3d_fullres",
             "roi": self.roi
         }
 
