@@ -92,10 +92,8 @@ class BreastPostProcessor(Module):
             tumor_seg = np.copy(tumor_seg),
             mr_path = in_mr_data.abspath
             )
-        process_dir = self.config.data.requestTempDir(label="nnunet-breast-processor")
-        process_file = os.path.join(process_dir, f'bamf_nnunet_mr_breast.nii.gz')
         sitk.WriteImage(
             output_seg,
-            process_file,
+            out_data.abspath,
         )
-        shutil.copyfile(process_file, out_data.abspath)
+

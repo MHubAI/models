@@ -10,7 +10,7 @@
           "description": "The MR scan of a patient.",
           "format": "DICOM",
           "modality": "MR",
-          "bodypartexamined": "BREAST,FGT,BREAST+TUMOR",
+          "bodypartexamined": "BREAST",
           "slicethickness": "2.5mm",
           "non-contrast": true,
           "contrast": false
@@ -20,11 +20,10 @@
         {
           "label": "Segmentation",
           "type": "Segmentation",
-          "description": "Segmentation for breast, fgt, and tumor",
+          "description": "Segmentation for breast, fgt, and breast carcinoma",
           "classes": [
-            "BREAST",
-            "FGT",
-            "BREAST+TUMOR"
+            "BREAST+FGT",
+            "BREAST+BREAST_CARCINOMA"
           ]
         }
       ],
