@@ -22,7 +22,8 @@
           "type": "Segmentation",
           "description": "Segmentation for breast, fgt, and breast carcinoma",
           "classes": [
-            "BREAST+FGT",
+            "BREAST",
+            "FGT",
             "BREAST+BREAST_CARCINOMA"
           ]
         }
