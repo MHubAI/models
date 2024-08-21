@@ -63,10 +63,7 @@ modules:
   FileStructureImporter:
     input_dir: 'input_data'
     structures:
-      - $patientID@instance/t1@dicom:mod=mr:type=t1
-      - $patientID/t1ce@dicom:mod=mr:type=t1ce
-      - $patientID/$type@dicom:mod=mr:type=t2
-      - $patientID/flair@dicom:mod=mr:type=flair
+      - $patientID@instance/$type@dicom:mod=mr
     import_id: patientID
 
   NiftiConverter:

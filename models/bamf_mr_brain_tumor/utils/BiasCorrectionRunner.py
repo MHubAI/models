@@ -61,7 +61,7 @@ class BiasCorrectionRunner(Module):
                 ]
                 self.v("running N4BiasFieldCorrection....", n4_correction_command)
                 # Run the N4 Bias Field Correction
-                subprocess.run(n4_correction_command, check=True, capture_output=True)
+                self.subprocess(n4_correction_command, check=True, capture_output=True)
 
             else:
                 raise ValueError(f"CONVERT ERROR: unsupported file type {in_data.type.ftype}.")

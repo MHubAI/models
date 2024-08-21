@@ -83,6 +83,6 @@ class FLIRTRegistrationRunner(Module):
                     self.degrees_of_freedom,  # 6 degrees of freedom for rigid registration
                 ]
                 self.v("running FLIRT....", cmd)
-                subprocess.run(cmd, check=True)
+                self.subprocess(cmd, check=True)
             else:
                 raise ValueError(f"CONVERT ERROR: unsupported file type {in_data.type.ftype}.")

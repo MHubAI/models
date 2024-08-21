@@ -73,7 +73,7 @@ class InverseRegistrationRunner(Module):
                 
                 try:
                     self.v("Converting transformation matrices...",convert_command)
-                    subprocess.run(convert_command, check=True)
+                    self.subprocess(convert_command, check=True)
                     self.v("Transformation matrices converted successfully.")
                 except subprocess.CalledProcessError as e:
                     self.v("Error converting transformation matrices:", e)

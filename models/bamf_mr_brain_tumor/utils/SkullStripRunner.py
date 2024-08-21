@@ -55,6 +55,6 @@ class SkullStripRunner(Module):
                     "-o",
                     str(out_data.abspath),
                 ]
-                subprocess.run(synth_cmd, check=True)
+                self.subprocess(synth_cmd, check=True)
             else:
                 raise ValueError(f"CONVERT ERROR: unsupported file type {in_data.type.ftype}.")

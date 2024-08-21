@@ -97,6 +97,6 @@ class InverseStdRegistrationRunner(Module):
                     "-applyxfm",
                 ]
                 self.v("inverse transformation flirt...",cmd)
-                subprocess.run(cmd, check=True)                
+                self.subprocess(cmd, check=True)
             else:
                 raise ValueError(f"CONVERT ERROR: unsupported file type {in_data.type.ftype}.")

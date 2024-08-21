@@ -59,17 +59,13 @@ class ReOrientationRunner(Module):
         for i, in_data in enumerate(in_datas):
             out_data = out_datas.get(i)
 
-            # check datatype 
-            if in_data.type.ftype == FileType.NIFTI:
-                # for nrrd files use plastimatch
-                self.find_fsl()
-                reorient_command = [
-                    str(self.fsl_path / "bin" / "fslreorient2std"),
-                    str(in_data.abspath),
-                    str(out_data.abspath),
-                    "-s",
-                ]
-                self.v("reorienting....", reorient_command)
-                subprocess.run(reorient_command, check=True)
-            else:
-                raise ValueError(f"CONVERT ERROR: unsupported file type {in_data.type.ftype}.")
+            # for nrrd files use plastimatch
+            self.find_fsl()
+            reorient_command = [
+                str(self.fsl_path / "bin" / "fslreorient2std"),
+                str(in_data.abspath),
+                str(out_data.abspath),
+                "-s",
+            ]
+            self.v("reorienting....", reorient_command)
+            self.subprocess(reorient_command, check=True)

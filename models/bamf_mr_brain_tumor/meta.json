@@ -30,7 +30,7 @@
         "description": "T2-weighted MRI scan of a patient.",
         "format": "DICOM",
         "modality": "MRI",
-        "bodypartexamined": "Brain",
+        "bodypartexamined": "BRAIN",
         "slicethickness": "1mm",
         "non-contrast": true,
         "contrast": false

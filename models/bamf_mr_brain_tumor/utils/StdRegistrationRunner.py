@@ -60,7 +60,7 @@ class StdRegistrationRunner(Module):
         for i, in_data in enumerate(in_datas):
             out_data = out_datas.get(i)
             out_mat_data = out_mat_datas.get(i)
-            reference_path = 'models/bamf_mr_brain_tumor/utils/templates/T1_brain.nii'
+            reference_path = 'models/bamf_mr_brain_tumor/src/templates/T1_brain.nii'
 
             # check datatype 
             if in_data.type.ftype == FileType.NIFTI:
@@ -78,6 +78,6 @@ class StdRegistrationRunner(Module):
                     "12", 
                 ]
                 self.v(f" > bash_command:     {cmd}")
-                subprocess.run(cmd, check=True)
+                self.subprocess(cmd, check=True)
             else:
                 raise ValueError(f"CONVERT ERROR: unsupported file type {in_data.type.ftype}.")
