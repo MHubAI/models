@@ -11,10 +11,6 @@ ENV SKLEARN_ALLOW_DEPRECATED_SKLEARN_PACKAGE_INSTALL=True
 RUN pip3 install --no-cache-dir nnunetv2==2.0 \
         dcm2niix==1.0.20220715
 
-# Install updated segdb entries
-RUN pip uninstall segdb -y
-RUN pip install git+https://github.com/MHubAI/segdb.git
-
 # Clone the main branch of MHubAI/models
 ARG MHUB_MODELS_REPO
 RUN buildutils/import_mhub_model.sh bamf_ct_liver_tumor ${MHUB_MODELS_REPO}

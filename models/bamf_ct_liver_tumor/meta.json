@@ -23,7 +23,7 @@
         "description": "Segmentation liver",
         "classes": [
           "LIVER",
-          "LIVER+TUMOR"
+          "LIVER+NEOPLASM_MALIGNANT"
         ]
       }
     ],
@@ -120,7 +120,7 @@
     },
     "training": {
       "title": "Training Data",
-      "text": "The training dataset consists of 210 CT liver and tumor annotations taken from LiTS dataset and additional organ annotation generated using TotalSegmentator",
+      "text": "CT images from the LiTS 2017 and Medical Decathlon datasets were used to train the nnU-Net model for liver and tumor segmentation. We utilized selected totalsegmentator outputs to develop anatomically informed model. The liver-CT model was trained to predict liver and liver tumors, as well as other abdominal organs including the duodenum, gallbladder, intestines, kidneys, lungs, pancreas, and spleen. ",
       "references": [
         {
           "label": "LiTS - Liver Tumor Segmentation Challenge",
@@ -128,7 +128,7 @@
         },
         {
           "label": "TotalSegmentator",
-          "uri": "https://zenodo.org/records/10047292"
+          "uri": "https://mhub.ai/models/totalsegmentator"
         }
       ]
     }
