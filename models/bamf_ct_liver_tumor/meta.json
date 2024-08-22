@@ -70,12 +70,12 @@
         "uri": "https://arxiv.org/abs/2310.14897"
       }
     ],
-    "github": "https://github.com/MHubAI/models"
+    "github": "https://github.com/bamf-health/aimi-liver-tumor-mr"
   },
   "info": {
     "use": {
       "title": "Intended Use",
-      "text": "This model is intended to perform liver and tumor segmentation in CT scans. The liver is a common site of primary (i.e. originating in the liver like hepatocellular carcinoma, HCC) or secondary (i.e. spreading to the liver like colorectal cancer) tumor development.The model has been trained and tested on scans aquired during clinical care of patients, so it might not be suited for a healthy population. The generalization capabilities of the model on a range of ages, genders, and ethnicities are unknown."
+      "text": "This model is intended to perform liver and tumor segmentation in CT scans. The liver is a common site of primary (i.e. originating in the liver like hepatocellular carcinoma, HCC) or secondary (i.e. spreading to the liver like colorectal cancer) tumor development."
     },
     "analyses": {
       "title": "Quantitative Analyses",
@@ -120,17 +120,25 @@
     },
     "training": {
       "title": "Training Data",
-      "text": "CT images from the LiTS 2017 and Medical Decathlon datasets were used to train the nnU-Net model for liver and tumor segmentation. We utilized selected totalsegmentator outputs to develop anatomically informed model. The liver-CT model was trained to predict liver and liver tumors, as well as other abdominal organs including the duodenum, gallbladder, intestines, kidneys, lungs, pancreas, and spleen. ",
+      "text": "131 CT images from the LiTS 2017 and 131 CT images from the Medical Segmentation Decathlon datasets were used to train the nnU-Net model for liver and tumor segmentation. We utilized selected totalsegmentator outputs to develop anatomically informed model. The liver-CT model was trained to predict liver and liver tumors, as well as other abdominal organs including the duodenum, gallbladder, intestines, kidneys, lungs, pancreas, and spleen. ",
       "references": [
         {
           "label": "LiTS - Liver Tumor Segmentation Challenge",
           "uri": "https://competitions.codalab.org/competitions/17094"
         },
         {
+          "label": "Medical Segmentation Decathlon",
+          "uri": "https://doi.org/10.1038/s41467-022-30695-9"
+        },
+        {
           "label": "TotalSegmentator",
           "uri": "https://mhub.ai/models/totalsegmentator"
         }
       ]
+    },
+    "limitations": {
+      "title": "Limitations",
+      "text": "The model has been trained and tested on scans acquired during clinical care of patients, so it might not be suited for a healthy population. The generalization capabilities of the model on a range of ages, genders, and ethnicities are unknown."
     }
   }
 }
