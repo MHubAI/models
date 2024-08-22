@@ -31,7 +31,7 @@ execute:
 - NiftiConverter
 - module: NNUnetRunnerV2
   nnunet_dataset: Dataset009_Breast
-  roi: BREAST,FGT
+  roi: BREAST,BREAST+FGT
 - module: NNUnetRunnerV2
   nnunet_dataset: Dataset011_Breast
   roi: BREAST+BREAST_CARCINOMA
