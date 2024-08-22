@@ -36,7 +36,7 @@ class NNUnetRunnerV2(Module):
     def task(self, instance: Instance, in_data: InstanceData, out_data: InstanceData) -> None:
         
         # get the nnunet model to run
-        self.v("Running nnUNet_predict.")
+        self.v("Running nnUNetv2_predict.")
         self.v(f" > dataset:     {self.nnunet_dataset}")
         self.v(f" > input data:  {in_data.abspath}")
         self.v(f" > output data: {out_data.abspath}")
