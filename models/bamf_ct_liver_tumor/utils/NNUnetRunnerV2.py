@@ -1,37 +1,28 @@
 """
 -------------------------------------------------
 MHub - NNU-Net Runner v2
-       Runner for pre-trained nnunet v2 models. 
+       Custom Runner for pre-trained nnunet v2 models.
 -------------------------------------------------
 
 -------------------------------------------------
-Author: Rahul Soni
-Email:  rahul.soni@bamfhealth.com
+Author: Jithendra kumar
+Email:  jithendra.kumar@bamfhealth.com
 -------------------------------------------------
 """
 
-
-from typing import List, Optional
-import os, subprocess, shutil
-import SimpleITK as sitk, numpy as np
+import os, shutil
 from mhubio.core import Module, Instance, InstanceData, DataType, FileType, IO
 
 
-nnunet_dataset_name_regex = r"Dataset[0-9]{3}_[a-zA-Z0-9_]+"
-
-@IO.ConfigInput('in_data', 'nifti:mod=mr', the="input data to run nnunet on")
+@IO.ConfigInput('in_data', 'nifti', the="input data to run nnunet on")
 @IO.Config('nnunet_dataset', str, None, the='nnunet dataset name')
 @IO.Config('nnunet_config', str, None, the='nnunet model name (2d, 3d_lowres, 3d_fullres, 3d_cascade_fullres)')
-@IO.Config('folds', int, None, the='number of folds to run nnunet on')
-@IO.Config('use_tta', bool, True, the='flag to enable test time augmentation')
 @IO.Config('roi', str, None, the='roi or comma separated list of roi the nnunet segments')
 class NNUnetRunnerV2(Module):
 
     nnunet_dataset: str
     nnunet_config: str
     input_data_type: DataType
-    folds: int                          # TODO: support optional config attributes
-    use_tta: bool
     roi: str
 
     @IO.Instance()
@@ -40,7 +31,7 @@ class NNUnetRunnerV2(Module):
     def task(self, instance: Instance, in_data: InstanceData, out_data: InstanceData) -> None:
         
         # get the nnunet model to run
-        self.v("Running nnUNet_predict.")
+        self.v("Running nnUNetv2_predict.")
         self.v(f" > dataset:     {self.nnunet_dataset}")
         self.v(f" > config:      {self.nnunet_config}")
         self.v(f" > input data:  {in_data.abspath}")
@@ -84,13 +75,6 @@ class NNUnetRunnerV2(Module):
         bash_command += ["-o", str(out_dir)]
         bash_command += ["-d", self.nnunet_dataset]
         bash_command += ["-c", self.nnunet_config]
-        
-        # add optional arguments
-        if self.folds is not None:
-            bash_command += ["-f", str(self.folds)]
-
-        if not self.use_tta:
-            bash_command += ["--disable_tta"]
 
         self.v(f" > bash_command:     {bash_command}")
         # run command

@@ -27,7 +27,6 @@ modules:
     nnunet_dataset: Dataset006_Liver
     nnunet_config: 3d_fullres
     roi: SPLEEN,KIDNEY,GALLBLADDER,DUODENUM,PANCREAS,SMALL_INTESTINE,LUNG,LIVER,LIVER+NEOPLASM_MALIGNANT
-    export_prob_maps: False
 
   DsegConverter:
     model_name: bamf_ct_liver_tumor
