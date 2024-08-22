@@ -6,9 +6,9 @@ general:
 segdb:
   triplets:
     T_BREAST_FGT_STRUCTURE:
-      code: C114467
-      meaning: Breast Fibroglandular Tissue
-      scheme_designator: NCIt
+      code: 1342375003
+      meaning: Structure of fibroglandular tissue of breast
+      scheme_designator: SCT
     T_BREAST_CARCINOMA_MASS:
       code: 4147007
       meaning: Mass
