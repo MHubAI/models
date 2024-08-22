@@ -3,7 +3,7 @@
   "name": "bamf_mr_brain_tumor",
   "title": "BAMF MR Brain Tumor",
   "summary": {
-    "description": "An nnU-Net based model to segment brain tumors from CT scans",
+    "description": "An nnU-Net based model to segment brain tumors using four MR modalities Fluid Attenuated Inversion Recovery (FLAIR), native (T1), post-contrast T1-weighted (T1Gd), and T2-weighted (T2)",
     "inputs": [
       {
         "label": "Input Image",
@@ -131,7 +131,7 @@
         "uri": "https://arxiv.org/abs/2310.14897"
       }
     ],
-    "github": "https://github.com/bamf-health/mhub-models/tree/bamf_mr_brain_tumor"
+    "github": "https://github.com/bamf-health/aimi-brain-mr"
   },
   "info": {
     "use": {

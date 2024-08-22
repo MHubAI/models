@@ -9,9 +9,7 @@ Email:  jithendra.kumar@bamfhealth.com
 -------------------------------------------------
 """
 
-from enum import Enum
-from typing import List, Dict, Any
-from pathlib import Path
+from typing import List
 from mhubio.core import Module, Instance, InstanceDataCollection, InstanceData, DataType, FileType
 from mhubio.core.IO import IO
 import SimpleITK as sitk
@@ -21,8 +19,6 @@ import os, subprocess, uuid
 @IO.ConfigInput('in_seg_datas', 'nifti', the="data to be converted")
 @IO.ConfigInput('in_mat_datas',  'txt', the="transformation matrix data")
 @IO.ConfigInput('in_registration_datas', 'nifti:mod=mr', the="registered data")
-@IO.Config('bundle_name', str, 'inverse_t1c_registration', the="bundle name converted data will be added to")
-@IO.Config('converted_file_name', str, '[filename].nii.gz', the='name of the converted file')
 class InverseRegistrationRunner(Module):
     """
     # Inverse registration using FLIRT
@@ -30,14 +26,13 @@ class InverseRegistrationRunner(Module):
     in_seg_datas: List[DataType]
     in_mat_datas: List[DataType]
     in_registration_datas: List[DataType]    
-    bundle_name: str                # TODO. make Optional[str] here and in decorator once supported
-    converted_file_name: str
 
     @IO.Instance()
     @IO.Inputs('in_seg_datas', the="data to be converted")
     @IO.Inputs('in_mat_datas', the="transformation matrix data")
     @IO.Inputs('in_registration_datas', the="registered data")
-    @IO.Outputs('out_datas', path=IO.C('converted_file_name'), dtype='nifti:task=inverse:roi=NECROSIS,EDEMA,ENHANCING', data='in_registration_datas', bundle=IO.C('bundle_name'), auto_increment=True, the="converted data")
+    @IO.Outputs('out_datas', path='[filename].nii.gz', dtype='nifti:task=inverse:roi=NECROSIS,EDEMA,ENHANCING',
+                data='in_registration_datas', bundle='inverse_t1c_registration', auto_increment=True, the="converted data")
     def task(self, instance: Instance, in_seg_datas : InstanceDataCollection, in_mat_datas: InstanceDataCollection, in_registration_datas: InstanceDataCollection,  out_datas: InstanceDataCollection, **kwargs) -> None:
 
         # some sanity checks
@@ -99,7 +94,7 @@ class InverseRegistrationRunner(Module):
                     "-applyxfm",
                 ]
                 self.v("inverse transformation flirt...",cmd)
-                subprocess.run(cmd, check=True)
+                self.subprocess(cmd, check=True)
                 # Load your image
                 image = sitk.ReadImage(reverse_transformation_file)
 

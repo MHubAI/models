@@ -92,8 +92,6 @@ modules:
     in_t1ce_data: nifti:mod=mr:task=std_registration:type=t1ce
     in_t2_data: nifti:mod=mr:task=std_registration:type=t2
     in_flair_data: nifti:mod=mr:task=std_registration:type=flair
-    nnunet_dataset: Dataset002_BRATS19
-    nnunet_config: 3d_fullres
 
   InverseStdRegistrationRunner:
     in_seg_data: nifti:mod=seg:model=nnunet:nnunet_dataset=Dataset002_BRATS19

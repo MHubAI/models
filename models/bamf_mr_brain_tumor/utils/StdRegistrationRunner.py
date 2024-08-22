@@ -19,23 +19,20 @@ from mhubio.core.IO import IO
 import os, subprocess
 
 @IO.ConfigInput('in_datas', 'nifti:mod=mr', the="target data that will be registered")
-@IO.Config('bundle_name', str, 'atlas_registration', the="bundle name converted data will be added to")
-@IO.Config('converted_file_name', str, '[filename].nii.gz', the='name of the converted file')
-@IO.Config('transformation_file_name', str, '[filename]_transform_mat.txt', the='name of the transformation matrix file')
 class StdRegistrationRunner(Module):
     """
     # Rigid registration using FLIRT
     """
     in_datas: List[DataType]
-    bundle_name: str                # TODO. make Optional[str] here and in decorator once supported
-    converted_file_name: str
-    transformation_file_name: str
 
     @IO.Instance()
     @IO.Inputs('in_datas', the="data to be converted")
-    @IO.Outputs('out_datas', path=IO.C('converted_file_name'), dtype='nifti:task=std_registration', data='in_datas', bundle=IO.C('bundle_name'), auto_increment=True, the="converted data")
-    @IO.Outputs('out_mat_datas', path=IO.C('transformation_file_name'), dtype='txt:task=std_registration_transform_mat', data='in_datas', bundle=IO.C('bundle_name'), auto_increment=True, the="transformation matrix data")
-    def task(self, instance: Instance, in_datas: InstanceDataCollection, out_datas: InstanceDataCollection, out_mat_datas: InstanceDataCollection, **kwargs) -> None:
+    @IO.Outputs('out_datas', path='[filename].nii.gz', dtype='nifti:task=std_registration',
+                data='in_datas', bundle='atlas_registration', auto_increment=True, the="converted data")
+    @IO.Outputs('out_mat_datas', path='[filename]_transform_mat.txt', dtype='txt:task=std_registration_transform_mat',
+                data='in_datas', bundle='atlas_registration', auto_increment=True, the="transformation matrix data")
+    def task(self, instance: Instance, in_datas: InstanceDataCollection, out_datas: InstanceDataCollection,
+             out_mat_datas: InstanceDataCollection, **kwargs) -> None:
         """
         12 Degrees of Freedom (Affine Registration)
         Description: Allows for translation, rotation, scaling, and shearing.
@@ -62,22 +59,18 @@ class StdRegistrationRunner(Module):
             out_mat_data = out_mat_datas.get(i)
             reference_path = 'models/bamf_mr_brain_tumor/src/templates/T1_brain.nii'
 
-            # check datatype 
-            if in_data.type.ftype == FileType.NIFTI:
-                cmd = [
-                    "flirt",
-                    "-in",
-                    str(in_data.abspath),
-                    "-ref",
-                    str(reference_path),
-                    "-out",
-                    str(out_data.abspath),
-                    "-omat",
-                    str(out_mat_data.abspath),  # Save the transformation matrix
-                    "-dof",
-                    "12", 
-                ]
-                self.v(f" > bash_command:     {cmd}")
-                self.subprocess(cmd, check=True)
-            else:
-                raise ValueError(f"CONVERT ERROR: unsupported file type {in_data.type.ftype}.")
+            cmd = [
+                "flirt",
+                "-in",
+                str(in_data.abspath),
+                "-ref",
+                str(reference_path),
+                "-out",
+                str(out_data.abspath),
+                "-omat",
+                str(out_mat_data.abspath),  # Save the transformation matrix
+                "-dof",
+                "12",
+            ]
+            self.v(f" > bash_command:     {cmd}")
+            self.subprocess(cmd, check=True)
