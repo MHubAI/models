@@ -37,7 +37,7 @@
         "vol_samples": 1299
       },
       "evaluation": {
-        "vol_samples": 9
+        "vol_samples": 114
       },
       "public": true,
       "external": true
@@ -70,20 +70,20 @@
             "uri": "https://arxiv.org/abs/2310.14897"
         }
     ],
-    "github": "https://github.com/MHubAI/models/tree/main/models/bamf_nnunet_ct_lung"
+    "github": "https://github.com/bamf-health/aimi-lung2-ct"
   },
   "info": {
     "use": {
       "title": "Intended Use",
-      "text": "This model is intended to perform lung and nodule segmentation in CT scans. The model has been trained and tested on scans aquired during clinical care of patients, so it might not be suited for a healthy population. The generalization capabilities of the model on a range of ages, genders, and ethnicities are unknown."
+      "text": "The lung and nodule segmentation model processes thoracic CT scans to identify and delineate lung structures and nodules. It aids in lung cancer screening and diagnostic support by automating nodule detection, thus improving efficiency and consistency. "
     },
     "analyses": {
       "title": "Quantitative Analyses",
-      "text": "The model's performance was assessed using the Dice Coefficient, Hausdorff distance and NSD"
+      "text": "The model's performance was assessed using the Dice Coefficient, Hausdorff distance and NSD. Source radiological images from publicly available NCI IDC collections were filtered to match the modality and region requirements. To ensure the quality of AI-generated annotations, 10% of these annotations were evaluated by radiologists. "
     },
     "evaluation": {
       "title": "Evaluation Data",
-      "text": "Quantitative metrics between AI and Radiologists annotations. The model was used to segment cases 1157 from the QIN LUNG CT [1], SPIE-AAPM Lung CT Challenge [2] and NLST [3] collection. 112 of those cases were randomly selected to be reviewed and corrected by a board-certified radiologist.",
+      "text": "Quantitative metrics between AI and Radiologists annotations. The model was used to segment cases 1157 from the QIN LUNG CT [1], SPIE-AAPM Lung CT Challenge [2] and NLST [3] collection. 114 of those cases were randomly selected to be reviewed and corrected by a board-certified radiologist.",
       "tables": [
         {
           "label": "Dice Score",
@@ -125,7 +125,7 @@
     },
     "training": {
       "title": "Training Data",
-      "text": "",
+      "text": "416 CT cases from NSCLC-Radiomics [2] and 883 CT cases from DICOM-LIDC-IDRI-Nodules [1] were used to train the model. Annotations for the lung regions in the training dataset were generated utilizing Totalsegmentator[3]"
       "references": [
         {
           "label": "DICOM-LIDC-IDRI-Nodules",
@@ -134,8 +134,16 @@
         {
           "label": "NSCLC-Radiomics",
           "uri": "https://www.cancerimagingarchive.net/collection/nsclc-radiomics/"
+        },
+        {
+          "label": "Totalsegmentator",
+          "uri": "https://mhub.ai/models/totalsegmentator"
         }
       ]
+    },
+    "limitations": {
+      "title": "Limitations",
+      "text": "The model has been trained and tested on scans aquired during clinical care of patients, so it might not be suited for a healthy population. The generalization capabilities of the model on a range of ages, genders, and ethnicities are unknown.",
     }
   }
 }
