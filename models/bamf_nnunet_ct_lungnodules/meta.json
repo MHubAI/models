@@ -75,7 +75,7 @@
   "info": {
     "use": {
       "title": "Intended Use",
-      "text": "The lung and nodule segmentation model processes thoracic CT scans to identify and delineate lung structures and nodules. It aids in lung cancer screening and diagnostic support by automating nodule detection, thus improving efficiency and consistency. "
+      "text": "This model is designed for analyzing thoracic CT scans to segment lung structures and nodules. It requires input images from CT scans, which are processed using deep learning methods like U-Net. The model identifies and delineates lung regions and nodules, assisting in lung cancer screening and diagnostics. "
     },
     "analyses": {
       "title": "Quantitative Analyses",
@@ -143,7 +143,7 @@
     },
     "limitations": {
       "title": "Limitations",
-      "text": "The model has been trained and tested on scans aquired during clinical care of patients, so it might not be suited for a healthy population. The generalization capabilities of the model on a range of ages, genders, and ethnicities are unknown.",
+      "text": "The model has been trained and tested on scans acquired during clinical care of patients, so it might not be suited for a healthy population. The generalization capabilities of the model on a range of ages, genders, and ethnicities are unknown."
     }
   }
 }
