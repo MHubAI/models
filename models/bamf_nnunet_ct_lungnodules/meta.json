@@ -125,7 +125,7 @@
     },
     "training": {
       "title": "Training Data",
-      "text": "416 CT cases from NSCLC-Radiomics [2] and 883 CT cases from DICOM-LIDC-IDRI-Nodules [1] were used to train the model. Annotations for the lung regions in the training dataset were generated utilizing Totalsegmentator[3]"
+      "text": "416 CT cases from NSCLC-Radiomics [2] and 883 CT cases from DICOM-LIDC-IDRI-Nodules [1] were used to train the model. Annotations for the lung regions in the training dataset were generated utilizing Totalsegmentator[3]",
       "references": [
         {
           "label": "DICOM-LIDC-IDRI-Nodules",
