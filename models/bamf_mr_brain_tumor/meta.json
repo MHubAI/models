@@ -10,7 +10,7 @@
         "description": "native (T1) MRI scan of a patient.",
         "format": "DICOM",
         "modality": "MRI",
-        "bodypartexamined": "Brain",
+        "bodypartexamined": "BRAIN",
         "slicethickness": "1mm",
         "non-contrast": true,
         "contrast": false
@@ -20,7 +20,7 @@
         "description": "post-contrast T1-weighted MRI scan of a patient.",
         "format": "DICOM",
         "modality": "MRI",
-        "bodypartexamined": "Brain",
+        "bodypartexamined": "BRAIN",
         "slicethickness": "1mm",
         "non-contrast": false,
         "contrast": true
@@ -40,8 +40,8 @@
         "description": "T2 Fluid Attenuated Inversion Recovery (T2-FLAIR) MRI scan of a patient.",
         "format": "DICOM",
         "modality": "MRI",
-        "bodypartexamined": "Brain",
-        "slicethickness": "3mm",
+        "bodypartexamined": "BRAIN",
+        "slicethickness": "1mm",
         "non-contrast": true,
         "contrast": false
       }
@@ -136,7 +136,7 @@
   "info": {
     "use": {
       "title": "Intended Use",
-      "text": "To perform tumor segmentation in Brain MRI scans, you need four MRI modalities—T1-weighted, T1 with contrast enhancement (T1ce), T2-weighted, and FLAIR—each providing critical information about brain anatomy and tumor characteristics. The data should be organized in an input directory with subfolders for each modality, containing the respective DICOM files. The model processes these inputs to produce three segmentation maps for necrosis, edema, and enhancing tumor regions. These outputs are vital for clinical applications like treatment planning, monitoring tumor progression, and prognosis, as well as for research projects focused on developing new algorithms, identifying imaging biomarkers, and integrating automated segmentation into clinical workflows"
+      "text": "To perform tumor segmentation in Brain MRI scans, you need four MRI modalities—T1-weighted, T1 with contrast enhancement (T1ce), T2-weighted, and FLAIR—each providing critical information about brain anatomy and tumor characteristics. The data should be organized in separated directories per instance (e.g., named by a unique sample or patient identifyer) with one subfolders for each of the four input modalites, containing the respective DICOM files (namely t1, t1ce, t2, and fair). The model processes these inputs to produce three segmentation maps for necrosis, edema, and enhancing tumor regions. These outputs are vital for clinical applications like treatment planning, monitoring tumor progression, and prognosis, as well as for research projects focused on developing new algorithms, identifying imaging biomarkers, and integrating automated segmentation into clinical workflows"
     },
     "analyses": {
       "title": "Quantitative Analyses",
