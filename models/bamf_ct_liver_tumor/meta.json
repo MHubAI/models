@@ -23,7 +23,7 @@
         "description": "Segmentation liver",
         "classes": [
           "LIVER",
-          "LIVER+NEOPLASM_MALIGNANT"
+          "LIVER+NEOPLASM"
         ]
       }
     ],

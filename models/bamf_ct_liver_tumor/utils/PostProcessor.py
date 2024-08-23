@@ -48,7 +48,7 @@ class PostProcessor(Module):
 
     @IO.Instance()
     @IO.Input('in_data', 'nifti:mod=seg:model=nnunet', the='input segmentations')
-    @IO.Output('out_data', 'bamf_processed.nii.gz', 'nifti:mod=seg:processor=bamf:roi=LIVER,LIVER+NEOPLASM_MALIGNANT', data='in_data', the="filtered Liver and tumor segmentation")
+    @IO.Output('out_data', 'bamf_processed.nii.gz', 'nifti:mod=seg:processor=bamf:roi=LIVER,LIVER+NEOPLASM', data='in_data', the="filtered Liver and tumor segmentation")
     def task(self, instance: Instance, in_data: InstanceData, out_data: InstanceData) -> None:
 
         # Log bamf runner info

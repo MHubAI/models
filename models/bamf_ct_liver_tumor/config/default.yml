@@ -24,9 +24,6 @@ modules:
 
   NNUnetRunnerV2:
     in_data: nifti:mod=ct
-    nnunet_dataset: Dataset006_Liver
-    nnunet_config: 3d_fullres
-    roi: SPLEEN,KIDNEY,GALLBLADDER,DUODENUM,PANCREAS,SMALL_INTESTINE,LUNG,LIVER,LIVER+NEOPLASM_MALIGNANT
 
   DsegConverter:
     model_name: bamf_ct_liver_tumor
@@ -37,16 +34,3 @@ modules:
   DataOrganizer:
     targets:
     - dicomseg-->[i:sid]/bamf_ct_liver_tumor.seg.dcm
-
-segdb:
-    triplets:
-        T_LIVER_LESION:
-            code: C159516
-            meaning: Liver lesion
-            scheme_designator: NCIt
-    segments:
-        NEOPLASM_MALIGNANT:
-            name: Neoplasm Malignant
-            category: C_RADIOLOGIC_FINDING
-            type: T_LIVER_LESION
-            color: [255, 0, 0]
