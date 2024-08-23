@@ -54,7 +54,7 @@
         "classes": [
           "NECROSIS",
           "EDEMA",
-          "ENHANCING"
+          "ENHANCING_LESION"
         ]
       },
       {
@@ -64,7 +64,7 @@
         "classes": [
           "NECROSIS",
           "EDEMA",
-          "ENHANCING"
+          "ENHANCING_LESION"
         ]
       },
       {
@@ -74,7 +74,7 @@
         "classes": [
           "NECROSIS",
           "EDEMA",
-          "ENHANCING"
+          "ENHANCING_LESION"
         ]
       },
       {
@@ -84,7 +84,7 @@
         "classes": [
           "NECROSIS",
           "EDEMA",
-          "ENHANCING"
+          "ENHANCING_LESION"
         ]
       }
     ],
@@ -98,7 +98,7 @@
         "vol_samples": 1251
       },
       "evaluation": {
-        "vol_samples": 55
+        "vol_samples": 45
       },
       "public": true,
       "external": true
@@ -136,11 +136,11 @@
   "info": {
     "use": {
       "title": "Intended Use",
-      "text": "This model is intended to perform tumor segmentation in Brain MRI scans. The model has been trained and tested on scans aquired during clinical care of patients, so it might not be suited for a healthy population. The generalization capabilities of the model on a range of ages, genders, and ethnicities are unknown. For detailed information on the training set design, please refer to reference section in the training section"
+      "text": "To perform tumor segmentation in Brain MRI scans, you need four MRI modalities—T1-weighted, T1 with contrast enhancement (T1ce), T2-weighted, and FLAIR—each providing critical information about brain anatomy and tumor characteristics. The data should be organized in an input directory with subfolders for each modality, containing the respective DICOM files. The model processes these inputs to produce three segmentation maps for necrosis, edema, and enhancing tumor regions. These outputs are vital for clinical applications like treatment planning, monitoring tumor progression, and prognosis, as well as for research projects focused on developing new algorithms, identifying imaging biomarkers, and integrating automated segmentation into clinical workflows"
     },
     "analyses": {
       "title": "Quantitative Analyses",
-      "text": "The model's performance was assessed using the Dice Coefficient and Normalized Surface Distance (NSD) with tolerance 7mm. The model was used to segment cases from the IDC collection UPENN-GBM [1]. Seven of those cases were reviewed and corrected by a board-certified radiologist and a non-expert. The analysis is published here [2]",
+      "text": "The model's performance was assessed using the Dice Coefficient and Normalized Surface Distance (NSD) with tolerance 7mm. The analysis is published here [2]",
       "tables": [
         {
           "label": "Label-wise metrics Dice score between AI derived and manually corrected annotations",
@@ -180,7 +180,7 @@
     },
     "evaluation": {
       "title": "Evaluation Data",
-      "text": "The model was used to segment cases from the IDC [1] collection UPENN-GBM [1]. Approximately 55 cases were randomly selected to be reviewed and corrected by a board-certified radiologist. The model predictions, and radiologist corrections are published",
+      "text": "The model was used to 541 segment cases from the IDC [1] collection UPENN-GBM [1]. Approximately 10% of these annotations, 45 cases were randomly selected to be reviewed and corrected by a board-certified radiologist. Quality metrics such as Dice coefficient, normalized surface distance (NSD), and detection accuracy were reported",
       "references": [
         {
           "label": "Imaging Data Collections (IDC)",
