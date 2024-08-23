@@ -3,37 +3,6 @@ general:
   version: 1.0
   description: Default configuration for Bamf NNUnet Brain tumor segmentation on MR scans (dicom to dicom)
 
-segdb:
-    triplets:
-        T_EDEMA_MABNORMALITY:
-            code: 79654002
-            meaning: Edema
-            scheme_designator: SCT
-        T_NECROSIS_MABNORMALITY:
-            code: 6574001
-            meaning: Necrosis
-            scheme_designator: SCT
-        T_ENHANCING_MABNORMALITY:
-            code: C113842
-            meaning: Enhancing Lesion
-            scheme_designator: NCIt
-    segments:
-        EDEMA:
-            name: Edema
-            category: C_MORPHOLOGICALLY_ABNORMAL_STRUCTURE
-            type: T_EDEMA_MABNORMALITY
-            color: [140, 224, 228]
-        NECROSIS:
-            name: Necrosis
-            category: C_MORPHOLOGICALLY_ABNORMAL_STRUCTURE
-            type: T_EDEMA_MABNORMALITY
-            color: [216, 191, 216]
-        ENHANCING:
-            name: Enhancing Lesion
-            category: C_MORPHOLOGICALLY_ABNORMAL_STRUCTURE
-            type: T_ENHANCING_MABNORMALITY
-            color: [128, 174, 128]
-
 execute:
 - FileStructureImporter
 - NiftiConverter
@@ -63,7 +32,10 @@ modules:
   FileStructureImporter:
     input_dir: 'input_data'
     structures:
-      - $patientID@instance/$type@dicom:mod=mr
+      - $patientID@instance/t1@dicom:mod=mr:type=t1
+      - $patientID/t1ce@dicom:mod=mr:type=t1ce
+      - $patientID/$type@dicom:mod=mr:type=t2
+      - $patientID/flair@dicom:mod=mr:type=flair
     import_id: patientID
 
   NiftiConverter:
