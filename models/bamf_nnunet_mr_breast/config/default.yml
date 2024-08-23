@@ -3,35 +3,12 @@ general:
   version: 1.0
   description: Default configuration for Bamf NNUnet Breast and tumor segmentation on MR scans (dicom to dicom)
 
-segdb:
-  triplets:
-    T_BREAST_FGT_STRUCTURE:
-      code: 1342375003
-      meaning: Structure of fibroglandular tissue of breast
-      scheme_designator: SCT
-    T_BREAST_CARCINOMA_MASS:
-      code: 4147007
-      meaning: Mass
-      scheme_designator: SCT
-  segments:
-    FGT:
-      name: FGT
-      category: C_RADIOLOGIC_FINDING
-      type: T_BREAST_FGT_STRUCTURE
-      color: [128, 174, 128]
-    BREAST_CARCINOMA:
-      name: Breast_Carcinoma
-      category: C_MORPHOLOGICALLY_ABNORMAL_STRUCTURE
-      type: T_BREAST_CARCINOMA_MASS
-      modifier: M_RIGHT_AND_LEFT
-      color: [144, 238, 144]
-
 execute:
 - DicomImporter
 - NiftiConverter
 - module: NNUnetRunnerV2
   nnunet_dataset: Dataset009_Breast
-  roi: BREAST,BREAST+FGT
+  roi: BREAST,BREAST+BREAST_FIBROGLANDULAR_TISSUE
 - module: NNUnetRunnerV2
   nnunet_dataset: Dataset011_Breast
   roi: BREAST+BREAST_CARCINOMA
