@@ -24,7 +24,8 @@ class NNUnetRunnerV2(Module):
     @IO.Instance()
     @IO.Input("in_data", the="input data to run nnunet on")
     @IO.Output("out_data", 'VOLUME_001.nii.gz',
-               'nifti:mod=seg:model=nnunet:roi=SPLEEN,KIDNEY,GALLBLADDER,DUODENUM,PANCREAS,SMALL_INTESTINE,LUNG,LIVER,LIVER+NEOPLASM',
+               'nifti:mod=seg:model=nnunet:nnunet_dataset=Dataset006_Liver:nnunet_config=3d_fullres:'
+               'roi=SPLEEN,KIDNEY,GALLBLADDER,DUODENUM,PANCREAS,SMALL_INTESTINE,LUNG,LIVER,LIVER+NEOPLASM',
                data='in_data', the="output data from nnunet")
     def task(self, instance: Instance, in_data: InstanceData, out_data: InstanceData) -> None:
         
