@@ -18,6 +18,8 @@ from mhubio.core.IO import IO
 
 import os, subprocess
 
+REFERENCE_PATH = Path(__file__).parent.parent / "src" / "templates" / "T1_brain.nii"
+
 @IO.ConfigInput('in_datas', 'nifti:mod=mr', the="target data that will be registered")
 class StdRegistrationRunner(Module):
     """
@@ -57,14 +59,13 @@ class StdRegistrationRunner(Module):
         for i, in_data in enumerate(in_datas):
             out_data = out_datas.get(i)
             out_mat_data = out_mat_datas.get(i)
-            reference_path = 'models/bamf_mr_brain_tumor/src/templates/T1_brain.nii'
 
             cmd = [
                 "flirt",
                 "-in",
                 str(in_data.abspath),
                 "-ref",
-                str(reference_path),
+                str(REFERENCE_PATH),
                 "-out",
                 str(out_data.abspath),
                 "-omat",

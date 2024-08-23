@@ -63,11 +63,9 @@ class NNUnetRunnerV2(Module):
         out_dir = self.config.data.requestTempDir(label="nnunet-model-out")
         os.environ['nnUNet_results'] = out_dir
 
-        # symlink nnunet input folder to the input data with python
         # create symlink in python
-        # NOTE: this is a workaround for the nnunet bash script that expects the input data to be in a specific folder
-        #       structure. This is not the case for the mhub data structure. So we create a symlink to the input data
-        #       in the nnunet input folder structure.
+        # NOTE: this is a workaround for the nnunet bash script that expects the model data to be in a output folder
+        #       structure. This is not the case for the mhub data structure.
         os.symlink(os.path.join(os.environ['WEIGHTS_FOLDER'], self.nnunet_dataset), os.path.join(out_dir, self.nnunet_dataset))
 
         # construct nnunet inference command

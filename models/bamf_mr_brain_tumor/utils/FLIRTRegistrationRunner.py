@@ -14,8 +14,6 @@ from pathlib import Path
 from mhubio.core import Module, Instance, InstanceDataCollection, InstanceData, DataType, FileType
 from mhubio.core.IO import IO
 
-REFERENCE_PATH = Path(__file__).parent.parent / "src" / "templates" / "T1_brain.nii"
-
 @IO.ConfigInput('in_datas', 'nifti:mod=mr', the="target data that will be registered")
 @IO.ConfigInput('reference_data', 'nifti:mod=mr', the="reference data all segmentations register to")
 @IO.Config('degrees_of_freedom', str, '6', the='degrees of freedom for registration')
@@ -57,10 +55,7 @@ class FLIRTRegistrationRunner(Module):
             out_data = out_datas.get(i)
             out_mat_data = out_mat_datas.get(i)
 
-            if reference_data is None:
-                reference_path = REFERENCE_PATH
-            else:
-                reference_path = reference_data.abspath
+            reference_path = reference_data.abspath
 
             cmd = [
                 "flirt",
