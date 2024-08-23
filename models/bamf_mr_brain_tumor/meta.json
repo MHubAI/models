@@ -180,7 +180,7 @@
     },
     "evaluation": {
       "title": "Evaluation Data",
-      "text": "The model was used to 541 segment cases from the IDC [1] collection UPENN-GBM [1]. Approximately 10% of these annotations, 45 cases were randomly selected to be reviewed and corrected by a board-certified radiologist. Quality metrics such as Dice coefficient, normalized surface distance (NSD), and detection accuracy were reported",
+      "text": "The model was used to segment 541 cases from the IDC [1] collection UPENN-GBM [1]. Approximately 10% of these annotations, 45 cases were randomly selected to be reviewed and corrected by a board-certified radiologist. Quality metrics such as Dice coefficient, normalized surface distance (NSD), and detection accuracy were reported",
       "references": [
         {
           "label": "Imaging Data Collections (IDC)",
@@ -201,6 +201,10 @@
           "uri": "http://braintumorsegmentation.org"
         }
       ]
+    },
+    "limitations": {
+      "title": "Limitations",
+      "text": "The model has been trained and tested on scans acquired during clinical care of patients, so it might not be suited for a healthy population. The generalization capabilities of the model on a range of ages, genders, and ethnicities are unknown."
     }
   }
 }
