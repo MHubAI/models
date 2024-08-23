@@ -11,7 +11,7 @@
         "format": "DICOM",
         "modality": "CT",
         "bodypartexamined": "LUNG",
-        "slicethickness": "10mm",
+        "slicethickness": "3mm",
         "non-contrast": true,
         "contrast": false
       }
