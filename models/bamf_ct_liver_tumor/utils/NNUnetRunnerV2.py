@@ -15,19 +15,17 @@ from mhubio.core import Module, Instance, InstanceData, DataType, FileType, IO
 
 
 @IO.ConfigInput('in_data', 'nifti', the="input data to run nnunet on")
-@IO.Config('nnunet_dataset', str, None, the='nnunet dataset name')
-@IO.Config('nnunet_config', str, None, the='nnunet model name (2d, 3d_lowres, 3d_fullres, 3d_cascade_fullres)')
-@IO.Config('roi', str, None, the='roi or comma separated list of roi the nnunet segments')
 class NNUnetRunnerV2(Module):
 
-    nnunet_dataset: str
-    nnunet_config: str
+    nnunet_dataset: str = 'Dataset006_Liver'
+    nnunet_config: str = '3d_fullres'
     input_data_type: DataType
-    roi: str
 
     @IO.Instance()
     @IO.Input("in_data", the="input data to run nnunet on")
-    @IO.Output("out_data", 'VOLUME_001.nii.gz', 'nifti:mod=seg:model=nnunet', data='in_data', the="output data from nnunet")
+    @IO.Output("out_data", 'VOLUME_001.nii.gz',
+               'nifti:mod=seg:model=nnunet:roi=SPLEEN,KIDNEY,GALLBLADDER,DUODENUM,PANCREAS,SMALL_INTESTINE,LUNG,LIVER,LIVER+NEOPLASM',
+               data='in_data', the="output data from nnunet")
     def task(self, instance: Instance, in_data: InstanceData, out_data: InstanceData) -> None:
         
         # get the nnunet model to run
@@ -56,18 +54,11 @@ class NNUnetRunnerV2(Module):
         out_dir = self.config.data.requestTempDir(label="nnunet-model-out")
         os.environ['nnUNet_results'] = out_dir
 
-        # symlink nnunet input folder to the input data with python
         # create symlink in python
-        # NOTE: this is a workaround for the nnunet bash script that expects the input data to be in a specific folder
-        #       structure. This is not the case for the mhub data structure. So we create a symlink to the input data
+        # NOTE: this is a workaround for the nnunet bash script that expects the model files to be in a output folder
+        #       This is not the case for the mhub data structure. So we create a symlink to the input data
         #       in the nnunet input folder structure.
-        # os.symlink(os.environ['WEIGHTS_FOLDER'], os.path.join(out_dir, 'nnUNet'))
         os.symlink(os.path.join(os.environ['WEIGHTS_FOLDER'], self.nnunet_dataset), os.path.join(out_dir, self.nnunet_dataset))
-        
-        # NOTE: instead of running from commandline this could also be done in a pythonic way:
-        #       `nnUNet/nnunet/inference/predict.py` - but it would require
-        #       to set manually all the arguments that the user is not intended
-        #       to fiddle with; so stick with the bash executable
 
         # construct nnunet inference command
         bash_command  = ["nnUNetv2_predict"]
@@ -80,20 +71,9 @@ class NNUnetRunnerV2(Module):
         # run command
         self.subprocess(bash_command, text=True)
 
-        # output meta
-        meta = {
-            "model": "nnunet",
-            "nnunet_dataset": self.nnunet_dataset,
-            "nnunet_config": self.nnunet_config,
-            "roi": self.roi
-        }
-
         # get output data
         out_file = f'VOLUME_001.nii.gz'
         out_path = os.path.join(out_dir, out_file)
 
         # copy output data to instance
         shutil.copyfile(out_path, out_data.abspath)
-
-        # update meta dynamically
-        out_data.type.meta += meta
