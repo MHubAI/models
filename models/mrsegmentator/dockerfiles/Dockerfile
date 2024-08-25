@@ -10,7 +10,7 @@ ARG MHUB_MODELS_REPO
 RUN buildutils/import_mhub_model.sh mrsegmentator ${MHUB_MODELS_REPO}
 
 # Install MRSegmentator
-RUN python3.9 -m pip install --no-cache-dir mrsegmentator
+RUN python3.9 -m pip install --no-cache-dir mrsegmentator==1.2
 
 # Execute mrsegmentator once to download the weights, this will fail to run but download regardless
 RUN touch .temp_image.nii.gz
