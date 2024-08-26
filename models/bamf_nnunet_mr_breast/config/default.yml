@@ -32,7 +32,7 @@ modules:
     in_tumor_data: nifti:mod=seg:nnunet_task=Dataset011_Breast
 
   DsegConverter:
-    model_name: Bamf NNUnet MR Breast and tumor
+    model_name: BAMF Breast and Tumor AI Segmentation
     target_dicom: dicom:mod=mr
     source_segs: nifti:mod=seg:processor=bamf
     skip_empty_slices: True
