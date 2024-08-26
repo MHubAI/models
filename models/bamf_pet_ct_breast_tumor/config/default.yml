@@ -41,7 +41,7 @@ modules:
 
   DsegConverter:
     source_segs: nifti:mod=seg:processor=bamf
-    model_name: BAMF Breast FDG Tumor Segmentation
+    model_name: BAMF Breast and Tumor AI Segmentation
     target_dicom: dicom:mod=pt
     skip_empty_slices: True
 
