@@ -26,7 +26,7 @@ modules:
     in_data: nifti:mod=ct
 
   DsegConverter:
-    model_name: bamf_nnunet_ct_lungnodules
+    model_name: BAMF Lung and Lung Nodule AI Segmentation
     target_dicom: dicom:mod=ct
     source_segs: nifti:mod=seg:processor=bamf
     skip_empty_slices: True
