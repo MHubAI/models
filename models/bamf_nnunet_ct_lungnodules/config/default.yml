@@ -19,11 +19,14 @@ modules:
     meta: 
       mod: '%Modality'
 
+  NiftiConverter:
+    engine: dcm2niix
+
   NNUnetRunnerV2:
     in_data: nifti:mod=ct
 
   DsegConverter:
-    model_name: bamf_ct_lung_nodule
+    model_name: bamf_nnunet_ct_lungnodules
     target_dicom: dicom:mod=ct
     source_segs: nifti:mod=seg:processor=bamf
     skip_empty_slices: True
