@@ -1,0 +1,151 @@
+{
+  "id": "7e3ea0d1-182e-4dff-a5ed-84977d822760",
+  "name": "gc_autopet_fpr",
+  "title": "Second place in AutoPET challenge: False Positive Reduction Network",
+  "summary": {
+    "description": "This algorithm segments tumor lesions in whole-body FDG-PET/CT. To prevent over-segmenting tumor regions due to high-uptake organs or inflammations, the model uses a false positive reduction network. First a self-supervised pre-trained global segmentation module coarsely delineates the candidate tumor regions using a self-supervised pre-trained encoder. The candidate tumor regions are then refined by removing false positives via a local refinement module.",
+    "inputs": [
+      {
+        "label": "FDG-PET image",
+        "description": "Positron Emission Tomography (PET) image with fluorodeoxyglucose (FDG) tracer",
+        "format": "DICOM",
+        "modality": "PT",
+        "bodypartexamined": "WHOLEBODY",
+        "slicethickness": "3mm",
+        "non-contrast": false,
+        "contrast": false
+      },
+      {
+        "label": "CT image",
+        "description": "Computed Tomography (CT) image after contrast administration",
+        "format": "DICOM",
+        "modality": "CT",
+        "bodypartexamined": "WHOLEBODY",
+        "slicethickness": "3mm",
+        "non-contrast": false,
+        "contrast": true
+      }
+    ],
+    "outputs": [
+      {
+        "type": "Segmentation",
+        "description": "Binary tumor lesion segmentation for the input FDG-PET/CT images.",
+        "classes":
+        ["BACKGROUND", "NEOPLASM_MALIGNANT_PRIMARY"]
+      }
+    ],
+    "model": {
+      "architecture": "An ensemble of two nnUNets",
+      "training": "supervised",
+      "cmpapproach": "3D"
+    },
+    "data": {
+      "training": {
+        "vol_samples": 1014
+      },
+      "evaluation": {
+        "vol_samples": 150
+      },
+      "public": false,
+      "external": false
+    }
+  },
+  "details": {
+    "name": "False Positive Reduction Network",
+    "version": "0.1.0",
+    "devteam": "Yige Peng et al.",
+    "type": "Segmentation",
+    "date": {
+      "weights": "2022-09-14",
+      "code": "2022-09-19",
+      "pub": "2022-09-16"
+    },
+    "cite": "Y. Peng, J. Kim, D. Feng and L. Bi, 'Automatic Tumor Segmentation via False Positive Reduction Network for Whole-Body Multi-Modal PET/CT Images', In arXiv:2209.07705, doi: 10.48550/arXiv:2209.07705.",
+    "license": {
+      "code": "MIT",
+      "weights": "MIT"
+    },
+    "publications": [
+      {
+        "title": "Automatic Tumor Segmentation via False Positive Reduction Network for Whole-Body Multi-Modal PET/CT Images",
+        "uri": "https://arxiv.org/abs/2209.07705"
+      }
+    ],
+    "github": "https://github.com/YigePeng/AutoPET_False_Positive_Reduction",
+    "zenodo": "",
+    "colab": "",
+    "slicer": false
+  },
+  "info": {
+    "use": {
+      "title": "Intended use",
+      "text": "This model is intended to be used with both a whole-body FDG-PET scan as well as a whole-body CT scan. The input images need to be roughly aligned as only resampling is used to map the CT to the PET scan. The algorithm is available upon request on Grand Challenge [1] and was the runner-up of the AutoPET challenge [2].",
+      "references": [
+        {
+          "label": "The AutoPET algorithm on grand-challenge",
+          "uri": "https://grand-challenge.org/algorithms/multi_stage_hybrid_cnn_13/"
+        },
+        {
+          "label": "AutoPET challenge details",
+          "uri": "https://autopet.grand-challenge.org/"
+        }
+      ],
+      "tables": []
+    },
+    "analyses": {
+      "title": "Evaluation",
+      "text": "The segmentation performance was evaluated as part of the AutoPET challenge using three metrics. The Dice score is calculated to measure the correct overlap between predicted lesion segmentation and ground truth. A metric for false positives and false negatives are calculated by measuring their volume. These metrics are assessed on an independent private test set of 150 studies.",
+      "references": [
+        {
+          "label": "AutoPET algorithm evaluation results on grand-challenge (Team BDAV)",
+          "uri": "https://autopet.grand-challenge.org/final-leaderboard/"
+        }
+      ],
+      "tables": [
+        {
+          "label": "Evaluation results on the AutoPET testing cohort of 150 cases.",
+          "entries":
+          {
+            "DICE": "0.6208",
+            "False Negative": "0.7518",
+            "False Positive": "3.6111"
+          }
+        }
+      ]
+    },
+    "evaluation": {
+      "title": "Evaluation data",
+      "text": "The test set consists of a private dataset of 150 FDG-PET/CT image pairs, of which 100 studies originate from the University Hospital Tübingen, and 50 studies from the University Hospital of the LMU in Munich.",
+      "references": [
+        {
+          "label": "AutoPET challenge dataset information",
+          "uri": "https://autopet.grand-challenge.org/Dataset/"
+        }
+      ],
+      "tables": []
+    },
+    "training": {
+      "title": "Training data",
+      "text": "Training data consists of 1014 studies acquired at the University Hospital Tübingen and is made publicly available on TCIA as DICOM, NiFTI and HDF5 files [1]. The data is available under restricted access upon submission of a data request agreement. For training details see the associated paper.",
+      "references": [
+        {
+          "label": "A whole-body FDG-PET/CT dataset with manually annotated tumor lesions (FDG-PET-CT-Lesions)",
+          "uri": "https://doi.org/10.7937/gkr0-xv29"
+        }
+      ],
+      "tables": []
+    },
+    "ethics": {
+      "title": "",
+      "text": "",
+      "references": [],
+      "tables": []
+    },
+    "limitations": {
+      "title": "Limitations",
+      "text": "This algorithm was developed for research purposes only. ",
+      "references": [],
+      "tables": []
+    }
+  }
+}

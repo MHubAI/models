@@ -1,4 +1,4 @@
-from typing import List, Union
+from typing import List, Union, TypedDict, Optional
 from enum import Enum
 import requests, os
 import json
@@ -13,6 +13,11 @@ class DocuRef(Enum):
     CONFIG = "https://github.com/MHubAI/documentation/blob/main/documentation/mhubio/the_mhubio_config_file.md"
     MHUBIO_MODULES = "https://github.com/MHubAI/documentation/blob/main/documentation/mhubio/mhubio_modules.md"
     MODEL_META_JSON = "https://github.com/MHubAI/documentation/blob/main/documentation/mhub_models/model_json.md"
+
+class MhubIOCollection(TypedDict):
+    name: str
+    repo: Optional[str]
+    branch: Optional[str]
 
 class MHubComplianceError(Exception):
     """Raised when a model is not compliant with MHub standards"""
@@ -143,6 +148,7 @@ def validateDockerfile(base: str, model_name: str):
     # some status variables from parsing the dockerfile
     dockerfile_defines_arg_mhub_models_repo = False
     dockerfile_contains_mhubio_import = False
+    dockerfile_mhubio_collections: List[MhubIOCollection] = []
 
     # check that dockerfile contains no ADD or COPY commands
     # We also don't allow changing the WORKDIR which is set to /app in the base and must be consistent across all models
@@ -167,6 +173,21 @@ def validateDockerfile(base: str, model_name: str):
 
         if line == f"RUN buildutils/import_mhub_model.sh {model_name} ${{MHUB_MODELS_REPO}}":
            dockerfile_contains_mhubio_import = True
+           
+        if line.startswith("RUN buildutils/import_mhubio_collection.sh"):
+            # parse the collection import
+            parts = line.split(" ")
+            
+            # a collection name must be specified, repo url and branch are optional (but not permitted in a later check)
+            if len(parts) < 3:
+                raise MHubComplianceError(f"Collection import does not contain enough arguments: {line}", DocuRef.DOCKERFILE)
+            
+            # append to collections list
+            dockerfile_mhubio_collections.append({
+                "name": parts[2],
+                "repo": parts[3] if len(parts) > 3 else None,
+                "branch": parts[4] if len(parts) > 4 else None
+            })
 
     # check if the dockerfile contains the required ARG MHUB_MODELS_REPO and model import
     if not dockerfile_defines_arg_mhub_models_repo:
@@ -174,6 +195,23 @@ def validateDockerfile(base: str, model_name: str):
     
     if not dockerfile_contains_mhubio_import:
         raise MHubComplianceError(f"Dockerfile does not contain the required mhubio import command: 'RUN buildutils/import_mhub_model.sh {model_name} ${{MHUB_MODELS_REPO}}'.", DocuRef.DOCKERFILE)
+    
+    # in case the model contains any mhubio-collection imports, check that they all are imported by theri name since custom imports are not allowed
+    #  and also check that the model name is registered under base/collections.json
+    if len(dockerfile_mhubio_collections) > 0:
+
+        # load all registered officially suported collections
+        with open(os.path.join('base', 'collections.json'), "r") as f:
+            mhubio_collections = json.load(f)
+            
+        # check that all collections are registered
+        for collection in dockerfile_mhubio_collections:
+            if not collection["name"] in mhubio_collections:
+                raise MHubComplianceError(f"Collection '{collection['name']}' is unknown. We only allow official collections.", DocuRef.DOCKERFILE)
+
+            # check that the collection is imported by its name
+            if collection["repo"] is not None or collection["branch"] is not None:
+                raise MHubComplianceError(f"Collection '{collection['name']}' is not imported by its name.", DocuRef.DOCKERFILE)
 
     # check that the entrypoint of the dockerfile matches
     #  ENTRYPOINT ["mhub.run"]  |  ENTRYPOINT ["python", "-m", "mhubio.run"]
