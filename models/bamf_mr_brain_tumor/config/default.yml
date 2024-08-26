@@ -76,7 +76,7 @@ modules:
     in_registration_datas: nifti:mod=mr:task=bias_corrected
 
   DsegConverter:
-    model_name: Bamf NNUnet Brain segmentation
+    model_name: BAMF Brain Tumor AI Segmentation
     skip_empty_slices: True
 
   DataOrganizer:
