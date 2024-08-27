@@ -1,0 +1,22 @@
+general:
+  data_base_dir: /app/data
+  version: 1.0
+  description: WSI background tissue segmentation algorithm (tiff:sm to mha:seg)
+
+execute:
+- FileStructureImporter
+- WSIBackgroundSegmentationRunner
+- DataOrganizer
+
+modules:
+  FileStructureImporter:
+    input_dir: input_data
+    structures:
+      - $sid@instance/test.tiff@tiff:mod=sm
+    import_id: sid
+
+  DataOrganizer:
+    target_dir: output_data
+    require_data_confirmation: true
+    targets:
+      - tiff:mod=seg-->[i:sid]/wsi_background_segmentation.tiff
