@@ -1,0 +1,39 @@
+general:
+  data_base_dir: /app/data
+  version: 1.0
+  description: AutoPET False Positive Reduction nnUNet algorithm (dicom to dicom)
+
+execute:
+- FileStructureImporter
+- NiftiConverter
+- FDGPETCTResampleProcessor
+- AutoPETRunner
+- DsegConverter
+- DataOrganizer
+
+modules:
+  FileStructureImporter:
+    input_dir: 'input_data'
+    structures:
+      - $sid@instance/ct@dicom:mod=ct
+      - $sid/pet@dicom:mod=pt
+    import_id: sid
+
+  NiftiConverter:
+    engine: plastimatch
+    allow_multi_input: true
+    converted_file_name: '[basename].nii.gz'
+    in_datas: dicom:mod=ct|pt
+
+  DsegConverter:
+    model_name: GCAutoPETfpr
+    target_dicom: dicom:mod=pt
+    source_segs: mha:mod=seg:roi=*
+    skip_empty_slices: True
+    segment_id_meta_key: roi
+    body_part_examined: WHOLEBODY
+
+  DataOrganizer:
+    targets:
+      - mha:mod=seg-->[i:sid]/autopet_fpr_tumor_segmentation.mha
+      - dicomseg:mod=seg-->[i:sid]/autopet_fpr_tumor_segmentation.seg.dcm

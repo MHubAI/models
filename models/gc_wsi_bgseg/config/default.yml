@@ -1,0 +1,24 @@
+general:
+  data_base_dir: /app/data
+  version: 1.0
+  description: WSI background tissue segmentation algorithm (dicom:sm to tiff:seg)
+
+execute:
+- DicomImporter
+- TiffConverter
+- WSIBackgroundSegmentationRunner
+- DataOrganizer
+
+modules:
+  DicomImporter:
+    source_dir: input_data
+    import_dir: sorted_data
+    sort_data: True
+    meta:
+      mod: "%Modality"
+
+  DataOrganizer:
+    target_dir: output_data
+    require_data_confirmation: true
+    targets:
+      - tiff:mod=seg-->[i:sid]/gc_wsi_bgseg.tiff
