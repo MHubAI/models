@@ -71,4 +71,4 @@ class FLIRTRegistrationRunner(Module):
                 self.degrees_of_freedom,  # 6 degrees of freedom for rigid registration
             ]
             self.v("running FLIRT....", cmd)
-            self.subprocess(cmd, check=True)
+            self.subprocess(cmd, text=True)

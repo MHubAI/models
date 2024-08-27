@@ -67,7 +67,7 @@ class InverseRegistrationRunner(Module):
 
             try:
                 self.v("Converting transformation matrices...",convert_command)
-                self.subprocess(convert_command, check=True)
+                self.subprocess(convert_command, text=True)
                 self.v("Transformation matrices converted successfully.")
             except subprocess.CalledProcessError as e:
                 self.v("Error converting transformation matrices:", e)
@@ -93,7 +93,7 @@ class InverseRegistrationRunner(Module):
                 "-applyxfm",
             ]
             self.v("inverse transformation flirt...",cmd)
-            self.subprocess(cmd, check=True)
+            self.subprocess(cmd, text=True)
             # Load your image
             image = sitk.ReadImage(reverse_transformation_file)
 

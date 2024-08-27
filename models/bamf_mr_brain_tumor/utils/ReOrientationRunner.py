@@ -61,4 +61,4 @@ class ReOrientationRunner(Module):
                 "-s",
             ]
             self.v("reorienting....", reorient_command)
-            self.subprocess(reorient_command, check=True)
+            self.subprocess(reorient_command, text=True)

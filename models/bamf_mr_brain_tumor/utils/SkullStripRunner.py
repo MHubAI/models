@@ -48,4 +48,4 @@ class SkullStripRunner(Module):
                 "-o",
                 str(out_data.abspath),
             ]
-            self.subprocess(synth_cmd, check=True)
+            self.subprocess(synth_cmd, text=True)

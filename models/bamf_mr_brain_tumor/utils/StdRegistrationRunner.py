@@ -74,4 +74,4 @@ class StdRegistrationRunner(Module):
                 "12",
             ]
             self.v(f" > bash_command:     {cmd}")
-            self.subprocess(cmd, check=True)
+            self.subprocess(cmd, text=True)
