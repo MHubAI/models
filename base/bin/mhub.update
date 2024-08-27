@@ -1,0 +1,4 @@
+#!/bin/bash
+PYTHON=$(which python3)
+$PYTHON -m pip uninstall -y mhubio segdb
+$PYTHON -m pip install git+https://github.com/MHubAI/mhubio.git git+https://github.com/MHubAI/segdb.git

@@ -1,0 +1,21 @@
+general:
+  data_base_dir: /app/data
+  version: 1.0
+  description: Sort DICOM files into a structured directory
+
+execute:
+ - DicomImporter
+ - DataOrganizer
+
+modules:
+  DicomImporter:
+    source_dir: input_data/dicom
+  #   import_dir: output_data/dicom
+  #   sort_data: true
+  #   import_data: false
+  #   merge: false
+  #   structure: '%SeriesInstanceUID/%SOPInstanceUID.dcm'
+
+  DataOrganizer:
+    targets:
+    - dicom-->dicom/[i:sid]
