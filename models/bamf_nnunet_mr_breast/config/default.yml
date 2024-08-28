@@ -8,7 +8,7 @@ execute:
 - NiftiConverter
 - module: NNUnetRunnerV2
   nnunet_dataset: Dataset009_Breast
-  roi: BREAST,BREAST+BREAST_FIBROGLANDULAR_TISSUE
+  roi: BREAST,BREAST_FIBROGLANDULAR_TISSUE
 - module: NNUnetRunnerV2
   nnunet_dataset: Dataset011_Breast
   roi: BREAST+BREAST_CARCINOMA
