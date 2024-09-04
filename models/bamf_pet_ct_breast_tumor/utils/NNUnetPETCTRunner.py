@@ -22,20 +22,13 @@ nnunet_task_name_regex = r"Task[0-9]{3}_[a-zA-Z0-9_]+"
 
 @IO.ConfigInput('in_ct_data', 'nifti:mod=ct', the="input ct data to run nnunet on")
 @IO.ConfigInput('in_pt_data', 'nifti:mod=pt', the="input pt data to run nnunet on")
-@IO.Config('nnunet_task', str, None, the='nnunet task name')
-@IO.Config('nnunet_model', str, None, the='nnunet model name (2d, 3d_lowres, 3d_fullres, 3d_cascade_fullres)')
-#@IO.Config('input_data_type', DataType, 'nifti:mod=ct', factory=DataType.fromString, the='input data type')
-@IO.Config('folds', int, None, the='number of folds to run nnunet on')
-@IO.Config('use_tta', bool, True, the='flag to enable test time augmentation')
-@IO.Config('roi', str, None, the='roi or comma separated list of roi the nnunet segments')
 class NNUnetPETCTRunner(Module):
 
-    nnunet_task: str
-    nnunet_model: str
+    nnunet_task: str = 'Task762_PET_CT_Breast'
+    nnunet_model: str = '3d_fullres'
     input_data_type: DataType
-    folds: int                          # TODO: support optional config attributes
-    use_tta: bool
-    roi: str
+
+    roi: str = 'LIVER,KIDNEY,URINARY_BLADDER,SPLEEN,LUNG,BRAIN,HEART,STOMACH,BREAST+FDG_AVID_TUMOR'
 
     @IO.Instance()
     @IO.Input('in_ct_data', the="input ct data to run nnunet on")
@@ -76,24 +69,12 @@ class NNUnetPETCTRunner(Module):
         #       in the nnunet input folder structure.
         os.symlink(os.environ['WEIGHTS_FOLDER'], os.path.join(out_dir, 'nnUNet'))
         
-        # NOTE: instead of running from commandline this could also be done in a pythonic way:
-        #       `nnUNet/nnunet/inference/predict.py` - but it would require
-        #       to set manually all the arguments that the user is not intended
-        #       to fiddle with; so stick with the bash executable
-
         # construct nnunet inference command
         bash_command  = ["nnUNet_predict"]
         bash_command += ["--input_folder", str(inp_dir)]
         bash_command += ["--output_folder", str(out_dir)]
         bash_command += ["--task_name", self.nnunet_task]
         bash_command += ["--model", self.nnunet_model]
-        
-        # add optional arguments
-        if self.folds is not None:
-            bash_command += ["--folds", str(self.folds)]
-
-        if not self.use_tta:
-            bash_command += ["--disable_tta"]
         
         self.v(f" > command 1:  {bash_command}")
         # run command

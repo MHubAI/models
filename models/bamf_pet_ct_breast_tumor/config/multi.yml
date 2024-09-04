@@ -44,7 +44,6 @@ modules:
    - SPLEEN
    - RIGHT_KIDNEY
    - LEFT_KIDNEY
-   - GALLBLADDER
 
   NiftiConverter:
     in_datas: dicom:mod=ct|pt
