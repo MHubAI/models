@@ -10,7 +10,7 @@
                 "description": "The CT scan of a patient.",
                 "format": "DICOM",
                 "modality": "CT",
-                "bodypartexamined": "Lung",
+                "bodypartexamined": "BREAST",
                 "slicethickness": "5mm",
                 "non-contrast": true,
                 "contrast": false
@@ -20,7 +20,7 @@
                 "description": "The PET scan of a patient.",
                 "format": "DICOM",
                 "modality": "PT",
-                "bodypartexamined": "Lung",
+                "bodypartexamined": "BREAST",
                 "slicethickness": "4mm",
                 "non-contrast": false,
                 "contrast": false
@@ -32,7 +32,7 @@
                 "type": "Segmentation",
                 "description": "FDG-avid Breast tumor",
                 "classes": [
-                    "FDG_AVID_TUMOR"
+                    "BREAST+FDG_AVID_TUMOR"
                 ]
             }
         ],
@@ -142,7 +142,7 @@
                 },
                 {
                     "label": "Total Segmentator",
-                    "uri": "https://doi.org/10.48550/arXiv.2208.05868"
+                    "uri": "https://mhub.ai/models/totalsegmentator"
                 }
             ]
         }
