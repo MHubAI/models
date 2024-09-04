@@ -9,8 +9,6 @@ Email:  Jithendra.kumar@bamfhealth.com
 -------------------------------------------------
 
 """
-import os
-import shutil
 import SimpleITK as sitk
 import numpy as np
 from mhubio.core import IO

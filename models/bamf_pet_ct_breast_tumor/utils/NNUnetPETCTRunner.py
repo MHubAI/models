@@ -12,9 +12,7 @@ Email:  jithendra.kumar@bamfhealth.com
 """
 # TODO: support multi-i/o and batch processing on multiple instances
 
-from typing import List, Optional
-import os, subprocess, shutil
-import SimpleITK as sitk, numpy as np
+import os, shutil
 from mhubio.core import Module, Instance, InstanceData, DataType, FileType, IO, InstanceDataCollection
 
 # TODO: add an optional evaluation pattern (regex) to IO.Config

@@ -1,6 +1,7 @@
 """
 ---------------------------------------------------------
-Post processing Module on segmentation output
+Post processing Module on segmentation from custom model and
+total_segmentator ran as part of sequence
 ---------------------------------------------------------
 
 -------------------------------------------------

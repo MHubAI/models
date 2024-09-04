@@ -5,12 +5,11 @@ general:
 
 execute:
 - FileStructureImporter
-- DsegExtractor
 - NiftiConverter
 - Registration
-- SegmentResampler
 - NNUnetPETCTRunner
-- ExtractorPostProcessor
+- TotalSegmentatorMLRunner
+- BreastPostProcessor
 - DsegConverter
 - DataOrganizer
 
@@ -21,40 +20,21 @@ modules:
     structures:
       - $patientID@instance/ct@dicom:mod=ct
       - $patientID/pt@dicom:mod=pt
-      - $patientID/TotalSegmentator.seg.dcm@dicomseg:mod=seg
     import_id: patientID
-
-  DsegExtractor:
-   roi:
-   - LIVER
-   - LEFT_RIB_1
-   - LEFT_RIB_2
-   - LEFT_RIB_3
-   - LEFT_RIB_4
-   - LEFT_RIB_5
-   - LEFT_RIB_6
-   - RIGHT_RIB_1
-   - RIGHT_RIB_2
-   - RIGHT_RIB_3
-   - RIGHT_RIB_4
-   - RIGHT_RIB_5
-   - RIGHT_RIB_6
-   - LEFT_UPPER_LUNG_LOBE
-   - RIGHT_UPPER_LUNG_LOBE
-   - SPLEEN
-   - RIGHT_KIDNEY
-   - LEFT_KIDNEY
-   - GALLBLADDER
 
   NiftiConverter:
     in_datas: dicom:mod=ct|pt
     engine: dcm2niix
     allow_multi_input: true
 
+  TotalSegmentatorMLRunner:
+    in_data: nifti:mod=ct:registered=true
+    use_fast_mode: true
+
   NNUnetPETCTRunner:
     in_ct_data: nifti:mod=ct:registered=true
 
-  ExtractorPostProcessor:
+  BreastPostProcessor:
     in_ct_data: nifti:mod=ct:registered=true
 
   DsegConverter:
