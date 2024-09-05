@@ -214,8 +214,8 @@ def validateDockerfile(base: str, model_name: str):
                 raise MHubComplianceError(f"Collection '{collection['name']}' is not imported by its name.", DocuRef.DOCKERFILE)
 
     # check that the entrypoint of the dockerfile matches
-    #  ENTRYPOINT ["mhub.run"]  |  ENTRYPOINT ["python", "-m", "mhubio.run"]
-    if not lines[-2].strip() in ['ENTRYPOINT ["mhub.run"]', 'ENTRYPOINT ["python3", "-m", "mhubio.run"]']:
+    #  ENTRYPOINT ["mhub.run"]  |  ENTRYPOINT ["python", "-m", "mhubio.run"] (deprecated, no longer allowed)
+    if not lines[-2].strip() == 'ENTRYPOINT ["mhub.run"]':
         raise MHubComplianceError(f"Dockerfile does not contain the correct entrypoint: {lines[-2]}", DocuRef.DOCKERFILE)
     
     #  CMD ["--workflow", "default"] | CMD ["--config", "/app/models/$model_name/config/default.yml"]

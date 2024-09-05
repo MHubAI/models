@@ -31,5 +31,5 @@ ENV STOIC_SRC_PATH=/app/src
 ENV PYTHONPATH=/app:${STOIC_SRC_PATH}
 
 # Default run script
-ENTRYPOINT ["python3", "-m", "mhubio.run"]
+ENTRYPOINT ["mhub.run"]
 CMD ["--config", "/app/models/gc_stoic_baseline/config/default.yml"]

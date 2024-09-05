@@ -51,5 +51,5 @@ RUN buildutils/import_mhub_model.sh gc_picai_baseline ${MHUB_MODELS_REPO}
 ENV PYTHONPATH="/app:/opt/algorithm"
 
 # Default entrypoint
-ENTRYPOINT ["python3", "-m", "mhubio.run"]
+ENTRYPOINT ["mhub.run"]
 CMD ["--config", "/app/models/gc_picai_baseline/config/default.yml"]
