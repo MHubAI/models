@@ -9,5 +9,5 @@ ARG MHUB_MODELS_REPO
 RUN buildutils/import_mhub_model.sh pyradiomics ${MHUB_MODELS_REPO}
 
 # Default run script
-ENTRYPOINT ["python3", "-m", "mhubio.run"]
+ENTRYPOINT ["mhub.run"]
 CMD ["--config", "/app/models/pyradiomics/config/default.yml"]
