@@ -10,14 +10,10 @@ Email:  s.vandeleemput@radboudumc.nl
 ------------------------------------------------------
 """
 
-from typing import List
-from mhubio.core import Instance, DataTypeQuery, InstanceData, IO, Module
+from mhubio.core import Instance, InstanceData, IO, Module
+from pathlib import Path
 
-import os
-import numpy as np
-import SimpleITK as sitk
-
-from src.test import segment_lobe, segment_lobe_init
+CLI_PATH = Path(__file__).parent / "run38.py"
 
 @IO.ConfigInput('in_data', 'nifti|nrrd|mha:mod=ct', the='supported datatypes for the lobes segmentation model')
 class LobeSegmentationRunner(Module):
@@ -28,30 +24,12 @@ class LobeSegmentationRunner(Module):
     def task(self, instance: Instance, in_data: InstanceData, out_data: InstanceData) -> None:
         # NOTE input data originally was specified for MHA/MHD and could be extended for DICOM
 
-        # read image
-        self.v(f"Reading image from {in_data.abspath}")
-        img_itk = sitk.ReadImage(in_data.abspath)
-        img_np = sitk.GetArrayFromImage(img_itk)
-
-        # apply lobe segmentation
-        origin = img_itk.GetOrigin()[::-1]
-        spacing = img_itk.GetSpacing()[::-1]
-        direction = np.asarray(img_itk.GetDirection()).reshape(3, 3)[::-1].flatten().tolist()
-        meta_dict =  {
-            "uid": os.path.basename(in_data.abspath),
-            "size": img_np.shape,
-            "spacing": spacing,
-            "origin": origin,
-            "original_spacing": spacing,
-            "original_size": img_np.shape,
-            "direction": direction
-        }
-
-        handle = segment_lobe_init()
-        seg_result_np = segment_lobe(handle, img_np, meta_dict)
-
-        # store image
-        self.v(f"Writing image to {out_data.abspath}")
-        seg_itk = sitk.GetImageFromArray(seg_result_np)
-        seg_itk.CopyInformation(img_itk)
-        sitk.WriteImage(seg_itk, out_data.abspath)
+        # Call the Xie2020 Lobe Segmentation in a separate python3.8 venv
+        cmd = [
+            "uv", "run", "-p", ".venv38", "python",
+            str(CLI_PATH),
+            in_data.abspath,
+            out_data.abspath
+        ]
+        
+        self.subprocess(cmd, text=True)
