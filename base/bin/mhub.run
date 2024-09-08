@@ -1,3 +1,4 @@
 #!/bin/bash
-PYTHON=$(which python3)
-$PYTHON -m mhubio.run "$@"
+# PYTHON=$(uv run which python3)
+# $PYTHON -m mhubio.run "$@"
+uv run python -m mhubio.run "$@"
