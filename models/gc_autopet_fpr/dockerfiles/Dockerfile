@@ -42,5 +42,5 @@ RUN buildutils/import_mhub_model.sh gc_autopet_fpr ${MHUB_MODELS_REPO}
 ENV PYTHONPATH "/app:/opt/algorithm"
 
 # Configure main entrypoint
-ENTRYPOINT ["python3", "-m", "mhubio.run"]
+ENTRYPOINT ["mhub.run"]
 CMD ["--config", "/app/models/gc_autopet_fpr/config/default.yml"]

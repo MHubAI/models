@@ -13,7 +13,7 @@ RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
 # Create a working directory and set it as the working directory
 # Also create directories for input and output data (mounting points) in the same RUN to avoid creating intermediate layers
-RUN mkdir -p /app /app/data /app/data/input_data /app/data/output_data /app/utility/config /app/xmodules
+RUN mkdir -p /app /app/data /app/data/input_data /app/data/output_data /app/utility/config /app/xmodules /app/xcollections
 WORKDIR /app
 
 # Install system utilities and useful packages
@@ -33,7 +33,6 @@ RUN apt update && apt install -y --no-install-recommends \
   libopenslide-dev \
   libvips-dev \
   plastimatch \
-  dcm2niix \
   ffmpeg libsm6 libxext6 \
   && rm -rf /var/lib/apt/lists/* 
 
@@ -55,19 +54,22 @@ RUN pip3 install --upgrade pip && pip3 install --no-cache-dir \
   thedicomsort \
   colorspacious \
   jsonschema==4.21.1 \
-  dcmqi==0.2.0
+  dcmqi==0.2.0 \
+  dcm2niix==1.0.20220715
 
 # Install mhubio framework from git, pulls the utils scripts from GitHub
 RUN pip3 install git+https://github.com/MHubAI/mhubio.git \
   && pip3 install git+https://github.com/MHubAI/segdb.git \
   && git init \
-  && git sparse-checkout set "base/buildutils" "base/bin" "base/configs" \
-  && git fetch https://github.com/MHubAI/models.git base-utility-configs \
+  && git sparse-checkout set "base/buildutils" "base/bin" "base/configs" "base/collections.json" \
+  && git fetch https://github.com/MHubAI/models.git main \
   && git merge FETCH_HEAD \
   && mv base/buildutils . \
   && chmod +x base/bin/* \
   && cp base/bin/* /usr/bin/ \
   && cp -r base/configs/* /app/utility/config \
+  && cp base/collections.json /app/xcollections/collections.json \
+  && cp base/collections.json /app/xcollections/collections.json \
   && rm -r base \
   && rm -r .git
 

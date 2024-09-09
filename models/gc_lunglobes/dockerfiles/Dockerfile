@@ -24,5 +24,5 @@ RUN git clone --depth 1 --branch v1.6.5 https://github.com/DIAGNijmegen/bodyct-p
     sed -i 's/from models import CTSUNet/from src.models import CTSUNet/g' src/test.py
 
 # Default run script
-ENTRYPOINT ["python3", "-m", "mhubio.run"]
+ENTRYPOINT ["mhub.run"]
 CMD ["--config", "/app/models/gc_lunglobes/config/default.yml"]

@@ -41,5 +41,5 @@ RUN buildutils/import_mhub_model.sh gc_nnunet_pancreas ${MHUB_MODELS_REPO}
 ENV PYTHONPATH=/opt/algorithm:/app
 
 # Configure main entrypoint
-ENTRYPOINT ["python3", "-m", "mhubio.run"]
+ENTRYPOINT ["mhub.run"]
 CMD ["--config", "/app/models/gc_nnunet_pancreas/config/default.yml"]

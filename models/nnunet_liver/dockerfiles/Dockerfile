@@ -28,5 +28,5 @@ RUN rm ${WEIGHTS_DIR}${WEIGHTS_FN}
 ENV WEIGHTS_FOLDER=$WEIGHTS_DIR
 
 # Default run script
-ENTRYPOINT ["python3", "-m", "mhubio.run"]
+ENTRYPOINT ["mhub.run"]
 CMD ["--config", "/app/models/nnunet_liver/config/default.yml"]
