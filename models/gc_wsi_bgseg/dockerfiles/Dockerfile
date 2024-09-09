@@ -53,9 +53,6 @@ RUN git clone --depth 1 --branch 1.0.0 https://github.com/DIAGNijmegen/pathology
 # Add model and algorithm code bases to python path
 ENV PYTHONPATH="/app:/app/src"
 
-# DEV
-COPY models/gc_wsi_bgseg/utils /app/models/gc_wsi_bgseg/utils
-
 # Default run script
 ENTRYPOINT ["mhub.run"]
 CMD ["--config", "/app/models/gc_wsi_bgseg/config/default.yml"]

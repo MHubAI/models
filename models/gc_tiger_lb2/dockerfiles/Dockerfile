@@ -45,9 +45,6 @@ RUN buildutils/import_mhub_model.sh gc_tiger_lb2 ${MHUB_MODELS_REPO}
 # Add model and algorithm code bases to python path
 ENV PYTHONPATH="/vuno:/app"
 
-# DEV
-COPY models/gc_tiger_lb2/utils /app/models/gc_tiger_lb2/utils
-
 # Set default entrypoint
 ENTRYPOINT ["mhub.run"]
 CMD ["--config", "/app/models/gc_tiger_lb2/config/default.yml"]
