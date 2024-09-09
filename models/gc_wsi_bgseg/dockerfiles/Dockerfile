@@ -60,5 +60,5 @@ RUN git clone --depth 1 --branch 1.0.0 https://github.com/DIAGNijmegen/pathology
 ENV PYTHONPATH="/app:/app/src"
 
 # Default run script
-ENTRYPOINT ["python3", "-m", "mhubio.run"]
+ENTRYPOINT ["mhub.run"]
 CMD ["--config", "/app/models/gc_wsi_bgseg/config/default.yml"]

@@ -35,5 +35,5 @@ ENV PYTHONPATH="/app:/app/src/devel"
 ENV VERSEG_BASEDIR="/app/src/"
 
 # Default run script
-ENTRYPOINT ["python3", "-m", "mhubio.run"]
+ENTRYPOINT ["mhub.run"]
 CMD ["--config", "/app/models/gc_spider_baseline/config/default.yml"]
