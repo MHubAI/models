@@ -20,5 +20,5 @@ ENV WEIGHTS_URL="https://github.com/JoHof/lungmask/releases/download/v0.0/unet_l
 RUN wget --directory-prefix ${WEIGHTS_DIR} ${WEIGHTS_URL}
 
 # Default run script
-ENTRYPOINT ["python3", "-m", "mhubio.run"]
+ENTRYPOINT ["mhub.run"]
 CMD ["--config", "/app/models/lungmask/config/default.yml"]

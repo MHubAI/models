@@ -37,5 +37,5 @@ ENV TORCH_HOME /opt/algorithm
 ENV PYTHONPATH "/app:/opt/algorithm"
 
 # Specify default entrypoint
-ENTRYPOINT ["python3", "-m", "mhubio.run"]
+ENTRYPOINT ["mhub.run"]
 CMD ["--config", "/app/models/gc_node21_baseline/config/default.yml"]

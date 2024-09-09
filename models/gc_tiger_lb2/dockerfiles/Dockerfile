@@ -51,5 +51,5 @@ RUN buildutils/import_mhub_model.sh gc_tiger_lb2 ${MHUB_MODELS_REPO}
 ENV PYTHONPATH="/vuno:/app"
 
 # Set default entrypoint
-ENTRYPOINT ["python3", "-m", "mhubio.run"]
+ENTRYPOINT ["mhub.run"]
 CMD ["--config", "/app/models/gc_tiger_lb2/config/default.yml"]
