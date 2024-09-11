@@ -1,0 +1,33 @@
+general:
+  data_base_dir: /app/data
+  version: 1.0
+  description: run pyradiomics pipeline on dicom data
+
+execute:
+- DicomImporter
+- RTStructExtractor
+- NiftiConverter
+- CentroidExtractor
+- FMCIBRunner
+- DataOrganizer
+
+modules:
+  DicomImporter:
+    source_dir: input_data
+    import_dir: sorted_data
+    sort_data: true
+    merge: true
+    meta: 
+      mod: '%Modality'
+      desc: '%SeriesDescription'
+
+  # roi can be specified manually but will otherwise extracted form the rtstruct segemnetation names
+  # RTStructExtractor:
+  #   roi: 
+  #   - LIVER
+  #   - LIVER+NEOPLASM_MALIGNANT_PRIMARY
+
+  DataOrganizer:
+    targets:
+      - csv-->[i:sid]/features.csv
+        # - nifti-->[i:sid]/nifti/[d:mod]/[basename]

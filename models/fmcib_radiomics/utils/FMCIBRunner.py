@@ -6,9 +6,12 @@ Date:   06.03.2024
 ---------------------------------------------------------
 """
 import json, jsonschema, os
-from mhubio.core import Instance, InstanceData, IO, Module
+import pandas as pd
+from mhubio.core import Instance, InstanceData, InstanceDataCollection, IO, Module
+from mhubio.modules.organizer.DataOrganizer import DataOrganizer
 
 COORDS_SCHEMA_PATH = os.path.join(os.path.dirname(__file__), "coords.schema.json")
+ROI_COORDS_SCHEMA_PATH = os.path.join(os.path.dirname(__file__), "roi.coords.schema.json")
 SLICERMARKUP_SCHEMA_PATH = os.path.join(os.path.dirname(__file__), "slicermarkup.schema.json")
 
 def is_valid(json_data: dict, schema_file_path: str) -> bool:
@@ -31,37 +34,37 @@ def is_valid(json_data: dict, schema_file_path: str) -> bool:
         return False
 
 def get_coordinates(json_file_path: str) -> dict:
-    
     # read json file
     with open(json_file_path) as f:
         json_data = json.load(f)
-        
+
     # check which schema the json file adheres to
     if is_valid(json_data, COORDS_SCHEMA_PATH):
-        return json_data
+        yield json_data    
     
-    if is_valid(json_data, SLICERMARKUP_SCHEMA_PATH):
+    elif is_valid(json_data, ROI_COORDS_SCHEMA_PATH):
+        for item in json_data:
+            yield item
+
+
+    elif is_valid(json_data, SLICERMARKUP_SCHEMA_PATH):
         markups = json_data["markups"]
 
         assert len(markups) == 1, "Currently, only one point per file is supported."
         markup = markups[0]
-        
         assert markup["coordinateSystem"] == "LPS"
-        
-        controlPoints = markup["controlPoints"]
-        assert len(controlPoints) == 1
-        
-        position = controlPoints[0]["position"]
-        return {
-            "coordX": position[0],
-            "coordY": position[1],
-            "coordZ": position[2]
-        }
-        
-    #
-    raise ValueError("The input json file does not adhere to the expected schema.")
+        for controlPoint in markup["controlPoints"]:
+            position = controlPoint["position"]
+            yield {
+                "coordX": position[0],
+                "coordY": position[1],
+                "coordZ": position[2]
+            }
+            
+    else:
+        raise ValueError("The input json file does not adhere to the expected schema.")
     
-def fmcib(input_dict: dict, json_output_file_path: str):
+def fmcib(input_dict: dict):
     """Run the FCMIB pipeline.
 
     Args:
@@ -87,28 +90,38 @@ def fmcib(input_dict: dict, json_output_file_path: str):
 
     # generate fearure dictionary
     feature_dict = {f"feature_{idx}": feature for idx, feature in enumerate(features.flatten().tolist())}
-
-    # write feature dictionary to json file
-    with open(json_output_file_path, "w") as f:
-        json.dump(feature_dict, f)
+    return feature_dict
 
 class FMCIBRunner(Module):
     
     @IO.Instance()
     @IO.Input('in_data', 'nrrd|nifti:mod=ct', the='Input nrrd or nifti ct image file')
-    @IO.Input('centroids_json', "json:type=fmcibcoordinates", the='JSON file containing 3D coordinates of the centroid of the input mask.')
-    @IO.Output('feature_json', 'features.json', "json:type=fmcibfeatures", bundle='model', the='Features extracted from the input image at the specified seed point.')
-    def task(self, instance: Instance, in_data: InstanceData, centroids_json: InstanceData, feature_json: InstanceData) -> None:
-        
-        # read centroids from json file
-        coordinates = get_coordinates(centroids_json.abspath)
+    @IO.Inputs('centroid_jsons', "json:type=fmcibcoordinates", the='JSON file containing 3D coordinates of the centroid of the input mask.')
+    @IO.Output('feature_csv', '[i:sid]/features.csv', 'csv:features=fmcib', data='in_data',  bundle='model', the='Features extracted from the input image at the specified seed point.')
+    def task(self, instance: Instance, in_data: InstanceData, centroid_jsons: InstanceDataCollection, feature_csv: InstanceData) -> None:
+        for centroid_json in centroid_jsons:
+            # read centroids from json file
+            roi_feature_list = []
+            for roi_idx, coord_dict in enumerate(get_coordinates(centroid_json.abspath)):
+                if "Mhub ROI" not in coord_dict:
+                    coord_dict["Mhub ROI"] = roi_idx
+                # define input dictionary
+                input_dict = {
+                    "image_path": in_data.abspath, 
+                    "coordX": coord_dict["coordX"],
+                    "coordY": coord_dict["coordY"],
+                    "coordZ": coord_dict["coordZ"]
+                }
 
-        # define input dictionary
-        input_dict = {
-            "image_path": in_data.abspath,
-            **coordinates
-        }
+                # run model
+                feature_dict = fmcib(input_dict)
+                feature_dict["Mhub ROI"] = coord_dict["Mhub ROI"]
+                feature_dict["Mask"] = centroid_json.abspath.split("/")[-1]
+                roi_feature_list.append(feature_dict)
 
 
-        # run model
-        fmcib(input_dict, feature_json.abspath)
+            # Convert the list of dictionaries to a DataFrame
+            df = pd.DataFrame(roi_feature_list)
+            # Save the DataFrame to a CSV file
+
+            df.to_csv(feature_csv.abspath, index=False)
