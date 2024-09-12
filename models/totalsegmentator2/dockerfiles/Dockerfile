@@ -12,17 +12,17 @@ RUN uv pip install -n totalsegmentator==2.2.1
 
 # Download weights using totalsegmentator utility 
 # NOTE: only licence free models are included
-RUN totalseg_download_weights -t total \
-&& totalseg_download_weights -t total_fast \ 
-&& totalseg_download_weights -t total_mr \ 
-&& totalseg_download_weights -t total_fast_mr \ 
-&& totalseg_download_weights -t lung_vessels \ 
-&& totalseg_download_weights -t cerebral_bleed \ 
-&& totalseg_download_weights -t hip_implant \ 
-&& totalseg_download_weights -t coronary_arteries \ 
-&& totalseg_download_weights -t pleural_pericard_effusion \ 
-&& totalseg_download_weights -t body \ 
-&& totalseg_download_weights -t body_fast
+RUN uv run totalseg_download_weights -t total \
+&& uv run totalseg_download_weights -t total_fast \ 
+&& uv run totalseg_download_weights -t total_mr \ 
+&& uv run totalseg_download_weights -t total_fast_mr \ 
+&& uv run totalseg_download_weights -t lung_vessels \ 
+&& uv run totalseg_download_weights -t cerebral_bleed \ 
+&& uv run totalseg_download_weights -t hip_implant \ 
+&& uv run totalseg_download_weights -t coronary_arteries \ 
+&& uv run totalseg_download_weights -t pleural_pericard_effusion \ 
+&& uv run totalseg_download_weights -t body \ 
+&& uv run totalseg_download_weights -t body_fast
 
 # Import the MHub model definiton
 ARG MHUB_MODELS_REPO
