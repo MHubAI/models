@@ -99,9 +99,9 @@ class FMCIBRunner(Module):
     @IO.Inputs('centroid_jsons', "json:type=fmcibcoordinates", the='JSON file containing 3D coordinates of the centroid of the input mask.')
     @IO.Output('feature_csv', '[i:sid]/features.csv', 'csv:features=fmcib', data='in_data',  bundle='model', the='Features extracted from the input image at the specified seed point.')
     def task(self, instance: Instance, in_data: InstanceData, centroid_jsons: InstanceDataCollection, feature_csv: InstanceData) -> None:
+        roi_feature_list = []
         for centroid_json in centroid_jsons:
             # read centroids from json file
-            roi_feature_list = []
             for roi_idx, coord_dict in enumerate(get_coordinates(centroid_json.abspath)):
                 if "Mhub ROI" not in coord_dict:
                     coord_dict["Mhub ROI"] = roi_idx
@@ -116,12 +116,14 @@ class FMCIBRunner(Module):
                 # run model
                 feature_dict = fmcib(input_dict)
                 feature_dict["Mhub ROI"] = coord_dict["Mhub ROI"]
-                feature_dict["Mask"] = centroid_json.abspath.split("/")[-1]
+                feature_dict["Centroid"] = centroid_json.abspath
+                feature_dict["Image"] = in_data.abspath
+                feature_dict["MHub Metadata"] = centroid_json.type.meta
                 roi_feature_list.append(feature_dict)
 
 
-            # Convert the list of dictionaries to a DataFrame
-            df = pd.DataFrame(roi_feature_list)
-            # Save the DataFrame to a CSV file
+        # Convert the list of dictionaries to a DataFrame
+        df = pd.DataFrame(roi_feature_list)
+        # Save the DataFrame to a CSV file
 
-            df.to_csv(feature_csv.abspath, index=False)
+        df.to_csv(feature_csv.abspath, index=False)
