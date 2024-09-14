@@ -1,0 +1,22 @@
+general:
+  data_base_dir: /app/data
+  version: 1.0
+  description: FMCIB pipeline starting from DICOM files and centroids in json files or slicer exports named by their SeriesInstanceUID
+
+execute:
+- DicomImporter
+- FileImporter
+- NiftiConverter
+- FMCIBRunner
+- DataOrganizer
+
+modules:
+
+  FileImporter:
+    instance_id: sid
+    meta: type=fmcibcoordinates
+    type: json
+
+  DataOrganizer:
+    targets:
+      - json:type=fmcibfeatures-->[i:sid]/features.json
