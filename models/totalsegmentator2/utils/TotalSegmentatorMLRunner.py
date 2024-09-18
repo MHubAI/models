@@ -10,27 +10,7 @@ Email:  leonard.nuernberg@maastrichtuniversity.nl
 """
 
 from typing import Union, List
-from mhubio.core import Module, Instance, InstanceData, DataType, FileType, CT, SEG, IO, DataTypeQuery
-from segdb.classes.Segment import Segment, Triplet
-import os, subprocess
-
-# custom SegDB mappings for TotalSegmentator
-Triplet.register("C_BODY_STRUCTURE", code="custom2", meaning="some custom meaning", override=True)
-Segment.register("thyroid_gland", name="thyroid_gland", category="C_BODY_STRUCTURE")
-Segment.register("vertebrae_S1", name="vertebrae_S1", category="C_BODY_STRUCTURE")
-Segment.register("pulmonary_vein", name="pulmonary_vein", category="C_BODY_STRUCTURE")
-Segment.register("brachiocephalic_trunk", name="brachiocephalic_trunk", category="C_BODY_STRUCTURE")
-Segment.register("subclavian_artery_right", name="subclavian_artery_right", category="C_BODY_STRUCTURE")
-Segment.register("subclavian_artery_left", name="subclavian_artery_left", category="C_BODY_STRUCTURE")
-Segment.register("common_carotid_artery_right", name="common_carotid_artery_right", category="C_BODY_STRUCTURE")
-Segment.register("common_carotid_artery_left", name="common_carotid_artery_left", category="C_BODY_STRUCTURE")
-Segment.register("brachiocephalic_vein_left", name="brachiocephalic_vein_left", category="C_BODY_STRUCTURE")
-Segment.register("brachiocephalic_vein_right", name="brachiocephalic_vein_right", category="C_BODY_STRUCTURE")
-Segment.register("atrial_appendage_left", name="atrial_appendage_left", category="C_BODY_STRUCTURE")
-Segment.register("spinal_cord", name="spinal_cord", category="C_BODY_STRUCTURE")
-Segment.register("skull", name="skull", category="C_BODY_STRUCTURE")
-Segment.register("sternum", name="sternum", category="C_BODY_STRUCTURE")
-Segment.register("costal_cartilages", name="costal_cartilages", category="C_BODY_STRUCTURE")
+from mhubio.core import Module, Instance, InstanceData, IO
 
 #https://github.com/wasserth/TotalSegmentator/blob/master/totalsegmentator/map_to_binary.py
 mapping = {
