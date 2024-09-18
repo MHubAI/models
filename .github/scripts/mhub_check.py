@@ -42,6 +42,12 @@ try:
 
     # validate dockerfile
     utils.validateDockerfile(base='models', model_name=model_name)
+    
+    # validate the mhub.toml file
+    utils.validateMHubToml(base='models', model_name=model_name)
+    
+    # validate mhub model test data
+    utils.validateModelTestData(base='models', model_name=model_name)
 
 except utils.MHubComplianceError as e:
     print()
