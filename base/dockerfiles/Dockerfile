@@ -98,9 +98,6 @@ RUN git init \
 # Set PYTHONPATH to the /app folder
 ENV PYTHONPATH="/app"
 
-# FIXME: DEV ONY
-COPY base/bin/* /usr/bin/
-RUN chmod +x /usr/bin/*
-
-# FIXME: pass it as a command to the container in Slicer
-CMD ["echo", "MHub Ubuntu 20.04 base image. Visit http://mhub.ai to find out more!"]
+#CMD ["echo", "MHub Ubuntu 20.04 base image. Visit http://mhub.ai to find out more!"]
+ENTRYPOINT [ "mhub.run" ]
+CMD ["--utility"]
