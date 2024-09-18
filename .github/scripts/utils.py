@@ -3,6 +3,8 @@ from enum import Enum
 import requests, os
 import json
 import jsonschema
+import zipfile
+import tempfile
 
 # NOTE: all file path operations are relative to the repository root.
 
@@ -13,6 +15,7 @@ class DocuRef(Enum):
     CONFIG = "https://github.com/MHubAI/documentation/blob/main/documentation/mhubio/the_mhubio_config_file.md"
     MHUBIO_MODULES = "https://github.com/MHubAI/documentation/blob/main/documentation/mhubio/mhubio_modules.md"
     MODEL_META_JSON = "https://github.com/MHubAI/documentation/blob/main/documentation/mhub_models/model_json.md"
+    MODEL_TEST_PROCEDURE = "https://github.com/MHubAI/documentation/blob/main/documentation/mhub_contribution/testing_phase.md#test-procedure"
 
 class MhubIOCollection(TypedDict):
     name: str
@@ -124,6 +127,78 @@ def validateModelMetaJson_modelName(model_meta_json_file: str, model_name: str):
     # check that the model name is correct
     if model_meta_json["name"] != model_name:
         raise MHubComplianceError(f"Model name in meta.json does not match model name in folder structure: {model_meta_json['name']} != {model_name}", DocuRef.MODEL_META_JSON)
+
+
+def validateMHubToml(base: str, model_name: str):
+    
+    # get model toml path
+    model_toml_file = os.path.join(base, model_name, "mhub.toml")
+    
+    # load model toml
+    with open(model_toml_file, "r") as f:
+        model_toml = json.load(f)
+        
+    # load schema
+    with open(os.path.join('.github', 'schemas', 'mhubtoml.schema.json'), "r") as f:
+        schema = json.load(f)
+        
+    # validate schema
+    try:
+        jsonschema.validate(instance=model_toml, schema=schema)
+    except jsonschema.ValidationError as e:
+        raise MHubComplianceError(f"Model toml is not compliant with the schema: {e.message}", DocuRef.MODEL_TEST_PROCEDURE)
+        
+     
+def validateModelTestData(base: str, model_name: str):
+    
+    # get model toml path
+    model_toml_file = os.path.join(base, model_name, "mhub.toml")
+    
+    # load model toml
+    with open(model_toml_file, "r") as f:
+        model_toml = json.load(f)
+        
+    # find test data url
+    test_url = model_toml["model"]["deployment"]["test"]   
+    
+    # url has to be a valid url and point to zenodo
+    if not test_url.startswith("https://zenodo.org/records/"):
+        raise MHubComplianceError(f"Test data url is not a Zenodo url: {test_url}", DocuRef.MODEL_META_JSON)
+    
+    # get a list of all workflow names
+    workflows = get_model_configuration_files(base, model_name)
+    
+    # download the zip file into a temporary folder
+    with tempfile.TemporaryDirectory() as tmpdirname:
+        
+        # download the zip file
+        test_zip = os.path.join(tmpdirname, "test.zip")
+        with open(test_zip, "wb") as f:
+            f.write(requests.get(test_url).content)
+            
+        # scan the zip file and check that it contains a folder for every config file and that each folder contains a sample and reference folder that are not empty
+        with zipfile.ZipFile(test_zip, 'r') as zip_ref:
+            for workflow in workflows:
+                
+                # check if the workflow folder exists
+                if not f"{workflow}/" in zip_ref.namelist():
+                    raise MHubComplianceError(f"Test data zip file does not contain a folder for workflow '{workflow}'", DocuRef.MODEL_META_JSON)
+                
+                # check if the workflow folder contains a sample and reference folder
+                if not f"{workflow}/sample/" in zip_ref.namelist():
+                    raise MHubComplianceError(f"Test data zip file does not contain a sample folder for workflow '{workflow}'", DocuRef.MODEL_META_JSON)
+                
+                if not f"{workflow}/reference/" in zip_ref.namelist():
+                    raise MHubComplianceError(f"Test data zip file does not contain a reference folder for workflow '{workflow}'", DocuRef.MODEL_META_JSON)
+                
+                # check if the sample and reference folders are not empty
+                if len([p for p in zip_ref.namelist() if p.startswith(f"{workflow}/sample/")]) == 0:
+                    raise MHubComplianceError(f"Test data zip file contains an empty sample folder for workflow '{workflow}'", DocuRef.MODEL_META_JSON)
+                
+                if len([p for p in zip_ref.namelist() if p.startswith(f"{workflow}/reference/")]) == 0:
+                    raise MHubComplianceError(f"Test data zip file contains an empty reference folder for workflow '{workflow}'", DocuRef.MODEL_META_JSON)
+        
+        
 
 def validateDockerfile(base: str, model_name: str):
     
