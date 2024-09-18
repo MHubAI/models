@@ -8,6 +8,7 @@ from colorama import Fore, Style, init as colorama_init
 import toml
 import io
 
+
 # NOTE: all file path operations are relative to the repository root.
 
 # initialize colorama
@@ -324,8 +325,7 @@ def validateModelTestData(base: str, model_name: str):
             # if reference folder available, check if its empty                
             elif len([p for p in zip_ref.namelist() if p.startswith(f"{workflow}/reference/")]) == 0:
                 compliancy_check.error(Message(f"Test data zip file contains an empty reference folder for workflow '{workflow}'", DocuRef.MODEL_META_JSON))
-    
-        
+                
 
 def validateDockerfile(base: str, model_name: str):
     
