@@ -49,25 +49,24 @@ try:
     # validate mhub model test data
     utils.validateModelTestData(base='models', model_name=model_name)
 
-except utils.MHubComplianceError as e:
-    print()
-    print("---------------- CHECK FAILED ----------------")
-    print("This PR violates one or more MHub compliance rules:")
-    print(str(e))
-    print()
-    sys.exit(1)
-
 except Exception as e:
     print()
-    print("---------------- CHECK FAILED ----------------")
+    print("--------------- CHECK DISRUPTED --------------")
     print("An unexpected error occured during compliance checks.")
     print(str(e))
     print()
     sys.exit(1)
-
-# all checks passed
-print()
-print("---------------- CHECK PASSED ----------------")
-print("All compliance checks passed.")
-print("Note: compliance checks are a beta feature. Passing all automated compliance checks does not guarantee that your model is compliant with the MHub standard. We will now perform a manual review of your model. Testing your model on a public dataset is obligatory.")
-print()
+    
+# check compliance check output
+if utils.compliancy_check.is_compliant():
+    print()
+    print("---------------- CHECK PASSED ----------------")
+    print("All compliance checks passed.")
+    print("Note: compliance checks are a beta feature. Passing all automated compliance checks does not guarantee that your model is compliant with the MHub standard. We will now perform a manual review of your model. Testing your model on a public dataset is obligatory.")
+    print()
+    
+else:
+    print()
+    print("---------------- CHECK FAILED ----------------")
+    utils.compliancy_check.print()
+    sys.exit(1)
