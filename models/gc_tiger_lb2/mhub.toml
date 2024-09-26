@@ -1,0 +1,2 @@
+[model.deployment]
+test = "https://zenodo.org/record/13785615/files/gc_tiger_lb2.test.zip"

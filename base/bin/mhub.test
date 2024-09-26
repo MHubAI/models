@@ -1,0 +1,215 @@
+#!/bin/bash
+
+# script arguments
+MODE=${1:-"srmte"}              # Run Modes:        t = test, m = run model, s = download sample data, r = download reference data, 
+                                # Verbosity:        v = be verbose (omit v for pure output as per output mode) 
+                                # Output Modes:     y = print report as yml, j = print report as json, c = print conclusion, e = error code (0/170)
+WORKFLOW_NAME=${2:-"default"}   # Workflow Name:    default
+TEST_DATA=$3                    # Test URL:         URL to download test data from (by default exracted from mhub-model.toml)
+
+
+# define directories
+REFERENCE_DIR="/app/data/reference_data"
+SAMPLE_DIR="/app/data/input_data"
+SOURCE_DIR="/app/data/output_data"
+
+REPORT_FILE="/app/data/test_report/${WORKFLOW_NAME}.report.yaml"
+
+# specify verbose mode
+if [[ $MODE == *"v"* ]]; then
+    VERBOSE=/dev/stdout
+else
+    VERBOSE=/dev/null
+fi
+
+# exit script on error
+set -e
+
+# exit script on ctrl-c
+trap "exit" INT
+
+# ----------------- FUNCTIONS -----------------
+
+function check_mode {
+    # provide only one output option (p, j, c, e)
+    if [[ $MODE == *"p"* && $MODE == *"j"* ]] || [[ $MODE == *"p"* && $MODE == *"c"* ]] || [[ $MODE == *"p"* && $MODE == *"e"* ]] || [[ $MODE == *"j"* && $MODE == *"c"* ]] || [[ $MODE == *"j"* && $MODE == *"e"* ]] || [[ $MODE == *"c"* && $MODE == *"e"* ]]; then
+        echo "Provide only one output option (p, j, c, e)"
+        exit 1
+    fi
+
+    # p, j, c or e require the t flag
+    if [[ $MODE == *"p"* || $MODE == *"j"* || $MODE == *"c"* || $MODE == *"e"* ]] && [[ $MODE != *"t"* ]]; then
+        echo "Provide the t flag to generate a test report for output options (p, j, c, e)"
+        exit 1
+    fi
+}
+
+# relative unzip function that extracts a subdir from a zip file to a target directory
+#  preserving the directory structure within the subdir.
+function runzip {
+    ZIP_FILE=$1
+    EXTRACTION_DIR=$2
+    TARGET_DIR=$3
+    
+    # create a temporary directory to extract the contents of the zip file
+    TMP_DIR=$(mktemp -d)
+
+    # extract the zip file to the temporary directory
+    unzip -o $ZIP_FILE "$EXTRACTION_DIR" -d $TMP_DIR
+
+    # copy extraction directory from the temporary directory to the target directory
+    mv $TMP_DIR/$EXTRACTION_DIR $TARGET_DIR
+
+    # remove the temporary directory
+    rm -r $TMP_DIR
+}
+
+function get_model_name {
+    # get the model name from the /app/models/<model_name> directory
+    MODEL_NAMES=$(ls -d /app/models/*/ | xargs -n 1 basename)
+
+    # check if there is only one model in the /app/models directory
+    if [ $(echo $MODEL_NAMES | wc -w) -ne 1 ]; then
+        echo "There should be only one model in the /app/models directory."
+        exit 1
+    fi
+
+    # echo the first model name
+    echo $MODEL_NAMES | cut -d ' ' -f 1
+}
+
+function get_test_url {
+
+    # get model directory
+    MODEL_NAME=$(get_model_name)
+    MODEL_DIR="/app/models/$MODEL_NAME"
+
+    # get the test url from the mhub.toml file
+    TEST_URL=$(uv run python -c "import toml; print(toml.load('$MODEL_DIR/mhub.toml')['model']['deployment']['test'])")
+
+    # echo the test url
+    echo $TEST_URL
+}
+
+function download_sample_data {
+    URL=$1
+    HASH=$(echo -n $URL | md5sum | cut -d ' ' -f 1)
+    mkdir -p /tmp/test
+    echo "> Downloading test data from $URL into /tmp/test/$HASH.zip"
+    wget -O /tmp/test/$HASH.zip $URL 
+}
+
+function extract_workflow_data {
+    URL=$1
+    WORKFLOW_NAME=$2
+    HASH=$(echo -n $URL | md5sum | cut -d ' ' -f 1)
+    mkdir -p /tmp/test/$HASH
+    unzip /tmp/test/$HASH.zip -d /tmp/test/$HASH
+    mv /tmp/test/$HASH/$WORKFLOW_NAME/sample/* $SAMPLE_DIR
+    mv /tmp/test/$HASH/$WORKFLOW_NAME/reference/* $REFERENCE_DIR
+    rm -r /tmp/test/$HASH
+}
+
+function extract_sample_data {
+    TEST_DATA=$1
+    WORKFLOW_NAME=$2
+
+    # check that sample dir is empty
+    if [ "$(ls -A $SAMPLE_DIR)" ]; then
+        echo "Sample data folder is not empty. Mount an empty folder to /app/data/input_data to download sample data or run script without the s option."
+        exit 1
+    fi
+
+    # extract
+    if [[ $TEST_DATA == *.zip ]]; then
+        runzip $TEST_DATA "$WORKFLOW_NAME/sample/*" $SAMPLE_DIR
+    else
+        cp -r $TEST_DATA/$WORKFLOW_NAME/sample/* $SAMPLE_DIR
+    fi
+}
+
+function extract_reference_data {
+    TEST_DATA=$1
+    WORKFLOW_NAME=$2
+
+    # check that reference dir is empty
+    if [ "$(ls -A $REFERENCE_DIR)" ]; then
+        echo "Reference data folder is not empty. Mount an empty folder to /app/data/reference_data to download reference data or run script without the r option."
+        exit 1
+    fi
+    
+    # extract or copy
+    if [[ $TEST_DATA == *.zip ]]; then
+        runzip $TEST_DATA "$WORKFLOW_NAME/reference/*" $REFERENCE_DIR
+    else
+        cp -r $TEST_DATA/$WORKFLOW_NAME/reference/* $REFERENCE_DIR
+    fi
+}
+
+# ----------------- MAIN -----------------
+
+# check if only one output option is provided
+check_mode
+
+# if "x" is specified, clean up the input and reference directories
+if [[ $MODE == *"x"* ]]; then
+    rm -rf $SAMPLE_DIR/*
+    rm -rf $REFERENCE_DIR/*
+fi
+
+# get test url if not specified
+if [[ ($MODE == *"s"* || $MODE == *"r"*) && -z "$TEST_DATA" ]]; then
+    TEST_DATA=$(get_test_url)
+fi
+
+# download sample and reference data for all workflows
+if [[ ($MODE == *"s"* || $MODE == *"r"* ) && $TEST_DATA == http* ]]; then
+    download_sample_data $TEST_DATA &> $VERBOSE
+    TEST_DATA=/tmp/test/$(echo -n $TEST_DATA | md5sum | cut -d ' ' -f 1).zip
+fi
+
+# extract sample data for specific workflow
+if [[ $MODE == *"s"* ]]; then
+    extract_sample_data $TEST_DATA $WORKFLOW_NAME > $VERBOSE
+fi
+
+# extract reference data for specific workflow
+if [[ $MODE == *"r"* ]]; then
+    extract_reference_data $TEST_DATA $WORKFLOW_NAME > $VERBOSE
+fi
+
+# run model
+if [[ $MODE == *"m"* ]]; then
+    uv run python -m mhubio.run --cleanup --workflow $WORKFLOW_NAME > $VERBOSE
+fi
+
+# run medcmp and generate report (yml and json)
+if [[ $MODE == *"t"* ]]; then
+    mkdir -p /tmp/test $(dirname $REPORT_FILE)
+    uvx medcmp $SOURCE_DIR $REFERENCE_DIR $REPORT_FILE "MHub Test Report ($WORKFLOW_NAME)" > $VERBOSE
+    uv run python -c 'import sys, json, yaml; report = yaml.safe_load(sys.stdin); print(json.dumps(report, indent=4))' < "$REPORT_FILE" > "${REPORT_FILE%.yaml}.json"
+fi
+
+# print report
+if [[ $MODE == *"y"* ]]; then
+    cat $REPORT_FILE
+fi
+
+# print report as json
+if [[ $MODE == *"j"* ]]; then
+    cat "${REPORT_FILE%.yaml}.json"
+fi
+
+# print a green success or red error message based on the conclusion
+if [[ $MODE == *"c"* ]]; then
+    if jq -r '.conclusion' "${REPORT_FILE%.yaml}.json" | grep -q "true"; then
+        echo -e "\033[0;32mAll checks passed.\033[0m"
+    else
+        echo -e "\033[0;31mComparison failed, inspect report for more details.\033[0m"
+    fi 
+fi
+
+# exit the script with an error code 
+if [[ $MODE == *"e"* ]]; then
+    jq -r '.conclusion' "${REPORT_FILE%.yaml}.json" | grep -q "true" && exit 0 || exit 170
+fi

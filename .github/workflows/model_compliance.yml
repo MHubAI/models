@@ -33,7 +33,7 @@ jobs:
       - name: Install Python dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install requests jsonschema
+          pip install requests jsonschema toml colorama
 
       # Get the list of files modified in the PR
       - name: Get files modified in PR
