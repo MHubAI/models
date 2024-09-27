@@ -19,4 +19,4 @@ modules:
 
   DataOrganizer:
     targets:
-      - csv-->[i:patientID]/features.csv
+      - csv-->[i:sid]/features.csv
