@@ -19,4 +19,4 @@ modules:
 
   DataOrganizer:
     targets:
-      - json:type=fmcibfeatures-->[i:sid]/features.json
+      - csv-->[i:patientID]/features.csv

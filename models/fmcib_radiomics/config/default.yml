@@ -1,7 +1,7 @@
 general:
   data_base_dir: /app/data
   version: 1.0
-  description: run fmcib radiomics pipeline on dicom data
+  description: Run fmcib radiomics pipeline on dicom data
 
 execute:
 - DicomImporter
