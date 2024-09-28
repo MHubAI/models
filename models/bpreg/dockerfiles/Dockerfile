@@ -1,4 +1,4 @@
-FROM mhubai/base:latest
+FROM mhubai/base:v1
 
 LABEL authors="bspai@bwh.harvard.edu,lnuernberg@bwh.harvard.edu"
 
