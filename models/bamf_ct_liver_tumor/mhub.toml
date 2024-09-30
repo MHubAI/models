@@ -1,2 +1,2 @@
 [model.deployment]
-test = "https://zenodo.org/records/13859260/files/bamf_nnunet_mr_breast.test.zip?download=1"
+test = "https://zenodo.org/records/13859260"
