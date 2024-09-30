@@ -120,7 +120,7 @@
     },
     "training": {
       "title": "Training Data",
-      "text": "131 CT images from the LiTS 2017 and 131 CT images from the Medical Segmentation Decathlon datasets were used to train the nnU-Net model for liver and tumor segmentation. We utilized selected totalsegmentator outputs to develop anatomically informed model. The liver-CT model was trained to predict liver and liver tumors, as well as other abdominal organs including the duodenum, gallbladder, intestines, kidneys, lungs, pancreas, and spleen. ",
+      "text": "131 CT images from the LiTS 2017 and 131 CT images from the Medical Segmentation Decathlon datasets were used to train the nnU-Net model for liver and tumor segmentation. We utilized selected totalsegmentator outputs to develop anatomically informed model. The liver-CT model was trained to predict liver and liver tumors, as well as other abdominal organs including the duodenum, gallbladder, intestines, kidneys, lungs, pancreas, and spleen.",
       "references": [
         {
           "label": "LiTS - Liver Tumor Segmentation Challenge",
