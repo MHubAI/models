@@ -3,10 +3,10 @@
 MODEL_FOLDER="/app/models/"
 
 # mhubio version
-MHUBIO=$(pip freeze | grep mhubio | cut -d"@" -f3)
+MHUBIO=$(uv pip freeze | grep mhubio | cut -d"@" -f3)
 
 # segdb version
-SEGDB=$(pip freeze | grep segdb | cut -d"@" -f3)
+SEGDB=$(uv pip freeze | grep segdb | cut -d"@" -f3)
 
 echo -e "mhubio==${MHUBIO}"
 echo -e "segdb==${SEGDB}"
@@ -37,21 +37,21 @@ fi
 # pip freeze without segdb and mhubio (already on top of the lists,
 # since for now they are commits). Ideally, this should return only pip versions
 # (although some package might be installed from git by contributors)
-pip freeze | grep -v "segdb" | grep -v "mhubio"
+uv pip freeze | grep -v "segdb" | grep -v "mhubio"
 
 # collect additional information on installed system dependencies.
 #  to allow contributors to include additional dependencies, we should use a environment variable or a file instead.
 
 # versions of python, pip, plastimatch, jq, git, libopenslide-dev, libvips-dev, dcm2niix, ffmpeg, libsm6, libxext6
 # echo -e "+++"
-# echo -e "python==$(python3 --version 2>&1)"
+# echo -e "python==$(python3 --version 2>&1 | cut -d" " -f2)"
 # echo -e "pip==$(pip --version 2>&1)"
-# echo -e "plastimatch==$(plastimatch --version 2>&1)"
+# echo -e "plastimatch==$(plastimatch --version 2>&1 | cut -d" " -f3)"
 # echo -e "jq==$(jq --version 2>&1)"
-# echo -e "git==$(git --version 2>&1)"
-# echo -e "libopenslide-dev==$(dpkg -s libopenslide-dev | grep Version)"
-# echo -e "libvips-dev==$(dpkg -s libvips-dev | grep Version)"
+# echo -e "git==$(git --version 2>&1 | cut -d" " -f3)"
+# echo -e "libopenslide-dev==$(dpkg -s libopenslide-dev | grep Version | cut -d" " -f2)"
+# echo -e "libvips-dev==$(dpkg -s libvips-dev | grep Version | cut -d" " -f2)"
 # echo -e "dcm2niix==$(dcm2niix -h | grep "dcm2niiX version" | cut -d"v" -f3)"
 # echo -e "ffmpeg==$(ffmpeg -version 2>&1 | grep ffmpeg | cut -d" " -f3)"
-# echo -e "libsm6==$(dpkg -s libsm6 | grep Version)"
-# echo -e "libxext6==$(dpkg -s libxext6 | grep Version)"
+# echo -e "libsm6==$(dpkg -s libsm6 | grep Version | cut -d" " -f2)"
+# echo -e "libxext6==$(dpkg -s libxext6 | grep Version | cut -d" " -f2)"
