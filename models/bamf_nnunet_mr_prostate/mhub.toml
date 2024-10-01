@@ -1,0 +1,2 @@
+[model.deployment]
+test = "https://zenodo.org/record/13785615/files/bamf_nnunet_mr_prostate.test.zip"

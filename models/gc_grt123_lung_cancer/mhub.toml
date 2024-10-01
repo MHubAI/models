@@ -1,0 +1,2 @@
+[model.deployment]
+test = "https://zenodo.org/record/13785615/files/gc_grt123_lung_cancer.test.zip"

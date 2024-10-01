@@ -52,8 +52,9 @@ class WSIBackgroundSegmentationRunner(Module):
             # Execute the Tiger LB2 Algorithm through a Python subprocess and associated pipenv environment
             self.subprocess(
                 [
-                    "pipenv",
+                    "uv",
                     "run",
+                    "-p", ".venv38",
                     "python",
                     str(self.CLI_SCRIPT_PATH),
                     in_data.abspath,

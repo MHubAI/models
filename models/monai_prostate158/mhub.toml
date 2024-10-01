@@ -1,0 +1,2 @@
+[model.deployment]
+test = "https://zenodo.org/record/13785615/files/monai_prostate158.test.zip"
