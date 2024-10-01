@@ -8,14 +8,10 @@ Author: Cosmin Ciausu
 Email:  cciausu97@gmail.com
 -------------------------------------------------
 """
-# TODO: support multi-i/o and batch processing on multiple instances
 
-from typing import List, Optional
-import os, subprocess, shutil, glob, sys
-import SimpleITK as sitk, numpy as np
-from mhubio.core import Module, Instance, InstanceData, DataType, FileType, IO
-from mhubio.modules.runner.ModelRunner import ModelRunner
-import json
+import os, shutil, glob, sys
+import SimpleITK as sitk
+from mhubio.core import Module, Instance, InstanceData, FileType, IO
 
 @IO.Config('apply_center_crop', bool, True, the='flag to apply center cropping to input_image')
 class Prostate158Runner(Module):
@@ -45,8 +41,7 @@ class Prostate158Runner(Module):
         # define output folder (temp dir) and also override environment variable for nnunet
         out_dir = self.config.data.requestTempDir(label="monai-model-out")
        
-        bash_command = [sys.executable, 
-        "-m", "monai.bundle", "run", "evaluating"]
+        bash_command = [sys.executable, "-m", "monai.bundle", "run"]
         bash_command += ["--meta_file", os.path.join(os.environ['BUNDLE_ROOT'], "configs", "metadata.json")]
         bash_command += ["--config_file", os.path.join(os.environ['BUNDLE_ROOT'], "configs", "inference.json")]
         bash_command += ["--datalist", str(datalist)]

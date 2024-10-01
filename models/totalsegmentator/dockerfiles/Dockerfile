@@ -26,5 +26,5 @@ RUN buildutils/download_weights.sh \
   https://zenodo.org/record/6802452/files/Task255_TotalSegmentator_part5_ribs_1139subj.zip
 
 # Default run script
-ENTRYPOINT ["python3", "-m", "mhubio.run"]
+ENTRYPOINT ["mhub.run"]
 CMD ["--config", "/app/models/totalsegmentator/config/default.yml"]
