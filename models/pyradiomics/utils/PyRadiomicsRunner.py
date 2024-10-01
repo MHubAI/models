@@ -69,7 +69,7 @@ class PyRadiomicsRunner(Module):
     @IO.Instance()
     @IO.Input('image', 'nifti|nrrd:mod=ct|mr',  the='input image ct or mr scan')
     @IO.Inputs('segmentation', 'nifti|nrrd:mod=seg', the='input segmentation')
-    @IO.Output('results', '[d:roi].pyradiomics.csv', 'csv:features=pyradiomics', data='image', the='output csv file with the results')
+    @IO.Output('results', 'pyradiomics.csv', 'csv:features=pyradiomics', data='image', the='output csv file with the results')
     def task(self, instance: Instance, image: InstanceData, segmentation: InstanceDataCollection, results: InstanceData) -> None:
 
         # request temp dir for pyradiomics batch processing file
@@ -117,6 +117,7 @@ class PyRadiomicsRunner(Module):
         # build pyradiomics cli command
         #  pyradiomics <path/to/image> <path/to/segmentation> -o results.csv -f csv --param <path/to/params.yaml>
         cmd = [
+            'uv', 'run', '-p', '.venv38',
             'pyradiomics',
             pyr_bp_file,
             '-o', results.abspath,
