@@ -67,10 +67,10 @@
     "publications": [
       {
         "title": "The AIMI Initiative: AI-Generated Annotations in IDC Collections",
-        "uri": "https://arxiv.org/abs/2310.14897"
+        "uri": "https://arxiv.org/abs/2409.20342"
       }
     ],
-    "github": "https://github.com/bamf-health/aimi-liver-tumor-mr"
+    "github": "https://github.com/bamf-health/aimi-liver-tumor-ct"
   },
   "info": {
     "use": {
