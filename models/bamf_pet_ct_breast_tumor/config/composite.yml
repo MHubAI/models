@@ -1,0 +1,67 @@
+general:
+  data_base_dir: /app/data
+  version: 1.0
+  description: default configuration for Bamf NNUnet Breast FDG-avid lesions segmentation (dicom to dicom)
+
+execute:
+- FileStructureImporter
+- DsegExtractor
+- NiftiConverter
+- Registration
+- SegmentResampler
+- NNUnetPETCTRunner
+- ExtractorPostProcessor
+- DsegConverter
+- DataOrganizer
+
+modules:
+
+  FileStructureImporter:
+    input_dir: 'input_data'
+    structures:
+      - $patientID@instance/ct@dicom:mod=ct
+      - $patientID/pt@dicom:mod=pt
+      - $patientID/TotalSegmentator.seg.dcm@dicomseg:mod=seg
+    import_id: patientID
+
+  DsegExtractor:
+   roi:
+   - LIVER
+   - LEFT_RIB_1
+   - LEFT_RIB_2
+   - LEFT_RIB_3
+   - LEFT_RIB_4
+   - LEFT_RIB_5
+   - LEFT_RIB_6
+   - RIGHT_RIB_1
+   - RIGHT_RIB_2
+   - RIGHT_RIB_3
+   - RIGHT_RIB_4
+   - RIGHT_RIB_5
+   - RIGHT_RIB_6
+   - LEFT_UPPER_LUNG_LOBE
+   - RIGHT_UPPER_LUNG_LOBE
+   - SPLEEN
+   - RIGHT_KIDNEY
+   - LEFT_KIDNEY
+
+  NiftiConverter:
+    in_datas: dicom:mod=ct|pt
+    engine: dcm2niix
+    allow_multi_input: true
+
+  NNUnetPETCTRunner:
+    in_ct_data: nifti:mod=ct:registered=true
+
+  ExtractorPostProcessor:
+    in_ct_data: nifti:mod=ct:registered=true
+
+  DsegConverter:
+    source_segs: nifti:mod=seg:processor=bamf
+    model_name: BAMF Breast and Tumor AI Segmentation
+    target_dicom: dicom:mod=pt
+    skip_empty_slices: True
+
+  DataOrganizer:
+    targets:
+    - dicomseg-->[i:patientID]/bamf_pet_ct_breast_tumor.seg.dcm

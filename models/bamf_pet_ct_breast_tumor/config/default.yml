@@ -1,0 +1,48 @@
+general:
+  data_base_dir: /app/data
+  version: 1.0
+  description: default configuration for Bamf NNUnet Breast FDG-avid lesions segmentation (dicom to dicom)
+
+execute:
+- FileStructureImporter
+- NiftiConverter
+- Registration
+- NNUnetPETCTRunner
+- TotalSegmentatorMLRunner
+- BreastPostProcessor
+- DsegConverter
+- DataOrganizer
+
+modules:
+
+  FileStructureImporter:
+    input_dir: 'input_data'
+    structures:
+      - $patientID@instance/ct@dicom:mod=ct
+      - $patientID/pt@dicom:mod=pt
+    import_id: patientID
+
+  NiftiConverter:
+    in_datas: dicom:mod=ct|pt
+    engine: dcm2niix
+    allow_multi_input: true
+
+  TotalSegmentatorMLRunner:
+    in_data: nifti:mod=ct:registered=true
+    use_fast_mode: true
+
+  NNUnetPETCTRunner:
+    in_ct_data: nifti:mod=ct:registered=true
+
+  BreastPostProcessor:
+    in_ct_data: nifti:mod=ct:registered=true
+
+  DsegConverter:
+    source_segs: nifti:mod=seg:processor=bamf
+    model_name: BAMF Breast and Tumor AI Segmentation
+    target_dicom: dicom:mod=pt
+    skip_empty_slices: True
+
+  DataOrganizer:
+    targets:
+    - dicomseg-->[i:patientID]/bamf_pet_ct_breast_tumor.seg.dcm
