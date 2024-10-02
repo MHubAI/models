@@ -54,9 +54,7 @@ LD_LIBRARY_PATH="/opt/ants/lib:$LD_LIBRARY_PATH"
 ENV SKLEARN_ALLOW_DEPRECATED_SKLEARN_PACKAGE_INSTALL=True
 
 # 4. Install nnunet and surfa
-RUN pip3 install --no-cache-dir torch surfa==0.6
-RUN apt-get update && apt-get install -y python3.9 python3-pip && apt-get clean  && rm -rf /var/lib/apt/lists/*
-RUN python3.9 -m pip install nnunetv2==2.4.1
+RUN uv pip install torch==2.4.1 nnunetv2==2.4.1 surfa==0.6.1
 RUN apt-get update && apt-get install -y bc
 
 # Clone the main branch of MHubAI/models
