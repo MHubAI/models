@@ -60,7 +60,7 @@
         "weights": "06.06.2024",
         "pub": "07.06.2024"
       },
-      "cite": "Murugesan, Gowtham Krishnan, Diana McCrumb, Mariam Aboian, Tej Verma, Rahul Soni, Fatima Memon, and Jeff Van Oss. The AIMI Initiative: AI-Generated Annotations for Imaging Data Commons Collections. arXiv preprint arXiv:2310.14897 (2023).",
+      "cite": "Murugesan, Gowtham Krishnan, Diana McCrumb, Rahul Soni, Jithendra Kumar, Leonard Nuernberg, Linmin Pei, Ulrike Wagner, Sutton Granger, Andrey Y. Fedorov, Stephen Moore, Jeff Van Oss. AI generated annotations for Breast, Brain, Liver, Lungs and Prostate cancer collections in National Cancer Institute Imaging Data Commons. arXiv preprint arXiv:2409.20342 (2024).",
       "license": {
         "code": "MIT",
         "weights": "CC BY-NC 4.0"
