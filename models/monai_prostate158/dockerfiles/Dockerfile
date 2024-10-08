@@ -11,7 +11,7 @@ ARG MONAI_BUNDLE_DIR='https://github.com/Project-MONAI/model-zoo/releases/downlo
 ARG MONAI_MODEL_NAME='prostate_mri_anatomy'
 
 # Install nnunet and platipy
-RUN python3 -m pip install --upgrade pip && pip3 install --no-cache-dir "monai[ignite]" fire nibabel simpleITK
+RUN uv pip install -n "monai[ignite]==1.3.2" fire==0.6.0 nibabel==5.2.1
 
 # Clone the main branch of MHubAI/models
 ARG MHUB_MODELS_REPO
@@ -20,7 +20,7 @@ RUN buildutils/import_mhub_model.sh monai_prostate158 ${MHUB_MODELS_REPO}
 # Pull weights into the container
 ENV WEIGHTS_DIR=/app/models/monai_prostate158/bundle
 RUN mkdir -p $WEIGHTS_DIR
-RUN python3 -m monai.bundle download "prostate_mri_anatomy" --bundle_dir ${WEIGHTS_DIR}
+RUN uv run python -m monai.bundle download "prostate_mri_anatomy" --bundle_dir ${WEIGHTS_DIR}
 
 #define path to bundle root
 ENV BUNDLE_ROOT=/app/models/monai_prostate158/bundle/prostate_mri_anatomy
