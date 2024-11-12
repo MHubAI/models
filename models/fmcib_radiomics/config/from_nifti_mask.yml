@@ -1,7 +1,7 @@
 general:
   data_base_dir: /app/data
   version: 1.0
-  description: "FMCIB pipeline starting from a nrrd file image and a nnrd binary mask of the GTV."
+  description: "FMCIB pipeline starting from a nii.gz file image and a binary mask of the GTV."
 
 execute:
 - FileStructureImporter
@@ -12,8 +12,8 @@ execute:
 modules:
   FileStructureImporter:
     structures:
-      - $patientID/CT.nrrd@instance@nrrd:mod=ct
-      - $patientID/masks/GTV-1.nrrd@nrrd:mod=seg
+      - $patientID/CT.nii.gz@instance@nii.gz:mod=ct
+      - $patientID/masks/GTV.nii.gz@nii.gz:mod=seg
     import_id: patientID
 
   DataOrganizer:
