@@ -12,8 +12,8 @@ execute:
 modules:
   FileStructureImporter:
     structures:
-      - $patientID/CT.nii.gz@instance@nii.gz:mod=ct
-      - $patientID/masks/GTV.nii.gz@nii.gz:mod=seg
+      - $patientID/CT.nii.gz@instance@nifti:mod=ct
+      - $patientID/masks/GTV.nii.gz@nifti:mod=seg
     import_id: patientID
 
   DataOrganizer:
