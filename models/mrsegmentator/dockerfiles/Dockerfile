@@ -1,16 +1,17 @@
 FROM mhubai/base:latest
 
 # Update Python, nnUNet needs Python >= 3.9
-RUN apt-get update && apt-get install -y \
-    python3.11 \
-    python3-pip
+#RUN apt-get update && apt-get install -y \
+#    python3.11 \
+#    python3-pip
     
 # clone mhub implementation
 ARG MHUB_MODELS_REPO
 RUN buildutils/import_mhub_model.sh mrsegmentator ${MHUB_MODELS_REPO}
 
 # Install MRSegmentator
-RUN python3.11 -m pip install --no-cache-dir mrsegmentator
+RUN uv venv -p 3.11 .venv
+RUN uv pip install -p .venv mrsegmentator
 
 # Execute mrsegmentator once to download the weights, this will fail to run but download regardless
 RUN touch .temp_image.nii.gz
