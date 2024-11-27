@@ -19,4 +19,4 @@ RUN rm .temp_image.nii.gz
 
 # Default run script
 ENTRYPOINT ["python3", "-m", "mhubio.run"]
-CMD ["--config", "/app/models/mrsegmentator/config/default.yml"]
+CMD ["--workflow", "default"]
