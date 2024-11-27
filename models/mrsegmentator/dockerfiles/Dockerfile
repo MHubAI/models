@@ -10,8 +10,6 @@ ARG MHUB_MODELS_REPO
 RUN buildutils/import_mhub_model.sh mrsegmentator ${MHUB_MODELS_REPO}
 
 # Install MRSegmentator
-RUN uv venv -p 3.11 /app/.venv
-ENV PATH="/app/.venv/bin:$PATH"
 RUN uv pip install -p /app/.venv mrsegmentator
 
 # Execute mrsegmentator once to download the weights, this will fail to run but download regardless
