@@ -18,5 +18,5 @@ RUN mrsegmentator -i .temp_image.nii.gz; exit 0
 RUN rm .temp_image.nii.gz
 
 # Default run script
-ENTRYPOINT ["/app/.venv/bin/python3", "-m", "mhubio.run"]
-CMD ["--workflow", "default"]
+ENTRYPOINT ["mhub.run"]
+CMD ["--config", "/app/models/mrsegmentator/config/default.yml"]
