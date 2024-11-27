@@ -31,5 +31,5 @@ RUN buildutils/import_mhub_model.sh gc_grt123_lung_cancer ${MHUB_MODELS_REPO}
 ENV PYTHONPATH="/gc_grt123_lung_cancer:/app"
 
 # Default entrypoint
-ENTRYPOINT ["python3", "-m", "mhubio.run"]
+ENTRYPOINT ["mhub.run"]
 CMD ["--config", "/app/models/gc_grt123_lung_cancer/config/default.yml"]

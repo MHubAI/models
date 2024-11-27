@@ -1,0 +1,3 @@
+#!/bin/bash
+uv pip uninstall mhubio segdb
+uv pip install git+https://github.com/MHubAI/mhubio.git git+https://github.com/MHubAI/segdb.git

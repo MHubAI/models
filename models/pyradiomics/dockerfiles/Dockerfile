@@ -1,13 +1,16 @@
 FROM mhubai/base:latest
 
-# Install dependencies
-RUN pip3 install --no-cache-dir \
-  pyradiomics==3.0.1
+# Install pyradiomics 3.0.1 into a separate python 3.8 environment
+# NOTE: pyradiomics 3.1.0 does not provice a cli entrypoint
+# NOTE: pyradiomics 3.0.1 somehow doesn't correctly pick up the numpy build dependency. We use --no-build-isolation and manually install setuptools and numpy.
+RUN uv venv -p 3.8 .venv38 \
+ && uv pip install -p .venv38/ setuptools==74.1.2 numpy==1.24.4 \
+ && uv pip install -p .venv38/ --no-build-isolation pyradiomics==3.0.1
 
 # Import the MHub model definiton
 ARG MHUB_MODELS_REPO
 RUN buildutils/import_mhub_model.sh pyradiomics ${MHUB_MODELS_REPO}
 
 # Default run script
-ENTRYPOINT ["python3", "-m", "mhubio.run"]
+ENTRYPOINT ["mhub.run"]
 CMD ["--config", "/app/models/pyradiomics/config/default.yml"]

@@ -14,7 +14,7 @@ RUN apt-get update && apt-get install ffmpeg libsm6 libxext6  -y
 # Install nnunet and platipy
 RUN pip3 install --no-cache-dir \
   nnunet \
-  platipy[cardiac]==0.7.0
+  platipy[cardiac]==0.7.2
 
 # Import the MHub model definiton
 ARG MHUB_MODELS_REPO
@@ -39,5 +39,5 @@ RUN unzip ${WEIGHTS_DIR}${WEIGHTS_FN} -d ${WEIGHTS_DIR}
 RUN rm ${WEIGHTS_DIR}${WEIGHTS_FN}
 
 # Default run script
-ENTRYPOINT ["python3", "-m", "mhubio.run"]
+ENTRYPOINT ["mhub.run"]
 CMD ["--config", "/app/models/platipy/config/default.yml"]
