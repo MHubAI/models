@@ -10,11 +10,11 @@ ARG MHUB_MODELS_REPO
 RUN buildutils/import_mhub_model.sh mrsegmentator ${MHUB_MODELS_REPO}
 
 # Install MRSegmentator
-RUN uv pip install -p /app/.venv mrsegmentator
+RUN uv pip install mrsegmentator
 
 # Execute mrsegmentator once to download the weights, this will fail to run but download regardless
 RUN touch .temp_image.nii.gz
-RUN mrsegmentator -i .temp_image.nii.gz; exit 0
+RUN uv run mrsegmentator -i .temp_image.nii.gz; exit 0
 RUN rm .temp_image.nii.gz
 
 # Default run script
