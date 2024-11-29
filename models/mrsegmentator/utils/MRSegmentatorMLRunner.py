@@ -34,6 +34,7 @@ class MRSegmentatorMLRunner(Module):
         bash_command  = ["mrsegmentator"]
         bash_command += ["-i", in_data.abspath]
         bash_command += ["--outdir", tmp_dir]
+        bash_command += ["--nproc", "1"]
 
         if self.use_fast_mode:
             self.v("Running MRSegmentator in lower memory footprint mode ('--split_level', 1)")
