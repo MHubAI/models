@@ -19,7 +19,6 @@ modules:
       mod: '%Modality'
 
   MRSegmentatorMLRunner:
-    use_fast_mode: false
 
   DsegConverter:
     model_name: MRSegmentator

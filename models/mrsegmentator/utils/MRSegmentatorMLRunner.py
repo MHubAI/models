@@ -19,10 +19,7 @@ import shutil
 # register custom segmentation before class definition
 Segment.register("SPINE", name="Spine")
 
-@IO.Config('use_fast_mode', bool, False, the="flag to set to run MRSegmentator in a faster mode")
 class MRSegmentatorMLRunner(Module):
-
-    use_fast_mode: bool
 
     @IO.Instance()
     @IO.Input('in_data', 'nifti:mod=ct|mr', the="input whole body mr/ct scan")
@@ -34,16 +31,7 @@ class MRSegmentatorMLRunner(Module):
         bash_command  = ["mrsegmentator"]
         bash_command += ["-i", in_data.abspath]
         bash_command += ["--outdir", tmp_dir]
-        bash_command += ["--nproc_export", "1"]
-        bash_command += ["--nproc", "1"]
-        bash_command += ["--batchsize", "1"]
-
-        if self.use_fast_mode:
-            self.v("Running MRSegmentator in lower memory footprint mode ('--split_level', 1)")
-            self.v("Note: This increases runtime and possibly reduces segmentation performance.")
-            bash_command += ["--split_level", "1"]
-        else:
-            self.v("Running MRSegmentator in default mode.")
+        bash_command += ["--split_level", "1"]
 
         self.v(">> run: ", " ".join(bash_command))
 
