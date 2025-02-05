@@ -8,7 +8,9 @@ FROM mhubai/base:latest
 ENV SKLEARN_ALLOW_DEPRECATED_SKLEARN_PACKAGE_INSTALL=True
 
 # Install TotalSegmentator
-RUN pip3 install --no-cache-dir totalsegmentator==1.5.6 
+RUN pip3 install --no-cache-dir \
+  totalsegmentator==1.5.6 \
+  torch==2.2.1
 
 # Import the MHub model definiton
 ARG MHUB_MODELS_REPO
