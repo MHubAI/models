@@ -53,33 +53,9 @@ RUN uv venv -p 3.11
 RUN uv pip install --no-cache pip \
  && ln -s $(uv run which pip) /usr/bin/pip3
 
-# Install general python utilities (specify version if necessary)
-# NOTE: these dependencies will be declared as part of mhubio in an upcoming release.
-# RUN uv pip install --no-cache typing-extensions Pillow h5py numpy pandas panimg pydicom pydicom-seg highdicom rt_utils PyYAML pyplastimatch SimpleITK thedicomsort colorspacious jsonschema dcmqi dcm2niix toml
-RUN uv pip install --no-cache \
-  "colorspacious~=1.1.2" \
-  "dcm2niix~=1.0.20220715" \
-  "dcmqi~=0.2.0" \
-  "h5py~=3.11.0" \
-  "highdicom~=0.22.0" \
-  "jsonschema~=3.2.0" \
-  "pandas~=2.2.2" \
-  "panimg~=0.13.2" \
-  "pillow~=10.4.0" \
-  "pydicom-seg~=0.4.1" \
-  "pydicom~=2.4.4" \
-  "pyplastimatch~=0.4.6" \
-  "pyyaml~=6.0.2" \
-  "rt-utils~=1.2.7" \
-  "simpleitk~=2.4.0" \
-  "thedicomsort~=1.0.1" \
-  "toml~=0.10.2" \
-  "typing-extensions~=4.12.2"
-
 # Install mhub dependencies and tools
 RUN uv pip install git+https://github.com/MHubAI/mhubio.git \
-  && uv pip install git+https://github.com/MHubAI/segdb.git  \
-  && uv tool install git+https://github.com/LennyN95/medcmp.git@pyproject_restructure_poetry
+  && uv tool install git+https://github.com/LennyN95/medcmp.git
 
 # Install the base image utilities
 RUN git init \
