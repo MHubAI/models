@@ -1,11 +1,11 @@
 general:
   data_base_dir: /app/data
   version: 1.0
-  description: Run fmcib radiomics pipeline on dicom data
+  description: run pyradiomics pipeline on dicom data
 
 execute:
 - DicomImporter
-- DsegExtractor
+- RTStructExtractor
 - NiftiConverter
 - CentroidExtractor
 - FMCIBRunner
@@ -21,14 +21,13 @@ modules:
       mod: '%Modality'
       desc: '%SeriesDescription'
 
-  # roi can be specified manually but will otherwise extracted form the dicomseg via the meta.json 
-  # DsegExtractor:
+  # roi can be specified manually but will otherwise extracted form the rtstruct segemnetation names
+  # RTStructExtractor:
   #   roi: 
   #   - LIVER
   #   - LIVER+NEOPLASM_MALIGNANT_PRIMARY
 
   DataOrganizer:
     targets:
-    - csv-->[i:sid]/features.csv
-  # - nifit:mod=seg:origin=dicomseg-->[i:sid]/masks/[basename]
-  # - nifti-->[i:sid]/nifti/[d:mod]/[basename]
+      - csv-->[i:sid]/features.csv
+        # - nifti-->[i:sid]/nifti/[d:mod]/[basename]
