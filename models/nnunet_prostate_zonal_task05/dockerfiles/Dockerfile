@@ -10,13 +10,11 @@ LABEL authors="lnuernberg@bwh.harvard.edu"
 # https://github.com/MIC-DKFZ/nnUNet/pull/1209
 ENV SKLEARN_ALLOW_DEPRECATED_SKLEARN_PACKAGE_INSTALL=True
 
-# isntall additional system dependencies
-RUN apt update && apt install -y dcm2niix
-
 # install additional python dependencies
 RUN pip3 install --no-cache-dir \
-    nnunet \
-    nibabel
+    nnunet==1.7.1 \
+    torch==2.4.1 \
+    nibabel==5.2.1
 
 # pull weights for platipy's nnU-Net so that the user doesn't need to every time a container is run
 ENV WEIGHTS_DIR="/root/.nnunet/nnUNet_models/nnUNet/"

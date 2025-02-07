@@ -13,7 +13,8 @@ RUN apt-get update && apt-get install ffmpeg libsm6 libxext6  -y
 
 # Install nnunet and platipy
 RUN pip3 install --no-cache-dir \
-  nnunet \
+  nnunet==1.7.1 \
+  torch==2.2.1 \
   platipy[cardiac]==0.7.2
 
 # Import the MHub model definiton

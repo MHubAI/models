@@ -10,9 +10,9 @@ ENV SKLEARN_ALLOW_DEPRECATED_SKLEARN_PACKAGE_INSTALL=True
 # Install nnunet (for heart segmentation) and casust dependencies (for cardiac substructure segmentation)
 RUN pip3 install --no-cache-dir \
   nnunet==1.7.1 \
-  torch \
-  torchvision \
-  torchio
+  torch==2.2.0 \
+  torchvision==0.17.0 \
+  torchio==0.19.6
 
 # Clone the casust model
 RUN git clone https://github.com/LennyN95/CaSuSt /app/models/casust/src
