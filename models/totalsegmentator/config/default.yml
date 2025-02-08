@@ -30,3 +30,13 @@ modules:
   DataOrganizer:
    targets:
    - dicomseg:mod=seg-->[i:sid]/TotalSegmentator.seg.dcm
+
+sample:
+  idc:
+    dicom: 
+      SeriesInstanceUID: 61.7.186195007319014217251157852440977945371
+      aws_url: s3://idc-open-data/b28448ba-0dee-49e6-94f1-5c3877a63186/*
+  input: 
+    dicom: "Folder containing a single CT scan dicom data"
+  output:
+    "61.7.186195007319014217251157852440977945371/TotalSegmentator.seg.dcm": "Segmentation output file"
