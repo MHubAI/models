@@ -4,28 +4,25 @@
   "title": "Foundation Model for Cancer Imaging Biomarkers",
   "summary": {
     "description": "A foundation model for cancer imaging biomarker discovery trained through self-supervised learning using a dataset of 11,467 radiographic lesions. The model features can be used as a data-driven substitute for classical radiomic features",
-    "inputs": [
-      {
-        "label": "Input CT Image",
-        "description": "CT imaging data containing lesions of interest, such as nodules or tumors",
-        "format": "DICOM",
-        "modality": "CT",
-        "slicethickness": "5mm",
-        "bodypartexamined": "WHOLEBODY",
-        "non-contrast": true,
-        "contrast": true
-      },
-      {
-        "label": "Center of mass",
-        "description": "Center of mass of the lesion in the CT image",
-        "format": "JSON",
-        "modality": "JSON",
-        "slicethickness": "5mm",
-        "bodypartexamined": "WHOLEBODY",
-        "non-contrast": true,
-        "contrast": true
-      }
-    ],
+    "inputs": [ {
+      "label": "Input Image",
+      "description": "The input image.",
+      "format": "DICOM",
+      "modality": "CT",
+      "bodypartexamined": "WHOLEBODY",
+      "slicethickness": "2.5mm",
+      "non-contrast": true,
+      "contrast": true
+    }, {
+      "label": "Input Segmentation",
+      "description": "The input segmentation to be analysed.",
+      "format": "DICOMSEG",
+      "modality": "SEG",
+      "bodypartexamined": "WHOLEBODY",
+      "slicethickness": "2.5mm",
+      "non-contrast": true,
+      "contrast": true
+    } ],
     "outputs": [
       {
         "type": "Prediction",

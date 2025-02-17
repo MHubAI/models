@@ -1,0 +1,27 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "type": "array",
+  "items": {
+    "type": "object",
+    "properties": {
+      "Mhub ROI": {
+        "type": "string"
+      },
+      "coordX": {
+        "type": "number"
+      },
+      "coordY": {
+        "type": "number"
+      },
+      "coordZ": {
+        "type": "number"
+      }
+    },
+    "required": [
+      "Mhub ROI",
+      "coordX",
+      "coordY",
+      "coordZ"
+    ]
+  }
+}
