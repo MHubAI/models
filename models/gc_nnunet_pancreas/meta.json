@@ -114,15 +114,19 @@
     },
     "evaluation": {
       "title": "Evaluation Data",
-      "text": "This framework was tested in an independent, external cohort consisting of two publicly available datasets of respectively 281 and 80 patients each. The Medical Segmentation Decathlon pancreas dataset (training portion) [1] consisting of 281 patients with pancreatic malignancies (including lesions in the head, neck, body, and tail of the pancreas) and voxel-level annotations for the pancreas and lesion. The Cancer Imaging Archive dataset from the US National Institutes of Health Clinical Center [2], containing 80 patients with normal pancreas and respective voxel-level annotations.",
+      "text": "This framework was tested in an independent, external cohort consisting of two publicly available datasets of respectively 281 and 80 patients each. The Medical Segmentation Decathlon pancreas dataset (training portion) [1] consisting of 281 patients with pancreatic malignancies (including lesions in the head, neck, body, and tail of the pancreas) and voxel-level annotations for the pancreas and lesion. The Cancer Imaging Archive (TCIA) dataset from the US National Institutes of Health Clinical Center [2], contains 82 patients with normal pancreas and respective voxel-level annotations. A link to the 80 TCIA patient cases used for the evaluation of this model can be found here [3].",
       "references": [
         {
           "label": "The Medical Segmentation Decathlon pancreas dataset (training portion)",
           "uri": "http://medicaldecathlon.com/"
         },
         {
-          "label": "The Cancer Imaging Archive dataset from the US National Institutes of Health Clinical Center",
-          "uri": "https://wiki.cancerimagingarchive.net/display/Public/Pancreas-CT"
+          "label": "Roth, H., Farag, A., Turkbey, E. B., Lu, L., Liu, J., & Summers, R. M. (2016). Data From Pancreas-CT (Version 2) [Data set]. The Cancer Imaging Archive.",
+          "uri": "https://doi.org/10.7937/K9/TCIA.2016.tNB1kqBU"
+        },
+        {
+          "label": "Subset of 80/82 test cases from the TCIA Pancreas-CT Data set used for the evaluation",
+          "uri": "https://nbia.cancerimagingarchive.net/nbia-search/?saved-cart=nbia-977521177963571535"
         }
       ],
       "tables": []
