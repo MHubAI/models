@@ -7,6 +7,7 @@ import zipfile
 from colorama import Fore, Style, init as colorama_init
 import toml
 import io
+from pathlib import Path
 
 
 # NOTE: all file path operations are relative to the repository root.
@@ -297,33 +298,46 @@ def validateModelTestData(base: str, model_name: str):
     # print status
     print(f"Downloading test data from {test_url}")
     print(f"Status code: {response.status_code}")
+    print(f"Identified workflows: {','.join(workflows)}")
+        
+    # print the tree of the zip file
+    # print("Zip file tree:")
+    # with zipfile.ZipFile(io.BytesIO(response.content), 'r') as zip_ref:
+    #     for file in zip_ref.namelist():
+    #         print(f"  {file}")
         
     # scan the zip file and check that it contains a folder for every config file and that each folder contains a sample and reference folder that are not empty
     with zipfile.ZipFile(io.BytesIO(response.content), 'r') as zip_ref:
+        
+        # zipfile directory list
+        zip_files = zip_ref.namelist()
+        zip_dirs = sorted(list({str(Path(fp).parent) + '/' for fp in zip_files} | {str(p) + '/' for fp in zip_files for p in Path(fp).parents}))
+
+        # test for each workflow        
         for workflow in workflows:
             
             # check if the workflow folder exists
-            if not f"{workflow}/" in zip_ref.namelist():
+            if not f"{workflow}/" in zip_dirs:
                 compliancy_check.error(Message(f"Test data zip file does not contain a folder for workflow '{workflow}'", DocuRef.MODEL_META_JSON))
                 compliancy_check.warn(Message(f"Skipping additional checks because no test files provided for workflow '{workflow}'"))
                 continue
             
             # check if the workflow folder contains a sample and reference folder
-            if not f"{workflow}/sample/" in zip_ref.namelist():
+            if not f"{workflow}/sample/" in zip_dirs:
                 compliancy_check.error(Message(f"Test data zip file does not contain a sample folder for workflow '{workflow}'", DocuRef.MODEL_META_JSON))
                 compliancy_check.warn(Message(f"Skipping additional checks because no sample files provided for workflow '{workflow}'"))
                 
             # if sample folder available, check if its empty
-            elif len([p for p in zip_ref.namelist() if p.startswith(f"{workflow}/sample/")]) == 0:
+            elif len([p for p in zip_files if p.startswith(f"{workflow}/sample/")]) == 0:
                 compliancy_check.error(Message(f"Test data zip file contains an empty sample folder for workflow '{workflow}'", DocuRef.MODEL_META_JSON))
                 
             # check if the workflow folder contains a reference folder
-            if not f"{workflow}/reference/" in zip_ref.namelist():
+            if not f"{workflow}/reference/" in zip_dirs:
                 compliancy_check.error(Message(f"Test data zip file does not contain a reference folder for workflow '{workflow}'", DocuRef.MODEL_META_JSON))
                 compliancy_check.warn(Message(f"Skipping additional checks because no reference files provided for workflow '{workflow}'"))
 
             # if reference folder available, check if its empty                
-            elif len([p for p in zip_ref.namelist() if p.startswith(f"{workflow}/reference/")]) == 0:
+            elif len([p for p in zip_files if p.startswith(f"{workflow}/reference/")]) == 0:
                 compliancy_check.error(Message(f"Test data zip file contains an empty reference folder for workflow '{workflow}'", DocuRef.MODEL_META_JSON))
                 
 
