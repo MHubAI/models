@@ -1,34 +1,22 @@
 general:
   data_base_dir: /app/data
   version: 1.0
-  description: Run fmcib radiomics pipeline on dicom data
+  description: FMCIB pipeline starting from DICOM files and centroids in json files or slicer exports named by their SeriesInstanceUID
 
 execute:
 - DicomImporter
-- DsegExtractor
+- FileImporter
 - NiftiConverter
-- CentroidExtractor
 - FMCIBRunner
 - DataOrganizer
 
 modules:
-  DicomImporter:
-    source_dir: input_data
-    import_dir: sorted_data
-    sort_data: true
-    merge: true
-    meta: 
-      mod: '%Modality'
-      desc: '%SeriesDescription'
 
-  # roi can be specified manually but will otherwise extracted form the dicomseg via the meta.json 
-  # DsegExtractor:
-  #   roi: 
-  #   - LIVER
-  #   - LIVER+NEOPLASM_MALIGNANT_PRIMARY
+  FileImporter:
+    instance_id: sid
+    meta: type=fmcibcoordinates
+    type: json
 
   DataOrganizer:
     targets:
-    - csv-->[i:sid]/features.csv
-  # - nifit:mod=seg:origin=dicomseg-->[i:sid]/masks/[basename]
-  # - nifti-->[i:sid]/nifti/[d:mod]/[basename]
+      - json:type=fmcibfeatures-->[i:sid]/features.json

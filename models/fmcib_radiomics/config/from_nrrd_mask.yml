@@ -1,18 +1,19 @@
 general:
   data_base_dir: /app/data
   version: 1.0
-  description: "FMCIB pipeline"
+  description: "FMCIB pipeline starting from a nrrd file image and a nnrd binary mask of the GTV."
 
 execute:
 - FileStructureImporter
+- CentroidExtractor
 - FMCIBRunner
 - DataOrganizer
 
 modules:
   FileStructureImporter:
     structures:
-      - $patientID@instance/re:^.*\.nrrd$::@nrrd:mod=ct
-      - $patientID/re:^.*\.json$::@json:type=fmcibcoordinates
+      - $patientID/CT.nrrd@instance@nrrd:mod=ct
+      - $patientID/masks/GTV-1.nrrd@nrrd:mod=seg
     import_id: patientID
 
   DataOrganizer:
