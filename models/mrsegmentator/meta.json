@@ -1,0 +1,140 @@
+{
+    "id": "3b8e2f1d-4c5a-4b2a-8f3e-6a7d9e2c1b0d", 
+    "name": "mrsegmentator",
+    "title": "MRSegmentator",
+    "summary": {
+      "description": "MRSegmentator is an AI-based pipeline for the segmentation of 40 anatomical structures in MR images (with and without contrast).",
+      "inputs": [
+        {
+          "label": "Input Image",
+          "description": "The MR or CT scan of a patient (Thorax, Abdomen and Pelvis).",
+          "format": "DICOM",
+          "modality": "MRI|CT",
+          "bodypartexamined": "WHOLEBODY",
+          "slicethickness": "n/a",
+          "non-contrast": true,
+          "contrast": true
+        }
+      ],
+      "outputs": [
+        {
+          "type": "Segmentation",
+          "classes": [
+            "SPLEEN",
+            "RIGHT_KIDNEY",
+            "LEFT_KIDNEY",
+            "GALLBLADDER",
+            "LIVER",
+            "STOMACH",
+            "PANCREAS",
+            "RIGHT_ADRENAL_GLAND",
+            "LEFT_ADRENAL_GLAND",
+            "LEFT_LUNG",
+            "RIGHT_LUNG",
+            "HEART",
+            "AORTA",
+            "INFERIOR_VENA_CAVA",
+            "PORTAL_AND_SPLENIC_VEIN",
+            "LEFT_ILIAC_ARTERY",
+            "RIGHT_ILIAC_ARTERY",
+            "ESOPHAGUS",
+            "SMALL_INTESTINE",
+            "DUODENUM",
+            "COLON",
+            "URINARY_BLADDER",
+            "SPINE",
+            "SACRUM",
+            "LEFT_HIP",
+            "RIGHT_HIP",
+            "LEFT_FEMUR",
+            "RIGHT_FEMUR",
+            "LEFT_AUTOCHTHONOUS_BACK_MUSCLE",
+            "RIGHT_AUTOCHTHONOUS_BACK_MUSCLE",
+            "LEFT_ILIOPSOAS",
+            "RIGHT_ILIOPSOAS",
+            "LEFT_GLUTEUS_MAXIMUS",
+            "RIGHT_GLUTEUS_MAXIMUS",
+            "LEFT_GLUTEUS_MEDIUS",
+            "RIGHT_GLUTEUS_MEDIUS",
+            "LEFT_GLUTEUS_MINIMUS",
+            "RIGHT_GLUTEUS_MINIMUS"
+          ]
+        }
+      ],
+      "model": {
+        "architecture": "U-net",
+        "training": "supervised",
+        "cmpapproach": "ensemble"
+      },
+      "data": {
+        "training": {
+          "vol_samples": 2649
+        },
+        "evaluation": {
+          "vol_samples": 960
+        },
+        "public": true,
+        "external": true
+      }
+    },
+    "details": {
+      "name": "MRSegmentator",
+      "version": "1.1.0",
+      "devteam": "AI-Assisted Healthcare Lab at Technical University Munich and Charité Universitätsmedizin Berlin",
+      "type": "nnU-Net (U-Net structure, optimized by data-driven heuristics)",
+      "date": {
+        "weights": "05/18/24",
+        "code": "05/18/24",
+        "pub": "2024"
+      },
+      "cite": "Hartmut Häntze, Lina Xu, Felix J. Dorfner, Leonhard Donle, Daniel Truhn, Hugo Aerts, Mathias Prokop, Bram van Ginneken, Alessa Hering, Lisa C. Adams, and Keno K. Bressem. MRSegmentator: Robust multi-modality segmentation of 40 classes in MRI and CT sequences. arXiv, 2024.",
+      "license": {
+        "code": "Apache 2.0",
+        "weights": "Apache 2.0"
+      },
+      "publications": [
+        {
+          "title": "MRSegmentator: Robust multi-modality segmentation of 40 classes in MRI and CT sequences",
+          "uri": "https://arxiv.org/pdf/2405.06463"
+        }
+      ],
+      "github": "https://github.com/hhaentze/MRSegmentator",
+      "slicer": false
+    },
+    "info": {
+      "use": {
+        "title": "Intended Use",
+        "text": "Contrary to CT scans, where tools for automatic multi-structure segmentation are quite mature, segmentation tasks in MRI scans are often either focused on the brain region or on a subset of few organs in other body regions. MRSegmentator aims to extend this and accurately segment 40 organs and structures in human MRI scans of the abdominal, pelvic and thorax regions. The segmentation works well on different sequence types, including T1- and T2-weighted, Dixon sequences and even CT images."
+      },
+      "analyses": {
+        "title": "Quantitative Analyses",
+        "text": "The model's performance was assessed using the Dice Coefficient on three different external datasets. For more information, please refer to the model's publication [1].",
+        "references": [
+          {
+            "label": "MRSegmentator: Robust multi-modality segmentation of 40 classes in MRI and CT sequences",
+            "uri": "https://arxiv.org/pdf/2405.06463"
+          }
+        ]
+      },
+      "evaluation": {
+        "title": "Evaluation Data",
+        "text": "The model was evaluated on test data from three different dataset. The NAKO dataset included 600 MRI examinationsm, the AMOS MRI dataset included 60 MRI examinations and the AMOS CT dataset which included a total of 300 CT examinations.",
+        "references": [
+          {
+            "label": "MRSegmentator: Robust multi-modality segmentation of 40 classes in MRI and CT sequences",
+            "uri": "https://arxiv.org/pdf/2405.06463"
+          }
+        ]
+      },
+      "training": {
+        "title": "Training Data",
+        "text": "Three different datasets were used for training. The in-house dataset included 221 MRI scans with T1, T2 and T1fs post contrast sequences. The UK Biobank dataset used consisted of 1200 MRI examinations acquired using IN, OPP, W, F sequences. Furthermore 1228 CT examinations from the TotalSegmentator dataset were used. All segmentations were performed by a radiologist, using a human-in-the-loop annotation approach to efficiently create high-quality segmentations for the training data.",
+        "references": [
+          {
+            "label": "MRSegmentator: Robust multi-modality segmentation of 40 classes in MRI and CT sequences",
+            "uri": "https://arxiv.org/pdf/2405.06463"
+          }
+        ]
+      }
+    }
+  }
