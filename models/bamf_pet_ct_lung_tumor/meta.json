@@ -1,0 +1,185 @@
+{
+    "id": "",
+    "name": "bamf_pet_ct_lung_tumor",
+    "title": "FDG PET/CT Lung and Lung Tumor Annotation",
+    "summary": {
+        "description": "An nnU-Net based model to segment Lung and FDG-avid lesions in the lung from FDG PET/CT scans",
+        "inputs": [
+            {
+                "label": "Input Image",
+                "description": "The CT scan of a patient.",
+                "format": "DICOM",
+                "modality": "CT",
+                "bodypartexamined": "Lung",
+                "slicethickness": "5mm",
+                "non-contrast": true,
+                "contrast": false
+            },
+            {
+                "label": "Input Image",
+                "description": "The PET scan of a patient.",
+                "format": "DICOM",
+                "modality": "PT",
+                "bodypartexamined": "Lung",
+                "slicethickness": "4mm",
+                "non-contrast": false,
+                "contrast": false
+            }
+        ],
+        "outputs": [
+            {
+                "label": "Segmentation",
+                "type": "Segmentation",
+                "description": "Segmentation Lung and tumor",
+                "classes": [
+                    "LUNG",
+                    "LUNG+FDG_AVID_TUMOR"
+                ]
+            }
+        ],
+        "model": {
+            "architecture": "U-net",
+            "training": "supervised",
+            "cmpapproach": "3D"
+        },
+        "data": {
+            "training": {
+                "vol_samples": 1014
+            },
+            "evaluation": {
+                "vol_samples": 77
+            },
+            "public": true,
+            "external": true
+        }
+    },
+    "details": {
+        "name": "AIMI PET CT Lung",
+        "version": "1.0.0",
+        "devteam": "BAMF Health",
+        "authors": [
+            "Soni, Rahul",
+            "McCrumb, Diana",
+            "Murugesan, Gowtham Krishnan",
+            "Van Oss, Jeff"
+        ],
+        "type": "nnU-Net (U-Net structure, optimized by data-driven heuristics)",
+        "date": {
+            "code": "17.10.2023",
+            "weights": "28.08.2023",
+            "pub": "23.10.2023"
+        },
+        "cite": "Murugesan, Gowtham Krishnan, Diana McCrumb, Mariam Aboian, Tej Verma, Rahul Soni, Fatima Memon, and Jeff Van Oss. The AIMI Initiative: AI-Generated Annotations for Imaging Data Commons Collections. arXiv preprint arXiv:2310.14897 (2023).",
+        "license": {
+            "code": "MIT",
+            "weights": "CC BY-NC 4.0"
+        },
+        "publications": [
+            {
+                "title": "The AIMI Initiative: AI-Generated Annotations in IDC Collections",
+                "uri": "https://arxiv.org/abs/2310.14897"
+            }
+        ],
+        "github": "https://github.com/bamf-health/aimi-lung-pet-ct"
+    },
+    "info": {
+        "use": {
+            "title": "Intended Use",
+            "text": "This model is intended to perform lung and tumor segmentation in FDG PET CT scans. The model has been trained and tested on scans acquired during clinical care of patients, so it might not be suited for a healthy population. The generalization capabilities of the model on a range of ages, genders, and ethnicities are unknown. For detailed information on the training set design, please refer to reference section in the training section"
+        },
+        "analyses": {
+            "title": "Quantitative Analyses",
+            "text": "Label-wise metrics (mean (standard deviation)) between AI derived and manual corrected FDG PET/CT lungs and tumor annotations.",
+            "tables": [
+                {
+                  "label": "Segmentation Metric Expert",
+                  "entries": {
+                    "Lung DSC": "1.00 (0.00) ",
+                    "Tumor DSC": "0.97 (0.11) ",
+                    "Lung 95% Hausdorff (mm)": "0.10 (0.58)",
+                    "Tumor 95% Hausdorff (mm)": "5.83 (19.42) "
+                  }
+                },
+                {
+                  "label": "Segmentation Metric Tumor - Non-Expert",
+                  "entries": {
+                    "Lung DSC": "0.99 (0.04)",
+                    "Tumor DSC": "0.92 (0.20)",
+                    "Lung 95% Hausdorff (mm)": "1.97 (10.50)",
+                    "Tumor 95% Hausdorff (mm)": "10.00 (26.34)"
+                  }
+                },
+                {
+                  "label": "Detection Accuracy",
+                  "entries": {
+                    "Sensitivity": "0.91",
+                    "False negative rate": "0.09",
+                    "F1 score": "0.94"
+                  }
+                }
+            ],
+            "references": [
+                {
+                    "label": "The AIMI Initiative: AI-Generated Annotations for Imaging Data Commons Collections",
+                    "uri": "https://arxiv.org/abs/2310.14897"
+                }
+            ]
+        },
+        "evaluation": {
+            "title": "Evaluation Data",
+            "text": "The model was used to segment cases from the IDC [1] collection of ACRIN-NSCLC-FDG-PET [2], Anti-PD-1-Lung [3], LUNG-PET-CT-Dx[4], NSCLC Radiogenomics[5], RIDER Lung PET-CT[6], TCGA-LUAD[7], TCGA-LUSC[8] . Approximately 20% of those cases were randomly selected to be reviewed and corrected by a board-certified radiologist. The model predictions, and radiologist corrections are published on zenodo [9]",
+            "references": [
+                {
+                    "label": "Imaging Data Collections (IDC)",
+                    "uri": "https://datacommons.cancer.gov/repository/imaging-data-commons"
+                },
+                {
+                    "label": "ACRIN-NSCLC-FDG-PET",
+                    "uri": "https://www.cancerimagingarchive.net/collection/acrin-nsclc-fdg-pet/"
+                },
+                {
+                    "label": "Anti-PD-1-Lung",
+                    "uri": "https://www.cancerimagingarchive.net/collection/anti-pd-1_lung/"
+                },
+                {
+                    "label": "LUNG-PET-CT-Dx",
+                    "uri": "https://www.cancerimagingarchive.net/collection/lung-pet-ct-dx/"
+                },
+                {
+                    "label": "NSCLC Radiogenomics",
+                    "uri": "https://www.cancerimagingarchive.net/collection/nsclc-radiogenomics/"
+                },
+                {
+                    "label": "RIDER Lung PET-CT",
+                    "uri": "https://wiki.cancerimagingarchive.net/display/Public/RIDER+Collections"
+                },
+                {
+                    "label": "TCGA-LUAD",
+                    "uri": "https://www.cancerimagingarchive.net/collection/tcga-luad/"
+                },
+                {
+                    "label": "TCGA-LUSC",
+                    "uri": "https://www.cancerimagingarchive.net/collection/tcga-lusc/"
+                },
+                {
+                    "label": "Image segmentations produced by the AIMI Annotations initiative",
+                    "uri": "https://zenodo.org/records/10009368"
+                }
+            ]            
+        },
+        "training": {
+            "title": "Training Data",
+            "text": "The AutoPET Challenge 2023 dataset is comprised of whole-body FDG-PET/CT data from 900 patients, encompassing 1014 studies with tumor annotations. This dataset was augmented by adding labels for the bladder, kidneys, liver, stomach, spleen, lungs, and heart generated by the TotalSegmentator model. A multi-task AI model was trained using the augmented datasets",
+            "references": [
+                {
+                    "label": "AutoPET Challenge 2023 dataset",
+                    "uri": "https://doi.org/10.7937/gkr0-xv29"
+                },
+                {
+                    "label": "Total Segmentator",
+                    "uri": "https://doi.org/10.48550/arXiv.2208.05868"
+                }
+            ]
+        }
+    }
+}

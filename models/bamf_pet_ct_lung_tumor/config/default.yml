@@ -1,0 +1,48 @@
+general:
+  data_base_dir: /app/data
+  version: 1.0
+  description: default configuration for Bamf NNUnet Lung and FDG-avid lesions in the lung from FDG PET/CT scans (dicom to dicom)
+
+execute:
+- FileStructureImporter
+- NiftiConverter
+- Registration
+- NNUnetPETCTRunner
+- LungSegmentatorRunner
+- LungPostProcessor
+- DsegConverter
+- DataOrganizer
+
+modules:
+  FileStructureImporter:
+    input_dir: 'input_data'
+    structures:
+      - $patientID@instance/ct@dicom:mod=ct
+      - $patientID/pt@dicom:mod=pt
+    import_id: patientID
+
+  NiftiConverter:
+    in_datas: dicom:mod=pt|ct
+    engine: dcm2niix
+    allow_multi_input: true
+
+  NNUnetPETCTRunner:
+    in_ct_data: nifti:mod=ct:registered=true
+    in_pt_data: nifti:mod=pt
+    nnunet_task: Task762_PET_CT_Breast
+    nnunet_model: 3d_fullres
+    roi: LIVER,KIDNEY,URINARY_BLADDER,SPLEEN,LUNG,BRAIN,HEART,SMALL_INTESTINE,LUNG+FDG_AVID_TUMOR
+
+  LungSegmentatorRunner:
+    in_data: nifti:mod=ct:registered=true
+    use_fast_mode: True
+
+  DsegConverter:
+    source_segs: nifti:mod=seg:processor=bamf
+    model_name: BAMF Lung and FDG Tumor Segmentation
+    target_dicom: dicom:mod=pt
+    skip_empty_slices: True
+
+  DataOrganizer:
+    targets:
+    - dicomseg-->[i:patientID]/bamf_pet_ct_lung_tumor.seg.dcm
