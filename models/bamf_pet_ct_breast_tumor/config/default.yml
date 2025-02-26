@@ -58,6 +58,6 @@ sample:
   input:
     "p1": "Folder containing one case / patient, e.g., named after the patient identifyer"
     "p1/ct": "Folder containing dicom files for the CT scan of the patient to be analysed"
-    "p1/pt": Folder containing dicom files for an associated PET scan"
+    "p1/pt": "Folder containing dicom files for an associated PET scan"
   output:
     "p1/bamf_pet_ct_breast_tumor.seg.dcm": "Segmentation output file"
