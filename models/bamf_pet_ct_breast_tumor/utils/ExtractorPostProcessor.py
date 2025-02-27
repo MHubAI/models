@@ -1,0 +1,148 @@
+"""
+---------------------------------------------------------
+Post processing Module on segmentations from custom model and
+total_segmentator ran seperately
+---------------------------------------------------------
+
+-------------------------------------------------
+Author: Jithendra Kumar
+Email:  Jithendra.kumar@bamfhealth.com
+-------------------------------------------------
+
+"""
+import os
+import SimpleITK as sitk
+import numpy as np
+import os, shutil
+import cv2
+from skimage import measure
+from mhubio.core import IO
+from mhubio.core import Module, Instance, InstanceData, InstanceDataCollection
+
+
+class ExtractorPostProcessor(Module):
+
+    def bbox2_3D(self, img):
+        """
+        Compute the bounding box of a 3D binary image.
+
+        Args:
+            img (np.ndarray): A 3D binary image (numpy array) where the region of interest
+                              is non-zero (typically 1), and the background is 0.
+
+        Returns:
+            tuple: A tuple containing the minimum and maximum indices for each dimension (r, c, z)
+                   that define the bounding box:
+                   (rmin, rmax, cmin, cmax, zmin, zmax).
+                   r: rows (axis 0)
+                   c: columns (axis 1)
+                   z: depth/slices (axis 2)
+        """
+        r = np.any(img, axis=(1, 2))
+        c = np.any(img, axis=(0, 2))
+        z = np.any(img, axis=(0, 1))
+
+        rmin, rmax = np.where(r)[0][[0, -1]]
+        cmin, cmax = np.where(c)[0][[0, -1]]
+        zmin, zmax = np.where(z)[0][[0, -1]]
+
+        return rmin, rmax, cmin, cmax, zmin, zmax
+
+    def n_connected(self, img_data):
+        """
+        Get the largest connected component in a binary image.
+
+        Args:
+            img_data (np.ndarray): image data.
+
+        Returns:
+            np.ndarray: Processed image with the largest connected component.
+        """
+        img_filtered = np.zeros(img_data.shape)
+        blobs_labels = measure.label(img_data, background=0)
+        lbl, counts = np.unique(blobs_labels, return_counts=True)
+        lbl_dict = {}
+        for i, j in zip(lbl, counts):
+            lbl_dict[i] = j
+        sorted_dict = dict(sorted(lbl_dict.items(), key=lambda x: x[1], reverse=True))
+        count = 0
+
+        for key, value in sorted_dict.items():
+            if count >= 1 and count <= 2 and value > 20:
+                print(key, value)
+                img_filtered[blobs_labels == key] = 1
+            count += 1
+
+        img_data[img_filtered != 1] = 0
+        return img_data
+
+    @IO.Instance()
+    @IO.Input('in_ct_data', 'nifti:mod=ct:registered=true', the='input ct data')
+    @IO.Input('in_tumor_data', 'nifti:mod=seg:model=nnunet', the='input tumor segmentation')
+    @IO.Inputs('in_seg_datas', 'nifti:origin=dicomseg:mod=SEG:resampled=true', the='input spleen data')
+    @IO.Output('out_data', 'bamf_processed.nii.gz', 'nifti:mod=seg:processor=bamf:roi=BREAST+FDG_AVID_TUMOR', data='in_tumor_data',
+               the="FDG-avid lesions in breast")
+    def task(self, instance: Instance, in_ct_data: InstanceData, in_tumor_data: InstanceData,
+             in_seg_datas: InstanceDataCollection, out_data: InstanceData):
+        """
+        Perform postprocessing and writes simpleITK Image
+            1. Removes CT voxels where the value is zero.
+            2. Removes abdominal organs overlaying on tumor prediction.
+        """
+
+        ref = sitk.ReadImage(in_ct_data.abspath)
+        ct_data = sitk.GetArrayFromImage(ref)
+
+        sample_seg_img = sitk.ReadImage(in_tumor_data.abspath)
+        sample_seg_arr = sitk.GetArrayFromImage(sample_seg_img)
+
+        abdominal_seg = np.zeros(sample_seg_arr.shape)
+        ts_data = np.zeros(sample_seg_arr.shape)
+        op_data = np.zeros(sample_seg_arr.shape)
+
+        for seg_file in in_seg_datas:
+            seg_rois = seg_file.type.meta['roi'].split(',')
+            if any("LUNG" in item for item in seg_rois):
+                ts_lung = sitk.GetArrayFromImage(sitk.ReadImage(seg_file.abspath))
+                ts_data[ts_lung > 0] = 1
+
+            if any("RIB" in item for item in seg_rois):
+                ts_rib = sitk.GetArrayFromImage(sitk.ReadImage(seg_file.abspath))
+                ts_data[ts_rib > 0] = 1
+
+            if any("SPLEEN" in item for item in seg_rois):
+                ts_spleen = sitk.GetArrayFromImage(sitk.ReadImage(seg_file.abspath))
+                abdominal_seg[ts_spleen > 0] = 1
+                ts_data[ts_spleen > 0] = 1
+
+            if any("KIDNEY" in item for item in seg_rois):
+                ts_kidney = sitk.GetArrayFromImage(sitk.ReadImage(seg_file.abspath))
+                abdominal_seg[ts_kidney > 0] = 1
+                ts_data[ts_kidney > 0] = 1
+
+
+        lesions = sitk.GetArrayFromImage(sitk.ReadImage(in_tumor_data.abspath))
+        tumor_label = 9
+        lesions[lesions != tumor_label] = 0
+        lesions[lesions == tumor_label] = 1
+
+        op_data[lesions == 1] = 1
+        th = np.min(ct_data)
+        op_data[ct_data == th] = 0  # removing predicitons where CT not available
+        # Use the coordinates of the bounding box to crop the 3D numpy array.
+        if abdominal_seg.max() > 0:
+            x1, x2, y1, y2, z1, z2 = self.bbox2_3D(abdominal_seg)
+        # Create a structuring element with ones in the middle and zeros around it
+        structuring_element = np.ones((3, 3))
+
+        # Dilate the array with the structuring element
+        op_temp = cv2.dilate(ts_data, structuring_element, iterations=5)
+        op_temp = cv2.erode(op_temp, structuring_element, iterations=5)
+        op_data[op_temp == 1] = 0
+        if abdominal_seg.max() > 0:
+            op_data[x1:x2, y1:, :] = 0
+        op_data[0:3, :, :] = 0
+        op_data = self.n_connected(op_data)
+        op_img = sitk.GetImageFromArray(op_data)
+        op_img.CopyInformation(ref)
+        sitk.WriteImage(op_img, out_data.abspath)

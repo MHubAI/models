@@ -1,0 +1,152 @@
+{
+    "id": "",
+    "name": "bamf_pet_ct_breast_tumor",
+    "title": "Bamf NNunet PET CT Breast",
+    "summary": {
+        "description": "This model used to detect FDG-avid lesions in breast from FDG PET/CT scans",
+        "inputs": [
+            {
+                "label": "Input Image",
+                "description": "The CT scan of a patient.",
+                "format": "DICOM",
+                "modality": "CT",
+                "bodypartexamined": "BREAST",
+                "slicethickness": "5mm",
+                "non-contrast": true,
+                "contrast": false
+            },
+            {
+                "label": "Input Image",
+                "description": "The PET scan of a patient.",
+                "format": "DICOM",
+                "modality": "PT",
+                "bodypartexamined": "BREAST",
+                "slicethickness": "4mm",
+                "non-contrast": false,
+                "contrast": false
+            }
+        ],
+        "outputs": [
+            {
+                "label": "Segmentation",
+                "type": "Segmentation",
+                "description": "FDG-avid Breast tumor",
+                "classes": [
+                    "BREAST+FDG_AVID_TUMOR"
+                ]
+            }
+        ],
+        "model": {
+            "architecture": "U-net",
+            "training": "supervised",
+            "cmpapproach": "3D"
+        },
+        "data": {
+            "training": {
+                "vol_samples": 1014
+            },
+            "evaluation": {
+                "vol_samples": 11
+            },
+            "public": true,
+            "external": true
+        }        
+    },
+    "details": {
+        "name": "AIMI PET CT BREAST",
+        "version": "1.0.0",
+        "devteam": "BAMF Health",
+        "type": "nnU-Net (U-Net structure, optimized by data-driven heuristics)",
+        "date": {
+            "code": "17.10.2023",
+            "weights": "28.08.2023",
+            "pub": "23.10.2023"
+        },
+        "cite": "Murugesan, Gowtham Krishnan, Diana McCrumb, Mariam Aboian, Tej Verma, Rahul Soni, Fatima Memon, and Jeff Van Oss. The AIMI Initiative: AI-Generated Annotations for Imaging Data Commons Collections. arXiv preprint arXiv:2310.14897 (2023).",
+        "license": {
+            "code": "MIT",
+            "weights": "CC BY-NC 4.0"
+        },
+        "publications": [
+            {
+                "title": "The AIMI Initiative: AI-Generated Annotations in IDC Collections",
+                "uri": "https://arxiv.org/abs/2310.14897"
+            }
+        ],
+        "github": "https://github.com/bamf-health/aimi-breast-pet-ct"
+    },
+    "info": {
+        "use": {
+            "title": "Intended Use",
+            "text": "This model is intended to perform segmentations of Breast FDG-avid Tumor region in PET, CT scans. The model has been trained and tested on scans acquired during clinical care of patients, so it might not be suited for a healthy population. The generalization capabilities of the model on a range of ages, genders, and ethnicities are unknown."
+        },
+        "analyses": {
+            "title": "Quantitative Analyses",
+            "text": "Label-wise metrics (mean (standard deviation)) between AI derived and expert corrected FDG PET/CT breast lesion annotations.",
+            "tables": [
+                {
+                  "label": "Segmentation Metric Expert",
+                  "entries": {
+                    "Tumor DSC": "0.80 (0.33)",
+                    "Tumor 95% Hausdorff (mm)": "29.70 (33.43)"
+                  }
+                },
+                {
+                  "label": "Segmentation Metric Tumor - Non-Expert",
+                  "entries": {
+                    "Tumor DSC": "0.94 (0.10)",
+                    "Tumor 95% Hausdorff (mm)": "13.53 (20.00)"
+                  }
+                },
+                {
+                  "label": "Detection Accuracy",
+                  "entries": {
+                    "Sensitivity": "0.43",
+                    "False negative rate": "0.57",
+                    "F1 score": "0.52"
+                  }
+                }
+            ],
+            "references": [
+                {
+                    "label": "The AIMI Initiative: AI-Generated Annotations for Imaging Data Commons Collections",
+                    "uri": "https://arxiv.org/abs/2310.14897"
+                }
+            ]
+        },
+        "evaluation": {
+            "title": "Evaluation Data",
+            "text": "The model was used to segment cases from the IDC [1] collection of QIN-Breast [2]. 11 validation cases were rated by a radiologist and non-expert. The model predictions, and radiologist corrections are published on zenodo [9]",
+            "references": [
+                {
+                    "label": "Imaging Data Collections (IDC)",
+                    "uri": "https://datacommons.cancer.gov/repository/imaging-data-commons"
+                },
+                {
+                    "label": "QIN-Breast",
+                    "uri": "https://www.cancerimagingarchive.net/collection/qin-breast/"
+                },
+                {
+                    "label": "Image segmentations produced by the AIMI Annotations initiative",
+                    "uri": "https://zenodo.org/records/10009368"
+                }
+            ]
+        },
+        "training": {
+            "title": "Training Data",
+            "text": "The AutoPET Challenge 2023 dataset is comprised of whole-body FDG-PET/CT data from 900 patients, encompassing 1014 studies with tumor annotations. This dataset was augmented by adding labels for the brain, bladder, kidneys, liver, stomach, spleen, lungs, and heart generated by the TotalSegmentator model. A multi-task AI model was trained using the augmented datasets",
+            "references": [
+                {
+                    "label": "AutoPET Challenge 2023 dataset",
+                    "uri": "https://doi.org/10.7937/gkr0-xv29"
+                },
+                {
+                    "label": "Total Segmentator",
+                    "uri": "https://mhub.ai/models/totalsegmentator"
+                }
+            ]
+        }
+    }
+}
+
+
