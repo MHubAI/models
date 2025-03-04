@@ -18,3 +18,11 @@ modules:
   DataOrganizer:
     targets:
     - csv-->[i:patientID]/features.csv
+
+sample:
+  input:
+    LUNG1-001/: 'A folder named after a instance identifyer LUNG1-001'
+    LUNG1-001/centroids.json: 'A file named centroids.json containing the centroids of the ROIs per instance'
+    LUNG1-001/CT.nrrd: 'A nrrd file named CT.nrrd containing the CT image per instance'
+  output:
+    LUNG1-001/features.csv: 'The CSV file containing a set of features extracted from the input CT image per instance'
