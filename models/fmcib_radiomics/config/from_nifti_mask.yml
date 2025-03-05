@@ -19,3 +19,10 @@ modules:
   DataOrganizer:
     targets:
       - csv-->[i:patientID]/features.csv
+
+sample:
+  input:
+    lung_001/CT.nii.gz: ''
+    lung_001/masks/GTV.nii.gz: ''
+  output:
+    lung_001/features.csv: ''

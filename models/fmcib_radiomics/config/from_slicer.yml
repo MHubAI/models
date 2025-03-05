@@ -18,3 +18,10 @@ modules:
   DataOrganizer:
     targets:
       - csv-->[i:patientID]/features.csv
+
+sample:
+  input:
+    1.3.6.1.4.1.32722.99.99.239341353911714368772597187099978969331/0 Unnamed Series.nrrd: A nrrd file named containing the CT image per instance
+    1.3.6.1.4.1.32722.99.99.239341353911714368772597187099978969331/F.mrk.json: A slicer markup file named containing seed point for the ROI
+  output:
+    1.3.6.1.4.1.32722.99.99.239341353911714368772597187099978969331/features.csv: The CSV file containing a set of features extracted from the input CT image
