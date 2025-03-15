@@ -4,13 +4,19 @@ FROM mhubai/base:latest
 LABEL authors="aptea@mskcc.org,deasyj@mskcc.org,iyera@mskcc.org,locastre@mskcc.org"
 
 RUN apt update
-RUN mkdir -p /app/models/msk_smit_lung_gtv
-RUN cd /app/models/msk_smit_lung_gtv && git clone https://github.com/cerr/model_installer.git && cd model_installer && source installer.sh -m 4 -d /app/models/msk_smit_lung_gtv -p C
-RUN chmod -R 755 /app/models/msk_smit_lung_gtv/CT_Lung_SMIT
 
-ENV PYTHONPATH="/app:/app/models/msk_smit_lung_gtv/CT_Lung_SMIT/conda-pack"
+#ARG MHUB_MODELS_REPO=
+ENV MHUB_MODELS_REPO=https://github.com/locastre/models.git
+RUN buildutils/import_mhub_model.sh msk_smit_lung_gtv ${MHUB_MODELS_REPO}
 
-RUN source /app/models/msk_smit_lung_gtv/CT_Lung_SMIT/conda-pack/bin/activate
+ENV WORK_DIR=/app/models/msk_smit_lung_gtv/src
+
+WORKDIR ${WORK_DIR}
+ENV WEIGHTS_URL=https://mskcc.box.com/shared/static/sf7jic4m2dk67413cipbbq6hddvhpj61.gz
+ENV CONDA_URL=https://mskcc.box.com/shared/static/d580gfjzzmt26v8klwp8pivb6wafomag.gz
+RUN wget ${WEIGHTS_URL} -O weights.tar.gz && tar xvf weights.tar.gz && rm weights.tar.gz
+RUN wget ${CONDA_URL} -O conda.tar.gz && tar xvf conda.tar.gz && rm conda.tar.gz
+
 
 ENTRYPOINT ["mhub.run"]
 CMD ["--config", "/app/models/msk_smit_lung_gtv/config/default.yml"]
