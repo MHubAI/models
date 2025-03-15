@@ -1,0 +1,34 @@
+general:
+  data_base_dir: /app/data
+  version: 1.0.0
+  description: Default configuration for SMIT model (dicom to dicom)
+
+execute:
+- DicomImporter
+- NiftiConverter
+- SMITRunner
+- DsegConverter
+- DataOrganizer
+
+modules:
+  DicomImporter:
+    source_dir: input_data
+    import_dir: sorted_data
+    sort_data: true
+    meta: 
+      mod: '%Modality'
+
+  SMITRunner:
+    a_min: -500
+    a_max: 500
+    # Can add other config paremeters here
+
+  DsegConverter:
+    model_name: SMIT
+    body_part_examined: CHEST
+    source_segs: nifti:mod=seg
+    skip_empty_slices: true
+  
+  DataOrganizer:
+   targets:
+   - dicomseg:mod=seg-->[i:sid]/smit.seg.dcm%    
