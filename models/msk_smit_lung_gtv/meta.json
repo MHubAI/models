@@ -1,6 +1,6 @@
 {
     "id": "", 
-    "name": "msk_smit_lung_gtv_seg", 
+    "name": "msk_smit_lung_gtv", 
     "title": "CT Lung GTV SMIT Segmentation",
     "summary": {
     "description": "GTV segmentation from CT scan",
