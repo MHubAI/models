@@ -4,12 +4,12 @@ FROM mhubai/base:latest
 ARG MHUB_MODELS_REPO
 RUN buildutils/import_mhub_model.sh mrsegmentator ${MHUB_MODELS_REPO}
 
-# Create a new uv environment and install packages into it
+# Create a new uv environment
 RUN uv venv /opt/venv
-ENV PATH="/opt/venv/bin:$PATH"
 
-# Install MRSegmentator
-RUN uv pip install setuptools==59.6.0 && uv pip install mrsegmentator==1.2.3 blosc2 acvl-utils==0.2
+# Install MRSegmentator in the new environment
+RUN . /opt/venv/bin/activate && \
+    uv pip install mrsegmentator==1.2.3 blosc2 acvl-utils==0.2
 
 # Execute mrsegmentator once to download the weights, this will fail to run but download regardless
 RUN touch .temp_image.nii.gz
