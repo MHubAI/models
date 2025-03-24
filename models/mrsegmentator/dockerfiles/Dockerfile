@@ -6,10 +6,11 @@ RUN buildutils/import_mhub_model.sh mrsegmentator ${MHUB_MODELS_REPO}
 
 
 # Install Python venv package and create a virtual environment
+# Install Python venv package and create a virtual environment with a different name
 RUN apt-get update && \
     apt-get install -y python3-venv && \
-    python3 -m venv /opt/venv && \
-    . /opt/venv/bin/activate && \
+    python3 -m venv /opt/mrseg_venv && \
+    . /opt/mrseg_venv/bin/activate && \
     pip install --upgrade pip && \
     pip install mrsegmentator blosc2 acvl-utils==0.2
 
