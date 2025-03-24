@@ -5,17 +5,11 @@ ARG MHUB_MODELS_REPO
 RUN buildutils/import_mhub_model.sh mrsegmentator ${MHUB_MODELS_REPO}
 
 
-# Install Python venv package and create a virtual environment
-# Create a new clean virtual environment for MRSegmentator
-#RUN uv venv -p 3.11 .venv_mrseg
-
-# Clone batchgenerators repository
+# Note: There currently is a dependency issue for nnunet because of batchgenerators. This solves the issue in the description file
 RUN git clone https://github.com/MIC-DKFZ/batchgenerators.git /tmp/batchgenerators
-
 # Fix the setup.cfg file - change description-file to description_file
 RUN sed -i 's/description-file = README.md/description_file = README.md/' /tmp/batchgenerators/setup.cfg
-
-# Install batchgenerators in editable mode
+# Install batchgenerators 
 RUN uv pip install -e /tmp/batchgenerators
 
 # Install MRSegmentator
