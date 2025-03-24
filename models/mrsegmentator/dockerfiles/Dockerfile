@@ -6,13 +6,14 @@ RUN buildutils/import_mhub_model.sh mrsegmentator ${MHUB_MODELS_REPO}
 
 
 # Install Python venv package and create a virtual environment
-# Install Python venv package and create a virtual environment with a different name
-# Force setuptools version 77.0.0 before installing MRSegmentator
-RUN uv pip uninstall setuptools
-RUN uv pip install setuptools==77.0.3
+# Create a new clean virtual environment for MRSegmentator
+RUN uv venv .venv_mrseg
 
-# Install MRSegmentator using uv
-RUN uv pip install mrsegmentator==1.2.2
+# Install specific setuptools version in the new environment
+RUN uv pip install -p .venv_mrseg setuptools==77.0.3
+
+# Install MRSegmentator in the new environment
+RUN uv pip install -p .venv_mrseg mrsegmentator==1.2.2
 
 # Execute mrsegmentator once to download the weights, this will fail to run but download regardless
 RUN touch .temp_image.nii.gz
