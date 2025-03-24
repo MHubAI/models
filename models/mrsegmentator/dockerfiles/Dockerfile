@@ -9,11 +9,16 @@ RUN buildutils/import_mhub_model.sh mrsegmentator ${MHUB_MODELS_REPO}
 # Create a new clean virtual environment for MRSegmentator
 RUN uv venv -p 3.11 .venv_mrseg
 
-# Install specific setuptools version in the new environment
-RUN uv pip uninstall -p .venv_mrseg setuptools
-RUN uv pip install -p .venv_mrseg setuptools==77.0.3
+# Clone batchgenerators repository
+RUN git clone https://github.com/MIC-DKFZ/batchgenerators.git /tmp/batchgenerators
 
-# Install MRSegmentator in the new environment
+# Fix the setup.cfg file - change description-file to description_file
+RUN sed -i 's/description-file = README.md/description_file = README.md/' /tmp/batchgenerators/setup.cfg
+
+# Install batchgenerators in editable mode
+RUN uv pip install -p .venv_mrseg -e /tmp/batchgenerators
+
+# Install MRSegmentator
 RUN uv pip install -p .venv_mrseg mrsegmentator==1.2.3
 
 # Execute mrsegmentator once to download the weights, this will fail to run but download regardless
