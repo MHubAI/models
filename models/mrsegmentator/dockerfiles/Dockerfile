@@ -4,6 +4,10 @@ FROM mhubai/base:latest
 ARG MHUB_MODELS_REPO
 RUN buildutils/import_mhub_model.sh mrsegmentator ${MHUB_MODELS_REPO}
 
+# Create a new uv environment and install packages into it
+RUN uv venv /opt/venv
+ENV PATH="/opt/venv/bin:$PATH"
+
 # Install MRSegmentator
 RUN uv pip install setuptools==59.6.0 && uv pip install mrsegmentator==1.2.3 blosc2 acvl-utils==0.2
 
