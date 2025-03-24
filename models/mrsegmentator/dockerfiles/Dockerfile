@@ -9,6 +9,7 @@ RUN uv venv /opt/venv
 
 # Install MRSegmentator in the new environment
 RUN . /opt/venv/bin/activate && \
+    pip install --no-use-pep517 batchgenerators==0.25.1 && \
     uv pip install mrsegmentator==1.2.3 blosc2 acvl-utils==0.2
 
 # Execute mrsegmentator once to download the weights, this will fail to run but download regardless
