@@ -7,6 +7,7 @@ RUN buildutils/import_mhub_model.sh mrsegmentator ${MHUB_MODELS_REPO}
 
 # Install Python venv package and create a virtual environment
 # Install Python venv package and create a virtual environment with a different name
+RUN uv pip list
 RUN uv pip install mrsegmentator==1.2.2
 
 # Execute mrsegmentator once to download the weights, this will fail to run but download regardless
