@@ -8,6 +8,7 @@ RUN buildutils/import_mhub_model.sh mrsegmentator ${MHUB_MODELS_REPO}
 # Install Python venv package and create a virtual environment
 # Install Python venv package and create a virtual environment with a different name
 # Force setuptools version 77.0.0 before installing MRSegmentator
+RUN uv pip uninstall setuptools
 RUN uv pip install setuptools==77.0.3
 
 # Install MRSegmentator using uv
