@@ -27,7 +27,8 @@ class MRSegmentatorMLRunner(Module):
     def task(self, instance: Instance, in_data: InstanceData, out_data: InstanceData) -> None:
         
         tmp_dir = self.config.data.requestTempDir("mr_segmentator")
-        
+
+        bash_command = ["uv", "run", "-p", ".venv_mrseg"]
         bash_command  = ["mrsegmentator"]
         bash_command += ["-i", in_data.abspath]
         bash_command += ["--outdir", tmp_dir]
