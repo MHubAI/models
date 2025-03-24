@@ -10,6 +10,7 @@ RUN buildutils/import_mhub_model.sh mrsegmentator ${MHUB_MODELS_REPO}
 RUN uv venv -p 3.11 .venv_mrseg
 
 # Install specific setuptools version in the new environment
+RUN uv pip uninstall -p .venv_mrseg setuptools
 RUN uv pip install -p .venv_mrseg setuptools==77.0.3
 
 # Install MRSegmentator in the new environment
