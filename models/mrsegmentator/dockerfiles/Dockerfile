@@ -13,7 +13,7 @@ RUN uv venv -p 3.11 .venv_mrseg
 RUN uv pip install -p .venv_mrseg setuptools==77.0.3
 
 # Install MRSegmentator in the new environment
-RUN uv pip install -p .venv_mrseg mrsegmentator==1.2.2
+RUN uv pip install -p .venv_mrseg mrsegmentator==1.2.2 --no-deps
 
 # Execute mrsegmentator once to download the weights, this will fail to run but download regardless
 RUN touch .temp_image.nii.gz
