@@ -6,7 +6,10 @@ RUN buildutils/import_mhub_model.sh mrsegmentator ${MHUB_MODELS_REPO}
 
 
 # Note: There currently is a dependency issue for nnunet because of batchgenerators. This solves the issue in the description file
-RUN git clone https://github.com/MIC-DKFZ/batchgenerators.git /tmp/batchgenerators
+RUN git clone https://github.com/MIC-DKFZ/batchgenerators.git /tmp/batchgenerators && \
+    cd /tmp/batchgenerators && \
+    git checkout 1185d57bbc002f4b88c03fdea885dc28537ad8e7
+
 # Fix the setup.cfg file - change description-file to description_file
 RUN sed -i 's/description-file = README.md/description_file = README.md/' /tmp/batchgenerators/setup.cfg
 # Install batchgenerators 
