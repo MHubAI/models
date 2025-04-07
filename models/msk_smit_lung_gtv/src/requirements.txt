@@ -1,0 +1,16 @@
+--extra-index-url https://download.pytorch.org/whl/cu116
+numpy==1.23.4
+simpleitk==2.2.1
+torch==1.12.1+cu116
+torchvision==0.13.1+cu116
+torchaudio==0.12.1
+nibabel==4.0.2
+monai==0.8.0
+pytorch-ignite==0.4.8
+timm==0.6.11
+ml-collections==0.1.1
+einops==0.8.1
+scikit-image==0.19.3
+Cmake
+imagecodecs
+monai==0.8.0
