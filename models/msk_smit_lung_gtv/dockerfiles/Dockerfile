@@ -21,7 +21,7 @@ RUN wget ${WEIGHTS_URL} -O weights.tar.gz && tar xvf weights.tar.gz && rm weight
 
 WORKDIR ${WORK_DIR}
 RUN virtualenv -p /usr/bin/python3.9 unetr && source unetr/bin/activate
-RUN pip install -r ${WORK_DIR}/${MODEL_NAME}/requirements.txt
+RUN pip install -r ${WORK_DIR}/${MODEL_NAME}/src/requirements.txt
 
 ENTRYPOINT ["mhub.run"]
 CMD ["--config", "/app/models/msk_smit_lung_gtv/config/default.yml"]
