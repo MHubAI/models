@@ -19,7 +19,7 @@
     "outputs": [
         {
             "label": "Segmentation",  
-            "description": "Segmentation of the lung GTV from NIfTI CT images.",
+            "description": "Segmentation of the lung GTV for input CT images.",
             "type": "Segmentation",                       
             "classes": [  
                 "GTV"
@@ -27,7 +27,7 @@
         }
     ],
     "model": {
-        "architecture": "Swin Transformer based segmentation, self-supervised pretrained with 10k CT data", 
+        "architecture": "Swin3D Transformer", 
         "training": "supervised",   
         "cmpapproach": "3D" 
     },
