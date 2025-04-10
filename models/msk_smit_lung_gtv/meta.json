@@ -18,7 +18,7 @@
     ],
     "outputs": [
         {
-            "label": "Segmentation of the lung GTV",  
+            "label": "Segmentation",  
             "description": "Segmentation of the lung GTV from NIfTI CT images.",
             "type": "Segmentation",                       
             "classes": [  
