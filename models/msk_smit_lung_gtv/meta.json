@@ -1,9 +1,9 @@
 {
     "id": "", 
-    "name": "msk_smit_lung_gtv", 
-    "title": "CT Lung GTV SMIT Segmentation",
+    "name": "mskcc_smit_lung_gtv_segmentation", 
+    "title": "Self-supervised 3D segmentation using self-distilled masked image transformer for Lung GTV Segmentation",
     "summary": {
-    "description": "GTV segmentation from CT scan",
+    "description": "A Lung GTV segmentation model, fine-tuned from a foundation model pretrained with 10K CT scans",
     "inputs": [
     {
         "label": "Input Image",                     
@@ -43,15 +43,15 @@
     }
     },
     "details": {
-        "name": "SMIT",   
+        "name": "Self-supervised 3D anatomy segmentation using self-distilled masked image transformer (SMIT)",   
         "version": "1.0.0", 
         "devteam": "",  
         "authors": ["Jue Jiang, Harini Veeraraghavan"],      
-        "type": "it is a 3D Swin transformer based segmentation net",   
+        "type": "it is a 3D Swin transformer based segmentation net, which was pretrained with 10K CT data and then finetuned for Lung GTV Segmentation",   
         "date": {
             "code": "11.03.2025",   
             "weights": "11.03.2025",
-            "pub": "15.July.2024"    
+            "pub": "15.07.2024"    
         },
         "cite": "Jiang, Jue, and Harini Veeraraghavan. Self-supervised pretraining in the wild imparts image acquisition robustness to medical image transformers: an application to lung cancer segmentation. Proceedings of machine learning research 250 (2024): 708.",
 		"license": {
@@ -91,9 +91,25 @@
 	
 		},
     	"analyses": {
-			"title": "Quantitative Analyses",
-			"text": "DSC was used to compute the accuracy of the model"
-		},
+			"title": "Evaluation",
+			"text": "Evaluation was determined with DICE score, See the paper (Methods, Section 4.2, section on Experiments and evaluation metrics, and Results 5.1, Table 2 for additional details.",
+			"references": [
+				 {
+				  "label": "Self-supervised pretraining in the wild imparts image acquisition robustness to medical image transformers: an application to lung cancer segmentation",
+				  "uri": "https://proceedings.mlr.press/v250/jiang24b.html"
+				}
+			  ],
+			 "tables": [
+				{
+				  "label": "Dice scores",
+				  "entries": {
+					"From Scratch": "0.54 ±0.31",
+					"This model": "0.69 ±0.18"
+				 }
+				}
+				
+			  ]
+			},
 		"limitations": {
 			"title": "Limitations",
 			"text": "The model might produce minor false positives but this could be easilily removed by post-processing such as constrain the tumor segmentation only in lung slices"
