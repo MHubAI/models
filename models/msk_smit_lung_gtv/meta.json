@@ -22,7 +22,7 @@
             "description": "Segmentation of the lung GTV for input CT images.",
             "type": "Segmentation",                       
             "classes": [  
-                "GTV"
+                "LUNG+NEOPLASM_MALIGNANT_PRIMARY"
             ]
         }
     ],
