@@ -24,7 +24,7 @@ class SMITRunner(ModelRunner):
 
     @IO.Instance()
     @IO.Input('scan', 'nifti:mod=ct',  the='input ct scan')
-    @IO.Output('gtv_mask', 'gtv_mask.nii.gz', 'nifti:mod=seg:model=SMIT:roi=GTV',data='scan', the='predicted lung gtv')
+    @IO.Output('gtv_mask', 'gtv_mask.nii.gz', 'nifti:mod=seg:model=SMIT:roi=LUNG+NEOPLASM_MALIGNANT_PRIMARY',data='scan', the='predicted lung GTV')
     def task(self, instance: Instance, scan: InstanceData, gtv_mask: InstanceData) -> None:
         
         workDir = os.path.join(os.environ['WORK_DIR'],'models','msk_smit_lung_gtv','src')   # Needs to be defined in docker file as ENV WORK_DIR=path_to_dir e.g. /app/models/SMIT/workDir
