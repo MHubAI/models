@@ -18,10 +18,8 @@ modules:
     meta: 
       mod: '%Modality'
 
-  SMITRunner:
-    a_min: -500
-    a_max: 500
-    # Can add other config paremeters here
+  NifitConverter:
+    engine: dcm2nii
 
   DsegConverter:
     model_name: SMIT
