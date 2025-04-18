@@ -18,8 +18,8 @@ modules:
     meta: 
       mod: '%Modality'
 
-  NifitConverter:
-    engine: dcm2nii
+  NiftiConverter:
+    engine: dcm2niix
 
   DsegConverter:
     model_name: SMIT
