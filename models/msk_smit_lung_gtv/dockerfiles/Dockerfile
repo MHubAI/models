@@ -11,10 +11,7 @@ ARG MHUB_MODELS_REPO
 ENV MODEL_NAME=msk_smit_lung_gtv
 RUN buildutils/import_mhub_model.sh ${MODEL_NAME} ${MHUB_MODELS_REPO}
 
-ENV MODEL_NAME=msk_smit_lung_gtv
-ENV WEIGHTS_HASH=H4sIADC3/mcAAwXByRGAIAwAwL/FkJFDwW4wqDCAYQwPtHp3Y++NN4DKGVHsNARSBY7+OQJw9z0hUDG30lnyG42S2UZnSwrz6tTQJy1NXN/0A15deWNIAAAA
-ENV WEIGHTS_URL=`base64 -d <<<${WEIGHTS_HASH} | gunzip`
-RUN wget ${WEIGHTS_URL} -O weights.tar.gz && tar xvf weights.tar.gz -C /app/models/${MODEL_NAME}/src && rm weights.tar.gz
+RUN source /app/models/msk_smit_lung_gtv/src/get_weights.sh
 
 RUN uv venv --python-preference only-managed -p 3.9 .venv39
 RUN uv pip install -n -p .venv39 simpleitk==2.2.1 nibabel==4.0.2 monai==0.8.0 timm==0.6.11 ml-collections==0.1.1 einops==0.8.1 scikit-image==0.19.3 Cmake imagecodecs monai==0.8.0 torchaudio==0.12.1 pytorch-ignite==0.4.8
