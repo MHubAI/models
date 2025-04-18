@@ -13,7 +13,7 @@
         "bodypartexamined": "Chest",
         "slicethickness": "5mm",    
         "contrast": true,     
-        "noncontrast": true   
+        "non-contrast": true   
     }
     ],
     "outputs": [
