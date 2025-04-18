@@ -1,29 +1,24 @@
 FROM mhubai/base:latest
 
 # Update authors label
-LABEL authors="aptea@mskcc.org,deasyj@mskcc.org,iyera@mskcc.org,locastre@mskcc.org"
+LABEL authors="jiangj1@mskcc.org,aptea@mskcc.org,deasyj@mskcc.org,iyera@mskcc.org,locastre@mskcc.org"
 
 SHELL ["/bin/bash", "-c"]
 
-RUN apt update && apt install -y python3.9 python3.9-distutils python3-pip
-RUN pip install virtualenv
+RUN apt update
 
 ARG MHUB_MODELS_REPO
-#ENV MHUB_MODELS_REPO=https://github.com/locastre/models.git
 ENV MODEL_NAME=msk_smit_lung_gtv
 RUN buildutils/import_mhub_model.sh ${MODEL_NAME} ${MHUB_MODELS_REPO}
 
-#ENV WORK_DIR=/app/models/msk_smit_lung_gtv/src
-ENV WORK_DIR=/app
+ENV MODEL_NAME=msk_smit_lung_gtv
+ENV WEIGHTS_HASH=H4sIADC3/mcAAwXByRGAIAwAwL/FkJFDwW4wqDCAYQwPtHp3Y++NN4DKGVHsNARSBY7+OQJw9z0hUDG30lnyG42S2UZnSwrz6tTQJy1NXN/0A15deWNIAAAA
+ENV WEIGHTS_URL=`base64 -d <<<${WEIGHTS_HASH} | gunzip`
+RUN wget ${WEIGHTS_URL} -O weights.tar.gz && tar xvf weights.tar.gz -C /app/models/${MODEL_NAME}/src && rm weights.tar.gz
 
-
-WORKDIR ${WORK_DIR}/models/${MODEL_NAME}/src
-ENV WEIGHTS_URL=https://mskcc.box.com/shared/static/sf7jic4m2dk67413cipbbq6hddvhpj61.gz
-RUN wget ${WEIGHTS_URL} -O weights.tar.gz && tar xvf weights.tar.gz && rm weights.tar.gz
-
-WORKDIR ${WORK_DIR}
-RUN virtualenv -p /usr/bin/python3.9 unetr && source unetr/bin/activate
-RUN pip install -r ${WORK_DIR}/models/${MODEL_NAME}/src/requirements.txt
+RUN uv venv --python-preference only-managed -p 3.9 .venv39
+RUN uv pip install -n -p .venv39 simpleitk==2.2.1 nibabel==4.0.2 monai==0.8.0 timm==0.6.11 ml-collections==0.1.1 einops==0.8.1 scikit-image==0.19.3 Cmake imagecodecs monai==0.8.0 torchaudio==0.12.1 pytorch-ignite==0.4.8
+RUN uv pip install -n -p .venv39 numpy==1.23.4
 
 ENTRYPOINT ["mhub.run"]
 CMD ["--config", "/app/models/msk_smit_lung_gtv/config/default.yml"]
