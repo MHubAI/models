@@ -1,6 +1,6 @@
 """
 -------------------------------------------------
-MHub - Run Module for SMIT
+MHub - Run Module for SMIT Lung GTV Segmentation
 -------------------------------------------------
 
 -------------------------------------------------
@@ -10,43 +10,42 @@ Email:  jiangj1@mskcc.org
 """
 
 import os, subprocess, shutil
-from mhubio.core import Instance, InstanceData, IO
-from mhubio.modules.runner.ModelRunner import ModelRunner
+from pathlib import Path
+from mhubio.core import Instance, InstanceData, IO, Module
+#from mhubio.modules.runner.ModelRunner import ModelRunner
+
+
+CLI_CWD = Path(__file__).parents[1] + '/src'
+
 
 # Optional config parameter/s examples noted below
 # @IO.Config('a_min', int, -500, the='Min frequency of image')
 # @IO.Config('a_max', int, 500, the='Max frequency of image')
 
-class SMITRunner(ModelRunner):
+@IO.ConfigInput('in_data', 'nifti:mod=ct', the='supported datatype for the lung gtv segmentation model')
+
+class SMITRunner(Module):
     
-    # a_min: int
-    # a_max: int
-
     @IO.Instance()
-    @IO.Input('scan', 'nifti:mod=ct',  the='input ct scan')
-    @IO.Output('gtv_mask', 'gtv_mask.nii.gz', 'nifti:mod=seg:model=SMIT:roi=LUNG+NEOPLASM_MALIGNANT_PRIMARY',data='scan', the='predicted lung GTV')
-    def task(self, instance: Instance, scan: InstanceData, gtv_mask: InstanceData) -> None:
-        
-        workDir = os.path.join(os.environ['WORK_DIR'],'models','msk_smit_lung_gtv','src')   # Needs to be defined in docker file as ENV WORK_DIR=path_to_dir e.g. /app/models/SMIT/workDir
-        #wrapperInstallDir = os.path.join(workDir,'CT_Lung_SMIT')
-        #condaEnvDir = os.path.join(wrapperInstallDir,'conda-pack')
-        #condaEnvActivateScript = os.path.join(condaEnvDir, 'bin', 'activate')
-        wrapperPath = os.path.join(workDir,'bash_run_SMIT_Segmentation.sh')
-        load_weight_name = os.path.join(workDir,'trained_weights','model.pt')
+    @IO.Input('in_data', the='input ct scan')
+    @IO.Output('out_data', 'gtv_mask.nii.gz', 'nifti:mod=seg:model=SMIT:roi=LUNG+NEOPLASM_MALIGNANT_PRIMARY', the='predicted segmentation of lung GTV')
+   
 
-        sessionPath = os.path.join(workDir, 'session')
-        os.makedirs(sessionPath, exist_ok = True)
-
-        subj = os.path.basename(scan.abspath)   # Was originally dcmdir so might want to change
-        sessiondir = os.path.join(sessionPath,subj)
-        os.makedirs(sessiondir,exist_ok=True)
+    def task(self, instance: Instance, in_data: InstanceData, out_data: InstanceData) -> None:   
+        wrapperName = 'bash_run_SMIT_mhub.sh'
+        weightsName = os.path.join(CLI_CWD,'trained_weights','model.pt')
         
         # bash command for SMIT
-        bash_command  = f"source " + condaEnvActivateScript + " && source " + wrapperPath + " " + sessiondir + " " + sessiondir + " " + load_weight_name + " " + scan.abspath
+        #bash_command  = f"source " + condaEnvActivateScript + " && source " + wrapperPath + " " + sessiondir + " " + sessiondir + " " + load_weight_name + " " + scan.abspath
+
+        cmd = [
+            "uv","run","-p","/app/.venv39","source", wrapperName, in_data.abspath, out_data.abspath, weightsName
+
+        ]
 
         # Display command on terminal
         self.log("Running SMIT")
-        self.log(">> ".join(bash_command))
+        #self.log(">> ".join(bash_command))
         
         # run SMIT
-        self.subprocess(bash_command, text=True)
+        self.subprocess(cmd, cwd = CLI_CWD, shell=True, text=True)
