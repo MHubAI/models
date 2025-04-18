@@ -9,7 +9,7 @@ RUN apt update
 
 ARG MHUB_MODELS_REPO
 ENV MODEL_NAME=msk_smit_lung_gtv
-RUN buildutils/import_mhub_model.sh ${MODEL_NAME} ${MHUB_MODELS_REPO}
+RUN buildutils/import_mhub_model.sh msk_smit_lung_gtv ${MHUB_MODELS_REPO}
 
 RUN source /app/models/msk_smit_lung_gtv/src/get_weights.sh
 
