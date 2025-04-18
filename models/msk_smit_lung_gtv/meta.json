@@ -61,11 +61,11 @@
         "publications": [
 			{
 			"title": "Self-supervised pretraining in the wild imparts image acquisition robustness to medical image transformers: an application to lung cancer segmentation",  
-            "url": "https://openreview.net/pdf?id=G9Te2IevNm"
+            "uri": "https://openreview.net/pdf?id=G9Te2IevNm"
 			},   
 			{
 			"title":"Self-supervised 3D anatomy segmentation using self-distilled masked image transformer (SMIT)",
-			"url":"https://link.springer.com/chapter/10.1007/978-3-031-16440-8_53"
+			"uri":"https://link.springer.com/chapter/10.1007/978-3-031-16440-8_53"
         	}
 	],
         "github": "https://github.com/The-Veeraraghavan-Lab/CTRobust_Transformers.git"
