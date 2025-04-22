@@ -1,0 +1,2 @@
+[model.deployment]
+test = "https://zenodo.org/records/15079716/files/mrsegmentator.test.zip"
