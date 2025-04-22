@@ -19,3 +19,10 @@ modules:
   DataOrganizer:
     targets:
       - csv-->[i:patientID]/features.csv
+
+sample:
+  input:
+    lung_001/CT.nii.gz: A nifti file named containing the CT image per instance
+    lung_001/masks/GTV.nii.gz: A nifti file with a binary gtv label map which center is used as seed point
+  output:
+    lung_001/features.csv: The CSV file containing a set of features extracted from the input CT image

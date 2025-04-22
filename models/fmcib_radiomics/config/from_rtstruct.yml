@@ -31,3 +31,12 @@ modules:
     targets:
       - csv-->[i:sid]/features.csv
         # - nifti-->[i:sid]/nifti/[d:mod]/[basename]
+
+sample:
+  input:
+    RTSTRUCT_1.2.246.352.71.2.494841863751.4253616.20190218155318/: Arbitrary input directory
+      containing the RTStruct dicom file 
+    CT_1.3.6.1.4.1.9590.100.1.2.170217758912108379426621313680109428629/: Arbitrary input directory
+      containing the CT image
+  output:
+    1.3.6.1.4.1.9590.100.1.2.170217758912108379426621313680109428629/features.csv: The CSV file containing a set of features extracted from the input CT image

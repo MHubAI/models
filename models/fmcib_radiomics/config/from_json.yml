@@ -20,3 +20,11 @@ modules:
   DataOrganizer:
     targets:
       - csv-->[i:sid]/features.csv
+
+sample:
+  input:
+    1.3.6.1.4.1.32722.99.99.298991776521342375010861296712563382046.json: Json file with centroids named by the SeriesInstanceUID of the related CT image
+    CT_1.3.6.1.4.1.32722.99.99.298991776521342375010861296712563382046/: Input directory
+      containing the CT image
+  output:
+    1.3.6.1.4.1.32722.99.99.298991776521342375010861296712563382046/features.csv: The CSV file containing a set of features extracted from the input CT image
