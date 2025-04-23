@@ -29,4 +29,4 @@ modules:
   
   DataOrganizer:
    targets:
-   - dicomseg:mod=seg-->[i:sid]/smit.seg.dcm
+   - dicomseg:mod=seg-->[i:sid]/msk_smit_lung_gtv.seg.dcm
