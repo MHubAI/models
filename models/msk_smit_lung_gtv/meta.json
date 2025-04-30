@@ -1,0 +1,118 @@
+{
+    "id": "", 
+    "name": "msk_smit_lung_gtv", 
+    "title": "Self-supervised 3D segmentation using self-distilled masked image transformer for Lung GTV Segmentation",
+    "summary": {
+    "description": "A Lung GTV segmentation model, fine-tuned from a foundation model pretrained with 10K CT scans",
+    "inputs": [
+    {
+        "label": "Input Image",                     
+        "description": "The CT scan of a patient.", 
+        "format": "NIFTI", 
+        "modality": "CT",  
+        "bodypartexamined": "Chest",
+        "slicethickness": "5mm",    
+        "contrast": true,     
+        "non-contrast": true   
+    }
+    ],
+    "outputs": [
+        {
+            "label": "Segmentation",  
+            "description": "Segmentation of the lung GTV for input CT images.",
+            "type": "Segmentation",                       
+            "classes": [  
+                "LUNG+NEOPLASM_MALIGNANT_PRIMARY"
+            ]
+        }
+    ],
+    "model": {
+        "architecture": "Swin3D Transformer", 
+        "training": "supervised",   
+        "cmpapproach": "3D" 
+    },
+    "data": {
+        "training": {
+            "vol_samples": 377  
+        },      
+        "evaluation": {
+            "vol_samples": 139
+        },
+        "public": true,   
+        "external": false 
+    }
+    },
+    "details": {
+        "name": "Self-supervised 3D anatomy segmentation using self-distilled masked image transformer (SMIT)",   
+        "version": "1.0.0", 
+        "devteam": "",  
+        "authors": ["Jue Jiang, Harini Veeraraghavan"],      
+        "type": "it is a 3D Swin transformer based segmentation net, which was pretrained with 10K CT data and then finetuned for Lung GTV Segmentation",   
+        "date": {
+            "code": "11.03.2025",   
+            "weights": "11.03.2025",
+            "pub": "15.07.2024"    
+        },
+        "cite": "Jiang, Jue, and Harini Veeraraghavan. Self-supervised pretraining in the wild imparts image acquisition robustness to medical image transformers: an application to lung cancer segmentation. Proceedings of machine learning research 250 (2024): 708.",
+		"license": {
+            "code": "GNU General Public License",         
+            "weights": "GNU General Public License"
+        },
+        "publications": [
+			{
+			"title": "Self-supervised pretraining in the wild imparts image acquisition robustness to medical image transformers: an application to lung cancer segmentation",  
+            "uri": "https://openreview.net/pdf?id=G9Te2IevNm"
+			},   
+			{
+			"title":"Self-supervised 3D anatomy segmentation using self-distilled masked image transformer (SMIT)",
+			"uri":"https://link.springer.com/chapter/10.1007/978-3-031-16440-8_53"
+        	}
+	],
+        "github": "https://github.com/The-Veeraraghavan-Lab/CTRobust_Transformers.git"
+    },     
+    "info": {   
+    	"use": {
+			"title": "Intended use",
+			"text": "This model is intended to be used on CT images (with or without contrast)",
+			"references": [],
+			"tables": []
+
+		},
+    	"evaluation": {
+			"title": "Evaluation data",
+			"text": "To assess the model's segmentation performance in the NSCLC Radiogenomics dataset, we considered that the original input data is a full 3D volume. The model segmented not only the labeled tumor but also tumors that were not manually annotated. Therefore, we evaluated the model based on the manually labeled tumors. After applying the segmentation model, we extracted a 128*128*128 cubic region containing the manual segmentation to assess the model’s performance.",
+			"references": [],
+			"tables": [],
+		        "limitations": "The model might produce minor false positives but this could be easilily removed by post-processing such as constrain the tumor segmentation only in lung slices"
+		},
+		"training": {
+			"title": "Training data",
+			"text": "Training data was from 377 data in the TCIA NSCLC-Radiomics data, references: Aerts, H. J. W. L., Wee, L., Rios Velazquez, E., Leijenaar, R. T. H., Parmar, C., Grossmann, P., Carvalho, S., Bussink, J., Monshouwer, R., Haibe-Kains, B., Rietveld, D., Hoebers, F., Rietbergen, M. M., Leemans, C. R., Dekker, A., Quackenbush, J., Gillies, R. J., Lambin, P. (2014). Data From NSCLC-Radiomics (version 4) [Data set]. The Cancer Imaging Archive."
+	
+		},
+    	"analyses": {
+			"title": "Evaluation",
+			"text": "Evaluation was determined with DICE score, See the paper (Methods, Section 4.2, section on Experiments and evaluation metrics, and Results 5.1, Table 2 for additional details.",
+			"references": [
+				 {
+				  "label": "Self-supervised pretraining in the wild imparts image acquisition robustness to medical image transformers: an application to lung cancer segmentation",
+				  "uri": "https://proceedings.mlr.press/v250/jiang24b.html"
+				}
+			  ],
+			 "tables": [
+				{
+				  "label": "Dice scores",
+				  "entries": {
+					"From Scratch": "0.54 ±0.31",
+					"This model": "0.69 ±0.18"
+				 }
+				}
+				
+			  ]
+			},
+		"limitations": {
+			"title": "Limitations",
+			"text": "The model might produce minor false positives but this could be easilily removed by post-processing such as constrain the tumor segmentation only in lung slices"
+		}
+    }
+}
