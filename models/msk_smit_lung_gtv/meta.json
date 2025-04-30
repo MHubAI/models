@@ -1,7 +1,7 @@
 {
     "id": "", 
     "name": "msk_smit_lung_gtv", 
-    "title": "Self-supervised 3D segmentation using self-distilled masked image transformer for Lung GTV Segmentation",
+    "title": "SMIT Self-supervised Lung GTV Segmentation",
     "summary": {
     "description": "A Lung GTV segmentation model, fine-tuned from a foundation model pretrained with 10K CT scans",
     "inputs": [
