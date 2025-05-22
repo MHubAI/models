@@ -164,7 +164,7 @@ def main():
                                          base_dir=data_dir)
 
     val_org_ds = data.Dataset(data=test_files, transform=val_org_transforms)
-    val_org_loader = data.DataLoader(val_org_ds, batch_size=1, num_workers=4)
+    val_org_loader = data.DataLoader(val_org_ds, batch_size=1, num_workers=0)
 
     print('val data size is ', len(val_org_loader))
     post_transforms = Compose([
