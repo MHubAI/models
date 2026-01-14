@@ -1,7 +1,7 @@
 {
     "id": "",
     "name": "bamf_pet_ct_breast_tumor",
-    "title": "Bamf NNunet PET CT Breast",
+    "title": "BAMF PET CT Breast Seg (nnU-Net)",
     "summary": {
         "description": "This model used to detect FDG-avid lesions in breast from FDG PET/CT scans",
         "inputs": [
