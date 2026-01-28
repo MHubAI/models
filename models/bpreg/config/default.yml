@@ -1,0 +1,14 @@
+general:
+  data_base_dir: /app/data
+  version: 1.0
+  description: Body part regression pipeline from DKFZ, processing DICOM files to predict anatomical regions and anomalies
+execute:
+- DicomImporter
+- NiftiConverter
+- BPRRunner
+- DataOrganizer
+
+modules:
+  DataOrganizer:
+    targets:
+      - json:type=bpreg-->[i:sid]/bpreg.json
