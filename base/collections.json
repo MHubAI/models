@@ -1,5 +1,8 @@
 {
   "test_collection": {
     "repo": "https://github.com/LennyN95/mhubio-test-collection"
+  },
+  "pathology": {
+    "repo": "https://github.com/MHubAI/PathologyExtension"
   }
 }
