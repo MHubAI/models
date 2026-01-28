@@ -1,0 +1,134 @@
+{
+    "id": "",
+    "name": "bamf_nnunet_mr_breast",
+    "title": "BAMF MR Breast Segmentation (nnU-Net)",
+    "summary": {
+      "description": "An nnU-Net based model to segment breast from MR scans",
+      "inputs": [
+        {
+          "label": "Input Image",
+          "description": "The MR scan of a patient.",
+          "format": "DICOM",
+          "modality": "MR",
+          "bodypartexamined": "BREAST",
+          "slicethickness": "2.5mm",
+          "non-contrast": true,
+          "contrast": false
+        }
+      ],
+      "outputs": [
+        {
+          "label": "Segmentation",
+          "type": "Segmentation",
+          "description": "Segmentation for breast, fgt, and breast carcinoma",
+          "classes": [
+            "BREAST",
+            "FGT",
+            "BREAST+BREAST_CARCINOMA"
+          ]
+        }
+      ],
+      "model": {
+        "architecture": "U-net v2",
+        "training": "supervised",
+        "cmpapproach": "3D"
+      },
+      "data": {
+        "training": {
+          "vol_samples": 587
+        },
+        "evaluation": {
+          "vol_samples": 92
+        },
+        "public": true,
+        "external": true
+      }
+    },
+    "details": {
+      "name": "AIMI Breast MR",
+      "version": "1.0.0",
+      "devteam": "BAMF Health",
+      "authors": [
+        "Murugesan, Gowtham Krishnan",
+        "Soni, Rahul",
+        "McCrumb, Diana",
+        "Van Oss, Jeff"
+      ],
+      "type": "nnU-Net v2 (U-Net structure, optimized by data-driven heuristics)",
+      "date": {
+        "code": "07.06.2024",
+        "weights": "06.06.2024",
+        "pub": "07.06.2024"
+      },
+      "cite": "Murugesan, Gowtham Krishnan, Diana McCrumb, Rahul Soni, Jithendra Kumar, Leonard Nuernberg, Linmin Pei, Ulrike Wagner, Sutton Granger, Andrey Y. Fedorov, Stephen Moore, Jeff Van Oss. AI generated annotations for Breast, Brain, Liver, Lungs and Prostate cancer collections in National Cancer Institute Imaging Data Commons. arXiv preprint arXiv:2409.20342 (2024).",
+      "license": {
+        "code": "MIT",
+        "weights": "CC BY-NC 4.0"
+      },
+      "publications": [
+        {
+          "title": "",
+          "uri": ""
+        }
+      ],
+      "github": "https://github.com/bamf-health/aimi-breast-mr"
+    },
+    "info": {
+      "use": {
+        "title": "Intended Use",
+        "text": "This model is intended to perform breast, fgt, and breast tumor segmentation in MR scans. The model has been trained and tested on scans aquired during clinical care of patients, so it might not be suited for a healthy population. The generalization capabilities of the model on a range of ages, genders, and ethnicities are unknown."
+      },
+      "analyses": {
+        "title": "Quantitative Analyses",
+        "text": "The model's performance was assessed using the Dice Coefficient with tolerance 7mm, as specified in the Duke-Breast-Cancer-MRI. The model was used to segment cases from the IDC collection ACRIN-Contralateral-Breast-MR [1]. All validation cases (=92) were reviewed and corrected by board-certified radiologists. The analysis is published here [2]",
+        "tables": [
+          {
+            "label": "Label-wise metrics (mean) between AI derived and manually corrected MR Breast annotations",
+            "entries": {
+              "Dice: BREAST": "0.98",
+              "Dice: FGT": "0.80",
+              "Dice: BREAST+TUMOR": "0.56"
+            }
+          }
+        ],
+        "references": [
+          {
+            "label": "ACRIN-Contralateral-Breast-MR",
+            "uri": "https://www.cancerimagingarchive.net/collection/acrin-contralateral-breast-mr"
+          },
+          {
+            "label": "The AIMI Initiative: AI-Generated Annotations for Imaging Data Commons Collections",
+            "uri": "https://arxiv.org/abs/2310.14897"
+          }
+        ]
+      },
+      "evaluation": {
+        "title": "Evaluation Data",
+        "text": "The model was used to segment 92 cases from the ACRIN-Contralateral-Breast-MR [1]. All of those cases were reviewed and corrected by a board-certified radiologist. The model predictions, and radiologist corrections would be published on zenodo soon",
+        "references": [
+          {
+            "label": "ACRIN-Contralateral-Breast-MR",
+            "uri": "https://www.cancerimagingarchive.net/collection/acrin-contralateral-breast-mr"
+          },
+          {
+            "label": "Image segmentations produced by the AIMI Annotations initiative",
+            "uri": "https://zenodo.org/records/13244892"
+          }
+        ]
+      },
+      "training": {
+        "title": "Training Data",
+        "text": "The training dataset consists of 587 breast, fgt, and breast tumor annotations. The breast and fgt annotations where taken from the Duke-Breast-Cancer-MRI dataset [1] (N=98) and breast tumor annotations where taken from the ACRIN-Contralateral-Breast-MR [2] (N=489).",
+        "references": [
+          {
+            "label": "Duke-Breast-Cancer-MRI Dataset",
+            "uri": "https://wiki.cancerimagingarchive.net/pages/viewpage.action?pageId=70226903"
+          },
+          {
+            "label": "ACRIN-Contralateral-Breast-MR",
+            "uri": "https://www.cancerimagingarchive.net/collection/acrin-contralateral-breast-mr"
+          }
+        ]
+      }
+    }
+  }
