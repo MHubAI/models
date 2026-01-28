@@ -1,0 +1,149 @@
+{
+  "id": "",
+  "name": "bamf_nnunet_ct_lungnodules",
+  "title": "AIMI CT Lung and Nodules",
+  "summary": {
+    "description": "An nnU-Net based model to segment Lung and Nodules (3mm-30mm) from CT scans",
+    "inputs": [
+      {
+        "label": "Input Image",
+        "description": "The CT scan of a patient.",
+        "format": "DICOM",
+        "modality": "CT",
+        "bodypartexamined": "LUNG",
+        "slicethickness": "3mm",
+        "non-contrast": true,
+        "contrast": false
+      }
+    ],
+    "outputs": [
+      {
+        "label": "Segmentation",
+        "type": "Segmentation",
+        "description": "Lung and Nodules (3mm-30mm) from CT scans",
+        "classes": [
+          "LUNG",
+          "LUNG+NODULE"
+        ]
+      }
+    ],
+    "model": {
+      "architecture": "U-net",
+      "training": "supervised",
+      "cmpapproach": "3D"
+    },
+    "data": {
+      "training": {
+        "vol_samples": 1299
+      },
+      "evaluation": {
+        "vol_samples": 114
+      },
+      "public": true,
+      "external": true
+    }
+  },
+  "details": {
+    "name": "AIMI CT Lung and Nodule",
+    "version": "2.0.0",
+    "devteam": "BAMF Health",
+    "authors": [
+      "Soni, Rahul",
+      "McCrumb, Diana",
+      "Murugesan, Gowtham Krishnan",
+      "Van Oss, Jeff"
+    ],
+    "type": "nnU-Net (U-Net structure, optimized by data-driven heuristics)",
+    "date": {
+      "code": "28.09.2024",
+      "weights": "11.06.2024",
+      "pub": "30.09.2024"
+    },
+    "cite": "Gowtham Krishnan Murugesan, Diana McCrumb, Rahul Soni, Jithendra Kumar, Leonard Nuernberg, Linmin Pei, Ulrike Wagner, Sutton Granger, Andrey Y. Fedorov, Stephen Moore, Jeff Van Oss. AI generated annotations for Breast, Brain, Liver, Lungs and Prostate cancer collections in National Cancer Institute Imaging Data Commons. arXiv:2409.20342  (2024).",
+    "license": {
+      "code": "MIT",
+      "weights": "CC BY-NC 4.0"
+    },
+    "publications": [
+        {
+            "title": "AI generated annotations for Breast, Brain, Liver, Lungs and Prostate cancer collections in National Cancer Institute Imaging Data Commons",
+            "uri": "https://arxiv.org/abs/2409.20342"
+        }
+    ],
+    "github": "https://github.com/bamf-health/aimi-lung2-ct"
+  },
+  "info": {
+    "use": {
+      "title": "Intended Use",
+      "text": "This model is designed for analyzing thoracic CT scans to segment lung structures and nodules. It requires input images from CT scans, which are processed using deep learning methods like U-Net. The model identifies and delineates lung regions and nodules, assisting in lung cancer screening and diagnostics. "
+    },
+    "analyses": {
+      "title": "Quantitative Analyses",
+      "text": "The model's performance was assessed using the Dice Coefficient, Hausdorff distance and NSD. Source radiological images from publicly available NCI IDC collections were filtered to match the modality and region requirements. To ensure the quality of AI-generated annotations, 10% of these annotations were evaluated by radiologists. "
+    },
+    "evaluation": {
+      "title": "Evaluation Data",
+      "text": "Quantitative metrics between AI and Radiologists annotations. The model was used to segment cases 1157 from the QIN LUNG CT [1], SPIE-AAPM Lung CT Challenge [2] and NLST [3] collection. 114 of those cases were randomly selected to be reviewed and corrected by a board-certified radiologist.",
+      "tables": [
+        {
+          "label": "Dice Score",
+          "entries": {
+            "Lung": "1.0±0.0",
+            "Nodules": "0.78±0.28"
+          }
+        },
+        {
+          "label": "95% Hausdorff Distance",
+          "entries": {
+            "Lung": "0.00±0.00",
+            "Nodules": "62.07±10.54"
+          }
+        },
+        {
+          "label": "Normalized surface distance ",
+          "entries": {
+            "Lung": "0.02±0.11",
+            "Nodules": "10.54±14.43"
+          }
+        }
+      ],
+      "references": [
+        {
+          "label": "QIN LUNG CT",
+          "uri": "https://www.cancerimagingarchive.net/collection/qin-lung-ct/"
+        },
+        {
+          "label": "SPIE-AAPM Lung CT Challenge",
+          "uri": "https://www.cancerimagingarchive.net/collection/spie-aapm-lung-ct-challenge/"
+        },
+        {
+          "label": "NLST",
+          "uri": "https://www.cancerimagingarchive.net/collection/nlst/"
+        }
+
+      ]
+    },
+    "training": {
+      "title": "Training Data",
+      "text": "416 CT cases from NSCLC-Radiomics [2] and 883 CT cases from DICOM-LIDC-IDRI-Nodules [1] were used to train the model. Annotations for the lung regions in the training dataset were generated utilizing Totalsegmentator[3]",
+      "references": [
+        {
+          "label": "DICOM-LIDC-IDRI-Nodules",
+          "uri": "https://wiki.cancerimagingarchive.net/pages/viewpage.action?pageId=44499647"
+        },
+        {
+          "label": "NSCLC-Radiomics",
+          "uri": "https://www.cancerimagingarchive.net/collection/nsclc-radiomics/"
+        },
+        {
+          "label": "Totalsegmentator",
+          "uri": "https://mhub.ai/models/totalsegmentator"
+        }
+      ]
+    },
+    "limitations": {
+      "title": "Limitations",
+      "text": "The model has been trained and tested on scans acquired during clinical care of patients, so it might not be suited for a healthy population. The generalization capabilities of the model on a range of ages, genders, and ethnicities are unknown."
+    }
+  }
+}
