@@ -1,0 +1,174 @@
+{
+  "id": "7c7c7e7b-3c4d-4a84-9a45-5a6c2b46c1a1",
+  "name": "deepcac2",
+  "title": "DeepCAC2",
+  "summary": {
+    "description": "DeepCAC2 is a two-stage deep learning pipeline for coronary artery calcification assessment in chest CT. It first uses an nnU-Net-based cardiac segmentation model to localize the heart, then applies a patch-based 3D U-Net to segment coronary artery calcifications and derive Agatston calcium scores and risk categories.",
+    "inputs": [
+      {
+        "label": "Chest CT",
+        "description": "Non-contrast, low-dose chest CT scan in DICOM format.",
+        "format": "DICOM",
+        "modality": "CT",
+        "bodypartexamined": "CHEST",
+        "slicethickness": "1-5 mm",
+        "non-contrast": true,
+        "contrast": false
+      }
+    ],
+    "outputs": [
+      {
+        "type": "Segmentation",
+        "classes": [
+          "heart",
+          "coronary artery calcification"
+        ]
+      },
+      {
+        "type": "Prediction",
+        "valueType": "float",
+        "label": "Predicted Agatston Score",
+        "description": "Automated coronary artery calcium score derived from the predicted CAC segmentation."
+      },
+      {
+        "type": "Classification",
+        "classes": [
+          "very low",
+          "low",
+          "moderate",
+          "high"
+        ]
+      }
+    ],
+    "model": {
+      "architecture": "Two-stage pipeline with nnU-Net-based cardiac segmentation followed by patch-based 3D U-Net CAC segmentation.",
+      "training": "supervised",
+      "cmpapproach": "3D"
+    },
+    "data": {
+      "training": {
+        "vol_samples": 622
+      },
+      "evaluation": {
+        "vol_samples": 390
+      },
+      "public": true,
+      "external": true
+    }
+  },
+  "details": {
+    "name": "DeepCAC2",
+    "version": "1.0.0",
+    "devteam": "Artificial Intelligence in Medicine Program, Mass General Brigham / Harvard Medical School",
+    "type": "Segmentation and prediction",
+    "date": {
+      "weights": "2026-01-01",
+      "code": "2026-01-01",
+      "pub": "2026-03-25"
+    },
+    "cite": "Nürnberg L, Bernatz S, Foldyna B, Lu MT, Fedorov A, Aerts HJWL. Coronary artery calcification assessment in National Lung Screening Trial CT images (DeepCAC2).",
+    "license": {
+      "code": "MIT",
+      "weights": "MIT"
+    },
+    "publications": [
+      {
+        "title": "Coronary artery calcification assessment in National Lung Screening Trial CT images (DeepCAC2)",
+        "uri": "https://arxiv.org/"
+      }
+    ],
+    "github": "https://github.com/MHubAI/models/tree/main/models/deepcac2",
+    "slicer": false
+  },
+  "info": {
+    "use": {
+      "title": "Intended use",
+      "text": "DeepCAC2 is designed for automated coronary artery calcification (CAC) segmentation and cardiovascular risk assessment from non-contrast chest CT scans, enabling opportunistic screening without dedicated cardiac CT protocols. The generated outputs and dataset can be explored via an interactive public dashboard [1] and are derived from the National Lung Screening Trial (NLST) cohort available through the Imaging Data Commons (IDC) [2].",
+      "references": [
+        {
+          "label": "DeepCAC2 interactive dashboard",
+          "uri": "https://lookerstudio.google.com/reporting/2c656fab-89ce-4ccd-a6a6-6c76ba7ecc51/page/P3qpF"
+        },
+        {
+          "label": "Imaging Data Commons (NLST collection)",
+          "uri": "https://imaging.datacommons.cancer.gov/"
+        }
+      ]
+    },
+    "analyses": {
+      "title": "Analyses",
+      "text": "The pipeline produces volumetric segmentations of the heart and coronary artery calcifications, from which Agatston calcium scores (CACS) are computed and mapped to categorical risk groups (0, 1–100, 101–300, >300). These standardized outputs enable cohort stratification, longitudinal analyses, survival modeling, and reproducible imaging biomarker research at scale [1].",
+      "references": [
+        {
+          "label": "DeepCAC2 preprint",
+          "uri": "https://arxiv.org/abs/2601.10154"
+        }
+      ],
+      "tables": [
+        {
+          "label": "CAC risk groups",
+          "entries": {
+            "0": "CACS = 0 (very low)",
+            "1": "CACS 1–100 (low)",
+            "2": "CACS 101–300 (moderate)",
+            "3": "CACS >300 (high)"
+          }
+        }
+      ]
+    },
+    "evaluation": {
+      "title": "Evaluation",
+      "text": "DeepCAC2 was evaluated for both technical validity and clinical relevance. Technical validation compared automated CAC scores and risk categories against expert annotations on a subset of NLST scans, demonstrating high agreement. Clinical validation using survival analysis showed that model-derived CAC risk groups are strong independent predictors of all-cause mortality, with clear stratification across risk categories [1].",
+      "references": [
+        {
+          "label": "DeepCAC2 preprint",
+          "uri": "https://arxiv.org/abs/2601.10154"
+        }
+      ],
+      "tables": [
+        {
+          "label": "Technical validation metrics",
+          "entries": {
+            "Evaluation dataset": "NLST subset",
+            "Sample size": "390 CT scans",
+            "Spearman correlation (CACS)": "0.879",
+            "Weighted Cohen's kappa (risk groups)": "0.844",
+            "Agreement interpretation": "High correlation and near-perfect agreement"
+          }
+        },
+        {
+          "label": "Survival analysis summary",
+          "entries": {
+            "Cohort size": "23,011 participants",
+            "Events": "1,624 deaths",
+            "Median follow-up": "6.7 years",
+            "Model type": "Cox proportional hazards",
+            "Adjusted covariates": "Age, sex, smoking status, heart disease",
+            "Highest risk group HR": "2.05 (95% CI 1.77–2.39)",
+            "Concordance index": "0.685"
+          }
+        }
+      ]
+    },
+    "training": {
+      "title": "Training",
+      "text": "The CAC segmentation model was trained in a supervised manner using 778 ECG-gated chest CT scans from the Framingham Heart Study with expert CAC annotations. The pipeline uses a two-stage approach: nnU-Net-based cardiac segmentation followed by patch-based 3D U-Net training on balanced overlapping 3D patches extracted from heart-centered volumes [1].",
+      "references": [
+        {
+          "label": "DeepCAC2 preprint",
+          "uri": "https://arxiv.org/abs/2601.10154"
+        }
+      ]
+    },
+    "limitations": {
+      "title": "Limitations",
+      "text": "The model is optimized for non-contrast, low-dose chest CT scans and may be sensitive to variations in acquisition protocols, reconstruction parameters, and image quality. CAC quantification is derived from non-ECG-gated scans, which may introduce motion-related inaccuracies compared to dedicated cardiac CT. Generalization to other populations, scanners, and clinical workflows requires further validation [1].",
+      "references": [
+        {
+          "label": "DeepCAC2 preprint",
+          "uri": "https://arxiv.org/abs/2601.10154"
+        }
+      ]
+    }
+  }
+}
