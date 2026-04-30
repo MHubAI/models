@@ -1,0 +1,59 @@
+
+general:
+  data_base_dir: /app/data
+  version: 1.0
+  description: DeepCAC2 starting from nifti and exporting AGS and RISK for mapped and non-mapped cac segmentations
+
+execute:
+- FileStructureImporter
+- NiftiConverter
+- NNUnetRunner
+- DeepCACRunner
+- DeepCACPostProcessor
+- ReportExporter
+- module: ReportExporter
+  globalreport: true
+  meta:
+    scope: global 
+- DataOrganizer
+
+modules:
+
+  FileStructureImporter:
+    input_dir: 'input_data'
+    import_id: _instance
+    structures: 
+    - re:(\d+)_img.nrrd::$pid@instance@nrrd:mod=ct
+
+  NNUnetRunner:
+    folds: all
+    nnunet_task: Task400_OPEN_HEART_1FOLD
+    nnunet_model: 3d_lowres
+    roi: HEART
+
+  ReportExporter:
+    meta:
+      mod: report
+      scope: instance
+    includes:
+    - attr: pid
+      label: PatientID
+    - data: ags
+      label: Predicted Agatston Score
+      value: value
+    - data: mags
+      label: Mapped Predicted Agatston Score
+      value: value
+    - data: rc
+      label: Predicted Risk Group
+      value: value
+    - data: rc
+      label: Mapped Predicted Risk Group
+      value: value
+
+  DataOrganizer:
+    targets:
+    - nrrd:mod=seg:roi=CAC AND NOT any:variant=mapped-->[i:pid]/cac.seg.nrrd
+    - nrrd:mod=seg:roi=CAC:variant=mapped-->[i:pid]/mcac.seg.nrrd
+    - json:mod=report:scope=instance-->[i:pid]/DeepCAC.report.json
+    - json:mod=report:scope=global-->DeepCAC.report.json
