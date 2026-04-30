@@ -33,6 +33,12 @@ RUN wget --directory-prefix /app/models/deepcac2/src/weights https://www.dropbox
 ARG MHUB_MODELS_REPO
 RUN buildutils/import_mhub_model.sh deepcac2 ${MHUB_MODELS_REPO}
 
+# download the DeepCAC2 model weights
+ENV DEEPCAC2_WEIGHTS_DIR="/app/models/deepcac2/src/weights/"
+ENV DEEPCAC2_WEIGHTS_FN="vivid-haze-6_model.pt"
+ENV DEEPCAC2_WEIGHTS_URL="https://www.dropbox.com/scl/fi/4rodcp9y2vula8loh1v6r/vivid-haze-6_model.pt?rlkey=7j3cyaltvdpthukchn5xbh01d&dl=1"
+RUN wget -o /dev/stdout -O ${DEEPCAC2_WEIGHTS_DIR}${DEEPCAC2_WEIGHTS_FN} ${DEEPCAC2_WEIGHTS_URL}
+
 # Default run script
 ENTRYPOINT ["mhub.run"]
 CMD ["--workflow", "default"]
