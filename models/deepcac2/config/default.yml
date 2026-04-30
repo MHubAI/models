@@ -1,0 +1,53 @@
+general:
+  data_base_dir: /app/data
+  version: 1.0
+  description: custom DeepCAC2 starting from dicom and exporting AGS and RISK only for non-mapped cac segmentations
+
+execute:
+- DicomImporter
+- NiftiConverter
+- NNUnetRunner
+- DeepCACRunner
+- AGSCalculator
+- ReportExporter
+- module: ReportExporter
+  globalreport: true
+  meta:
+    scope: global 
+- DataOrganizer
+
+modules:
+
+  DicomImporter:
+    meta:
+      mod: '%Modality'
+      pid: '%PatientID'
+
+  NNUnetRunner:
+    folds: all
+    nnunet_task: Task400_OPEN_HEART_1FOLD
+    nnunet_model: 3d_lowres
+    roi: HEART
+
+  ReportExporter:
+    meta:
+      mod: report
+      scope: instance
+    includes:
+    - attr: sid
+      label: SeriesInstanceUID
+    - attr: pid
+      label: PatientID
+    - data: ags
+      label: Predicted Agatston Score
+      value: value
+    - data: rc
+      label: Predicted Risk Group
+      value: value
+
+  DataOrganizer:
+    targets:
+    - nrrd:mod=seg:roi=CAC AND NOT any:variant=mapped-->[i:sid]/nrrd/cac.seg.nrrd
+    - nrrd:mod=seg:roi=CAC:variant=mapped-->[i:sid]/nrrd/mcac.seg.nrrd
+    - json:mod=report:scope=instance-->[i:sid]/DeepCAC.report.json
+    - json:mod=report:scope=global-->DeepCAC.report.json
