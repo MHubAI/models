@@ -2,14 +2,13 @@
 general:
   data_base_dir: /app/data
   version: 1.0
-  description: default configuration for DeepCAC2 (test nifti input)
+  description: DeepCAC2 starting from nifti file(s) named by PatientID and exporting AGS and RISK for mapped and non-mapped cac segmentations.
 
 execute:
 - FileStructureImporter
-- NiftiConverter
 - NNUnetRunner
 - DeepCACRunner
-- CACMapping
+#- CACMapping
 - AGSCalculator
 - ReportExporter
 - module: ReportExporter
@@ -24,7 +23,7 @@ modules:
     input_dir: 'input_data'
     import_id: _instance
     structures: 
-    - re:(\d+)_img.nrrd::$pid@instance@nrrd:mod=ct
+    - re:(\d+).nii.gz::$pid@instance@nifti:mod=ct
 
   NNUnetRunner:
     folds: all
@@ -51,10 +50,16 @@ modules:
     - data: rc
       label: Predicted Risk Group
       value: value
+    # - data: mags
+    #   label: Mapped Predicted Agatston Score
+    #   value: value
+    # - data: mrc
+    #   label: Mapped Predicted Risk Group
+    #   value: value
 
   DataOrganizer:
     targets:
-    - nrrd:mod=seg:roi=CAC AND NOT any:variant=mapped-->[i:pid]/cac.seg.nrrd
-    - nrrd:mod=seg:roi=CAC:variant=mapped-->[i:pid]/mcac.seg.nrrd
-    - json:mod=report:scope=instance-->[i:pid]/DeepCAC.report.json
+    #- nrrd:mod=seg:roi=CAC AND NOT any:variant=mapped-->[i:pid]/cac.seg.nrrd
+    #- nrrd:mod=seg:roi=CAC:variant=mapped-->[i:pid]/mcac.seg.nrrd
+    #- json:mod=report:scope=instance-->[i:pid]/DeepCAC.report.json
     - json:mod=report:scope=global-->DeepCAC.report.json
