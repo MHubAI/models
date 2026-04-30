@@ -27,12 +27,12 @@ RUN rm ${WEIGHTS_DIR}${WEIGHTS_FN}
 ENV WEIGHTS_FOLDER=$WEIGHTS_DIR
 
 # download the DeepCAC2 model weights
-RUN wget --directory-prefix /app/models/aim_deepcac2/src/weights https://www.dropbox.com/scl/fi/4rodcp9y2vula8loh1v6r/vivid-haze-6_model.pt?rlkey=7j3cyaltvdpthukchn5xbh01d&dl=0
+RUN wget --directory-prefix /app/models/deepcac2/src/weights https://www.dropbox.com/scl/fi/4rodcp9y2vula8loh1v6r/vivid-haze-6_model.pt?rlkey=7j3cyaltvdpthukchn5xbh01d&dl=0
 
 # Import the MHub model definition
 ARG MHUB_MODELS_REPO
-RUN buildutils/import_mhub_model.sh aim_deepcac2 ${MHUB_MODELS_REPO}
+RUN buildutils/import_mhub_model.sh deepcac2 ${MHUB_MODELS_REPO}
 
 # Default run script
 ENTRYPOINT ["mhub.run"]
-CMD ["--workflow", "all_pid_dicom"]
+CMD ["--workflow", "default"]
