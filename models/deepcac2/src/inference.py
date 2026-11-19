@@ -3,7 +3,7 @@
 DeepCAC2 - 3D Unet Pipeline
 
 This script runs the entrire processing pieline based on nrrd input chest ct scans:
-(loading data, preprocessing, patching, model execution, reassembling, ags computation)
+(loading data, preprocessing, patching, model execution, reassembling)
 on all patients from the validation split from start to finish based on a
 pre-trained 3D Unet (see model.py).
 Therefore, this script is INDEPENDENT from any preparations (see preparedata.py) 

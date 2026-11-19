@@ -2,14 +2,13 @@
 general:
   data_base_dir: /app/data
   version: 1.0
-  description: DeepCAC2 starting from nifti file(s) named by PatientID and exporting AGS and RISK for mapped and non-mapped cac segmentations.
+  description: DeepCAC2 starting from NIfTI files named by PatientID and exporting CAC scores and risk groups.
 
 execute:
 - FileStructureImporter
 - NNUnetRunner
 - DeepCACRunner
-#- CACMapping
-- AGSCalculator
+- CalciumAnalysisCalculator
 - ReportExporter
 - module: ReportExporter
   globalreport: true
@@ -38,28 +37,60 @@ modules:
     includes:
     - attr: pid
       label: PatientID
-    - data: ags
-      label: Agatston Score Description
-      value: description
-    - data: ags
-      label: Predicted Agatston Score
+    - data: scoring_version
+      label: Scoring Version
       value: value
-    - data: rc
+    - data: lesion_connectivity
+      label: Lesion Connectivity
+      value: value
+    - data: cacs
+      label: CAC Score Description
+      value: description
+    - data: cacs
+      label: Predicted CAC Score
+      value: value
+    - data: risk_category
       label: Risk Group Description
       value: description
-    - data: rc
+    - data: risk_category
       label: Predicted Risk Group
       value: value
-    # - data: mags
-    #   label: Mapped Predicted Agatston Score
-    #   value: value
-    # - data: mrc
-    #   label: Mapped Predicted Risk Group
-    #   value: value
+    - data: calcium_volume
+      label: Calcium Volume (mm3)
+      value: value
+    - data: segmentation_volume
+      label: Segmentation Volume (mm3)
+      value: value
+    - data: lesion_count
+      label: Number of Lesions
+      value: value
+
+    - data: lesion_id
+      label: Lesion IDs
+      value: value
+      aggregate: list
+    - data: lesion_volume
+      label: Individual Lesion Volumes (mm3)
+      value: value
+      aggregate: list
+    - data: lesion_score
+      label: Individual Lesion CAC Scores
+      value: value
+      aggregate: list
+    - data: lesion_max_hu
+      label: Individual Lesion Maximum HU
+      value: value
+      aggregate: list
+    - data: lesion_eligible_voxels
+      label: Individual Lesion Eligible Voxel Counts
+      value: value
+      aggregate: list
+    - data: lesion_region_count
+      label: Individual Lesion 2D Region Counts
+      value: value
+      aggregate: list
 
   DataOrganizer:
     targets:
-    #- nrrd:mod=seg:roi=CAC AND NOT any:variant=mapped-->[i:pid]/cac.seg.nrrd
-    #- nrrd:mod=seg:roi=CAC:variant=mapped-->[i:pid]/mcac.seg.nrrd
     #- json:mod=report:scope=instance-->[i:pid]/DeepCAC.report.json
     - json:mod=report:scope=global-->DeepCAC.report.json

@@ -1,0 +1,122 @@
+# Extended exports; keep scoring and per-series reports aligned with default.yml.
+general:
+  data_base_dir: /app/data
+  version: 1.0
+  description: DeepCAC2 extended DICOM workflow with per-series SEG, SR and JSON, CAC NRRD, and a combined JSON report
+
+# SegDB's upstream CodeMeaning for SCT 18115005 exceeds DICOM's 64-character
+# Long String limit. Override only the display text; the coded concept is unchanged.
+segdb:
+  triplets:
+    T_PATHOLOGIC_CALCIFICATION_MABNORMALITY:
+      code: '18115005'
+      scheme_designator: SCT
+      meaning: pathologic calcification
+
+execute:
+- DicomImporter
+- NiftiConverter
+- NNUnetRunner
+- DeepCACRunner
+- CalciumAnalysisCalculator
+- DsegConverter
+- TID1500SRGenerator
+- ReportExporter
+- module: ReportExporter
+  globalreport: true
+  meta:
+    scope: global 
+- DataOrganizer
+
+modules:
+
+  DicomImporter:
+    meta:
+      mod: '%Modality'
+      pid: '%PatientID'
+
+  NiftiConverter:
+    engine: dcm2niix
+
+  NNUnetRunner:
+    folds: all
+    nnunet_task: Task400_OPEN_HEART_1FOLD
+    nnunet_model: 3d_lowres
+    roi: HEART
+
+  CalciumAnalysisCalculator:
+    lesion_connectivity: 26
+
+  DsegConverter:
+    source_segs: nrrd|nifti:mod=seg
+    target_dicom: dicom:mod=ct
+    model_name: DeepCAC2
+    body_part_examined: CHEST
+    converted_file_name: DeepCAC2.seg.dcm
+    skip_empty_slices: true
+
+  ReportExporter:
+    meta:
+      mod: report
+      scope: instance
+    includes:
+    - attr: sid
+      label: SeriesInstanceUID
+    - files: dicom:mod=ct
+      label: PatientID
+      aggregate: first
+      pattern: '[d:pid]'
+    - data: scoring_version
+      label: Scoring Version
+      value: value
+    - data: lesion_connectivity
+      label: Lesion Connectivity
+      value: value
+    - data: cacs
+      label: Predicted CAC Score
+      value: value
+    - data: risk_category
+      label: Predicted Risk Group
+      value: value
+    - data: calcium_volume
+      label: Calcium Volume (mm3)
+      value: value
+    - data: segmentation_volume
+      label: Segmentation Volume (mm3)
+      value: value
+    - data: lesion_count
+      label: Number of Lesions
+      value: value
+
+    - data: lesion_id
+      label: Lesion IDs
+      value: value
+      aggregate: list
+    - data: lesion_volume
+      label: Individual Lesion Volumes (mm3)
+      value: value
+      aggregate: list
+    - data: lesion_score
+      label: Individual Lesion CAC Scores
+      value: value
+      aggregate: list
+    - data: lesion_max_hu
+      label: Individual Lesion Maximum HU
+      value: value
+      aggregate: list
+    - data: lesion_eligible_voxels
+      label: Individual Lesion Eligible Voxel Counts
+      value: value
+      aggregate: list
+    - data: lesion_region_count
+      label: Individual Lesion 2D Region Counts
+      value: value
+      aggregate: list
+
+  DataOrganizer:
+    targets:
+    - nrrd:mod=seg:roi=CORONARY_ARTERY+PATHOLOGIC_CALCIFICATION-->[i:sid]/nrrd/cac.seg.nrrd
+    - dicomseg:mod=seg-->[i:sid]/DeepCAC2.seg.dcm
+    - dicom:mod=sr:tid=1500-->[i:sid]/DeepCAC2.tid1500.dcm
+    - json:mod=report:scope=instance-->[i:sid]/DeepCAC.report.json
+    - json:mod=report:scope=global-->DeepCAC.report.json

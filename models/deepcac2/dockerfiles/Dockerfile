@@ -16,7 +16,8 @@ RUN pip3 install --no-cache-dir \
  && pip3 install --no-cache-dir --force-reinstall \
     "dicom2nifti<2.6" \
     numpy==1.26.4 \
-    pydicom==2.4.4
+    pydicom==2.4.4 \
+    highdicom==0.22.0
 
 # pull weights for platipy's nnU-Net so that the user doesn't need to every time a container is run
 ENV WEIGHTS_DIR="/root/.platipy/nnUNet_models/nnUNet/"

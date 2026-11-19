@@ -1,0 +1,16 @@
+# Build with models/deepcac2 as the context; include only runtime sources.
+**
+!config/
+!config/**
+!src/
+!src/**
+!utils/
+!utils/**
+!meta.json
+!mhub.toml
+!README.md
+src/weights/
+src/weights/**
+**/__pycache__/
+**/__pycache__/**
+**/*.pyc
