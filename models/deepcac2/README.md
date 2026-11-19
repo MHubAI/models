@@ -1,205 +1,164 @@
 # DeepCAC2
 
-All bundled workflows use `CalciumAnalysisCalculator` and scoring version **2.0.0**.
-Inference and the predicted segmentation are unchanged. The calculation uses
-CT intensities in HU on the original image grid and rejects mismatched CT/mask
-size, spacing, origin, or direction.
+## Workflows
 
-On each axial slice, candidate voxels satisfy `mask > 0` and `CT >= 130 HU`.
-Components use 4-connectivity and must occupy at least 1 mm2. Their area is
-weighted by peak attenuation (factors 1/2/3/4 at 130/200/300/400 HU), then
-multiplied by physical slice spacing / 3 mm. Scores retain full precision;
-risk groups use the unrounded score: 0, (0,100], (100,300], and >300.
+Select a bundled configuration with `--workflow <name>`.
 
-Eligible components are grouped into 3D lesions using 26-connectivity by
-default. Configure `CalciumAnalysisCalculator.lesion_connectivity` as 6, 18,
-or 26; this changes lesion grouping but never the score. Lesion IDs follow
-spatial labeling order, rather than the previous largest-volume-first order.
+| Workflow | Input | CT preprocessing | Exported files |
+| --- | --- | --- | --- |
+| `default` | DICOM CT | dcm2niix, then LPS normalization | DICOM SEG, TID 1500 SR, per-series and combined JSON |
+| `dicom_dicom_plastimatch` | DICOM CT | Default NiftiConverter engine (plastimatch), without LPSOrienter | Same as `default` |
+| `dicom_extended` | DICOM CT | dcm2niix, then LPS normalization | Same as `default`, plus the CAC NRRD |
+| `nifti_pid` | NIfTI CT named `<PatientID>.nii.gz` with numeric PatientID | LPS normalization | Combined JSON |
 
-JSON is produced by MHub's `ReportExporter`: `DeepCAC.report.json` contains
-full-precision scores, risk category, eligible calcium volume, raw segmentation
-volume, lesion count, individual lesion measurements, and `Scoring Version`.
-The DICOM workflows export per-series and combined reports; `pid_nifti` exports
-a combined report. There is no separate `DeepCAC2.measurements.json` or dataset
-`info.json` export.
+Each input is processed separately. Both segmentation stages and calcium
+analysis use the same working CT. Workflow settings are in [config/](config/).
 
-The calculator uses only its declared NIfTI CT and CAC mask inputs. Scores
-and volumes use physical voxel spacing; no DICOM headers are read by this
-module. Only the primary spacing-normalized score is calculated. Dataset-only
-schema fields, duplicate score aliases, nominal thickness placeholders, and
-alternative unnormalized/thickness-normalized score outputs have been removed.
+## Modules
 
-Individual lesion measurements are also registered in `instance.outputData`
-and included as parallel lists in the compact per-case and combined reports:
+The four model-specific modules below operate on MHub-managed inputs and
+outputs. Configuration keys go under `modules.<ModuleName>` in the workflow.
 
-| MHub output selector | Report label |
+### LPSOrienter
+
+Input: `nifti:mod=ct`. Output: `image_lps.nii.gz`, registered as
+`nifti:mod=ct:orientation=LPS`.
+
+Creates the LPS axis ordering used for inference by permuting/flipping axes
+without interpolation, preserving HU values and physical voxel locations.
+Oblique directions are retained. The previous CT entry is retired so downstream
+modules select the oriented image.
+
+| Configuration | Default | Effect |
+| --- | --- | --- |
+| `delete_input_file` | `false` | Also delete the replaced CT file after writing the oriented image |
+
+`default` and `dicom_extended` enable deletion of the generated intermediate
+NIfTI. `nifti_pid` preserves the imported file. Source DICOM files are retained.
+
+### DeepCACRunner
+
+Inputs: CT (`nifti:mod=ct`) and heart segmentation (`nifti:mod=seg`) from
+`NNUnetRunner`. Output: `pcac.nrrd`, registered as
+`nrrd:mod=seg:model=DeepCAC2:roi=CORONARY_ARTERY+PATHOLOGIC_CALCIFICATION`.
+
+Runs CAC inference with the container's fixed weights. There are no
+module-specific configuration options.
+
+### CalciumAnalysisCalculator
+
+Inputs: CT (`nifti:mod=ct`) and CAC mask
+(`nrrd:mod=seg:roi=CORONARY_ARTERY+PATHOLOGIC_CALCIFICATION`). The images must
+share their size and physical geometry. This module reads no DICOM headers.
+
+| Configuration | Default | Effect |
+| --- | --- | --- |
+| `lesion_connectivity` | `26` | Group eligible calcium into 3D lesions using 6, 18, or 26 neighbors; does not change the total score |
+
+Scoring version **2.0.0** uses voxels with `mask > 0` and `CT >= 130 HU`.
+On each axial slice, 4-connected regions must occupy at least 1 mm². Region
+area is weighted by peak attenuation (factors 1/2/3/4 at 130/200/300/400 HU)
+and multiplied by physical slice spacing / 3 mm. Scores retain full precision.
+
+Outputs are native MHub measurements consumed by the report and SR modules:
+
+| Output selector | Meaning |
 | --- | --- |
-| `lesion_id` | Lesion IDs |
-| `lesion_volume` | Individual Lesion Volumes (mm3) |
-| `lesion_score` | Individual Lesion Agatston Scores |
-| `lesion_max_hu` | Individual Lesion Maximum HU |
-| `lesion_eligible_voxels` | Individual Lesion Eligible Voxel Counts |
-| `lesion_region_count` | Individual Lesion 2D Region Counts |
+| `scoring_version` | Scoring algorithm version |
+| `lesion_connectivity` | Configured 3D connectivity |
+| `cacs`, `risk_category` | Score and category |
+| `calcium_volume`, `segmentation_volume` | Eligible calcium and raw positive-mask volume, in mm³ |
+| `lesion_count` | Number of eligible 3D lesions |
+| `lesion_id`, `lesion_volume`, `lesion_score` | Repeated lesion IDs, eligible volumes, and score contributions |
+| `lesion_max_hu`, `lesion_eligible_voxels`, `lesion_region_count` | Repeated lesion maximum HU, eligible voxel counts, and qualifying 2D-region counts |
 
-All lists follow spatial lesion-ID order; corresponding entries describe
-the same lesion. Each registered output carries the shared
-lesion ID in `meta.id`, its unit, and the CAC segmentation metadata. For example,
-`lesion_volume:id=2` selects the second lesion's volume. Report configurations
-select repeated outputs with `aggregate: list`. Cases with no eligible lesions
-produce empty lists. Lesion scores use the primary spacing normalization.
+Repeated outputs share `meta.id` for the same lesion; for example,
+`lesion_volume:id=2` selects lesion 2's volume. Empty eligible masks produce
+zero measurements and no lesion outputs. A nonempty raw mask can still have
+zero eligible calcium volume, score, and lesions.
 
-Calcium volume includes only score-eligible voxels; segmentation volume
-includes every positive voxel of the unchanged prediction. Therefore a
-nonempty segmentation can have zero calcium score, volume, and lesions.
-Empty masks produce zero measurements and an empty lesion list.
+### TID1500SRGenerator
 
-The DICOM workflow also exports the HEART/CAC DICOM SEG and
-`DeepCAC2.tid1500.dcm`. The SR contains global calcium measurements, a separate
-raw-segmentation volume group referencing the CAC segment, and individually
-tracked lesion measurement groups. Lesions do not claim separate spatial
-segments. A CAC-negative SEG containing only HEART uses image-level zero
-measurements. Nonzero measurements or raw segmentation volume without a CAC
-segment are rejected. Reports are complete, preliminary, and unverified.
+Inputs: source CT series (`dicom:mod=ct`), DICOM SEG (`dicomseg:mod=seg`),
+and the calculator's native MHub measurements for the same instance.
+Output: `DeepCAC2.tid1500.dcm` (`dicom:mod=sr:tid=1500`). There are no
+module-specific configuration options.
 
-The SR adapter declares the source CT and DICOM SEG as explicit inputs. A
-negative case may provide a HEART-only SEG; the module never searches for an
-undeclared SEG or substitutes HEART for CAC. It reads MHub outputs directly,
-joining individual lesion measurements by `meta.id`. It requires exactly one of each summary
-output and one score, volume, and maximum-HU output for each registered lesion
-ID. Scoring version and actual configured lesion connectivity are published by
-the calculator and included in the SR algorithm identification. The fixed segmentation weights belong to the model/container release and
-are not published as a separate measurement. Risk
-category parameters state the boundaries for the unrounded score. Negative
-tracking identifiers are scoped to the source CT series, so multiple series
-within the same study remain distinct. CAC segment selection uses both the
-SNOMED CT scheme and code and rejects ambiguous duplicate CAC segments.
-The adapter validates the lesion count, risk category, and score/volume totals
-before building the report. SR generation uses MHub objects without reading JSON
-reports or intermediate measurement files.
+Creates a TID 1500 measurement report containing global score, category,
+eligible volume and lesion count; raw segmentation volume referencing the
+CAC segment; and individual lesion score, volume and maximum HU. Lesions have
+tracking identifiers but no separate spatial segments. A HEART-only negative
+SEG produces global zero measurements without CAC or lesion groups.
+Reports are complete, preliminary, and unverified.
 
-Batch inputs are processed separately by MHub's `@IO.Instance()` decorator.
-Each instance has its own output collection, so lesion IDs may repeat across
-cases. The SR adapter expects one calcium-analysis result set per instance;
-multiple competing result sets within the same instance are rejected as
-ambiguous. Its consistency checks do not change the scoring algorithm or
-round measurements. Score/volume totals allow floating-point roundoff
-(`rel_tol=1e-9`, `abs_tol=1e-9`); missing or inconsistent outputs prevent SR
-generation rather than being silently corrected.
+### Standard MHub modules
 
-This intentionally changes historical scores and replaces raw-mask plaque
-volume/count fields with explicitly named calcium/segmentation measurements.
-The obsolete Agatston and raw-mask plaque calculators and their helpers have
-been removed. The active calculator publishes eligible lesion measurements
-and raw segmentation volume. MHub output classes are defined alongside the calculator in
-`utils/CalciumAnalysisCalculator.py`; the scoring algorithm lives in
-`src/scoring.py`.
-Existing reference results must be regenerated before comparing against
-scoring version 2.0.0.
+The workflows also configure these framework modules. The table lists the
+settings used here rather than the framework's complete configuration API.
 
-The scoring core and baseline tests were ported from
-`DeepCAC2_pub/deepcac2_dataset/src/deepcac2_dataset/scoring.py`
-(repository HEAD `e5ff29b496d582f6e149dda2d2ef621ee6676ab2` at integration).
-The local port adds deferred annotations for the older MHub Python runtime
-and an explicit scoring version; it does not require the dataset package.
-Unused dataset reporting fields and alternative normalizations have been
-removed without changing the primary scoring and lesion calculations.
+| Module | Inputs → outputs | Settings used here |
+| --- | --- | --- |
+| `DicomImporter` | DICOM files → CT series instances | `meta` maps Modality and PatientID into file metadata |
+| `FileStructureImporter` | Named NIfTI files → CT instances | `input_dir`, `import_id`, `structures` define file discovery and PatientID extraction |
+| `NiftiConverter` | DICOM CT → NIfTI CT | `engine: dcm2niix` in `default` and `dicom_extended`; omitted for plastimatch |
+| `NNUnetRunner` | NIfTI CT → NIfTI HEART mask | `nnunet_task: Task400_OPEN_HEART_1FOLD`, `nnunet_model: 3d_lowres`, `folds: all`, `roi: HEART` |
+| `DsegConverter` | HEART/CAC masks and source CT → DICOM SEG | `source_segs`, `target_dicom`, `model_name`, `body_part_examined`, `converted_file_name`, `skip_empty_slices` |
+| `ReportExporter` | Native measurements and metadata → JSON | `includes` selects fields; `aggregate: list` collects lesions; `globalreport: true` produces the combined report; `meta` distinguishes report scope |
+| `DataOrganizer` | Generated files → exported directory | `targets` defines file selection and destination paths |
 
-## Build and export the local working tree
+## Exported outputs
 
-Run from the repository root. Both the legacy Docker builder and BuildKit are supported.
-This includes uncommitted source changes; the default build still imports from
-`MHUB_MODELS_REPO` (or upstream main). Only `models/deepcac2` is sent as the build context. Its `.dockerignore`
-excludes test data, local weights, and Python caches; image archives elsewhere
-in the repository are outside the context entirely.
-Weights are downloaded by the Dockerfile as usual.
+DICOM workflows export:
 
-```bash
-set -euo pipefail
-
-docker build \
-  --file models/deepcac2/dockerfiles/Dockerfile \
-  --build-arg MHUB_LOCAL_MODEL=true \
-  --tag mhubai/deepcac2:scoring-v2 \
-  models/deepcac2
-
-docker image save mhubai/deepcac2:scoring-v2 | gzip > mhubai_deepcac2_scoring-v2_20261028.tar.gz
+```text
+DeepCAC.report.json
+<SeriesInstanceUID>/
+  DeepCAC2.seg.dcm
+  DeepCAC2.tid1500.dcm
+  DeepCAC.report.json
 ```
 
-The new archive is written beside the existing archive in the repository root.
+The root JSON is a list of per-series reports. `dicom_extended` additionally
+exports `<SeriesInstanceUID>/nrrd/cac.seg.nrrd`, containing the unchanged CAC
+prediction. `nifti_pid` exports only the combined JSON, identifies cases by
+PatientID instead of SeriesInstanceUID, and includes score/category descriptions.
+DICOM PatientID comes from the imported CT metadata and is empty if unavailable.
 
-## DICOM-to-DICOM workflow
+The SEG contains HEART and unchanged CAC masks with source CT references.
+Empty slices are skipped, and an empty CAC mask may be omitted. SEG segment
+numbers are distinct from lesion IDs in JSON and SR.
 
-`dicom_dicom` explicitly selects DICOM input, dcm2niix conversion, inference,
-shared calcium measurements, DICOM SEG, TID 1500 SR, JSON reports, and the CAC
-NRRD. It has the same output set as `default`.
+The DICOM-workflow JSON fields are:
 
-```bash
-mkdir -p output_data
+| JSON field | Type and meaning |
+| --- | --- |
+| `SeriesInstanceUID` | String; original CT series UID, not the generated SEG/SR series UID |
+| `PatientID` | String from source CT metadata; empty if unavailable |
+| `Scoring Version` | String; calcium-analysis algorithm version |
+| `Lesion Connectivity` | Integer; configured 3D connectivity (6, 18, or 26) |
+| `Predicted CAC Score` | Float; unrounded score normalized by slice spacing / 3 mm |
+| `Predicted Risk Group` | Integer 0–3; 0, (0,100], (100,300], >300 using the unrounded score |
+| `Calcium Volume (mm3)` | Float; volume of score-eligible calcium |
+| `Segmentation Volume (mm3)` | Float; volume of every positive voxel in the unchanged CAC prediction, excluding HEART |
+| `Number of Lesions` | Integer; 3D connected components of score-eligible calcium |
+| `Lesion IDs` | List of local integer IDs |
+| `Individual Lesion Volumes (mm3)` | List of eligible volumes |
+| `Individual Lesion CAC Scores` | List of contributions to the global CACS |
+| `Individual Lesion Maximum HU` | List of maximum HU values over eligible voxels |
+| `Individual Lesion Eligible Voxel Counts` | List of integer eligible-voxel counts |
+| `Individual Lesion 2D Region Counts` | List of integer qualifying 2D-component counts |
 
-docker run --rm --gpus all \
-  --volume /absolute/path/to/input-dicom:/app/data/input_data:ro \
-  --volume "$PWD/output_data:/app/data/output_data" \
-  mhubai/deepcac2:scoring-v2 --workflow dicom_dicom
-```
+Corresponding positions in all six lesion lists refer to the same lesion. IDs
+are local to a result and are not stable longitudinal identifiers or SEG segment
+numbers; image-axis ordering can change their numbering. Empty eligible masks
+produce zero measurements and six empty lists. Numeric values are not rounded
+for export. Total eligible voxels, total qualifying 2D regions, and largest
+lesion volume can be derived from the lists; they are not duplicated as fields.
 
-## DICOM validation
+## Citation
 
-Build the independent validation image from the repository root:
+If you use DeepCAC2, please cite:
 
-```bash
-docker build \
-  --file models/deepcac2/dockerfiles/validate.Dockerfile \
-  --tag deepcac2-dicom-validate \
-  models/deepcac2/dockerfiles
-```
-
-Mount one organized case directory and validate both derived objects:
-
-```bash
-REFERENCE_DIR="$PWD/models/deepcac2/test/default/reference/<case-id>"
-
-docker run --rm --volume "$REFERENCE_DIR:/data:ro" \
-  deepcac2-dicom-validate \
-  dciodvfy -new /data/DeepCAC2.seg.dcm
-
-docker run --rm --volume "$REFERENCE_DIR:/data:ro" \
-  deepcac2-dicom-validate \
-  dciodvfy -new /data/DeepCAC2.tid1500.dcm
-
-docker run --rm --volume "$REFERENCE_DIR:/data:ro" \
-  deepcac2-dicom-validate \
-  validate-sr -checktemplateid -checkcontentitemorder \
-  -checkambiguoustemplate /data/DeepCAC2.tid1500.dcm
-
-docker run --rm --volume "$REFERENCE_DIR:/data:ro" \
-  deepcac2-dicom-validate \
-  dsrdump +Pt +Pc /data/DeepCAC2.tid1500.dcm
-```
-
-`dciodvfy` checks the IOD and data-element constraints, PixelMed checks the SR
-template and context groups, and `dsrdump` provides an independently parsed
-view of the content tree. Warnings require review; a zero exit code alone does
-not establish semantic correctness or pixel equivalence with the source mask.
-
-### Validation status for scoring 2.0.0
-
-The existing positive sample was checked against the dataset scorer: CACS
-101.76086849106444, seven lesions. The converted NIfTI gives
-101.7608642578125 (floating-point spacing precision) after aligning the
-historical mask by an exact axis flip. The MHub scoring, JSON and SR modules
-were also executed together with that aligned sample and highdicom 0.22.0.
-The historical mask and a newly converted CT must not be paired as unaligned
-arrays; the new geometry checks reject that combination.
-
-`dciodvfy` reported no IOD errors on the generated SR, with warnings for absent
-source StudyID/StudyTime and private measurement codes. PixelMed's installed
-`DicomSRDescriptionsCompiled.xsl` selects the spatial TID 1411 template when
-*any* measurement group contains a segment reference, then applies it to all
-measurement groups. It also invokes TID 1501 across the groups. Consequently,
-this mixed TID 1411/TID 1501 report produces false missing-ROI diagnostics and
-ambiguous matches on non-spatial groups. The report explicitly encodes TID 1411
-only for raw segmentation volume and TID 1501 for global and lesion groups.
-The validator was not modified to suppress these diagnostics; independent SR
-template validation is **not clean**. A zero validator exit status must not be
-interpreted as a pass. The installed validator needs template selection scoped
-to individual groups before it can establish conformance for this report.
+Nürnberg L, Bernatz S, Foldyna B, Lu MT, Fedorov A, Aerts HJWL.
+[Coronary artery calcification assessment in National Lung Screening Trial CT images (DeepCAC2)](https://arxiv.org/abs/2603.24633).
+2026. arXiv:2603.24633.
