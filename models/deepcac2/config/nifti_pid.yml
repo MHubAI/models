@@ -6,6 +6,7 @@ general:
 
 execute:
 - FileStructureImporter
+- LPSOrienter
 - NNUnetRunner
 - DeepCACRunner
 - CalciumAnalysisCalculator

@@ -2,7 +2,7 @@
 general:
   data_base_dir: /app/data
   version: 1.0
-  description: DeepCAC2 DICOM-to-DICOM workflow using dcm2niix, with DICOM SEG, TID 1500 SR, and JSON measurements
+  description: DeepCAC2 DICOM-to-DICOM workflow using plastimatch conversion, with DICOM SEG, TID 1500 SR, and JSON measurements
 
 # SegDB's upstream CodeMeaning for SCT 18115005 exceeds DICOM's 64-character
 # Long String limit. Override only the display text; the coded concept is unchanged.
@@ -34,9 +34,6 @@ modules:
     meta:
       mod: '%Modality'
       pid: '%PatientID'
-
-  NiftiConverter:
-    engine: dcm2niix
 
   NNUnetRunner:
     folds: all

@@ -16,6 +16,7 @@ segdb:
 execute:
 - DicomImporter
 - NiftiConverter
+- LPSOrienter
 - NNUnetRunner
 - DeepCACRunner
 - CalciumAnalysisCalculator
@@ -37,6 +38,9 @@ modules:
 
   NiftiConverter:
     engine: dcm2niix
+
+  LPSOrienter:
+    delete_input_file: true
 
   NNUnetRunner:
     folds: all
