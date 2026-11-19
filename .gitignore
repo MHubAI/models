@@ -1,19 +1,14 @@
 .vscode
 *.pyc
 *.pkl
-__pycache__
 
 **/notes.md
 models/monaibundle/monaizoo
 
-#models/*/src*
+models/*/src*
 models/*/config/*_test.yml
 models/*/sample_data
 models/*/output*
 models/*/input*
 models/*/debug
 models/*/dev
-
-# tar and zip files
-*.tar.gz
-*.zip
