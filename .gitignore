@@ -1,14 +1,32 @@
-.vscode
-*.pyc
+# Editor and operating-system files
+.vscode/
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# Python bytecode, caches, and local virtual environments
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.venv/
+venv/
+
+# Local notes and serialized data
+**/notes.md
 *.pkl
 
-**/notes.md
-models/monaibundle/monaizoo
-
-models/*/src*
+# Model development data and generated outputs
+# Keep source directories trackable; ignore downloaded code in each model's .gitignore.
+models/monaibundle/monaizoo/
 models/*/config/*_test.yml
-models/*/sample_data
+models/*/sample_data/
 models/*/output*
 models/*/input*
-models/*/debug
-models/*/dev
+models/*/debug/
+models/*/dev/
+
+# Local image exports and downloaded archives
+*.tar.gz
+*.zip
