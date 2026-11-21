@@ -155,6 +155,22 @@ produce zero measurements and six empty lists. Numeric values are not rounded
 for export. Total eligible voxels, total qualifying 2D regions, and largest
 lesion volume can be derived from the lists; they are not duplicated as fields.
 
+## Python tests
+
+From the repository root, run the CPU test suite in an isolated uv environment:
+
+```bash
+uv run --no-project --python 3.10 \
+  --with pytest --with 'numpy==1.26.4' --with scipy \
+  --with 'mhubio @ git+https://github.com/MHubAI/mhubio.git' \
+  --with 'segdb @ git+https://github.com/MHubAI/SegDB.git' \
+  python -m pytest -q models/deepcac2/tests
+```
+
+The first run downloads MHubIO and its dependencies; subsequent runs reuse uv's
+cache. Tests cover scoring, orientation, MHub integration, and DICOM SR generation.
+They do not run model inference or require a GPU or model weights.
+
 ## Citation
 
 If you use DeepCAC2, please cite:
