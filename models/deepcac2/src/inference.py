@@ -11,9 +11,6 @@ which is used soley for training speedup.
 
 Metrics can then be calculated in the next step based on the predicted and assembled cac segmentation.
 
-WORK IN PROGRESS.
--------------------------------------------------
-
 -------------------------------------------------
 Author: Leonard Nürnberg
 Email:  leonard.nuernberg@maastrichtuniversity.nl

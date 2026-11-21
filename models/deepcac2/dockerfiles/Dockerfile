@@ -8,6 +8,7 @@ FROM mhubai/base:latest
 ENV SKLEARN_ALLOW_DEPRECATED_SKLEARN_PACKAGE_INSTALL=True
 
 # Install dependencies
+# Pin nnU-Net's dicom2nifti dependency below 2.6 to avoid its pydicom >=3 requirement and keep our highdicom 0.22 / pydicom 2.4 stack compatible.
 RUN pip3 install --no-cache-dir \
     nnunet==1.7.1 \
     torch==2.0.1 \
