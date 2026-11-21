@@ -1,0 +1,109 @@
+
+general:
+  data_base_dir: /app/data
+  version: 1.0
+  description: DeepCAC2 starting from NIfTI files named by PatientID and exporting CAC scores and risk groups.
+
+execute:
+- FileStructureImporter
+- LPSOrienter
+- NNUnetRunner
+- DeepCACRunner
+- CalciumAnalysisCalculator
+- ReportExporter
+- module: ReportExporter
+  globalreport: true
+  meta:
+    scope: global 
+- DataOrganizer
+
+modules:
+
+  FileStructureImporter:
+    input_dir: 'input_data'
+    import_id: _instance
+    structures: 
+    - re:(\d+).nii.gz::$pid@instance@nifti:mod=ct
+
+  NNUnetRunner:
+    folds: all
+    nnunet_task: Task400_OPEN_HEART_1FOLD
+    nnunet_model: 3d_lowres
+    roi: HEART
+
+  ReportExporter:
+    meta:
+      mod: report
+      scope: instance
+    includes:
+    - attr: pid
+      label: PatientID
+    - data: scoring_version
+      label: Scoring Version
+      value: value
+    - data: lesion_connectivity
+      label: Lesion Connectivity
+      value: value
+    - data: cacs
+      label: CAC Score Description
+      value: description
+    - data: cacs
+      label: Predicted CAC Score
+      value: value
+    - data: risk_category
+      label: Risk Group Description
+      value: description
+    - data: risk_category
+      label: Predicted Risk Group
+      value: value
+    - data: calcium_volume
+      label: Calcium Volume (mm3)
+      value: value
+    - data: segmentation_volume
+      label: Segmentation Volume (mm3)
+      value: value
+    - data: lesion_count
+      label: Number of Lesions
+      value: value
+
+    - data: lesion_id
+      label: Lesion IDs
+      value: value
+      aggregate: list
+    - data: lesion_volume
+      label: Individual Lesion Volumes (mm3)
+      value: value
+      aggregate: list
+    - data: lesion_score
+      label: Individual Lesion CAC Scores
+      value: value
+      aggregate: list
+    - data: lesion_max_hu
+      label: Individual Lesion Maximum HU
+      value: value
+      aggregate: list
+    - data: lesion_eligible_voxels
+      label: Individual Lesion Eligible Voxel Counts
+      value: value
+      aggregate: list
+    - data: lesion_region_count
+      label: Individual Lesion 2D Region Counts
+      value: value
+      aggregate: list
+
+  DataOrganizer:
+    targets:
+    #- json:mod=report:scope=instance-->[i:pid]/DeepCAC.report.json
+    - json:mod=report:scope=global-->DeepCAC.report.json
+
+sample:
+  idc:
+    dicom:
+      SeriesInstanceUID: 1.2.840.113654.2.55.257926562693607663865369179341285235858
+      aws_url: s3://idc-open-data/7271ab1d-bb03-4ca9-9457-dabcafd4d33f/*
+  input:
+    100002.nii.gz: CT in NIfTI format, named by PatientID.
+    100002.json: Optional dcm2niix conversion metadata sidecar.
+  output:
+    DeepCAC.report.json: Combined calcium scores, risk categories, volumes, and individual
+      lesion measurements for all inputs.
