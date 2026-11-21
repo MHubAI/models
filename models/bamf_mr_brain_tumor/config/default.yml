@@ -1,0 +1,87 @@
+general:
+  data_base_dir: /app/data
+  version: 1.0
+  description: Default configuration for Bamf NNUnet Brain tumor segmentation on MR scans (dicom to dicom)
+
+execute:
+- FileStructureImporter
+- NiftiConverter
+- ReOrientationRunner
+- BiasCorrectionRunner
+- FLIRTRegistrationRunner
+- SkullStripRunner
+- StdRegistrationRunner
+- NNUnetRunnerV2
+- InverseStdRegistrationRunner
+- InverseRegistrationRunner
+- module: DsegConverter
+  target_dicom: dicom:mod=mr:type=t1
+  source_segs: nifti:mod=mr:type=t1:task=inverse
+- module: DsegConverter
+  target_dicom: dicom:mod=mr:type=t1ce
+  source_segs: nifti:mod=mr:type=t1ce:task=inverse
+- module: DsegConverter
+  target_dicom: dicom:mod=mr:type=t2
+  source_segs: nifti:mod=mr:type=t2:task=inverse
+- module: DsegConverter
+  target_dicom: dicom:mod=mr:type=flair
+  source_segs: nifti:mod=mr:type=flair:task=inverse
+- DataOrganizer
+
+modules:
+  FileStructureImporter:
+    input_dir: 'input_data'
+    structures:
+      - $patientID@instance/t1@dicom:mod=mr:type=t1
+      - $patientID/t1ce@dicom:mod=mr:type=t1ce
+      - $patientID/t2@dicom:mod=mr:type=t2
+      - $patientID/flair@dicom:mod=mr:type=flair
+    import_id: patientID
+
+  NiftiConverter:
+    allow_multi_input: True
+    out_datas: nifti:mod=mr:task=conversion
+    engine: dcm2niix
+
+  ReOrientationRunner:
+    in_datas: nifti:mod=mr
+
+  BiasCorrectionRunner:
+    in_datas: nifti:mod=mr:task=reorientation
+
+  FLIRTRegistrationRunner:
+    in_datas: nifti:mod=mr:task=bias_corrected
+    reference_data: nifti:mod=mr:task=bias_corrected:type=t1ce
+
+  SkullStripRunner:
+    in_datas: nifti:mod=mr:task=registration
+
+  StdRegistrationRunner:
+    in_datas: nifti:mod=mr:task=skull_stripped
+
+  NNUnetRunnerV2:
+    in_t1_data: nifti:mod=mr:task=std_registration:type=t1
+    in_t1ce_data: nifti:mod=mr:task=std_registration:type=t1ce
+    in_t2_data: nifti:mod=mr:task=std_registration:type=t2
+    in_flair_data: nifti:mod=mr:task=std_registration:type=flair
+
+  InverseStdRegistrationRunner:
+    in_seg_data: nifti:mod=seg:model=nnunet:nnunet_dataset=Dataset002_BRATS19
+    in_mat_datas: txt:task=std_registration_transform_mat
+    in_registration_datas: nifti:mod=mr:task=registration
+
+  InverseRegistrationRunner:
+    in_seg_datas: nifti:mod=mr:task=std_inverse
+    in_mat_datas: txt:task=registration_transform_mat
+    in_registration_datas: nifti:mod=mr:task=bias_corrected
+
+  DsegConverter:
+    model_name: BAMF Brain Tumor AI Segmentation
+    skip_empty_slices: True
+
+  DataOrganizer:
+    targets:
+    - dicomseg:type=t1ce-->[i:patientID]/t1ce.seg.dcm
+    - dicomseg:type=t1-->[i:patientID]/t1.seg.dcm
+    - dicomseg:type=t2-->[i:patientID]/t2.seg.dcm
+    - dicomseg:type=flair-->[i:patientID]/flair.seg.dcm
