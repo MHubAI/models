@@ -1,0 +1,36 @@
+general:
+  data_base_dir: /app/data
+  version: 1.0
+  description: default configuration for 3D semantic image segmentation of the lung and lung nodules from ct scan (dicom to dicom)
+
+execute:
+- DicomImporter
+- NiftiConverter
+- NNUnetRunnerV2
+- BamfProcessorRunner
+- DsegConverter
+- DataOrganizer
+
+modules:
+  DicomImporter:
+    source_dir: input_data
+    import_dir: sorted_data
+    sort_data: true
+    meta: 
+      mod: '%Modality'
+
+  NiftiConverter:
+    engine: dcm2niix
+
+  NNUnetRunnerV2:
+    in_data: nifti:mod=ct
+
+  DsegConverter:
+    model_name: BAMF Lung and Lung Nodule AI Segmentation
+    target_dicom: dicom:mod=ct
+    source_segs: nifti:mod=seg:processor=bamf
+    skip_empty_slices: True
+
+  DataOrganizer:
+    targets:
+    - dicomseg-->[i:sid]/bamf_nnunet_ct_lungnodules.seg.dcm
